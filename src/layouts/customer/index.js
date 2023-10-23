@@ -8,14 +8,20 @@ import Tables from 'layouts/tables'
 import { CustomersTableData } from 'layouts/tables/data/customerTabkeData';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-
+import "../tables/datagrid.css"
 function Customer() {
     const { columns, rows } =CustomersTableData()
+    const [paginationModel, setPaginationModel] = React.useState({
+      page: 0,
+      pageSize: 5,
+    });
     let dispatch=useDispatch()
+    let Token=localStorage.getItem('token')
     const [customerRequest, getCustomerResponce] =
     useRequest({
       path: CUSTOMER,
       method: "get",
+      Token: `Token ${Token}`
     });
     const [customerDeleteRequest, DeleteCustomerrResponce] =
     useRequest({
@@ -27,7 +33,7 @@ function Customer() {
         customerDeleteRequest({
           id:row,
           onSuccess:()=>{
-            dispatch({ type: "custom/deleteItem", payload: {id:row} })
+            // dispatch({ type: "custom/deleteItem", payload: {id:row} })
           }
         })
       }
@@ -98,10 +104,12 @@ function Customer() {
     <DashboardNavbar />
     
     <DataGridCustom
-     rows={rows} onDelete={onDelete}
+     rows={rows} 
       columns={columns} checkboxSelection={true}
        onRowClick={(e) => { setClick({ ...e?.row });/* navigate(`/${shopName}/dashboard/customer/${e?.row?.id}`) */}}
        sx={{backgroundColor:"white"}}
+       rowsPerPageOptions={[5,10,15,20]}
+       onPaginationModelChange={setPaginationModel}
       /> 
   </DashboardLayout></>
   )

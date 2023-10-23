@@ -55,6 +55,7 @@ import CustomerSupport from "examples/Icons/CustomerSupport";
 import CreditCard from "examples/Icons/CreditCard";
 import Cube from "examples/Icons/Cube";
 import Customer from "layouts/customer";
+import Employee from "layouts/employee";
 const shop_name = localStorage.getItem('shop_name')
 const routes = [
   {
@@ -67,7 +68,7 @@ const routes = [
     noCollapse: true,
   },
   {
-    type: "collapse",
+    type: "title",
     name: "Dashboard",
     key: "dashboard",
     route: `/${shop_name}`,
@@ -82,6 +83,14 @@ const routes = [
     route: `/${shop_name}/dashboard/customer`,
     icon: <Office size="12px" />,
     component: <Customer />,
+  },
+  {
+    type: "collapse",
+    name: "Employees",
+    key: "employees",
+    route: `/${shop_name}/dashboard/employee`,
+    icon: <Office size="12px" />,
+    component: <Employee />,
   },
   // {
   //   type: "collapse",

@@ -71,14 +71,13 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   }, [dispatch, location]);
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
-  const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, route, href }) => {
+  const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, route, path }) => {
     let returnValue;
-
     if (type === "collapse") {
-      returnValue = href ? (
+      returnValue = path ? (
         <Link
-          href={href}
-          key={key}
+          href={path}
+          // key={key}
           target="_blank"
           rel="noreferrer"
           sx={{ textDecoration: "none" }}
@@ -87,19 +86,19 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             color={color}
             name={name}
             icon={icon}
-            active={key === collapseName}
-            noCollapse={noCollapse}
+            // active={key === collapseName}
+            // noCollapse={noCollapse}
           />
         </Link>
       ) : (
         <NavLink to={route} key={key}>
           <SidenavCollapse
             color={color}
-            key={key}
+            // key={key}
             name={name}
             icon={icon}
-            active={key === collapseName}
-            noCollapse={noCollapse}
+            // active={key === collapseName}
+            // noCollapse={noCollapse}
           />
         </NavLink>
       );

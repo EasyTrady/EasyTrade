@@ -20,7 +20,7 @@ const useRequest = ({
   // const states = useSelector((state) => state);
   // const userInfo = useSelector((state) => state.userInfo.value);
   let navigate = useNavigate();
-   Token=localStorage.getItem('token');
+  //  Token=localStorage.getItem('token');
   // ---hooks invokes----
   // const dispatch = useDispatch();
 
@@ -86,7 +86,7 @@ const useRequest = ({
 
     // if (!Boolean(method) && !Boolean(customMethod))
     //   throw Error("you didn't specify a method for the request");
-
+    console.log(Token)
     return axios({
       method: customMethod ? customMethod : method,
       baseURL: customFullUrl ? "" : BaseUrl ? BaseUrl : customBaseUrl,
@@ -96,7 +96,7 @@ const useRequest = ({
       ...(!noHeaders && {
         headers: {
           //prettier-ignore
-          "Authorization": `Token ${Token}`,
+          "Authorization":Token ?`${Token}`:"",
           "Accept-Language": "en-US,en;",
           "Content-Type":"application/json"
         },

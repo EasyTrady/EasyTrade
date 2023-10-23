@@ -27,7 +27,7 @@ const SoftBadge = forwardRef(
       {...rest}
       ownerState={{ color, variant, size, circular, indicator, border, container, children }}
       ref={ref}
-      color="default"
+      color={color}
     >
       {children}
     </SoftBadgeRoot>

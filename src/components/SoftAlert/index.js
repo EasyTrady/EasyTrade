@@ -34,7 +34,7 @@ function SoftAlert({ color, dismissible, children, ...rest }) {
   const handleAlertStatus = () => setAlertStatus("fadeOut");
 
   // The base template for the alert
-  const alertTemplate = (mount = true) => (
+  const alertTemplate = (mount = false) => (
     <Fade in={mount} timeout={300}>
       <SoftAlertRoot ownerState={{ color }} {...rest}>
         <SoftBox display="flex" alignItems="center" color="white">

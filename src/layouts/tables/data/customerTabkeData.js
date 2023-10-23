@@ -1,9 +1,14 @@
 import { Avatar, Box, Typography } from "@mui/material";
+import { GridActionsCellItem } from "@mui/x-data-grid";
 import SoftAvatar from "components/SoftAvatar";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Close';
+import EditIcon from '@mui/icons-material/Edit';
 
 // const columnsTheme = [
 //     {
@@ -70,7 +75,7 @@ let customers = useSelector((state) => state?.customer?.value)
               align: 'left',
               headerAlign: 'left',
               editable: true,
-              renderCell:(params)=><Box sx={{display:"flex",flexDirection:"column"}}>
+              renderCell:(params)=><Box sx={{display:"flex",flexDirection:"column",paddingY:"20px"}}>
                 <Typography component={"h3"} sx={{color:"#673ab7",}}>{params.row.full_name}</Typography>
                 <Typography component={"p"}>{params.row.email} </Typography>
         
@@ -99,7 +104,7 @@ let customers = useSelector((state) => state?.customer?.value)
               filterable: false,
               sortable: false,disableColumnMenu: true
             },
-        
+         
           
           ],
 

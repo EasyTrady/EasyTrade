@@ -17,10 +17,12 @@ import {
   GridRowEditStopReasons,
   GridActionsCellItem,
 } from '@mui/x-data-grid';
+import SoftBadge from "components/SoftBadge";
 
-function DataGridCustom({rows=[],columns=[],onRowClick=()=>{},isRowSelectable=()=>{},
-checkboxSelection=true,onEdit=null,onDelete=null,sx={}}) {
+function DataGridCustom({rows,columns,onRowClick,isRowSelectable,
+checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onPaginationModelChange}) {
     const [, setRows] = React.useState(rows);
+    const [status,setStatus]=React.useState(false)
     const [rowModesModel, setRowModesModel] = React.useState({});
   
     const handleRowEditStop = (params, event) => {
@@ -41,7 +43,7 @@ checkboxSelection=true,onEdit=null,onDelete=null,sx={}}) {
   
     const handleDeleteClick = (id) => () => {
       setRows(rows.filter((row) => row.id !== id));
-      onDelete(id)
+      // onDelete(id)
     };
   
     const handleCancelClick = (id) => () => {
@@ -121,7 +123,7 @@ checkboxSelection=true,onEdit=null,onDelete=null,sx={}}) {
               label="Delete"
               onClick={handleDeleteClick(row?.id)}
               color="inherit"
-            />:<></>,
+            />:<><SoftBadge variant="gradient" badgeContent="online" color={status?"secondary":"success"} size="xs" container   /></>,
           ];
         },
       },
@@ -151,6 +153,12 @@ checkboxSelection=true,onEdit=null,onDelete=null,sx={}}) {
           checkboxSelection={checkboxSelection}
           onRowClick={onRowClick}
           isRowSelectable={isRowSelectable}
+          initialState={{pagination: { paginationModel: { pageSize: 5 } }}}
+          pageSizeOptions={[5,10,15]}
+          sx={{"& .css-1ui3wbn-MuiInputBase-root-MuiTablePagination-select":{
+            width:"15% !important"
+          }}}
+          onPaginationModelChange={onPaginationModelChange}
           // slots={{
           //   toolbar: EditToolbar,
           // }}
@@ -171,4 +179,5 @@ checkboxSelection=true,onEdit=null,onDelete=null,sx={}}) {
     onEdit: PropTypes.func,
     onDelete: PropTypes.func,
     sx: PropTypes.object,
+    rowsPerPageOptions:PropTypes.array,onPaginationModelChange:PropTypes.func
   };
