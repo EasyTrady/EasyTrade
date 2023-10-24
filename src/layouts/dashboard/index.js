@@ -41,11 +41,20 @@ import OrderOverview from "layouts/dashboard/components/OrderOverview";
 // Data
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
+import { setDirection } from "context";
+import { useEffect } from "react";
+import { useSoftUIController } from "context";
 
 function Dashboard() {
   const { size } = typography;
   const { chart, items } = reportsBarChartData;
+  const [, dispatch] = useSoftUIController();
+// Changing the direction to rtl
+useEffect(() => {
+  setDirection(dispatch, "rtl");
 
+  return () => setDirection(dispatch, "rtl");
+}, []);
   return (
     <DashboardLayout>
       <DashboardNavbar />

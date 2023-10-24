@@ -90,10 +90,14 @@ function SignIn() {
                 } else {
                   console.log(res?.payload?.token)
                   await ShopInfoRequest({ onSuccess:(response)=>{
+                    console.log(response.payload);
                     localStorage.setItem('shop_url', response?.payload?.shop_url)
                     localStorage.setItem('dashboard_url', response?.payload?.dashboard_url)
                     localStorage.setItem('shop_id', response?.payload?.id)
                     localStorage.setItem('shop_name', response?.payload?.shop_name)
+                    localStorage.setItem('image', response?.payload?.image)
+                    localStorage.setItem('email', response?.payload?.email)
+                    localStorage.setItem('phone', response?.payload?.phone)
                     navigate(`/${response?.payload?.shop_name}/dashboard`)
                   } })
 

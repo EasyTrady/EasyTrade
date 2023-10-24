@@ -56,6 +56,7 @@ import CreditCard from "examples/Icons/CreditCard";
 import Cube from "examples/Icons/Cube";
 import Customer from "layouts/customer";
 import Employee from "layouts/employee";
+import Products from "layouts/products/viewProducts";
 const shop_name = localStorage.getItem('shop_name')
 const routes = [
   {
@@ -91,6 +92,14 @@ const routes = [
     route: `/${shop_name}/dashboard/employee`,
     icon: <Office size="12px" />,
     component: <Employee />,
+  },
+  {
+    type: "collapse",
+    name: "Products",
+    key: "products",
+    route: `/${shop_name}/dashboard/products`,
+    icon: <Shop size="12px" />,
+    component: <Products />,
   },
   // {
   //   type: "collapse",
@@ -154,7 +163,7 @@ const routes = [
     route: "/authentication/sign-up",
     icon: <SpaceShip size="12px" />,
     component: <SignUp />,
-    noCollapse: true,
+    noCollapse: false,
   },
 ];
 

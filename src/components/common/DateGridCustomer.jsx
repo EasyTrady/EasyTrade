@@ -19,7 +19,7 @@ import {
 } from '@mui/x-data-grid';
 import SoftBadge from "components/SoftBadge";
 
-function DataGridCustom({rows,columns,onRowClick,isRowSelectable,
+function DataGridCustom({rows,columns,onRowClick,isRowSelectable,rowHeight,
 checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onPaginationModelChange}) {
     const [, setRows] = React.useState(rows);
     const [status,setStatus]=React.useState(false)
@@ -156,7 +156,7 @@ checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onPaginationModelChange}
           initialState={{pagination: { paginationModel: { pageSize: 5 } }}}
           pageSizeOptions={[5,10,15]}
           sx={{"& .css-1ui3wbn-MuiInputBase-root-MuiTablePagination-select":{
-            width:"15% !important"
+            width:"15% !important",
           }}}
           onPaginationModelChange={onPaginationModelChange}
           // slots={{
@@ -165,6 +165,8 @@ checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onPaginationModelChange}
           // slotProps={{
           //   toolbar: { setRows, setRowModesModel },
           // }}
+          rowHeight={rowHeight}
+          
         />
       </Box>
     );
@@ -179,5 +181,6 @@ checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onPaginationModelChange}
     onEdit: PropTypes.func,
     onDelete: PropTypes.func,
     sx: PropTypes.object,
+    rowHeight: PropTypes.number,
     rowsPerPageOptions:PropTypes.array,onPaginationModelChange:PropTypes.func
   };
