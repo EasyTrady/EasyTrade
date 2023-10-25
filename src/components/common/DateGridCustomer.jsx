@@ -18,9 +18,9 @@ import {
   GridActionsCellItem,
 } from '@mui/x-data-grid';
 import SoftBadge from "components/SoftBadge";
-
+import compare from "../../utils/compare";
 function DataGridCustom({rows,columns,onRowClick,isRowSelectable,
-checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onPaginationModelChange}) {
+checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onPaginationModelChange,...rest}) {
     const [, setRows] = React.useState(rows);
     const [status,setStatus]=React.useState(false)
     const [rowModesModel, setRowModesModel] = React.useState({});
@@ -43,7 +43,7 @@ checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onPaginationModelChange}
   
     const handleDeleteClick = (id) => () => {
       setRows(rows.filter((row) => row.id !== id));
-      // onDelete(id)
+      onDelete(id)
     };
   
     const handleCancelClick = (id) => () => {
@@ -59,10 +59,11 @@ checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onPaginationModelChange}
     };
   
     const processRowUpdate = (newRow) => {
+
       const updatedRow = { ...newRow, isNew: false };
       setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
       let isThereChange=compare(rows.filter((ele)=>ele.id==newRow.id).map((elem)=>Object.keys(elem).map((eleme)=>([newRow[eleme],elem[eleme],eleme]))))
-      console.log(isThereChange.array)
+      console.log(isThereChange.array,newRow,rows.filter((ele)=>ele.id==newRow.id))
   
       // if(isThereChange.nochange){
       //   console.log(isThereChange.array)
@@ -155,11 +156,13 @@ checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onPaginationModelChange}
           isRowSelectable={isRowSelectable}
           initialState={{pagination: { paginationModel: { pageSize: 5 } }}}
           pageSizeOptions={[5,10,15]}
-          sx={{"& .css-1ui3wbn-MuiInputBase-root-MuiTablePagination-select":{
+          sx={{...sx,"& .css-1ui3wbn-MuiInputBase-root-MuiTablePagination-select":{
             width:"15% !important"
           }}}
           onPaginationModelChange={onPaginationModelChange}
-          // slots={{
+          {...rest}
+          onProcessRowUpdateError={(error)=>console.log(error)}
+                    // slots={{
           //   toolbar: EditToolbar,
           // }}
           // slotProps={{

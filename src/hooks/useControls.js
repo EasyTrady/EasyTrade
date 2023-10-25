@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useCallback, useState, useEffect } from "react";
-import useAfterEffect from "./useAfterEffect";
+
 
 const useControls = (controls = [], dep = []) => {
   if (
@@ -22,7 +22,7 @@ const useControls = (controls = [], dep = []) => {
     return result;
   });
   
-  useAfterEffect(() => {
+  useEffect(() => {
     setState(() => {
       let result = {};
       controls.map(
@@ -51,7 +51,7 @@ const useControls = (controls = [], dep = []) => {
      
     
       if ((value === ""||(Array.isArray(value)&&value.length==0)) && control?.isRequired) {
-        output = { ...output, [control.control]: "هذا الحقل إلزامي" };
+        output = { ...output, [control.control]: "This field is mandatory" };
       } else if (Array.isArray(control?.validations)&&value) {
         control.validations.forEach((validation) => {
           if (validation.hasOwnProperty("customValidation")) {

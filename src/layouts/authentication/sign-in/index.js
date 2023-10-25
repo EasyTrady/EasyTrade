@@ -83,6 +83,7 @@ function SignIn() {
                 console.log(res.data)
              
                 localStorage.setItem('token', res.data.token);
+                localStorage.setItem('tokenTimestamp', new Date().getTime());
                 if (shop_name !== "undefined") {
 
                   navigate(`/${shop_name}/dashboard`)
