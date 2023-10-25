@@ -45,8 +45,8 @@ import curved0 from "assets/images/curved-images/curved0.jpg";
 function Header() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
-  const name=localStorage.getItem('name')
-  const image=localStorage.getItem('image')
+  const name=localStorage.getItem('full_name')
+  const image=localStorage.getItem('logo')
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
     function handleTabsOrientation() {

@@ -49,7 +49,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const location = useLocation();
   const { pathname } = location;
   const collapseName = pathname.split("/").slice(1)[0];
-  const image=localStorage.getItem('image')
+  const image=localStorage.getItem('logo')
   const shop_name=localStorage.getItem('shop_name')
   const closeSidenav = () => setMiniSidenav(dispatch, true);
 

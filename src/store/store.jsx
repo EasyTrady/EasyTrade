@@ -6,6 +6,7 @@ import customerSlice from './pages/customerSlice';
 import  registrationSlice  from './pages/signupslice';
 import  EmployeeSlice  from './pages/employeeSlice';
 import  CategorySlice  from './pages/categoriesSlice';
+import ProfileSlice  from './pages/profileSlice';
 const store = configureStore({
   reducer: {
     // customization: customizationSlice,
@@ -13,8 +14,8 @@ const store = configureStore({
     registration:registrationSlice,
     customer:customerSlice,
     employee:EmployeeSlice,
-    category:CategorySlice
-    // registration:registrationSlice
+    category:CategorySlice,
+     profile:ProfileSlice 
   }
 });
 export default store

@@ -18,7 +18,7 @@ import {
   GridActionsCellItem,
 } from '@mui/x-data-grid';
 import SoftBadge from "components/SoftBadge";
-
+import { GridRowSpacingParams } from '@mui/x-data-grid';
 function DataGridCustom({rows,columns,onRowClick,isRowSelectable,rowHeight,
 checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onPaginationModelChange}) {
     const [, setRows] = React.useState(rows);
@@ -166,7 +166,8 @@ checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onPaginationModelChange}
           //   toolbar: { setRows, setRowModesModel },
           // }}
           rowHeight={rowHeight}
-          
+          rowSpacingType='margin'
+          getRowSpacing={(params) => params===4}
         />
       </Box>
     );

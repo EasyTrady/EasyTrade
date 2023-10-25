@@ -51,7 +51,7 @@ import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
 
 function Overview() {
-  const name=localStorage.getItem('name')
+  const name=localStorage.getItem('full_name')
   const email=localStorage.getItem('email')
   const phone=localStorage.getItem('phone')
   const shop_name=localStorage.getItem('shop_name')

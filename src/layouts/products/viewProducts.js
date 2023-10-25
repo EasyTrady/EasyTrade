@@ -10,8 +10,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../tables/datagrid.css";
 import ProjectsTableData from "layouts/tables/data/projectsTableData";
+import { ProductTableData } from "layouts/tables/data/projecttableData";
 function Products() {
-  const { columns, rows } = CustomersTableData();
+  const { columns, rows } = ProductTableData();
   const [paginationModel, setPaginationModel] = React.useState({
     page: 0,
     pageSize: 5,
@@ -95,6 +96,7 @@ function Products() {
   // useEffect(() => {
   //     setRows(customers?.results);
   //   }, [customers])
+  console.log(rows);
   return (
     <>
       <DashboardLayout>
@@ -111,6 +113,7 @@ function Products() {
           rowsPerPageOptions={[5, 10, 15, 20]}
           onPaginationModelChange={setPaginationModel}
           rowHeight={100}
+          getRowSpacing={4}
         />
       </DashboardLayout>
     </>
