@@ -15,7 +15,7 @@ import logoSlack from "assets/images/small-logos/logo-slack.svg";
 import logoWebDev from "assets/images/small-logos/logo-webdev.svg";
 import logoXD from "assets/images/small-logos/logo-xd.svg";
 
-function Completion({ value, color }) {
+export function Completion({ value, color }) {
   return (
     <SoftBox display="flex" alignItems="center">
       <SoftTypography variant="caption" color="text" fontWeight="medium">
@@ -34,7 +34,7 @@ const action = (
   </Icon>
 );
 
-const projectsTableData = {
+const ProjectsTableData = {
   columns: [
     { name: "project", align: "left" },
     { name: "budget", align: "left" },
@@ -137,4 +137,4 @@ const projectsTableData = {
   ],
 };
 
-export default projectsTableData;
+export default ProjectsTableData;

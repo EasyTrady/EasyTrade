@@ -45,7 +45,8 @@ import curved0 from "assets/images/curved-images/curved0.jpg";
 function Header() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
-
+  const name=localStorage.getItem('full_name')
+  const image=localStorage.getItem('logo')
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
     function handleTabsOrientation() {
@@ -103,7 +104,7 @@ function Header() {
         <Grid container spacing={3} alignItems="center">
           <Grid item>
             <SoftAvatar
-              src={burceMars}
+              src={image}
               alt="profile-image"
               variant="rounded"
               size="xl"
@@ -113,7 +114,7 @@ function Header() {
           <Grid item>
             <SoftBox height="100%" mt={0.5} lineHeight={1}>
               <SoftTypography variant="h5" fontWeight="medium">
-                Alex Thompson
+               {name}
               </SoftTypography>
               <SoftTypography variant="button" color="text" fontWeight="medium">
                 CEO / Co-Founder
@@ -129,7 +130,7 @@ function Header() {
                 sx={{ background: "transparent" }}
               >
                 <Tab label="App" icon={<Cube />} />
-                <Tab label="Message" icon={<Document />} />
+                <Tab label="Website" icon={<Document />} />
                 <Tab label="Settings" icon={<Settings />} />
               </Tabs>
             </AppBar>

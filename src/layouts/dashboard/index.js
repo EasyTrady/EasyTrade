@@ -41,11 +41,41 @@ import OrderOverview from "layouts/dashboard/components/OrderOverview";
 // Data
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
+import { setDirection } from "context";
+import { useEffect } from "react";
+import { useSoftUIController } from "context";
+import { PROFILE } from "data/api";
+import { useDispatch, useSelector } from "react-redux";
+import useRequest from "hooks/useRequest";
 
 function Dashboard() {
   const { size } = typography;
   const { chart, items } = reportsBarChartData;
+  const [, dispatch] = useSoftUIController();
+  const profile=useSelector((state)=>state.profile)
+  const Dispatch=useDispatch()
+  
+  let Token = localStorage.getItem("token");
+  const [profileRequest, getProfileResponce] = useRequest({
+    path: PROFILE,
+    method: "get",
+    Token: `Token ${Token}`,
+  });
+  useEffect(()=>{
+    profileRequest({
+      onSuccess: (res) => {
+         console.log(res.data)
+         Dispatch({ type: "profile/set", payload: { ...res.data } });
+      },
+    });
+  },[])
+// Changing the direction to rtl
+useEffect(() => {
+  setDirection(dispatch, "rtl");
 
+  return () => setDirection(dispatch, "rtl");
+}, []);
+console.log(profile);
   return (
     <DashboardLayout>
       <DashboardNavbar />

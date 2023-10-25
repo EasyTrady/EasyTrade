@@ -168,6 +168,9 @@ checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onPaginationModelChange,
           // slotProps={{
           //   toolbar: { setRows, setRowModesModel },
           // }}
+          // rowHeight={rowHeight}
+          rowSpacingType='margin'
+          getRowSpacing={(params) => params===4}
         />
       </Box>
     );
@@ -182,5 +185,6 @@ checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onPaginationModelChange,
     onEdit: PropTypes.func,
     onDelete: PropTypes.func,
     sx: PropTypes.object,
+    rowHeight: PropTypes.number,
     rowsPerPageOptions:PropTypes.array,onPaginationModelChange:PropTypes.func
   };

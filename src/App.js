@@ -54,7 +54,8 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
-
+  const shop_name=localStorage.getItem('shop_name')
+  const logo=localStorage.getItem('logo')
   // Cache for the rtl
   useMemo(() => {
     const cacheRtl = createCache({
@@ -140,8 +141,8 @@ export default function App() {
           <>
             <Sidenav
               color={sidenavColor}
-              brand={brand}
-              brandName="Soft UI Dashboard"
+              brand={logo}
+              brandName={shop_name}
               routes={routes}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}

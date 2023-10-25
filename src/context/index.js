@@ -71,7 +71,7 @@ function SoftUIControllerProvider({ children }) {
     transparentNavbar: true,
     fixedNavbar: true,
     openConfigurator: false,
-    direction: "ltr",
+    direction: "rtl",
     layout: "dashboard",
   };
 
