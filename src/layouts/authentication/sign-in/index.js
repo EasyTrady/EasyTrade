@@ -84,14 +84,14 @@ function SignIn() {
              
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('tokenTimestamp', new Date().getTime());
-                if (shop_name !== "undefined") {
-
+                if (shop_name !== "undefined"&&shop_name !== null) {
+                  console.log(shop_name)
                   navigate(`/${shop_name}/dashboard`)
 
                 } else {
                   console.log(res?.payload?.token)
                   await ShopInfoRequest({ onSuccess:(response)=>{
-                    console.log(response.payload);
+                    console.log(response.payload,"route");
                     localStorage.setItem('shop_url', response?.payload?.shop_url)
                     localStorage.setItem('dashboard_url', response?.payload?.dashboard_url)
                     localStorage.setItem('shop_id', response?.payload?.id)
@@ -99,7 +99,7 @@ function SignIn() {
                     localStorage.setItem('image', response?.payload?.image)
                     localStorage.setItem('email', response?.payload?.email)
                     localStorage.setItem('phone', response?.payload?.phone)
-                    navigate(`/${response?.payload?.shop_name}/dashboard`)
+                    navigate(`/${response?.payload?.sub_domain}/dashboard`)
                   } })
 
                 }
@@ -216,7 +216,8 @@ function SignIn() {
                 onBlur={handleBlur}
                 onChange={handleChange} 
                  endAdornment={
-                  <InputAdornment position="end">
+                  <InputAdornment  sx={{position: "absolute",
+                    right: "13px",}}>
                     <IconButton
                       aria-label="toggle password visibility"
                       onClick={handleClickShowPassword}

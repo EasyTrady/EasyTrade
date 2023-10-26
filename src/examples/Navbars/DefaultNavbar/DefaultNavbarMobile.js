@@ -28,7 +28,7 @@ import DefaultNavbarLink from "examples/Navbars/DefaultNavbar/DefaultNavbarLink"
 
 function DefaultNavbarMobile({ open, close }) {
   const { width } = open && open.getBoundingClientRect();
-
+  let Token = localStorage.getItem('token')
   return (
     <Menu
       getContentAnchorEl={null}
@@ -49,6 +49,7 @@ function DefaultNavbarMobile({ open, close }) {
         <DefaultNavbarLink icon="donut_large" name="dashboard" route="/dashboard" />
         <DefaultNavbarLink icon="person" name="profile" route="/profile" />
         <DefaultNavbarLink icon="account_circle" name="sign up" route="/authentication/sign-up" />
+        {Boolean(Token)? <DefaultNavbarLink icon="key" name="sign out" route="/authentication/sign-in" logout={true}/>: <DefaultNavbarLink icon="key" name="sign in" route="/authentication/sign-in" />}
         <DefaultNavbarLink icon="key" name="sign in" route="/authentication/sign-in" />
       </SoftBox>
     </Menu>

@@ -19,7 +19,7 @@ import PhoneField from 'components/common/PhoneField';
 import Form from 'components/common/Form';
 import PasswordField from 'components/common/PasswordField';
 import PictureField from 'components/common/PictureField';
-import { GridActionsCellItem } from '@mui/x-data-grid';
+import { GridActionsCellItem,GridPagination } from '@mui/x-data-grid';
 import SoftBadge from 'components/SoftBadge';
 import { JOBS } from 'data/api';
 function Employee() {
@@ -49,6 +49,15 @@ function Employee() {
         </>
         );
     };
+    const CustomPagination = (props) => {
+     
+        return (
+            <GridPagination
+            
+            {...props}
+          />
+        );
+      };
     const renderImageCell = (params) => {
         const { row } = params;
         return (<>
@@ -65,8 +74,8 @@ function Employee() {
             align: 'left',
             headerAlign: 'left',
             renderCell: renderImageCell,
-            editable: true,
-            renderEditCell:renderEditImageCell
+            editable: false,
+            // renderEditCell:renderEditImageCell
         }
         , {
             field: 'full_name',
@@ -113,9 +122,9 @@ function Employee() {
     ]
 
     let [rows, setRows] = useState([])
-    const [{ controls, invalid, required }, { setControl, resetControls, validate }] =
+    const [{ controls, invalid, required }, { setControl, resetControls, validate,setInvalid }] =
         useControls([
-            { control: "image", value: "", isRequired: true },
+            { control: "image", value: "", isRequired: false },
             {
                 control: "email",
                 value: "",
@@ -262,26 +271,8 @@ function Employee() {
             }).then((res) => {
                 let response = res?.response?.data;
                 console.log(res)
-                const responseBody = filter({
-                    obj: {
-                        full_name:
-                            response?.full_name?.join(""),
-                        email: response?.email?.join(" "),
-                        phone: response?.phone?.join(" "),
-                        code: response?.country_code?.join(" "),
-                        projects: response?.bussiness?.join(" "),
-                        channel: response?.channel?.join(" "),
-                        employee: response?.agent?.join(" "),
-                        min_price: response?.min_price?.join(" "),
-                        max_price: response?.max_price?.join(" "),
-                        mediator: response?.comment?.join(" "),
-                        comment: response?.comment?.join(" "),
-                        contact: response?.fav_contacts?.join(" "),
-                    },
-                    output: "object",
-                });
-
-                setInvalid(responseBody);
+               
+                setInvalid(response);
 
             });
         })
@@ -409,11 +400,11 @@ function Employee() {
                         helperText={invalid.confirm}
                         sx={{ ".MuiInputBase-root input": { minWidth: "95% !important" } }}
                     />
-                    <PictureField placeholder={"add image profile"}
+                    {/* <PictureField placeholder={"add image profile"}
                         error={Boolean(invalid.image)}
                         helperText={invalid.image}
                         required={required.includes("image")}
-                        label={"profile"} accept={"image/*"} onChange={handleImageChange} value={selectedImage} />
+                        label={"profile"} accept={"image/*"} onChange={handleImageChange} value={selectedImage} /> */}
                 </Form>
 
 
@@ -426,7 +417,9 @@ function Employee() {
                 onRowClick={(e) => { setClick({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
                 sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
                 onEdit={onEdit}
-
+                style={{".MuiTablePagination-toolbar .MuiInputBase-root":{
+                    width:"15% !important"
+                }}}
             />
 
             {getemployeeResponce.failAlert}

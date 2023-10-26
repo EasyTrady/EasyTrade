@@ -64,7 +64,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
-
+  let Token = localStorage.getItem('token')
+  console.log(Boolean(Token))
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {
@@ -167,8 +168,21 @@ function DashboardNavbar({ absolute, light, isMini }) {
                     variant="button"
                     fontWeight="medium"
                     color={light ? "white" : "dark"}
+                    onClick={()=>{
+                      if(Boolean(Token)){
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('tokenTimestamp');
+                        localStorage.removeItem('shop_url')
+                        localStorage.removeItem('dashboard_url')
+                        localStorage.removeItem('shop_id')
+                        localStorage.removeItem('shop_name')
+                        localStorage.removeItem('image')
+                        localStorage.removeItem('email')
+                        localStorage.removeItem('phone')  
+                      }
+                    }}
                   >
-                    Sign in
+                  {Boolean(Token)?"sign out":"Sign in"}
                   </SoftTypography>
                 </IconButton>
               </Link>
