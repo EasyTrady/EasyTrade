@@ -10,6 +10,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import image from '../../../assets/images/20jan4.jpg'
+import SoftBadge from "components/SoftBadge";
 // const columnsTheme = [
 //     {
 //         field: 'image',
@@ -49,11 +50,6 @@ import image from '../../../assets/images/20jan4.jpg'
 
 // ]
 export const ProductTableData =() =>{
-let customers = useSelector((state) => state?.customer?.value)
-
-    useEffect(()=>{
-        console.log( customers)
-    },[customers])
     return{ columns : [
             {
               field: 'image',
@@ -78,6 +74,16 @@ let customers = useSelector((state) => state?.customer?.value)
               editable: true,
               filterable: false,
               sortable: false,disableColumnMenu: true
+            },{
+              field: 'sku',
+              headerName: 'SKU',
+              type: 'text',
+              width: 200,
+              align: 'center',
+              headerAlign: 'center',
+              editable: true,
+              filterable: true,
+              sortable: false,disableColumnMenu: true
             }, 
              {
               field: 'quantity',
@@ -89,21 +95,11 @@ let customers = useSelector((state) => state?.customer?.value)
               editable: true,
         
             },
+
             {
-              field: 'description',
-              headerName: 'description',
-              type: 'text',
-              width: 200,
-              align: 'center',
-              headerAlign: 'center',
-              editable: true,
-              filterable: true,
-              sortable: false,disableColumnMenu: true
-            },
-            {
-              field: 'category',
-              headerName: 'category',
-              type: 'text',
+              field: 'price',
+              headerName: 'Price',
+              type: 'number',
               width: 100,
               align: 'center',
               headerAlign: 'center',
@@ -111,7 +107,19 @@ let customers = useSelector((state) => state?.customer?.value)
               filterable: true,
               sortable: false,disableColumnMenu: true
             },
-         
+            {
+              field: 'status',
+              headerName: 'Status',
+              type: 'boolean',
+              width: 100,
+              align: 'center',
+              headerAlign: 'center',
+              renderCell: (params) => <SoftBadge variant="gradient" badgeContent={params.row.status?"active":"inactive"} color={params.row.status?"success":"error"} size="xs" container   />,
+              editable: true,
+              filterable: true,
+              sortable: false,
+              disableColumnMenu: true
+            },
           
           ],
 
@@ -120,29 +128,33 @@ let customers = useSelector((state) => state?.customer?.value)
             image: image,
             name: 'product1',
             quantity:5,
-            description: 'new product for our shop ,welcome to your dashboard ,and control of all what you need.',
-            category:'clothes'
+            sku:'XYZ12345',
+            price:183,
+            status:true
           },
         {id:2,
             image: image,
             name: 'product2',
             quantity:5,
-            description: 'new product for our shop ,welcome to your dashboard ,and control of all what you need.',
-            category:'clothes'
+            sku:'XYZ12345',
+            price:183,
+            status:false
           },
         {id:3,
             image: image,
             name: 'product3',
             quantity:5,
-            description: 'new product for our shop ,welcome to your dashboard ,and control of all what you need.',
-            category:'clothes'
+            sku: 'XYZ12345',
+            price:183,
+            status:true
           },
         {id:4,
             image: image,
             name: 'product4',
             quantity:5,
-            description:'new product for our shop ,welcome to your dashboard ,and control of all what you need.',
-            category:'clothes'
+            sku:'XYZ12345',
+            price:183,
+            status:false
           },
     ]
 }};

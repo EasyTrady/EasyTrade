@@ -57,6 +57,8 @@ import Cube from "examples/Icons/Cube";
 import Customer from "layouts/customer";
 import Employee from "layouts/employee";
 import Products from "layouts/products/viewProducts";
+import AddProduct from "layouts/products/addProduct";
+import TextMobileStepper from "layouts/products/stepper";
 const shop_name = localStorage.getItem('shop_name')
 const routes = [
   {
@@ -101,15 +103,15 @@ const routes = [
     icon: <Shop size="12px" />,
     component: <Products />,
   },
-  // {
-  //   type: "collapse",
-  //   name: "Tables",
-  //   key: "tables",
-  //   route: "/tables",
-  //   icon: <Office size="12px" />,
-  //   component: <Tables />,
-  //   noCollapse: true,
-  // },
+  {
+    type: "collapse",
+    name: "Add new product",
+    key: "Add new product",
+    route: `/${shop_name}/dashboard/products/addnewproduct`,
+    icon: <Office size="12px" />,
+    component: <TextMobileStepper />,
+    noCollapse: true,
+  },
   {
     type: "collapse",
     name: "Billing",

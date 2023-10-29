@@ -1,4 +1,4 @@
-import { Avatar, Box, Typography } from "@mui/material";
+import { Avatar, Box, Button, Icon, Typography } from "@mui/material";
 import DataGridCustom from "components/common/DateGridCustomer";
 import { CUSTOMER } from "data/api";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -11,8 +11,15 @@ import { useDispatch, useSelector } from "react-redux";
 import "../tables/datagrid.css";
 import ProjectsTableData from "layouts/tables/data/projectsTableData";
 import { ProductTableData } from "layouts/tables/data/projecttableData";
+import ProductImageDialog from "components/common/product/productImageDialog";
+import SoftButton from "components/SoftButton";
+import { useNavigate } from "react-router-dom";
 function Products() {
   const { columns, rows } = ProductTableData();
+  const [open, setOpen] = React.useState(false);
+  const navigate =useNavigate()
+  const handleRouteProduct = () => navigate('/addnewproduct')
+  const handleClose = () => setOpen(false);
   const [paginationModel, setPaginationModel] = React.useState({
     page: 0,
     pageSize: 5,
@@ -97,24 +104,33 @@ function Products() {
   //     setRows(customers?.results);
   //   }, [customers])
   console.log(rows);
+  // name / sku / quantity / price / status / action
   return (
     <>
       <DashboardLayout>
         <DashboardNavbar />
-
+        <SoftButton variant="gradient" color="dark" onClick={handleRouteProduct}>
+                <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+                &nbsp;add new product
+            </SoftButton>
+       
         <DataGridCustom
           rows={rows}
           columns={columns}
+          onEdit={''}
+          onDelete={''}
           checkboxSelection={true}
-          onRowClick={(e) => {
-            setClick({ ...e?.row });
+          onRowClick={(e,row) => {
+            console.log(e,row);
+            setClick({ ...e.id });
           }}
-          sx={{ backgroundColor: "white" }}
-          rowsPerPageOptions={[5, 10, 15, 20]}
-          onPaginationModelChange={setPaginationModel}
+          // rowsPerPageOptions={[5, 10, 15, 20]}
+          // onPaginationModelChange={setPaginationModel}
           rowHeight={100}
           getRowSpacing={4}
+          sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
         />
+        <ProductImageDialog open={open} onClose={handleClose} />
       </DashboardLayout>
     </>
   );

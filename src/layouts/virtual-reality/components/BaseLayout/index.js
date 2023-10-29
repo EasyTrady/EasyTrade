@@ -94,7 +94,7 @@ function BaseLayout({ children }) {
             <Sidenav
               color={sidenavColor}
               brand={brand}
-              brandName="Soft UI Dashboard PRO"
+              brandName="Easy Trady"
               routes={routes}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}

@@ -26,7 +26,7 @@ import Bill from "layouts/billing/components/Bill";
 function BillingInformation() {
   return (
     <Card id="delete-account">
-      <SoftBox pt={3} px={2}>
+      <SoftBox >
         <SoftTypography variant="h6" fontWeight="medium">
           Billing Information
         </SoftTypography>
