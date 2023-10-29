@@ -57,11 +57,16 @@ import Cube from "examples/Icons/Cube";
 import Customer from "layouts/customer";
 import Employee from "layouts/employee";
 import Products from "layouts/products/viewProducts";
+
 import Auth from "layouts/authentication/Auth";
 import Job from "layouts/job";
 import { element } from "prop-types";
 import Attribute from "layouts/products/attribute";
 import AttributeValue from "layouts/products/valuseAttribute";
+
+import AddProduct from "layouts/products/addProduct";
+import TextMobileStepper from "layouts/products/stepper";
+
 const shop_name = localStorage.getItem('shop_name')
 const routes = [
   {
@@ -180,6 +185,14 @@ const routes = [
   //   component: <Tables />,
   //   noCollapse: true,
   // },
+   { type: "collapse",
+    name: "Add new product",
+    key: "Add new product",
+    route: `/${shop_name}/dashboard/products/addnewproduct`,
+    icon: <Office size="12px" />,
+    component: <TextMobileStepper />,
+    noCollapse: true,
+  },
   {
     type: "collapse",
     name: "Billing",
