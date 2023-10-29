@@ -13,7 +13,7 @@ export const SignupUser = createAsyncThunk('signupUser', async (formData, ThunkA
 
 export const GetShopInfo = createAsyncThunk('GetShopInfo', async ({sub_domain_name,token}, ThunkApi) => {
   try {
-    console.log(token);
+  
     if(Boolean(sub_domain_name)===true){
       const response = await axios.get(`https://easytradyapi.shop/accounts/shop/info/${sub_domain_name}`);
       return response.data;

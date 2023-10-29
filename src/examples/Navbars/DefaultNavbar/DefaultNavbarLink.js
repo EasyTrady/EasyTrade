@@ -26,7 +26,8 @@ import Icon from "@mui/material/Icon";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
-function DefaultNavbarLink({ icon, name, route, light }) {
+function DefaultNavbarLink({ icon, name, route, light,logout }) {
+  
   return (
     <SoftBox
       component={Link}
@@ -36,6 +37,19 @@ function DefaultNavbarLink({ icon, name, route, light }) {
       display="flex"
       alignItems="center"
       sx={{ cursor: "pointer", userSelect: "none" }}
+      onClick={()=>{
+        if(logout){
+          localStorage.removeItem('token');
+          localStorage.removeItem('tokenTimestamp');
+          localStorage.removeItem('shop_url')
+          localStorage.removeItem('dashboard_url')
+          localStorage.removeItem('shop_id')
+          localStorage.removeItem('shop_name')
+          localStorage.removeItem('image')
+          localStorage.removeItem('email')
+          localStorage.removeItem('phone')
+        }
+      }}
     >
       <Icon
         sx={{
@@ -64,6 +78,7 @@ DefaultNavbarLink.propTypes = {
   name: PropTypes.string.isRequired,
   route: PropTypes.string.isRequired,
   light: PropTypes.bool.isRequired,
+  logout:PropTypes.bool
 };
 
 export default DefaultNavbarLink;

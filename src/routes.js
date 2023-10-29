@@ -57,8 +57,13 @@ import Cube from "examples/Icons/Cube";
 import Customer from "layouts/customer";
 import Employee from "layouts/employee";
 import Products from "layouts/products/viewProducts";
+
+import Auth from "layouts/authentication/Auth";
+import Job from "layouts/job";
+
 import AddProduct from "layouts/products/addProduct";
 import TextMobileStepper from "layouts/products/stepper";
+
 const shop_name = localStorage.getItem('shop_name')
 const routes = [
   {
@@ -67,7 +72,7 @@ const routes = [
     key: "dashboard",
     route: `/${shop_name}/dashboard`,
     icon: <Shop size="12px" />,
-    component: <Dashboard />,
+    component: <Auth><Dashboard /></Auth>,
     noCollapse: true,
   },
   {
@@ -76,7 +81,7 @@ const routes = [
     key: "dashboard",
     route: `/${shop_name}`,
     icon: <Shop size="12px" />,
-    component: <Dashboard />,
+    component: <Auth><Dashboard /></Auth>,
     noCollapse: true,
   },
   {
@@ -85,7 +90,7 @@ const routes = [
     key: "customer",
     route: `/${shop_name}/dashboard/customer`,
     icon: <Office size="12px" />,
-    component: <Customer />,
+    component: <Auth><Customer /></Auth>,
   },
   {
     type: "collapse",
@@ -93,7 +98,7 @@ const routes = [
     key: "employees",
     route: `/${shop_name}/dashboard/employee`,
     icon: <Office size="12px" />,
-    component: <Employee />,
+    component: <Auth><Employee /></Auth>,
   },
   {
     type: "collapse",
@@ -101,7 +106,15 @@ const routes = [
     key: "products",
     route: `/${shop_name}/dashboard/products`,
     icon: <Shop size="12px" />,
-    component: <Products />,
+    component: <Auth><Products /></Auth>,
+  },
+  {
+    type: "collapse",
+    name: "Jobs",
+    key: "jobs",
+    route: `/${shop_name}/dashboard/jobs`,
+    icon: <Shop size="12px" />,
+    component: <Auth><Job /></Auth>,
   },
   {
     type: "collapse",

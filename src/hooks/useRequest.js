@@ -86,7 +86,7 @@ const useRequest = ({
 
     // if (!Boolean(method) && !Boolean(customMethod))
     //   throw Error("you didn't specify a method for the request");
-    console.log(Token)
+   
     return axios({
       method: customMethod ? customMethod : method,
       baseURL: customFullUrl ? "" : BaseUrl ? BaseUrl : customBaseUrl,

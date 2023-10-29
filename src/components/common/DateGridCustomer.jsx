@@ -20,7 +20,7 @@ import {
 import SoftBadge from "components/SoftBadge";
 import compare from "../../utils/compare";
 function DataGridCustom({rows,columns,onRowClick,isRowSelectable,
-checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onPaginationModelChange,...rest}) {
+checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onState,onPaginationModelChange,...rest}) {
     const [, setRows] = React.useState(rows);
     const [status,setStatus]=React.useState(false)
     const [rowModesModel, setRowModesModel] = React.useState({});
@@ -124,7 +124,7 @@ checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onPaginationModelChange,
               label="Delete"
               onClick={handleDeleteClick(row?.id)}
               color="inherit"
-            />:<><SoftBadge variant="gradient" badgeContent="online" color={status?"secondary":"success"} size="xs" container   /></>,
+            />:onState?<><SoftBadge variant="gradient" badgeContent="online" color={status?"secondary":"success"} size="xs" container   /></>:<></>,
           ];
         },
       },
@@ -145,6 +145,7 @@ checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onPaginationModelChange,
       >
         <DataGrid
           rows={rows}
+       
           columns={columnsResult}
           editMode="row"
           rowModesModel={rowModesModel}
@@ -158,7 +159,7 @@ checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onPaginationModelChange,
           pageSizeOptions={[5,10,15]}
           sx={{...sx,"& .css-1ui3wbn-MuiInputBase-root-MuiTablePagination-select":{
             width:"15% !important"
-          }}}
+          },".MuiTablePagination-select .MuiInputBase-root.MuiInputBase-colorPrimary":{maxWidth:"10%"}}}
           onPaginationModelChange={onPaginationModelChange}
           {...rest}
           onProcessRowUpdateError={(error)=>console.log(error)}
@@ -186,5 +187,6 @@ checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onPaginationModelChange,
     onDelete: PropTypes.func,
     sx: PropTypes.object,
     rowHeight: PropTypes.number,
-    rowsPerPageOptions:PropTypes.array,onPaginationModelChange:PropTypes.func
+    rowsPerPageOptions:PropTypes.array,onPaginationModelChange:PropTypes.func,
+    onState:PropTypes.func
   };

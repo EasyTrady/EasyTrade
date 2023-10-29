@@ -109,6 +109,7 @@ function Customer() {
        onRowClick={(e) => { setClick({ ...e?.row });/* navigate(`/${shopName}/dashboard/customer/${e?.row?.id}`) */}}
        sx={{backgroundColor:"white"}}
        rowsPerPageOptions={[5,10,15,20]}
+       onState={()=>{}}
        onPaginationModelChange={setPaginationModel}
       /> 
   </DashboardLayout></>
