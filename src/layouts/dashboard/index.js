@@ -64,7 +64,7 @@ function Dashboard() {
   useEffect(()=>{
     profileRequest({
       onSuccess: (res) => {
-         console.log(res.data)
+
          Dispatch({ type: "profile/set", payload: { ...res.data } });
       },
     });
@@ -75,7 +75,7 @@ useEffect(() => {
 
   return () => setDirection(dispatch, "rtl");
 }, []);
-console.log(profile);
+
   return (
     <DashboardLayout>
       <DashboardNavbar />

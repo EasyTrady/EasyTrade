@@ -65,7 +65,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
   let Token = localStorage.getItem('token')
-  console.log(Boolean(Token))
+
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {

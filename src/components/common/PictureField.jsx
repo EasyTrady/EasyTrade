@@ -11,7 +11,7 @@ function PictureField({
 }) {
   const ref = useRef(null);
     useEffect(()=>{
-        console.log(value)
+  
     },[value])
   return (
     <Box sx={{display:"flex",flexDirection:"column"}}>

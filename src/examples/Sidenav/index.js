@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // react-router-dom components
 import { useLocation, NavLink } from "react-router-dom";
@@ -35,13 +35,16 @@ import SoftButton from "components/SoftButton";
 // Soft UI Dashboard React examples
 import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
 import SidenavCard from "examples/Sidenav/SidenavCard";
-
+import { ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material";
+import { StarBorder } from "@mui/icons-material";
 // Custom styles for the Sidenav
 import SidenavRoot from "examples/Sidenav/SidenavRoot";
 import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
 
 // Soft UI Dashboard React context
 import { useSoftUIController, setMiniSidenav } from "context";
+import NavCollapse from "./CollapseNav";
+import NavItem from "./CollapseItem";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useSoftUIController();
@@ -49,8 +52,8 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const location = useLocation();
   const { pathname } = location;
   const collapseName = pathname.split("/").slice(1)[0];
-  const image=localStorage.getItem('logo')
-  const shop_name=localStorage.getItem('shop_name')
+  const image = localStorage.getItem('logo')
+  const shop_name = localStorage.getItem('shop_name')
   const closeSidenav = () => setMiniSidenav(dispatch, true);
 
   useEffect(() => {
@@ -72,13 +75,29 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   }, [dispatch, location]);
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
-  const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, route, path }) => {
+  const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, route, path, children }) => {
     let returnValue;
+    let [open,setOpen]=useState(false)
+    const menus = children?.map((item) => {
+     
+      switch (item.type) {
+        case 'collapse':
+          return <NavCollapse key={item.id} menu={item}  />;
+        case 'item':
+          return <NavItem key={item.id} item={item}  />;
+        default:
+          return (
+            <Typography key={item.id} variant="h6" color="error" align="center">
+              Menu Items Error
+            </Typography>
+          );
+      }
+    });
     if (type === "collapse") {
       returnValue = path ? (
         <Link
           href={path}
-          // key={key}
+          key={key}
           target="_blank"
           rel="noreferrer"
           sx={{ textDecoration: "none" }}
@@ -87,20 +106,29 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             color={color}
             name={name}
             icon={icon}
-            // active={key === collapseName}
-            // noCollapse={noCollapse}
-          />
+            setOpen={setOpen}
+            open={open}
+          active={key === collapseName}
+          noCollapse={noCollapse}
+          >
+            {menus}
+          </SidenavCollapse>
         </Link>
       ) : (
-        <NavLink to={route} key={key}>
+        <NavLink to={route} key={key} >
           <SidenavCollapse
             color={color}
-            // key={key}
+            key={key}
             name={name}
             icon={icon}
-            // active={key === collapseName}
-            // noCollapse={noCollapse}
-          />
+            setOpen={setOpen}
+            open={open}
+          active={key === collapseName}
+          noCollapse={noCollapse}
+          onClick={()=>setOpen(!open)}
+          >
+             {menus}
+          </SidenavCollapse>
         </NavLink>
       );
     } else if (type === "title") {
@@ -157,7 +185,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       </SoftBox>
       <Divider />
       <List>{renderRoutes}</List>
-      
+
     </SidenavRoot>
   );
 }

@@ -59,6 +59,9 @@ import Employee from "layouts/employee";
 import Products from "layouts/products/viewProducts";
 import Auth from "layouts/authentication/Auth";
 import Job from "layouts/job";
+import { element } from "prop-types";
+import Attribute from "layouts/products/attribute";
+import AttributeValue from "layouts/products/valuseAttribute";
 const shop_name = localStorage.getItem('shop_name')
 const routes = [
   {
@@ -69,26 +72,58 @@ const routes = [
     icon: <Shop size="12px" />,
     component: <Auth><Dashboard /></Auth>,
     noCollapse: true,
+    children: [
+      {
+        path: `/${shop_name}`,
+        title: "shop",
+        element: <Auth><Dashboard /></Auth>,
+        type:"item"
+      }]
   },
-  {
-    type: "title",
-    name: "Dashboard",
-    key: "dashboard",
-    route: `/${shop_name}`,
-    icon: <Shop size="12px" />,
-    component: <Auth><Dashboard /></Auth>,
-    noCollapse: true,
-  },
+  // {
+  //   type: "title",
+  //   name: "Dashboard",
+  //   key: "dashboard",
+  //   route: `/${shop_name}`,
+  //   icon: <Shop size="12px" />,
+  //   component: <Auth><Dashboard /></Auth>,
+  //   noCollapse: true,
+  // },
   {
     type: "collapse",
-    name: "Customer",
-    key: "customer",
+    name: "user",
+    key: "User",
     route: `/${shop_name}/dashboard/customer`,
     icon: <Office size="12px" />,
     component: <Auth><Customer /></Auth>,
-  },
+    children:[{
+     
+        id:"customer",
+        path:`/${shop_name}/dashboard/customer`,
+        title: "Customer",
+        element:  <Auth><Customer /></Auth>,
+        type:"item"
+      
+    },{
+     
+      id:"Employees",
+      path:`/${shop_name}/dashboard/employee`,
+      title: "employee",
+      element:  <Auth><Employee /></Auth>,
+      type:"item"
+    
+  },{
+     
+    id:"Jobs",
+    path:`/${shop_name}/dashboard/jobs`,
+    title: "Jobs",
+    element:  <Auth><Job /></Auth>,
+    type:"item"
+  
+}
+]},
   {
-    type: "collapse",
+    type: "title",
     name: "Employees",
     key: "employees",
     route: `/${shop_name}/dashboard/employee`,
@@ -102,14 +137,39 @@ const routes = [
     route: `/${shop_name}/dashboard/products`,
     icon: <Shop size="12px" />,
     component: <Auth><Products /></Auth>,
+    children: [
+      {
+        id:"attribute",
+        path: `/${shop_name}/dashboard/attribute`,
+        title: "Attribute",
+        element: <Auth><Attribute /></Auth>,
+        type:"item"
+      },
+      ]
   },
   {
-    type: "collapse",
+    type: "title",
     name: "Jobs",
     key: "jobs",
     route: `/${shop_name}/dashboard/jobs`,
     icon: <Shop size="12px" />,
     component: <Auth><Job /></Auth>,
+  },
+  {
+    type: "title",
+    name: "Attribute",
+    key: "Attribute",
+    route: `/${shop_name}/dashboard/attribute`,
+    icon: <Shop size="12px" />,
+    component: <Auth><Attribute /></Auth>,
+  },
+  {
+    type: "title",
+    name: "values",
+    key: "valuse",
+    route: `/${shop_name}/dashboard/attribute/:id`,
+    icon: <Shop size="12px" />,
+    component: <Auth><AttributeValue/></Auth>,
   },
   // {
   //   type: "collapse",

@@ -8,6 +8,7 @@ import  EmployeeSlice  from './pages/employeeSlice';
 import  CategorySlice  from './pages/categoriesSlice';
 import  JobSlice  from './pages/jobSlice';
 import ProfileSlice  from './pages/profileSlice';
+import  attributeSlice  from './pages/attributeSlice';
 const store = configureStore({
   reducer: {
     // customization: customizationSlice,
@@ -17,6 +18,7 @@ const store = configureStore({
     employee:EmployeeSlice,
     category:CategorySlice,
     job:JobSlice,
+    attribute:attributeSlice,
     // registration:registrationSlice
      profile:ProfileSlice 
   }

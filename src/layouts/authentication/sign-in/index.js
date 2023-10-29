@@ -38,12 +38,13 @@ import { Formik } from "formik";
 import { FormControl, FormControlLabel, FormHelperText, IconButton, InputAdornment, Stack } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import useRequest from "hooks/useRequest";
-import { SIGNIN ,SHOP} from "data/api";
+import { SIGNIN ,PROFILE} from "data/api";
 import { useNavigate } from "react-router-dom";
 
 function SignIn() {
   const [rememberMe, setRememberMe] = useState(true);
   const shop_name = localStorage.getItem('shop_name')
+  let Token=localStorage.getItem('token')
   let navigate=useNavigate()
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
   const [showPassword, setShowPassword] = useState(false);
@@ -51,7 +52,7 @@ function SignIn() {
     path:SIGNIN,method:"post"
   })
   let [ShopInfoRequest,ShopInfoResponse]=useRequest({
-    path:SHOP,method:"post"
+    path:PROFILE,method:"get",Token:`Token ${Token}`
   })
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -80,26 +81,26 @@ function SignIn() {
             signInRequest({
               body:values,
               onSuccess:async(res)=>{
-                console.log(res.data)
+                
              
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('tokenTimestamp', new Date().getTime());
                 if (shop_name !== "undefined"&&shop_name !== null) {
-                  console.log(shop_name)
+                 
                   navigate(`/${shop_name}/dashboard`)
 
                 } else {
-                  console.log(res?.payload?.token)
+                  
                   await ShopInfoRequest({ onSuccess:(response)=>{
-                    console.log(response.payload,"route");
-                    localStorage.setItem('shop_url', response?.payload?.shop_url)
-                    localStorage.setItem('dashboard_url', response?.payload?.dashboard_url)
-                    localStorage.setItem('shop_id', response?.payload?.id)
-                    localStorage.setItem('shop_name', response?.payload?.shop_name)
-                    localStorage.setItem('image', response?.payload?.image)
-                    localStorage.setItem('email', response?.payload?.email)
-                    localStorage.setItem('phone', response?.payload?.phone)
-                    navigate(`/${response?.payload?.sub_domain}/dashboard`)
+                    
+                    localStorage.setItem('shop_url', response?.data?.shop_url)
+                    localStorage.setItem('dashboard_url', response?.data?.dashboard_url)
+                    localStorage.setItem('shop_id', response?.data?.id)
+                    localStorage.setItem('shop_name', response?.data?.shop_name)
+                    localStorage.setItem('image', response?.data?.logo)
+                    localStorage.setItem('email', response?.data?.user?.email)
+                    localStorage.setItem('phone', response?.data?.user?.phone)
+                    navigate(`/${response?.data?.sub_domain}/dashboard`)
                   } })
 
                 }
@@ -344,6 +345,7 @@ function SignIn() {
         </SoftBox>
       </SoftBox> */}
       {signInResponse.failAlert}
+      {ShopInfoResponse.failAlert}
     </CoverLayout>
   );
 }

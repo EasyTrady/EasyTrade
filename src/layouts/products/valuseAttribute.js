@@ -5,38 +5,41 @@ import Form from 'components/common/Form'
 import CustomPagination from 'components/common/Pagination'
 import PasswordField from 'components/common/PasswordField'
 import PhoneField from 'components/common/PhoneField'
+import { ATTRIBUTES } from 'data/api'
 import { JOBS } from 'data/api'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import useControls from 'hooks/useControls'
 import useRequest from 'hooks/useRequest'
-import React,{useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 
 
-function Job() {
+function AttributeValue() {
     const [open, setOpen] = React.useState(false);
+    let {id}=useParams()
     let dispatch = useDispatch()
-    let jobs = useSelector((state) => state.job.value)
+    let attributes = useSelector((state) => state.attribute.value)
     let [rows, setRows] = useState([])
     let Token = localStorage.getItem('token')
-    const [jobRequest, getjobResponce] =
+    const [attributeValueRequest, getattributeValueResponce] =
         useRequest({
-            path: JOBS,
+            path: ATTRIBUTES+id+"/values/",
             method: "get",
             Token: `Token ${Token}`
         });
-        const [jobpostRequest,postjobResponce] =
+    const [attributeValuepostRequest, postValueattributeResponce] =
         useRequest({
-            path: JOBS,
+            path:ATTRIBUTES+id+"/values/",
             method: "post",
             Token: `Token ${Token}`
         });
-    const [{ controls, invalid, required }, { setControl, resetControls, validate,setInvalid }] =
+    const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
         useControls([
-           
+
             {
-                control: "title",
+                control: "value",
                 value: "",
                 isRequired: true,
                 validations: [
@@ -45,12 +48,12 @@ function Job() {
                         message: "not valid name"
                     }
                 ]
-            },
-            
+            }
+
         ]);
-        const [jobDeleteRequest, DeletejobrResponce] =
+    const [attributeDeleteRequest, DeleteattributerResponce] =
         useRequest({
-            path: JOBS,
+            path: ATTRIBUTES+id+"/values/",
             method: "delete",
             Token: `Token ${Token}`
         });
@@ -61,101 +64,108 @@ function Job() {
         setOpen(false);
     };
     function handleSubmit() {
-        console.log("submit")
         validate().then((output) => {
-            console.log(output)
             if (!output.isOk) return;
-            jobpostRequest({
+            attributeValuepostRequest({
                 body: controls,
                 onSuccess: (res) => {
-                    dispatch({type:"job/addItem",payload:res.data})
-                    console.log(res.data, controls)
+                    
+                    dispatch({ type: "attribute/addValue", payload:{idvalue:id ,value:res.data }})
+                    resetControls()
+                    handleClose()
                 }
             }).then((res) => {
                 let response = res?.response?.data;
                 console.log(res)
-               
+
                 setInvalid(response);
 
             });
         })
 
     }
-    function onDelete(row){
-        jobDeleteRequest({
-            id:row,
-            onSuccess:()=>{
-                dispatch({ type: "job/deleteItem", payload: { id: row } })
+    function onDelete(row) {
+        attributeDeleteRequest({
+            id: row,
+            onSuccess: () => {
+                console.log(row)
+                dispatch({ type: "attribute/deleteValueofAttribute", payload: { idattribute: id,idValue:row } })
             }
         })
     }
     const columns = [
         {
-            field: 'title',
-            headerName: 'title',
-            // type: 'text',
-            width: 100,
+            field: 'value',
+            headerName: 'Value',
+            type: 'text',
+            width: 500,
             align: 'left',
             headerAlign: 'left',
             // renderCell: renderImageCell,
             editable: false,
             // renderEditCell:renderEditImageCell
         }
-       
-    
-       
+        
+
+
     ]
     const MyCustomNoRowsOverlay = () => (
         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-      );
-    useEffect(()=>{
-        jobRequest({
-            onSuccess:(res)=>{
-                dispatch({type:"job/set",payload:res.data})
+    );
+    useEffect(() => {
+        attributeValueRequest({
+            onSuccess: (res) => {
+                console.log(res.data,id,getattributeValueResponce.failAlert)
+                dispatch({ type: "attribute/addValues", payload:{ idattribute: id , values: res.data }})
             }
         })
-    },[])
-    useEffect(()=>{
-        setRows(jobs?.results)
-    },[jobs])
+    }, [])
+    useEffect(() => {
+        if(attributes?.find((ele)=>ele.id==id)?.values?.length>0){
+            setRows(attributes?.find((ele)=>ele.id==id)?.values)
+
+        }
+    }, [attributes])
+
     return (
         <DashboardLayout>
             <DashboardNavbar />
             <SoftButton variant="gradient" color="dark" onClick={handleClickOpen}>
                 <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                &nbsp;add new job
+                &nbsp;add new value to attribute
             </SoftButton>
             <Dialog open={open} onClose={handleClose}>
                 <Form component="form"
                     childrenProps={{
                         saveBtn: {
                             onClick: handleSubmit,
-                            disabled: postjobResponce.isPending,
+                            disabled: postValueattributeResponce.isPending,
                         },
                         closeBtn: {
                             onClick: () => {
                                 handleClose()
                                 resetControls();
                             },
-                            disabled: postjobResponce.isPending,
-                        }, title: "add job"
+                            disabled: postValueattributeResponce.isPending,
+                        }, title: "add value"
                     }}>
                     <TextField
 
                         // id="filled-size-small"
-                        placeholder='title'
+                        placeholder='value'
                         variant="standard"
                         size="small"
-                        value={controls.title}
+                        value={controls.value}
                         onChange={(e) =>
-                            setControl("title", e.target.value)
+                            setControl("value", e.target.value)
                         }
-                        required={required.includes("title")}
-                        error={Boolean(invalid?.title)}
-                        helperText={invalid?.title}
+                        required={required.includes("value")}
+                        error={Boolean(invalid?.value)}
+                        helperText={invalid?.value}
                     />
                  
-                   
+                    
+
                     {/* <PictureField placeholder={"add image profile"}
                         error={Boolean(invalid.image)}
                         helperText={invalid.image}
@@ -168,21 +178,21 @@ function Job() {
             <DataGridCustom
                 rows={rows}
                 onDelete={onDelete}
-                columns={columns} 
+                columns={columns}
                 checkboxSelection={true}
-                onRowClick={(e) => { setClick({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
+                onRowClick={(e) => { console.log({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
                 sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
                 // onEdit={onEdit}
-                
+
                 slots={{
                     noRowsOverlay: MyCustomNoRowsOverlay
                 }}
-              
+
             />
-            {getjobResponce.failAlert}
-            {postjobResponce.failAlert}
+            {getattributeValueResponce.failAlert}
+            {postValueattributeResponce.failAlert}
         </DashboardLayout>
     )
 }
 
-export default Job
+export default AttributeValue

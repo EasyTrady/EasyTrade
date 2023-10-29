@@ -225,7 +225,7 @@ function Employee() {
 
             }
         })
-        console.log(pathname, click)
+    
     }, [])
     useEffect(() => {
 
@@ -234,7 +234,7 @@ function Employee() {
     }, [employees])
 
     function onDelete(row) {
-        console.log(row)
+      
         EmployeeDeleteRequest({
             id: row,
             onSuccess: () => {
@@ -243,13 +243,13 @@ function Employee() {
         })
     }
     function onEdit(row, newRow) {
-        console.log(row,newRow)
+      
         EmployeePatchRequest({
             id: row,
             body: newRow,
             onSuccess: (res) => {
                 dispatch({ type: "employee/patchItem", payload: { id: row ,item:res.data} })
-                console.log(res)
+              
             }
         })
     }
@@ -259,9 +259,9 @@ function Employee() {
         setControl("image", event.target.files[0])
     };
     function handleSubmit() {
-        console.log("submit")
+        
         validate().then((output) => {
-            console.log(output)
+          
             if (!output.isOk) return;
             EmployeePostRequest({
                 body: controls,
@@ -270,7 +270,7 @@ function Employee() {
                 }
             }).then((res) => {
                 let response = res?.response?.data;
-                console.log(res)
+                
                
                 setInvalid(response);
 

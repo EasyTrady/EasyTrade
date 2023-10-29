@@ -74,7 +74,7 @@ const useControls = (controls = [], dep = []) => {
             }
           }
           if (validation.hasOwnProperty("test") && state[control.control]) {
-            console.log(validation.test,typeof validation.test)
+            
             switch (typeof validation.test) {
               case "function":
                
