@@ -19,6 +19,7 @@ import {
 } from '@mui/x-data-grid';
 import SoftBadge from "components/SoftBadge";
 import compare from "../../utils/compare";
+import CustomPagination from "./Pagination";
 function DataGridCustom({rows,columns,onRowClick,isRowSelectable,
 checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onState,onPaginationModelChange,...rest}) {
     const [, setRows] = React.useState(rows);
@@ -63,8 +64,7 @@ checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onState,onPaginationMode
       const updatedRow = { ...newRow, isNew: false };
       setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
       let isThereChange=compare(rows.filter((ele)=>ele.id==newRow.id).map((elem)=>Object.keys(elem).map((eleme)=>([newRow[eleme],elem[eleme],eleme]))))
-      console.log(isThereChange.array,newRow,rows.filter((ele)=>ele.id==newRow.id))
-  
+     
       // if(isThereChange.nochange){
       //   console.log(isThereChange.array)
       // }
@@ -133,7 +133,7 @@ checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onState,onPaginationMode
     return (
       <Box
         sx={{
-          height: rows.length>0?"auto":200,
+          height: rows?.length>0?"auto":200,
           width: '100%',
           '& .actions': {
             color: 'text.secondary',
@@ -159,7 +159,7 @@ checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onState,onPaginationMode
           pageSizeOptions={[5,10,15]}
           sx={{...sx,"& .css-1ui3wbn-MuiInputBase-root-MuiTablePagination-select":{
             width:"15% !important"
-          },".MuiTablePagination-select .MuiInputBase-root.MuiInputBase-colorPrimary":{maxWidth:"10%"}}}
+          },"& .MuiTablePagination-select div.MuiInputBase-root":{maxWidth:"10%"}}}
           onPaginationModelChange={onPaginationModelChange}
           {...rest}
           onProcessRowUpdateError={(error)=>console.log(error)}
@@ -170,6 +170,7 @@ checkboxSelection,onEdit,onDelete,sx,rowsPerPageOptions,onState,onPaginationMode
           //   toolbar: { setRows, setRowModesModel },
           // }}
           // rowHeight={rowHeight}
+         
           rowSpacingType='margin'
           getRowSpacing={(params) => params===4}
         />

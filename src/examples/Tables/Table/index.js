@@ -73,7 +73,7 @@ function Table({ columns, rows }) {
         opacity={0.7}
         borderBottom={`${borderWidth[1]} solid ${light.main}`}
       >
-        {console.log(name)}
+       
         {name.toUpperCase()}
       </SoftBox>
     );

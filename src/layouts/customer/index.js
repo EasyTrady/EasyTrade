@@ -29,7 +29,7 @@ function Customer() {
       method: "delete",
     });
     function onDelete(row){
-        console.log(row)
+      
         customerDeleteRequest({
           id:row,
           onSuccess:()=>{

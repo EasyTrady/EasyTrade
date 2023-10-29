@@ -101,7 +101,7 @@ function SignUp({ ...others  }) {
             Object.keys(values).forEach((key) => formData.append(key, values[key]));
             // formData.append('logo',imageFile)
             // formData.append('phone',phone)
-            console.log(values)
+       
             signUpRequest({
               body:formData,
               onSuccess:async(res)=>{
@@ -113,7 +113,7 @@ function SignUp({ ...others  }) {
                     navigate(`/${shop_name}/dashboard`)
   
                   } else {
-                    console.log(res?.payload?.token)
+                    
                     await ShopInfoRequest({ onSuccess:(response)=>{
                       localStorage.setItem('shop_url', response?.payload?.shop_url)
                       localStorage.setItem('dashboard_url', response?.payload?.dashboard_url)
@@ -150,7 +150,7 @@ function SignUp({ ...others  }) {
               setSubmitting(false);
             }
           } catch (err) {
-            console.log(err);
+           
             if (scriptedRef.current) {
               setStatus({ success: false });
               setErrors({ submit: err.message });

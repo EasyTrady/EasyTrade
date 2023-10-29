@@ -36,14 +36,16 @@ import {
 
 // Soft UI Dashboard React context
 import { useSoftUIController } from "context";
+import { List, ListItemButton } from "@mui/material";
+import { StarBorder } from "@mui/icons-material";
 
-function SidenavCollapse({ color, icon, name, children, active, noCollapse, open, ...rest }) {
+function SidenavCollapse({ color, icon, name, children, active, noCollapse,  open,setOpen,onClick,...rest }) {
   const [controller] = useSoftUIController();
   const { miniSidenav, transparentSidenav } = controller;
 
   return (
     <>
-      <ListItem component="li">
+      <ListItem component="li" onClick={onClick}>
         <SoftBox {...rest} sx={(theme) => collapseItem(theme, { active, transparentSidenav })}>
           <ListItemIcon
             sx={(theme) => collapseIconBox(theme, { active, transparentSidenav, color })}
@@ -63,7 +65,9 @@ function SidenavCollapse({ color, icon, name, children, active, noCollapse, open
       </ListItem>
       {children && (
         <Collapse in={open} unmountOnExit>
+          
           {children}
+         
         </Collapse>
       )}
     </>
@@ -88,6 +92,8 @@ SidenavCollapse.propTypes = {
   active: PropTypes.bool,
   noCollapse: PropTypes.bool,
   open: PropTypes.bool,
+  setOpen:PropTypes.func,
+  onClick:PropTypes.func
 };
 
 export default SidenavCollapse;
