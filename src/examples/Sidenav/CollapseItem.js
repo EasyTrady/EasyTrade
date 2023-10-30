@@ -74,7 +74,7 @@ const NavItem = ({ item }) => {
       sx={{
         borderRadius: `5px`,
         mb: 0.5,
-        alignItems: 'flex-start',
+        // alignItems: 'flex-start',
         backgroundColor:'transparent !important',
         py:1,
         pl: `${24}px`

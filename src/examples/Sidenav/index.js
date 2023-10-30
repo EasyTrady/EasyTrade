@@ -78,8 +78,9 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, route, path, children }) => {
     let returnValue;
     let [open,setOpen]=useState(false)
+    console.log(type)
     const menus = children?.map((item) => {
-     
+  
       switch (item.type) {
         case 'collapse':
           return <NavCollapse key={item.id} menu={item}  />;
@@ -115,7 +116,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           </SidenavCollapse>
         </Link>
       ) : (
-        <NavLink to={route} key={key} >
+        <NavLink to={!noCollapse&&route} key={key} >
           <SidenavCollapse
             color={color}
             key={key}

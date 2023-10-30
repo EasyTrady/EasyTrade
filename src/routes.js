@@ -76,7 +76,7 @@ const routes = [
     route: `/${shop_name}/dashboard`,
     icon: <Shop size="12px" />,
     component: <Auth><Dashboard /></Auth>,
-    noCollapse: true,
+    noCollapse: false,
     children: [
       {
         path: `/${shop_name}`,
@@ -100,6 +100,7 @@ const routes = [
     key: "User",
     route: `/${shop_name}/dashboard/customer`,
     icon: <Office size="12px" />,
+    noCollapse: true,
     component: <Auth><Customer /></Auth>,
     children:[{
      
@@ -134,6 +135,7 @@ const routes = [
     route: `/${shop_name}/dashboard/employee`,
     icon: <Office size="12px" />,
     component: <Auth><Employee /></Auth>,
+    noCollapse: false,
   },
   {
     type: "collapse",
@@ -142,12 +144,20 @@ const routes = [
     route: `/${shop_name}/dashboard/products`,
     icon: <Shop size="12px" />,
     component: <Auth><Products /></Auth>,
+    noCollapse: true,
     children: [
       {
         id:"attribute",
         path: `/${shop_name}/dashboard/attribute`,
         title: "Attribute",
         element: <Auth><Attribute /></Auth>,
+        type:"item"
+      },
+      {
+        id:"products",
+        path: `/${shop_name}/dashboard/products`,
+        title: "products",
+        element: <Auth><Products /></Auth>,
         type:"item"
       },
       ]
@@ -159,6 +169,7 @@ const routes = [
     route: `/${shop_name}/dashboard/jobs`,
     icon: <Shop size="12px" />,
     component: <Auth><Job /></Auth>,
+    noCollapse: false,
   },
   {
     type: "title",
@@ -167,6 +178,8 @@ const routes = [
     route: `/${shop_name}/dashboard/attribute`,
     icon: <Shop size="12px" />,
     component: <Auth><Attribute /></Auth>,
+    noCollapse: false,
+
   },
   {
     type: "title",
@@ -175,6 +188,8 @@ const routes = [
     route: `/${shop_name}/dashboard/attribute/:id`,
     icon: <Shop size="12px" />,
     component: <Auth><AttributeValue/></Auth>,
+    noCollapse: false,
+
   },
   // {
   //   type: "collapse",
@@ -191,7 +206,7 @@ const routes = [
     route: `/${shop_name}/dashboard/products/addnewproduct`,
     icon: <Office size="12px" />,
     component: <TextMobileStepper />,
-    noCollapse: true,
+    noCollapse: false,
   },
   {
     type: "collapse",
@@ -200,7 +215,7 @@ const routes = [
     route: "/billing",
     icon: <CreditCard size="12px" />,
     component: <Billing />,
-    noCollapse: true,
+    noCollapse: false,
   },
   {
     type: "collapse",
