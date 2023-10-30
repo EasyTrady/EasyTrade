@@ -67,19 +67,19 @@ import AttributeValue from "layouts/products/valuseAttribute";
 import AddProduct from "layouts/products/addProduct";
 import TextMobileStepper from "layouts/products/stepper";
 
-const shop_name = localStorage.getItem('shop_name')
+const sub_domain = localStorage.getItem('sub_domain')
 const routes = [
   {
     type: "collapse",
     name: "Dashboard",
     key: "dashboard",
-    route: `/${shop_name}/dashboard`,
+    route: `/${sub_domain}/dashboard`,
     icon: <Shop size="12px" />,
     component: <Auth><Dashboard /></Auth>,
     noCollapse: true,
     children: [
       {
-        path: `/${shop_name}`,
+        path: `/${sub_domain}`,
         title: "shop",
         element: <Auth><Dashboard /></Auth>,
         type:"item"
@@ -89,7 +89,7 @@ const routes = [
   //   type: "title",
   //   name: "Dashboard",
   //   key: "dashboard",
-  //   route: `/${shop_name}`,
+  //   route: `/${sub_domain}`,
   //   icon: <Shop size="12px" />,
   //   component: <Auth><Dashboard /></Auth>,
   //   noCollapse: true,
@@ -98,13 +98,13 @@ const routes = [
     type: "collapse",
     name: "user",
     key: "User",
-    route: `/${shop_name}/dashboard/customer`,
+    route: `/${sub_domain}/dashboard/customer`,
     icon: <Office size="12px" />,
     component: <Auth><Customer /></Auth>,
     children:[{
      
         id:"customer",
-        path:`/${shop_name}/dashboard/customer`,
+        path:`/${sub_domain}/dashboard/customer`,
         title: "Customer",
         element:  <Auth><Customer /></Auth>,
         type:"item"
@@ -112,7 +112,7 @@ const routes = [
     },{
      
       id:"Employees",
-      path:`/${shop_name}/dashboard/employee`,
+      path:`/${sub_domain}/dashboard/employee`,
       title: "employee",
       element:  <Auth><Employee /></Auth>,
       type:"item"
@@ -120,7 +120,7 @@ const routes = [
   },{
      
     id:"Jobs",
-    path:`/${shop_name}/dashboard/jobs`,
+    path:`/${sub_domain}/dashboard/jobs`,
     title: "Jobs",
     element:  <Auth><Job /></Auth>,
     type:"item"
@@ -131,7 +131,7 @@ const routes = [
     type: "title",
     name: "Employees",
     key: "employees",
-    route: `/${shop_name}/dashboard/employee`,
+    route: `/${sub_domain}/dashboard/employee`,
     icon: <Office size="12px" />,
     component: <Auth><Employee /></Auth>,
   },
@@ -139,24 +139,30 @@ const routes = [
     type: "collapse",
     name: "Products",
     key: "products",
-    route: `/${shop_name}/dashboard/products`,
+    route: `/${sub_domain}/dashboard/products`,
     icon: <Shop size="12px" />,
     component: <Auth><Products /></Auth>,
     children: [
       {
         id:"attribute",
-        path: `/${shop_name}/dashboard/attribute`,
+        path: `/${sub_domain}/dashboard/attribute`,
         title: "Attribute",
         element: <Auth><Attribute /></Auth>,
         type:"item"
-      },
+      },{ 
+      id: "newproduct",
+     title:"Add new product",
+      path: `/${sub_domain}/dashboard/products/addnewproduct`,
+      element: <Auth><TextMobileStepper /></Auth>,
+      type: 'item',
+    },
       ]
   },
   {
     type: "title",
     name: "Jobs",
     key: "jobs",
-    route: `/${shop_name}/dashboard/jobs`,
+    route: `/${sub_domain}/dashboard/jobs`,
     icon: <Shop size="12px" />,
     component: <Auth><Job /></Auth>,
   },
@@ -164,7 +170,7 @@ const routes = [
     type: "title",
     name: "Attribute",
     key: "Attribute",
-    route: `/${shop_name}/dashboard/attribute`,
+    route: `/${sub_domain}/dashboard/attribute`,
     icon: <Shop size="12px" />,
     component: <Auth><Attribute /></Auth>,
   },
@@ -172,7 +178,7 @@ const routes = [
     type: "title",
     name: "values",
     key: "valuse",
-    route: `/${shop_name}/dashboard/attribute/:id`,
+    route: `/${sub_domain}/dashboard/attribute/:id`,
     icon: <Shop size="12px" />,
     component: <Auth><AttributeValue/></Auth>,
   },
@@ -185,13 +191,13 @@ const routes = [
   //   component: <Tables />,
   //   noCollapse: true,
   // },
-   { type: "collapse",
+   { type: "title",
     name: "Add new product",
     key: "Add new product",
-    route: `/${shop_name}/dashboard/products/addnewproduct`,
+    route: `/${sub_domain}/dashboard/products/addnewproduct`,
     icon: <Office size="12px" />,
-    component: <TextMobileStepper />,
-    noCollapse: true,
+    component:<Auth><TextMobileStepper /></Auth> ,
+    // noCollapse: true,
   },
   {
     type: "collapse",

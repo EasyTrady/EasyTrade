@@ -10,13 +10,11 @@ export default function DatePickerField() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer components={['DatePicker', 'DatePicker']}>
         <DatePicker
-          label="Controlled picker"
           value={value}
           onChange={(newValue) => setValue(newValue)}
+          sx={{width:'100%'}}
         />
-      </DemoContainer>
     </LocalizationProvider>
   );
 }

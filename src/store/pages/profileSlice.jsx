@@ -17,6 +17,7 @@ export const ProfileSlice = createSlice({
       localStorage.setItem("full_name",state.value.user.full_name)
       localStorage.setItem("phone",state.value.user.phone)
       localStorage.setItem("email",state.value.user.email)
+      localStorage.setItem("sub_domain",state.value.sub_domain)
     },
    
   },

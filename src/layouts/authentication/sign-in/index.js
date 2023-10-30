@@ -43,7 +43,7 @@ import { useNavigate } from "react-router-dom";
 
 function SignIn() {
   const [rememberMe, setRememberMe] = useState(true);
-  const shop_name = localStorage.getItem('shop_name')
+  const sub_domain = localStorage.getItem('sub_domain')
   let Token=localStorage.getItem('token')
   let navigate=useNavigate()
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
@@ -85,9 +85,9 @@ function SignIn() {
              
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('tokenTimestamp', new Date().getTime());
-                if (shop_name !== "undefined"&&shop_name !== null) {
+                if (sub_domain !== "undefined"&&sub_domain !== null) {
                  
-                  navigate(`/${shop_name}/dashboard`)
+                  navigate(`/${sub_domain}/dashboard`)
 
                 } else {
                   
@@ -100,6 +100,7 @@ function SignIn() {
                     localStorage.setItem('image', response?.data?.logo)
                     localStorage.setItem('email', response?.data?.user?.email)
                     localStorage.setItem('phone', response?.data?.user?.phone)
+                    localStorage.setItem('sub_domain', response?.data?.sub_domain)
                     navigate(`/${response?.data?.sub_domain}/dashboard`)
                   } })
 
