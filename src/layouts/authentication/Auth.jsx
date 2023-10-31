@@ -19,6 +19,7 @@ function Auth({children}) {
             localStorage.removeItem('image')
             localStorage.removeItem('email')
             localStorage.removeItem('phone')
+            localStorage.removeItem('sub_domain')
           }
     },[
         currentTime

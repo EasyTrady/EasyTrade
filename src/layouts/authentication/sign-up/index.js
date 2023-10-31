@@ -45,7 +45,7 @@ import { useTheme } from "@emotion/react";
 import PhoneField from "components/common/PhoneField";
 
 function SignUp({ ...others  }) {
-  const shop_name = localStorage.getItem('shop_name')
+  const sub_domain = localStorage.getItem('sub_domain')
   const theme = useTheme();
   const [agreement, setAgremment] = useState(true);
 
@@ -108,9 +108,9 @@ function SignUp({ ...others  }) {
                 if(res?.type==='signupUser/fulfilled'){
                   toast.success('welcome to EasyTrade')
                   navigate('/register/creatingshop')
-                  if (shop_name !== "undefined") {
+                  if (sub_domain !== "undefined") {
 
-                    navigate(`/${shop_name}/dashboard`)
+                    navigate(`/${sub_domain}/dashboard`)
   
                   } else {
                     
@@ -119,7 +119,8 @@ function SignUp({ ...others  }) {
                       localStorage.setItem('dashboard_url', response?.payload?.dashboard_url)
                       localStorage.setItem('shop_id', response?.payload?.id)
                       localStorage.setItem('shop_name', response?.payload?.shop_name)
-                      navigate(`/${response?.payload?.shop_name}/dashboard`)
+                      localStorage.setItem('sub_domain', response?.payload?.sub_domain)
+                      navigate(`/${response?.payload?.sub_domain}/dashboard`)
                     } })
   
                   }

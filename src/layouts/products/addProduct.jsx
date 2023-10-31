@@ -3,7 +3,6 @@ import borders from "assets/theme/base/borders";
 import SoftBox from "components/SoftBox";
 import SoftInput from "components/SoftInput";
 import SoftTypography from "components/SoftTypography";
-import InputField from "components/common/inputField";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import React, { useState } from "react";
@@ -83,6 +82,7 @@ const AddProduct = () => {
     { control: "minimum_quantity", value: "", isRequired: true },
     { control: "maximum_quantity", value: "", isRequired: true },
     { control: "description", value: "", isRequired: true },
+    { control: "category", value: "", isRequired: true },
   ]);
 // form request add product
   const [AddProductRequest, AddProductResponce] =
@@ -231,7 +231,12 @@ const AddProduct = () => {
             <SoftInput
               placeholder={"Category"}
               value={controls.category}
-              onChange={(e) => setControl("category", e.target.value)}
+              onChange={(e) => {
+                let text = /^(?:[A-Za-z\u0600-\u06ff\s]*)$/;
+                let match = text.test(e.target.value);
+                  if (match) {
+                    setControl("category", e.target.value)
+                  }}}
               required={required.includes("category")}
               error={Boolean(invalid.category)}
               helperText={invalid.category}

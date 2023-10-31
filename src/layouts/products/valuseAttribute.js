@@ -1,4 +1,4 @@
-import { Dialog, Icon, MenuItem, Select, TextField } from '@mui/material'
+import { Box, Dialog, Icon, MenuItem, Select, TextField } from '@mui/material'
 import SoftButton from 'components/SoftButton'
 import DataGridCustom from 'components/common/DateGridCustomer'
 import Form from 'components/common/Form'
@@ -95,17 +95,37 @@ function AttributeValue() {
     }
     const columns = [
         {
-            field: 'value',
-            headerName: 'Value',
+            field: 'color',
+            headerName: 'color',
             type: 'text',
-            width: 500,
+            width: 200,
             align: 'left',
             headerAlign: 'left',
-            // renderCell: renderImageCell,
+            renderCell: (params)=><Box sx={{backgroundColor:params.color,borderRadius:"50%",height:"30px",weight:"30px"}}></Box>,
             editable: false,
             // renderEditCell:renderEditImageCell
         }
-        
+        ,{
+            field: 'text',
+            headerName: 'text',
+            type: 'text',
+            width: 200,
+            align: 'left',
+            headerAlign: 'left',
+            // renderCell: (params)=><Box sx={{backgroundColor:params.color,borderRadius:"50%",height:"30px"}}></Box>,
+            editable: false,
+            // renderEditCell:renderEditImageCell
+        },{
+            field: 'image',
+            headerName: 'Value',
+            type: 'text',
+            width: 200,
+            align: 'left',
+            headerAlign: 'left',
+            renderCell: (params)=><img src={params.image}/>,
+            editable: false,
+            // renderEditCell:renderEditImageCell
+        }
 
 
     ]

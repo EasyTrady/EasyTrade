@@ -1,8 +1,13 @@
 import PropTypes from 'prop-types';
-import { forwardRef, useEffect } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
+import {
+  collapseItem,
+  collapseIconBox,
+  collapseIcon,
+  collapseText,
+} from "examples/Sidenav/styles/sidenavCollapse";
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material';
@@ -17,7 +22,8 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
 const NavItem = ({ item }) => {
   const theme = useTheme();
-
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState(null);
   const { pathname } = useLocation();
  let navigate= useNavigate()
 
@@ -67,7 +73,14 @@ const NavItem = ({ item }) => {
 //     }
 //     // eslint-disable-next-line
 //   }, [pathname]);
-
+const handleClick = () => {
+  setOpen(!open);
+  setSelected(!selected ? item.id : null);
+  // if (menu?.id !== 'authentication') {
+  //   navigate(menu.children[0]?.url);
+  // }
+  // console.log(menu)
+};
   return (
     <ListItemButton
      
@@ -79,12 +92,14 @@ const NavItem = ({ item }) => {
         py:1,
         pl: `${24}px`
       }}
-    
+      selected={selected === item.id}
+      onClick={handleClick}
     
     >
-      <ListItemIcon sx={{ my: 'auto', minWidth: !item?.icon ? 18 : 36 }}>{itemIcon}</ListItemIcon>
+      <ListItemIcon sx={{ my: 'auto', minWidth: !item?.icon ? 56 : 56 }}></ListItemIcon>
       <ListItemText
         onClick={(e) => console.log(e.target)}
+        
         primary={
           <Typography component={Link}  color={(theme)=>theme.palette.grey[600]} to={item.path} sx={{    fontWeight: 400,
             fontSize: "0.875rem",
