@@ -133,7 +133,13 @@ const routes = [
         element: <Auth><TextMobileStepper /></Auth>,
         type: 'item',
       },
-
+      {
+        id: "category",
+        title: "Category",
+        path: `/${sub_domain}/dashboard/products/category`,
+        element: <Auth><Products /></Auth>,
+        type: 'item',
+      },
     ]
   },
   {
