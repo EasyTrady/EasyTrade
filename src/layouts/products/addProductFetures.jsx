@@ -7,6 +7,7 @@ import DnsOutlinedIcon from "@mui/icons-material/DnsOutlined"
 import DatePickerField from 'components/common/DatePicker';
 import ImageBox from 'components/common/imageBox';
 import PictureField from 'components/common/PictureField';
+import ImagesAlbums from 'components/common/ImagesAlbums';
 const AddProductFetures = () => {
     // add status of fields
     const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
@@ -33,9 +34,11 @@ const AddProductFetures = () => {
         },
         { control: "mpn", value: "", isRequired: true },
         { control: "countries", value: [], isRequired: true },
-        { control: "main_image", value: "", isRequired: true },
+        { control: "main_image", value: {}, isRequired: true },
+        { control: "product_images", value: [], isRequired: true },
         
       ]);
+      console.log(controls.product_images);
   return (
     <Card sx={{height:"100%",width:"70vw",p:3,display:'flex',flexDirection:"column",gap:3}}>
         <NumberField
@@ -101,10 +104,13 @@ const AddProductFetures = () => {
         borderBottom='none'
         />
 
-        <ImageBox main_image={controls.main_image}  onChange={(e) => setControl("main_image", e.target.value)}/>
-        <PictureField
-        value={controls.main_image}
-        onChange={(e) => setControl("main_image", e.target.value)}
+        <ImageBox 
+        main_image={controls.main_image}  
+        onChange={(e) => setControl("main_image", e)}/>
+        
+        <ImagesAlbums 
+        value={controls.product_images}
+        onChange={(e)=>setControl('product_images',e)}
         />
     </Card>
   )
