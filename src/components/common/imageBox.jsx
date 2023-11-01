@@ -5,17 +5,22 @@ import React from 'react'
 import productImage from '../../assets/images/ivana-square.jpg'
 // eslint-disable-next-line react/prop-types
 const ImageBox = ({main_image,onChange}) => {
-    
-    // const [main_image, setMain_image] = React.useState(null);
+    const [mainImage, setMainImage] = React.useState(null);
   const handleAvatarChange = (event) => {
+    console.log(event.target.files[0]);
+    onChange(event.target.files[0])
     const file = event.target.files[0];
     const reader = new FileReader();
     //   setImageFile(file);
-    reader.onload = () => {
-        onChange(reader.result);
+    
+    reader.onload = (e) => {
+      setMainImage(reader.result);
+     
     };
     reader.readAsDataURL(file);
+   
   };
+ console.log(mainImage);
   return (
     <>
      {/* <Box sx={{ width: '100%',my:"24px"}}>
@@ -34,10 +39,10 @@ const ImageBox = ({main_image,onChange}) => {
           <Box sx={{ width: '30%', border:` 1px solid #d5d5d5 }`,borderRadius: `12px`}}>
             {/* view image selected */}
             
-              {main_image ? (
+              {mainImage ? (
                 <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 2 }}>
                   <img
-                    src={main_image || productImage}
+                    src={mainImage || productImage}
                     alt="profile_image"
                     style={{
                       width: '100%',
@@ -49,7 +54,7 @@ const ImageBox = ({main_image,onChange}) => {
               ) : (
                 <Box
                   component={'img'}
-                  src={main_image || productImage}
+                  src={mainImage || productImage}
                   alt="image"
                   sx={{ width: '100%', height: '100%' , borderRadius: `12px  12px 0px 0px `
                 }}
