@@ -1,4 +1,4 @@
-import { Box, Dialog, Icon, MenuItem, Select, TextField } from '@mui/material'
+import { Avatar, Box, Dialog, Icon, MenuItem, Select, TextField } from '@mui/material'
 import SoftButton from 'components/SoftButton'
 import DataGridCustom from 'components/common/DateGridCustomer'
 import Form from 'components/common/Form'
@@ -14,46 +14,68 @@ import useRequest from 'hooks/useRequest'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-
+import input from "assets/theme/components/form/input";
+import SoftInput from 'components/SoftInput'
 
 function AttributeValue() {
     const [open, setOpen] = React.useState(false);
-    let {id}=useParams()
+    let { id } = useParams()
     let dispatch = useDispatch()
     let attributes = useSelector((state) => state.attribute.value)
     let [rows, setRows] = useState([])
+    const formData = new FormData();
+
     let Token = localStorage.getItem('token')
     const [attributeValueRequest, getattributeValueResponce] =
         useRequest({
-            path: ATTRIBUTES+id+"/values/",
+            path: ATTRIBUTES + id + "/values/",
             method: "get",
             Token: `Token ${Token}`
         });
     const [attributeValuepostRequest, postValueattributeResponce] =
         useRequest({
-            path:ATTRIBUTES+id+"/values/",
+            path: ATTRIBUTES + id + "/values/",
             method: "post",
-            Token: `Token ${Token}`
+            Token: `Token ${Token}`,
+            contentType:"multipart/form-data",
         });
     const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
         useControls([
 
             {
-                control: "value",
+                control: "text",
                 value: "",
                 isRequired: true,
                 validations: [
                     {
                         test: /^(?:[A-Za-z\u0600-\u06ff\s]*)$/,
-                        message: "not valid name"
+                        message: "not valid text"
                     }
                 ]
+            }, {
+                control: "color",
+                value: "",
+                isRequired: false,
+                validations: [
+                    {
+                        test: /^#[0-9A-Fa-f]+$/,
+                        message: "not valid color"
+                    }
+                ]
+               
+            }, {
+                control: "image",
+                value: null,
+                isRequired: true,
             }
+        ]
 
-        ]);
+
+
+        );
     const [attributeDeleteRequest, DeleteattributerResponce] =
         useRequest({
-            path: ATTRIBUTES+id+"/values/",
+            path: ATTRIBUTES + id + "/values/",
             method: "delete",
             Token: `Token ${Token}`
         });
@@ -66,11 +88,14 @@ function AttributeValue() {
     function handleSubmit() {
         validate().then((output) => {
             if (!output.isOk) return;
+            console.log(controls)
+            Object.entries(controls).map(([key, value])=>formData.append(key,value))
+            
             attributeValuepostRequest({
-                body: controls,
+                body: formData,
+               
                 onSuccess: (res) => {
-                    
-                    dispatch({ type: "attribute/addValue", payload:{idvalue:id ,value:res.data }})
+                    dispatch({ type: "attribute/addValue", payload: { idvalue: id, value: res.data } })
                     resetControls()
                     handleClose()
                 }
@@ -89,7 +114,7 @@ function AttributeValue() {
             id: row,
             onSuccess: () => {
                 console.log(row)
-                dispatch({ type: "attribute/deleteValueofAttribute", payload: { idattribute: id,idValue:row } })
+                dispatch({ type: "attribute/deleteValueofAttribute", payload: { idattribute: id, idValue: row } })
             }
         })
     }
@@ -101,11 +126,11 @@ function AttributeValue() {
             width: 200,
             align: 'left',
             headerAlign: 'left',
-            renderCell: (params)=><Box sx={{backgroundColor:params.color,borderRadius:"50%",height:"30px",weight:"30px"}}></Box>,
+            renderCell: (params) => <Box sx={{ backgroundColor: params?.row?.color,boxShadow:"0px 4px 10px", borderRadius: "50%", height: "30px", width: "30px" }}>{params?.color}</Box>,
             editable: false,
             // renderEditCell:renderEditImageCell
         }
-        ,{
+        , {
             field: 'text',
             headerName: 'text',
             type: 'text',
@@ -115,14 +140,14 @@ function AttributeValue() {
             // renderCell: (params)=><Box sx={{backgroundColor:params.color,borderRadius:"50%",height:"30px"}}></Box>,
             editable: false,
             // renderEditCell:renderEditImageCell
-        },{
+        }, {
             field: 'image',
-            headerName: 'Value',
+            headerName: 'image',
             type: 'text',
             width: 200,
             align: 'left',
             headerAlign: 'left',
-            renderCell: (params)=><img src={params.image}/>,
+            renderCell: (params) => <Avatar src={params.row.image} />,
             editable: false,
             // renderEditCell:renderEditImageCell
         }
@@ -135,14 +160,14 @@ function AttributeValue() {
     useEffect(() => {
         attributeValueRequest({
             onSuccess: (res) => {
-                console.log(res.data,id,getattributeValueResponce.failAlert)
-                dispatch({ type: "attribute/addValues", payload:{ idattribute: id , values: res.data }})
+                console.log(res.data, id, getattributeValueResponce.failAlert)
+                dispatch({ type: "attribute/addValues", payload: { idattribute: id, values: res.data } })
             }
         })
     }, [])
     useEffect(() => {
-        if(attributes?.find((ele)=>ele.id==id)?.values?.length>0){
-            setRows(attributes?.find((ele)=>ele.id==id)?.values)
+        if (attributes?.find((ele) => ele.id == id)?.values?.length > 0) {
+            setRows(attributes?.find((ele) => ele.id == id)?.values)
 
         }
     }, [attributes])
@@ -169,23 +194,44 @@ function AttributeValue() {
                             disabled: postValueattributeResponce.isPending,
                         }, title: "add value"
                     }}>
-                    <TextField
 
-                        // id="filled-size-small"
-                        placeholder='value'
-                        variant="standard"
-                        size="small"
-                        value={controls.value}
-                        onChange={(e) =>
-                            setControl("value", e.target.value)
-                        }
-                        required={required.includes("value")}
-                        error={Boolean(invalid?.value)}
-                        helperText={invalid?.value}
+                    <SoftInput
+                        placeholder='color'
+                        value={controls.color}
+                        onChange={(e) => setControl("color", e.target.value)}
+                        required={required.includes("color")}
+                        error={Boolean(invalid?.color)}
+                        helperText={invalid?.color}
+                        sx={input}
                     />
-                 
-                    
 
+                    <SoftInput
+                        placeholder='text'
+                        value={controls.text}
+                        onChange={(e) => setControl("text", e.target.value)}
+                        required={required.includes("text")}
+                        error={Boolean(invalid?.text)}
+                        helperText={invalid?.text}
+                        sx={input}
+                    />
+
+                    <SoftInput
+                        placeholder={"image"}
+                        // value={controls.image}
+                        onChange={(e) => {
+                           console.log(e.target.files[0])
+                            setControl("image",e.target.files[0])
+                        }}
+                        required={required.includes("image")}
+                        error={Boolean(invalid?.image)}
+                        helperText={invalid?.image}
+                        //   icon={{ component: <imageIcon />, direction: "left" }}
+                        sx={input}
+                        type="file"
+                        inputProps={{
+                            accept: "image/*"
+                        }}
+                    />
                     {/* <PictureField placeholder={"add image profile"}
                         error={Boolean(invalid.image)}
                         helperText={invalid.image}
@@ -200,7 +246,7 @@ function AttributeValue() {
                 onDelete={onDelete}
                 columns={columns}
                 checkboxSelection={true}
-                onRowClick={(e) => { console.log({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
+                onRowClick={(e) => { console.log({ ...e?.row });/* navigate(`/${shoptext}/dashboard/employee/${e?.row?.id}`)*/ }}
                 sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
                 // onEdit={onEdit}
 

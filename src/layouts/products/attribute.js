@@ -15,7 +15,8 @@ import useRequest from 'hooks/useRequest'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-
+import input from "assets/theme/components/form/input";
+import SoftInput from 'components/SoftInput'
 
 function Attribute() {
     const [open, setOpen] = React.useState(false);
@@ -177,7 +178,7 @@ function Attribute() {
                             disabled: postattributeResponce.isPending,
                         }, title: "add attribute"
                     }}>
-                    <TextField
+                    {/* <TextField
 
                         // id="filled-size-small"
                         placeholder='name'
@@ -190,6 +191,15 @@ function Attribute() {
                         required={required.includes("name")}
                         error={Boolean(invalid?.name)}
                         helperText={invalid?.name}
+                    /> */}
+                    <SoftInput
+                        placeholder='name'
+                        value={controls.name}
+                        onChange={(e) => setControl("name", e.target.value)}
+                        required={required.includes("name")}
+                        error={Boolean(invalid.name)}
+                        helperText={invalid.name}
+                        sx={input}
                     />
                     {/* <TextField
 
