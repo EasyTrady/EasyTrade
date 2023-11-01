@@ -51,7 +51,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const { miniSidenav, transparentSidenav } = controller;
   const location = useLocation();
   const { pathname } = location;
-  const collapseName = pathname.split("/").slice(1)[0];
+  const collapseName = pathname.split("/").pop();
   const image = localStorage.getItem('logo')
   const shop_name = localStorage.getItem('shop_name')
   const closeSidenav = () => setMiniSidenav(dispatch, true);
@@ -73,18 +73,20 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleMiniSidenav);
   }, [dispatch, location]);
+  let [active,setActive]=useState("")
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
-  const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, route, path, children }) => {
+  const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, route, path, children,color }) => {
     let returnValue;
     let [open,setOpen]=useState(false)
+    console.log(key,active)
     const menus = children?.map((item) => {
-     
+  
       switch (item.type) {
         case 'collapse':
           return <NavCollapse key={item.id} menu={item}  />;
         case 'item':
-          return <NavItem key={item.id} item={item}  />;
+          return <NavItem key={item.id} item={item} color={color}/>;
         default:
           return (
             <Typography key={item.id} variant="h6" color="error" align="center">
@@ -101,6 +103,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           target="_blank"
           rel="noreferrer"
           sx={{ textDecoration: "none" }}
+          onClick={(e)=>setActive((previous)=>previous===key?"":key)}
         >
           <SidenavCollapse
             color={color}
@@ -108,14 +111,14 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             icon={icon}
             setOpen={setOpen}
             open={open}
-          active={key === collapseName}
+          active={key === active}
           noCollapse={noCollapse}
           >
             {menus}
           </SidenavCollapse>
         </Link>
       ) : (
-        <NavLink to={route} key={key} >
+        <NavLink to={!noCollapse&&route} key={key} onClick={(e)=>setActive((previous)=>previous===key?"":key)}>
           <SidenavCollapse
             color={color}
             key={key}
@@ -123,7 +126,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             icon={icon}
             setOpen={setOpen}
             open={open}
-          active={key === collapseName}
+          active={key === active}
           noCollapse={noCollapse}
           onClick={()=>setOpen(!open)}
           >

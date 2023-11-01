@@ -71,19 +71,123 @@ const sub_domain = localStorage.getItem('sub_domain')
 const routes = [
   {
     type: "collapse",
-    name: "Dashboard",
+    name: "Home",
     key: "dashboard",
     route: `/${sub_domain}/dashboard`,
+    icon: <Shop size="12px" />,
+    component: <Auth><Dashboard /></Auth>,
+    noCollapse: false,
+    // children: [
+    //   {
+    //     path: `/${sub_domain}`,
+    //     title: "shop",
+    //     element: <Auth><Dashboard /></Auth>,
+    //     type:"title"
+    //   }]
+  }, {
+    type: "collapse",
+    name: "Statistics",
+    key: "Statistics",
+    route: `/${sub_domain}/dashboard/statistics`,
+    icon: <Shop size="12px" />,
+    component: <Auth><Dashboard /></Auth>,
+    noCollapse: false,
+    // children: [
+    //   {
+    //     path: `/${sub_domain}`,
+    //     title: "shop",
+    //     element: <Auth><Dashboard /></Auth>,
+    //     type:"title"
+    //   }]
+  },
+  
+  {
+    type: "collapse",
+    name: "Products",
+    key: "products",
+    route: `/${sub_domain}/dashboard/products`,
+    icon: <Shop size="12px" />,
+    component: <Auth><Products /></Auth>,
+    noCollapse: true,
+    children: [
+      {
+        id: "attribute",
+        path: `/${sub_domain}/dashboard/attribute`,
+        title: "Attribute",
+        element: <Auth><Attribute /></Auth>,
+        type: "item"
+
+      },
+      {
+        id: "products",
+        path: `/${sub_domain}/dashboard/products`,
+        title: "products",
+        element: <Auth><Products /></Auth>,
+        type: "item"
+      },
+
+      , {
+        id: "newproduct",
+        title: "Add new product",
+        path: `/${sub_domain}/dashboard/products/addnewproduct`,
+        element: <Auth><TextMobileStepper /></Auth>,
+        type: 'item',
+      },
+      {
+        id: "category",
+        title: "Category",
+        path: `/${sub_domain}/dashboard/products/category`,
+        element: <Auth><Products /></Auth>,
+        type: 'item',
+      },
+    ]
+  },
+  {
+    type: "collapse",
+    name: "Order",
+    key: "order",
+    route: `/${sub_domain}/dashboard/orders`,
     icon: <Shop size="12px" />,
     component: <Auth><Dashboard /></Auth>,
     noCollapse: true,
     children: [
       {
-        path: `/${sub_domain}`,
-        title: "shop",
+        id: "order",
+        path: `/${sub_domain}/dashboard/order`,
+        title: "order",
         element: <Auth><Dashboard /></Auth>,
-        type:"item"
-      }]
+        type: "item"
+
+      },
+      {
+        id: "Abandoned basket",
+        path: `/${sub_domain}/dashboard/abandonedbasket`,
+        title: "Abandoned basket",
+        element: <Auth><Dashboard /></Auth>,
+        type: "item"
+      },
+
+
+    ]
+  },
+  {
+    type: "collapse",
+    name: "customer",
+    key: "Customer",
+    route: `/${sub_domain}/dashboard/customer`,
+    icon: <Office size="12px" />,
+    noCollapse: true,
+    component: <Auth><Customer /></Auth>,
+    children: [{
+
+      id: "customer",
+      path: `/${sub_domain}/dashboard/customer`,
+      title: "Customer",
+      element: <Auth><Customer /></Auth>,
+      type: "item"
+
+    },
+    ]
   },
   // {
   //   type: "title",
@@ -94,39 +198,35 @@ const routes = [
   //   component: <Auth><Dashboard /></Auth>,
   //   noCollapse: true,
   // },
+
   {
     type: "collapse",
-    name: "user",
-    key: "User",
+    name: "Employees",
+    key: "Employees",
     route: `/${sub_domain}/dashboard/customer`,
     icon: <Office size="12px" />,
-    component: <Auth><Customer /></Auth>,
-    children:[{
-     
-        id:"customer",
-        path:`/${sub_domain}/dashboard/customer`,
-        title: "Customer",
-        element:  <Auth><Customer /></Auth>,
-        type:"item"
-      
-    },{
-     
-      id:"Employees",
-      path:`/${sub_domain}/dashboard/employee`,
+    noCollapse: true,
+    component: <Auth><Employee /></Auth>,
+    children: [{
+
+      id: "Employees",
+      path: `/${sub_domain}/dashboard/employee`,
       title: "employee",
-      element:  <Auth><Employee /></Auth>,
-      type:"item"
-    
-  },{
-     
-    id:"Jobs",
-    path:`/${sub_domain}/dashboard/jobs`,
-    title: "Jobs",
-    element:  <Auth><Job /></Auth>,
-    type:"item"
-  
-}
-]},
+      element: <Auth><Employee /></Auth>,
+      type: "item"
+
+    }, {
+
+      id: "Jobs",
+      path: `/${sub_domain}/dashboard/jobs`,
+      title: "Jobs",
+      element: <Auth><Job /></Auth>,
+      type: "item"
+
+    }
+    ]
+  },
+
   {
     type: "title",
     name: "Employees",
@@ -134,30 +234,18 @@ const routes = [
     route: `/${sub_domain}/dashboard/employee`,
     icon: <Office size="12px" />,
     component: <Auth><Employee /></Auth>,
+    noCollapse: false,
   },
   {
-    type: "collapse",
-    name: "Products",
-    key: "products",
-    route: `/${sub_domain}/dashboard/products`,
-    icon: <Shop size="12px" />,
-    component: <Auth><Products /></Auth>,
-    children: [
-      {
-        id:"attribute",
-        path: `/${sub_domain}/dashboard/attribute`,
-        title: "Attribute",
-        element: <Auth><Attribute /></Auth>,
-        type:"item"
-      },{ 
-      id: "newproduct",
-     title:"Add new product",
-      path: `/${sub_domain}/dashboard/products/addnewproduct`,
-      element: <Auth><TextMobileStepper /></Auth>,
-      type: 'item',
-    },
-      ]
+    type: "title",
+    name: "Dashboard",
+    key: "Dashboard",
+    route: `/${sub_domain}/dashboard`,
+    icon: <Office size="12px" />,
+    component: <Auth><Dashboard /></Auth>,
+    noCollapse: false,
   },
+
   {
     type: "title",
     name: "Jobs",
@@ -165,6 +253,7 @@ const routes = [
     route: `/${sub_domain}/dashboard/jobs`,
     icon: <Shop size="12px" />,
     component: <Auth><Job /></Auth>,
+    noCollapse: false,
   },
   {
     type: "title",
@@ -173,6 +262,8 @@ const routes = [
     route: `/${sub_domain}/dashboard/attribute`,
     icon: <Shop size="12px" />,
     component: <Auth><Attribute /></Auth>,
+    noCollapse: false,
+
   },
   {
     type: "title",
@@ -180,7 +271,9 @@ const routes = [
     key: "valuse",
     route: `/${sub_domain}/dashboard/attribute/:id`,
     icon: <Shop size="12px" />,
-    component: <Auth><AttributeValue/></Auth>,
+    component: <Auth><AttributeValue /></Auth>,
+    noCollapse: false,
+
   },
   // {
   //   type: "collapse",
@@ -191,12 +284,15 @@ const routes = [
   //   component: <Tables />,
   //   noCollapse: true,
   // },
-   { type: "title",
+  {
+    type: "title",
     name: "Add new product",
     key: "Add new product",
     route: `/${sub_domain}/dashboard/products/addnewproduct`,
     icon: <Office size="12px" />,
-    component:<Auth><TextMobileStepper /></Auth> ,
+    component: <TextMobileStepper />,
+    noCollapse: false,
+    component: <Auth><TextMobileStepper /></Auth>,
     // noCollapse: true,
   },
   {
@@ -206,7 +302,7 @@ const routes = [
     route: "/billing",
     icon: <CreditCard size="12px" />,
     component: <Billing />,
-    noCollapse: true,
+    noCollapse: false,
   },
   {
     type: "collapse",
@@ -215,7 +311,7 @@ const routes = [
     route: "/virtual-reality",
     icon: <Cube size="12px" />,
     component: <VirtualReality />,
-    noCollapse: true,
+    noCollapse: false,
   },
   {
     type: "collapse",
@@ -224,7 +320,7 @@ const routes = [
     route: "/rtl",
     icon: <Settings size="12px" />,
     component: <RTL />,
-    noCollapse: true,
+    noCollapse: false,
   },
   { type: "title", title: "Account Pages", key: "account-pages" },
   {
@@ -234,7 +330,7 @@ const routes = [
     route: "/profile",
     icon: <CustomerSupport size="12px" />,
     component: <Profile />,
-    noCollapse: true,
+    noCollapse: false,
   },
   {
     type: "collapse",
@@ -243,7 +339,7 @@ const routes = [
     route: "/authentication/sign-in",
     icon: <Document size="12px" />,
     component: <SignIn />,
-    noCollapse: true,
+    noCollapse: false,
   },
   {
     type: "collapse",

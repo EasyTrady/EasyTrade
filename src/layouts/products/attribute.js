@@ -1,4 +1,5 @@
-import { Dialog, Icon, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
+import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material'
+import { Collapse, Dialog, Icon, InputLabel, List, ListItemButton, ListItemIcon, ListItemText, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
 import SoftButton from 'components/SoftButton'
 import DataGridCustom from 'components/common/DateGridCustomer'
 import Form from 'components/common/Form'
@@ -14,16 +15,22 @@ import useRequest from 'hooks/useRequest'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-
+import input from "assets/theme/components/form/input";
+import SoftInput from 'components/SoftInput'
 
 function Attribute() {
     const [open, setOpen] = React.useState(false);
     let dispatch = useDispatch()
     let attributes = useSelector((state) => state.attribute.value)
     let [rows, setRows] = useState([])
+    const [openValue, setOpenValue] = React.useState(true);
+
+    const handleClick = () => {
+        setOpenValue(!openValue);
+    };
     let Token = localStorage.getItem('token')
     const shop_name = localStorage.getItem('shop_name')
-    let navigate=useNavigate()
+    let navigate = useNavigate()
     const [attributeRequest, getattributeResponce] =
         useRequest({
             path: ATTRIBUTES,
@@ -51,7 +58,7 @@ function Attribute() {
                 ]
             }, {
                 control: "value_type",
-                value: "",
+                value: "value",
                 isRequired: true,
                 validations: [
                     {
@@ -114,8 +121,8 @@ function Attribute() {
             renderCell: (params) => {
                 const { row } = params;
                 return (<Stack direction={"column"} >
-                    <Typography component={"p"}>{row.name }</Typography>
-                    <Typography component={"a"}sx={{color:(theme)=>theme.palette.grey[500],fontSize:"0.8rem",cursor:"pointer"}} onClick={()=>navigate(`/${shop_name}/dashboard/attribute/${row?.id}`)}>view</Typography>
+                    <Typography component={"p"}>{row.name}</Typography>
+                    <Typography component={"a"} sx={{ color: (theme) => theme.palette.grey[500], fontSize: "0.8rem", cursor: "pointer" }} onClick={() => navigate(`/${shop_name}/dashboard/attribute/${row?.id}`)}>view</Typography>
                 </Stack>
                 );
             },
@@ -171,7 +178,7 @@ function Attribute() {
                             disabled: postattributeResponce.isPending,
                         }, title: "add attribute"
                     }}>
-                    <TextField
+                    {/* <TextField
 
                         // id="filled-size-small"
                         placeholder='name'
@@ -184,8 +191,17 @@ function Attribute() {
                         required={required.includes("name")}
                         error={Boolean(invalid?.name)}
                         helperText={invalid?.name}
+                    /> */}
+                    <SoftInput
+                        placeholder='name'
+                        value={controls.name}
+                        onChange={(e) => setControl("name", e.target.value)}
+                        required={required.includes("name")}
+                        error={Boolean(invalid.name)}
+                        helperText={invalid.name}
+                        sx={input}
                     />
-                    <TextField
+                    {/* <TextField
 
                         // id="filled-size-small"
                         placeholder='valuesType'
@@ -198,8 +214,29 @@ function Attribute() {
                         required={required.includes("value_type")}
                         error={Boolean(invalid?.value_type)}
                         helperText={invalid?.value_type}
-                    />
-                    
+                    /> */}
+
+                    <InputLabel sx={{ fontSize: "16px" }}>value</InputLabel>
+                    <Select label='value'
+                        value={controls.value_type}
+                        sx={{ ".MuiSelect-select": { width: "100% !important" } }}
+                        onChange={(e) =>
+                            setControl("value_type", e.target.value)
+                        }
+                        required={required.includes("value_type")}
+                        error={Boolean(invalid?.value_type)}
+                        helperText={invalid?.value_type}
+                    >
+                        <MenuItem value={"text"} >
+                            text
+                        </MenuItem >
+                        <MenuItem value={"image"} >
+                            image
+                        </MenuItem >
+                        <MenuItem value={"color"} >
+                            color
+                        </MenuItem >
+                    </Select>
 
                     {/* <PictureField placeholder={"add image profile"}
                         error={Boolean(invalid.image)}

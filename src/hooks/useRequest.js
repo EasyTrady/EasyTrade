@@ -13,7 +13,8 @@ const useRequest = ({
   method = null,
   successMessage=null,
   responseType = null,
-  Token=null
+  Token=null,
+  contentType="application/json"
   // cont
 }) => {
   //----useSelectors----
@@ -98,7 +99,7 @@ const useRequest = ({
           //prettier-ignore
           "Authorization":Token ?`${Token}`:"",
           "Accept-Language": "en-US,en;",
-          "Content-Type":"application/json"
+          "Content-Type":contentType
         },
       }),
       params,
