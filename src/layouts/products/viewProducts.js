@@ -117,13 +117,15 @@ function Products() {
         <DataGridCustom
           rows={rows}
           columns={columns}
-          onEdit={''}
-          onDelete={''}
+          onEdit={()=>{}}
+          onDelete={()=>{}}
+          onCopy={()=>{}}
           checkboxSelection={true}
           onRowClick={(e,row) => {
             console.log(e,row);
             setClick({ ...e.id });
           }}
+          notProduct={false}
           // rowsPerPageOptions={[5, 10, 15, 20]}
           // onPaginationModelChange={setPaginationModel}
           rowHeight={100}
