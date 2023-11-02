@@ -66,6 +66,7 @@ import AttributeValue from "layouts/products/valuseAttribute";
 
 import AddProduct from "layouts/products/addProduct";
 import TextMobileStepper from "layouts/products/stepper";
+import AddProductPanel from "layouts/products/addProductPanel";
 
 const sub_domain = localStorage.getItem('sub_domain')
 const routes = [
@@ -153,7 +154,7 @@ const routes = [
       id: "newproduct",
      title:"Add new product",
       path: `/${sub_domain}/dashboard/products/addnewproduct`,
-      element: <Auth><TextMobileStepper /></Auth>,
+      element: <Auth><AddProductPanel /></Auth>,
       type: 'item',
     },
       ]
@@ -196,7 +197,7 @@ const routes = [
     key: "Add new product",
     route: `/${sub_domain}/dashboard/products/addnewproduct`,
     icon: <Office size="12px" />,
-    component:<Auth><TextMobileStepper /></Auth> ,
+    component:<Auth><AddProductPanel /></Auth> ,
     // noCollapse: true,
   },
   {
