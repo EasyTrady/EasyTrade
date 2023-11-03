@@ -9,6 +9,8 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
+import useRequest from 'hooks/useRequest';
+import { CUSTOMER } from 'data/api';
 
 // const columnsTheme = [
 //     {
@@ -37,7 +39,7 @@ import EditIcon from '@mui/icons-material/Edit';
 //     },
 
 //     {
-//         field: 'phone',
+//         field: 'is_active',
 //         headerName: 'phone',
 //         type: 'text',
 //         width: 150,
@@ -50,7 +52,24 @@ import EditIcon from '@mui/icons-material/Edit';
 // ]
 export const CustomersTableData =() =>{
 let customers = useSelector((state) => state?.customer?.value)
+let Token=localStorage.getItem('token')
 
+const [customerDeleteRequest, DeleteCustomerrResponce] =
+useRequest({
+  path: CUSTOMER,
+  method: "patch",
+  Token: `Token ${Token}`
+
+});
+function onDelete(row){
+  console.log(row)
+  customerDeleteRequest({
+    id:row+"/activation",
+    onSuccess:()=>{
+      // dispatch({ type: "custom/deleteItem", payload: {id:row} })
+    }
+  })
+}
     useEffect(()=>{
         console.log( customers)
     },[customers])
@@ -71,28 +90,26 @@ let customers = useSelector((state) => state?.customer?.value)
               field: 'full_name',
               headerName: 'full_name',
               type: 'text',
-              width: 400,
+              width: 150,
               align: 'left',
               headerAlign: 'left',
               editable: true,
-              renderCell:(params)=><Box sx={{display:"flex",flexDirection:"column",paddingY:"20px"}}>
-                <Typography component={"h3"} sx={{color:"#673ab7",}}>{params.row.full_name}</Typography>
-                <Typography component={"p"}>{params.row.email} </Typography>
-        
-              </Box>,
+              renderCell:(params)=>
+                <Typography variant={"h5"} sx={{color:"#673ab7",}}>{params.row.full_name}</Typography>
+              ,
               filterable: false,
               sortable: false,disableColumnMenu: true
             }, 
-            //  {
-            //   field: 'email',
-            //   headerName: 'email',
-            //   type: 'email',
-            //   width: 150,
-            //   align: 'left',
-            //   headerAlign: 'left',
-            //   editable: true,
-        
-            // },
+             {
+              field: 'email',
+              headerName: 'email',
+              type: 'email',
+              width: 150,
+              align: 'left',
+              headerAlign: 'left',
+              editable: true,
+              renderCell:(params)=> <Typography component={"p"}>{params.row.email} </Typography>
+            },
             {
               field: 'phone',
               headerName: 'phone',
@@ -103,8 +120,27 @@ let customers = useSelector((state) => state?.customer?.value)
               editable: true,
               filterable: false,
               sortable: false,disableColumnMenu: true
+
             },
-         
+            {
+              field: 'is_active',
+              headerName: 'is_active',
+              type: 'text',
+              width: 150,
+              align: 'left',
+              headerAlign: 'left',
+              editable: true,
+              filterable: false,
+              sortable: false,disableColumnMenu: true,
+              renderCell:(params)=> <Typography variant={"p"}
+              sx={{
+                backgroundColor:"#82d61675","p.MuiTypography-root":{color:"#fff"}
+                ,borderRadius:"10px",cursor:"pointer",padding:"5px"
+              }} onClick={()=>onDelete(params?.row?.id)}
+              >{params?.row?.is_active?"active":"not active"} </Typography>
+
+            },
+            
           
           ],
 
