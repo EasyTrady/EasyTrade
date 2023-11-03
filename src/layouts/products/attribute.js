@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material'
 import { Collapse, Dialog, Icon, InputLabel, List, ListItemButton, ListItemIcon, ListItemText, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
 import SoftButton from 'components/SoftButton'
@@ -275,15 +276,15 @@ function Attribute({ absolute, light, isMini }) {
 }
 
 export default Attribute
-Attribute.defaultProps = {
-    absolute: false,
-    light: false,
-    isMini: false,
-  };
+// Attribute.defaultProps = {
+//     absolute: false,
+//     light: false,
+//     isMini: false,
+//   };
   
-  // Typechecking props for the Attribute
-  Attribute.propTypes = {
-    absolute: PropTypes.bool,
-    light: PropTypes.bool,
-    isMini: PropTypes.bool,
-  };
+//   // Typechecking props for the Attribute
+//   Attribute.propTypes = {
+//     absolute: propTypes?.bool,
+//     light: propTypes?.bool,
+//     isMini: propTypes?.bool,
+//   };

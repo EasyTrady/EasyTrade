@@ -28,6 +28,7 @@ import InputField from "components/common/TextField";
 import NumberField from "components/common/NumberFeild";
 import SelectField from "components/common/SelectField";
 import AddProductTitle from "components/common/AddProductTitle";
+import DatePickerField from "components/common/DatePicker";
 const ReactQuill = require("react-quill");
 const AddProduct = () => {
   const { borderWidth, borderColor } = borders;
@@ -223,7 +224,7 @@ const AddProduct = () => {
     
 
     </Box>
-    <Box sx={{background: '#FFFFFF',borderRadius:'8px',height:'100%',mt:2.5,display:'flex',flexDirection:'column',gap:'20px'}}>
+    <Box sx={{background: '#FFFFFF',borderRadius:'8px',height:'100%',mt:2.5,display:'flex',flexDirection:'column',gap:'20px',pb:2}}>
     <AddProductTitle title={'Product details'} />
     <Container sx={{display:'flex',flexDirection:'column',gap:'20px'}}>
     <NumberField
@@ -318,9 +319,10 @@ const AddProduct = () => {
               </Box>
 </Container>
     </Box>
-    <Box>
+    <Box  pt={3} sx={{background: '#FFFFFF',borderRadius:'8px',height:'100%',pb:4,mt:2.5
+    }}>
     <AddProductTitle title={'Additional info'}/>
-    <Container>
+    <Container sx={{display:'flex',flexDirection:'column',gap:'20px',mt:"20px"}}>
     <NumberField
         variant='outlined'
         label={"Purchase price"}
@@ -360,6 +362,44 @@ const AddProduct = () => {
         borderBottom='none'
         />
     </Container>
+    </Box>
+    <Box pt={3} sx={{background: '#FFFFFF',borderRadius:'8px',height:'100%',pb:4,mt:2.5
+    }}>
+      <AddProductTitle title={'Discount details (Optional)'}/>
+      <Container sx={{display:'flex',flexDirection:'column',gap:'20px',mt:"20px"}}>
+      <NumberField
+        variant='outlined'
+        placeholder={"Discount"}
+        value={controls.discount}
+        onChange={(e) => setControl("discount", e.target.value)}
+        required={required.includes("discount")}
+        error={Boolean(invalid.discount)}
+        helperText={invalid.discount}
+         icon={{ component: <DnsOutlinedIcon />, direction: "left" }}
+        sx={input}
+        borderBottom='none'
+        />
+        <Box>
+        <Typography sx={{
+fontSize: '14px',
+fontWeight: 400,
+lineHeight: '20px',
+letterSpacing: '0em',
+textAlign: 'left'
+}}>Start date*</Typography>
+        <DatePickerField/>
+        </Box>
+        <Box>
+        <Typography sx={{
+fontSize: '14px',
+fontWeight: 400,
+lineHeight: '20px',
+letterSpacing: '0em',
+textAlign: 'left'
+}}>End date*</Typography>
+        <DatePickerField/>
+        </Box>
+      </Container>
     </Box>
     </>
   );
