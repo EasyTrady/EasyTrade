@@ -59,7 +59,7 @@ export default function App() {
   // Cache for the rtl
   useMemo(() => {
     const cacheRtl = createCache({
-      key: "rtl",
+      key: "ltr",
       stylisPlugins: [rtlPlugin],
     });
 
@@ -135,7 +135,7 @@ export default function App() {
     </SoftBox>
   );
 
-  return direction === "rtl" ? (
+  return direction === "ltr" ? (
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={themeRTL}>
         <CssBaseline />
@@ -168,7 +168,7 @@ export default function App() {
           <Sidenav
             color={sidenavColor}
             brand={brand}
-            brandName="Soft UI Dashboard"
+            brandName={shop_name}
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}

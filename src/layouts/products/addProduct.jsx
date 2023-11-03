@@ -1,4 +1,4 @@
-import { Box, Card, Container, Grid } from "@mui/material";
+import { Box, Card, Container, Grid, Switch, Typography } from "@mui/material";
 import borders from "assets/theme/base/borders";
 import SoftBox from "components/SoftBox";
 import SoftInput from "components/SoftInput";
@@ -24,12 +24,16 @@ import SoftButton from "components/SoftButton";
 import stepper from "assets/theme/components/stepper";
 import useRequest from "hooks/useRequest";
 import { EMPLOYEE } from "data/api";
+import InputField from "components/common/TextField";
+import NumberField from "components/common/NumberFeild";
+import SelectField from "components/common/SelectField";
+import AddProductTitle from "components/common/AddProductTitle";
 const ReactQuill = require("react-quill");
 const AddProduct = () => {
   const { borderWidth, borderColor } = borders;
   const [value, setValue] = useState("");
-  let Token = localStorage.getItem('token')
-
+  let Token = localStorage.getItem("token");
+ 
   const modules = {
     toolbar: [
       [{ font: [] }],
@@ -43,7 +47,7 @@ const AddProduct = () => {
       ["clean"],
     ],
   };
-//   form status control
+  //   form status control
   const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
     { control: "image", value: "", isRequired: true },
     {
@@ -84,183 +88,280 @@ const AddProduct = () => {
     { control: "description", value: "", isRequired: true },
     { control: "category", value: "", isRequired: true },
   ]);
-// form request add product
-  const [AddProductRequest, AddProductResponce] =
-  useRequest({
-      path: EMPLOYEE,
-      method: "post",
-      Token: `Token ${Token}`
+  // form request add product
+  const [AddProductRequest, AddProductResponce] = useRequest({
+    path: EMPLOYEE,
+    method: "post",
+    Token: `Token ${Token}`,
   });
   function handleSubmit() {
-    console.log("submit")
+    console.log("submit");
     validate().then((output) => {
-        console.log(output)
-        if (!output.isOk) return;
-        EmployeePostRequest({
-            body: controls,
-            onSuccess: (res) => {
-                console.log(res.data, controls)
-            }
-        }).then((res) => {
-            let response = res?.response?.data;
-            console.log(res)
-            const responseBody = filter({
-                obj: {
-                    name:
-                        response?.name?.join(""),
-                    quantity: response?.quantity?.join(" "),
-                    price: response?.price?.join(" "),
-                    sku: response?.sku?.join(" "),
-                    weight: response?.weight?.join(" "),
-                    channel: response?.channel?.join(" "),
-                    minimum_quantity: response?.minimum_quantity?.join(" "),
-                    minimum_quantity: response?.maximum_quantity?.join(" "),
-                    category: response?.category?.join(" "),
-                    description: response?.description?.join(" "),
-                },
-                output: "object",
-            });
-
-            setInvalid(responseBody);
-            resetControls("")
+      console.log(output);
+      if (!output.isOk) return;
+      EmployeePostRequest({
+        body: controls,
+        onSuccess: (res) => {
+          console.log(res.data, controls);
+        },
+      }).then((res) => {
+        let response = res?.response?.data;
+        console.log(res);
+        const responseBody = filter({
+          obj: {
+            name: response?.name?.join(""),
+            quantity: response?.quantity?.join(" "),
+            price: response?.price?.join(" "),
+            sku: response?.sku?.join(" "),
+            weight: response?.weight?.join(" "),
+            channel: response?.channel?.join(" "),
+            minimum_quantity: response?.minimum_quantity?.join(" "),
+            minimum_quantity: response?.maximum_quantity?.join(" "),
+            category: response?.category?.join(" "),
+            description: response?.description?.join(" "),
+          },
+          output: "object",
         });
-    })
 
-}
+        setInvalid(responseBody);
+        resetControls("");
+      });
+    });
+  }
   return (
-    
-      <Card pt={3}>
-        <Container>
-          <SoftBox py={3} display="flex" flexDirection="column" gap={2}>
-            <SoftInput
-              placeholder={"Product name"}
-              value={controls.name}
-              onChange={(e) => setControl("name", e.target.value)}
-              required={required.includes("name")}
-              error={Boolean(invalid.name)}
-              helperText={invalid.name}
-              icon={{ component: <DnsOutlinedIcon />, direction: "left" }}
-              sx={input}
-            />
-            <Grid container spacing={4}>
-              <Grid item md={4}>
-                <SoftInput
-                  placeholder={"Product code SKU"}
-                  value={controls.sku}
-                  onChange={(e) => setControl("sku", e.target.value)}
-                  required={required.includes("sku")}
-                  error={Boolean(invalid.sku)}
-                  helperText={invalid.sku}
-                  icon={{ component: <QrCodeScannerIcon />, direction: "left" }}
-                  sx={input}
-                />
-              </Grid>
-              <Grid item md={4}>
-                <SoftInput
-                  placeholder={"Weight"}
-                  value={controls.weight}
-                  onChange={(e) => setControl("weight", e.target.value)}
-                  required={required.includes("weight")}
-                  error={Boolean(invalid.weight)}
-                  helperText={invalid.weight}
-                  icon={{ component: <ScaleOutlinedIcon />, direction: "left" }}
-                  sx={input}
-                />
-              </Grid>
-              <Grid item md={4}>
-                <SoftInput
-                  placeholder={"Product price"}
-                  value={controls.price}
-                  onChange={(e) => setControl("price", e.target.value)}
-                  required={required.includes("price")}
-                  error={Boolean(invalid.price)}
-                  helperText={invalid.price}
-                  icon={{ component: <PriceChangeOutlinedIcon />, direction: "left" }}
-                  sx={input}
-                />
-              </Grid>
-            </Grid>
-
-            <SoftBox>
-              <SoftTypography variant="h6" fontWeight="medium">
-                product quantity
-              </SoftTypography>
-              <SoftBox
-                border={`${borderWidth[1]} solid ${borderColor}`}
-                borderRadius="lg"
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                p={3}
-              >
-                <SoftInput
-                  placeholder="Quantity"
-                  value={controls.quantity}
-                  onChange={(e) => setControl("quantity", e.target.value)}
-                  required={required.includes("quantity")}
-                  error={Boolean(invalid.quantity)}
-                  helperText={invalid.quantity}
-                  icon={{ component: <ProductionQuantityLimitsIcon />, direction: "left" }}
-                  sx={input}
-                />
-              </SoftBox>
-            </SoftBox>
-            <SoftBox display="flex" flexDirection="row" alignItems="center" gap={4}>
-              <SoftInput
-                placeholder={"Minimum quantity"}
-                value={controls.minimum_quantity}
-                onChange={(e) => setControl("minimum_quantity", e.target.value)}
-                required={required.includes("minimum_quantity")}
-                error={Boolean(invalid.minimum_quantity)}
-                helperText={invalid.minimum_quantity}
-                icon={{ component: <NotificationImportantOutlinedIcon />, direction: "left" }}
+    <>
+    <Box pt={3} sx={{background: '#FFFFFF',borderRadius:'8px',height:'100%',pb:4
+    }}>
+      <AddProductTitle title={'Basic info'}/>
+      <Container>
+        <SoftBox py={3} display="flex" flexDirection="column" gap={2} sx={{width:'100%',height:'100%'}}>
+          <InputField
+          variant='outlined'
+          label={"Product name"}
+            placeholder={"Arabic Product"}
+            value={controls.name}
+            onChange={(e) => setControl("name", e.target.value)}
+            required={required.includes("name")}
+            error={Boolean(invalid.name)}
+            helperText={invalid.name}
+            sx={input}
+           
+          />
+          <InputField
+          variant='outlined'
+            placeholder={"English Product"}
+            value={controls.name}
+            onChange={(e) => setControl("name", e.target.value)}
+            required={required.includes("name")}
+            error={Boolean(invalid.name)}
+            helperText={invalid.name}
+            sx={{width:'100%'}}
+           
+          />
+           <NumberField
+            variant='outlined'
+              label='Quantity'
+                placeholder="Quantity"
+                value={controls.quantity}
+                onChange={(e) => setControl("quantity", e.target.value)}
+                required={required.includes("quantity")}
+                error={Boolean(invalid.quantity)}
+                helperText={invalid.quantity}
                 sx={input}
               />
-
-              <SoftInput
-                placeholder={"Maximum quantity per order"}
-                value={controls.maximum_quantity}
-                onChange={(e) => setControl("maximum_quantity", e.target.value)}
-                required={required.includes("maximum_quantity")}
-                error={Boolean(invalid.maximum_quantity)}
-                helperText={invalid.maximum_quantity}
-                icon={{ component: <BookmarkAddedOutlinedIcon />, direction: "left" }}
-                sx={input}
-              />
-            </SoftBox>
-            <SoftInput
-              placeholder={"Category"}
+               <SelectField
+              variant="outlined"
+              placeholder="category"
+              label="Category"
+              thousandSeparator
               value={controls.category}
-              onChange={(e) => {
-                let text = /^(?:[A-Za-z\u0600-\u06ff\s]*)$/;
-                let match = text.test(e.target.value);
-                  if (match) {
-                    setControl("category", e.target.value)
-                  }}}
+              onChange={(e) => setControl("category", e.target.value)}
               required={required.includes("category")}
+              textHelper={controls.category}
               error={Boolean(invalid.category)}
               helperText={invalid.category}
-              icon={{ component: <CategoryIcon />, direction: "left" }}
+              sx={{width: "100%"}}
+          />
+          
+            <Box>
+          <Typography sx={{
+            fontSize: '14px',
+            fontWeight: 400,
+            lineHeight:' 20px',
+            letterSpacing: '0em',
+            textAlign: 'left'
+            }}>Description</Typography>
+            <ReactQuill
+              theme="snow"
+              value={value}
+              onChange={setValue}
+              placeholder="Typing the description of product."
+              onBlur={(e) => validate({ content: e.index })}
+              modules={modules}
+              style={{ height: "118px" }}
+            />
+            </Box>
+            <Box mt={4}>
+            <ReactQuill
+              theme="snow"
+              value={value}
+              onChange={setValue}
+              placeholder="Typing the description of product."
+              onBlur={(e) => validate({ content: e.index })}
+              modules={modules}
+              style={{ height: "118px",mt:4 }}
+            />
+            </Box>
+         
+
+          {/* <SoftButton variant="gradient" color="dark">Add product</SoftButton> */}
+        </SoftBox>
+      </Container>
+    </Box>
+    <Box sx={{background: '#FFFFFF',borderRadius:'8px',height:'100%',mt:2.5}}>
+    <AddProductTitle title={'Product Specifications'} switch/>
+    
+
+    </Box>
+    <Box sx={{background: '#FFFFFF',borderRadius:'8px',height:'100%',mt:2.5,display:'flex',flexDirection:'column',gap:'20px'}}>
+    <AddProductTitle title={'Product details'} />
+    <Container sx={{display:'flex',flexDirection:'column',gap:'20px'}}>
+    <NumberField
+        variant='outlined'
+        label={"barcode"}
+        placeholder={"barcode"}
+        value={controls.mpn}
+        onChange={(e) => setControl("barcode", e.target.value)}
+        required={required.includes("barcode")}
+        error={Boolean(invalid.mpn)}
+        helperText={invalid.mpn}
+        // icon={{ component: <DnsOutlinedIcon />, direction: "left" }}
+        sx={input}
+        borderBottom='none'
+        />
+    <NumberField
+        variant='outlined'
+        label={"Gtn"}
+        placeholder={"Gtn"}
+        value={controls.gtn}
+        onChange={(e) => setControl("gtn", e.target.value)}
+        required={required.includes("gtn")}
+        error={Boolean(invalid.gtn)}
+        helperText={invalid.gtn}
+        // icon={{ component: <DnsOutlinedIcon />, direction: "left" }}
+        sx={input}
+        borderBottom='none'
+        />
+ <NumberField
+ variant='outlined'
+                label={"SKU"}
+                placeholder={"SKU"}
+                value={controls.sku}
+                onChange={(e) => setControl("sku", e.target.value)}
+                required={required.includes("sku")}
+                error={Boolean(invalid.sku)}
+                helperText={invalid.sku}
+                sx={input}
+              />
+              <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',gap:'20px'}}>
+              <NumberField
+              variant='outlined'
+                label={"Weight*"}
+                placeholder={"Weight"}
+                value={controls.weight}
+                onChange={(e) => setControl("weight", e.target.value)}
+                required={required.includes("weight")}
+                error={Boolean(invalid.weight)}
+                helperText={invalid.weight}
+               
+                sx={input}
+              />
+              <NumberField
+              variant='outlined'
+                label={"Dimensions (L*W*H)"}
+                placeholder={"l*W..."}
+                value={controls.weight}
+                onChange={(e) => setControl("weight", e.target.value)}
+                required={required.includes("weight")}
+                error={Boolean(invalid.weight)}
+                helperText={invalid.weight}
+               
+                sx={input}
+              />
+              </Box>
+              <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',gap:'20px'}}>
+              <NumberField
+              variant='outlined'
+              label={"Maximum order quantity*"}
+              placeholder={"Maximum order quantity"}
+              value={controls.maximum_quantity}
+              onChange={(e) => setControl("maximum_quantity", e.target.value)}
+              required={required.includes("maximum_quantity")}
+              error={Boolean(invalid.maximum_quantity)}
+              helperText={invalid.maximum_quantity}
+              
               sx={input}
             />
 
-            <Box height="200px" sx={{my:3}}>
-              <ReactQuill
-                theme="snow"
-                value={value}
-                onChange={setValue}
-                placeholder="Typing the description of product."
-                onBlur={(e) => validate({ content: e.index })}
-                modules={modules}
-                style={{ height: "200px" }}
+            <NumberField
+            variant='outlined'
+              label={"Minimum stock quantity*"}
+              placeholder={"Minimum stock quantity"}
+              value={controls.minimum_quantity}
+              onChange={(e) => setControl("minimum_quantity", e.target.value)}
+              required={required.includes("minimum_quantity")}
+              error={Boolean(invalid.minimum_quantity)}
+              helperText={invalid.minimum_quantity}
+              
+              sx={input}
+            />
+              </Box>
+</Container>
+    </Box>
+    <Box>
+    <AddProductTitle title={'Additional info'}/>
+    <Container>
+    <NumberField
+        variant='outlined'
+        label={"Purchase price"}
+        placeholder={"Purchase price"}
+        value={controls.purchase_price}
+        onChange={(e) => setControl("purchase_price", e.target.value)}
+        required={required.includes("purchase_price")}
+        error={Boolean(invalid.purchase_price)}
+        helperText={invalid.purchase_price}
+        // icon={{ component: <DnsOutlinedIcon />, direction: "left" }}
+        sx={input}
+        borderBottom='none'
+        />
+        <NumberField
+        variant='outlined'
+                label={"Product price"}
+                placeholder={"99 EGP"}
+                value={controls.price}
+                onChange={(e) => setControl("price", e.target.value)}
+                required={required.includes("price")}
+                error={Boolean(invalid.price)}
+                helperText={invalid.price}
+                
+                sx={input}
               />
-            </Box>
-
-            {/* <SoftButton variant="gradient" color="dark">Add product</SoftButton> */}
-          </SoftBox>
-        </Container>
-      </Card>
-   
+        <NumberField
+        variant='outlined'
+        label={"shipping price"}
+        placeholder={"99 EGP"}
+        value={controls.shipping_price}
+        onChange={(e) => setControl("shipping_price", e.target.value)}
+        required={required.includes("shipping_price")}
+        error={Boolean(invalid.shipping_price)}
+        helperText={invalid.shipping_price}
+        // icon={{ component: <DnsOutlinedIcon />, direction: "left" }}
+        sx={input}
+        borderBottom='none'
+        />
+    </Container>
+    </Box>
+    </>
   );
 };
 

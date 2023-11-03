@@ -71,9 +71,9 @@ function Dashboard() {
   },[])
 // Changing the direction to rtl
 useEffect(() => {
-  setDirection(dispatch, "rtl");
+  setDirection(dispatch, "ltr");
 
-  return () => setDirection(dispatch, "rtl");
+  return () => setDirection(dispatch, "ltr");
 }, []);
 
   return (

@@ -1,0 +1,114 @@
+{
+    "signin": {
+        "title": "Sign in"
+    },
+    "home":{
+        "title":"Home"
+    }
+   ,
+    "services":{
+        "title":"Services"
+    }
+   ,
+    "pricing":{
+        "title":"Pricing"
+    }
+   ,
+    "features":{
+        "title":"Features"
+    }
+   ,
+    "contactus":{
+        "title":"Contact us"
+    },
+    "aselateam":{
+        "title":"Create your own store."
+    }
+    ,
+    "ourteam":{
+        "title":"Launch an online store in minutes and grow for years, all in one place."
+    },
+    "getforfree":{
+        "title":"Get Started For Free!"
+    },
+    "enteremail":{
+        "title":"Enter Your Email Address"
+    },
+    "joinourclients":{
+        "title":"Join our clients & enjoy the experience"
+    },
+    "makefavor":{
+        "title":"make favor to your business"
+    },
+    "pickplan":{
+        "title":"Pick a plan that's right for you"
+    },
+    
+    "priceplan":{
+        "title":"Pricing plans for Your Website at every stage of growth"
+    },
+    "monthly":{
+        "title":"Monthly"
+    },
+    "yearly":{
+        "title":"Yearly"
+    },
+    "seedetails":{
+        "title":"See Details"
+    },
+    "chooseplan":{
+        "title":"Choose plan"
+    },
+    "signup":{
+        "title":"Sign up"
+    },
+    "signout":{
+        "title":"  Sign out"
+    },
+    "welcome":{
+        "title":"Welcome ,Create your own acco"
+    },
+    "name":{
+        "title":"name"
+    },
+    "password":{
+        "title":" Password"
+    },
+    "phone":{
+        "title":" Phone number"
+    },
+    "storedomain":{
+        "title":"Online Store Domain "
+    },
+    "storename":{
+        "title":"Online Store Name "
+    },
+    "email":{
+        "title":"E-mail address"
+    },
+    "chooseaccount":{
+        "title":" Choose Your Account"
+    },
+    "haveaccount":{
+        "title":" Already have an account ?"
+    },
+    "signinnow":{
+        "title":" Login Now"
+    },
+    "company":{
+        "title":"Company"
+    },
+    "companyname":{
+        "title":"Company name*"
+    },
+    "individual":{
+        "title":"Individual"
+    },
+    "welcomeback":{
+        "title":"Welcome back ! Login into your account"
+    },
+    "donthaveaccount":{
+        "title":"Don’t have an account ?"
+    }
+    
+}

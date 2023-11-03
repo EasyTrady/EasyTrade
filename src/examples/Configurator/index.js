@@ -198,44 +198,8 @@ function Configurator() {
 
         <Divider />
 
-        <SoftBox mt={3} mb={2}>
-          <SoftBox mb={2}>
-            <SoftButton
-              component={Link}
-              href="https://www.creative-tim.com/product/soft-ui-dashboard-react"
-              target="_blank"
-              rel="noreferrer"
-              color="dark"
-              variant="gradient"
-              fullWidth
-            >
-              free download
-            </SoftButton>
-          </SoftBox>
-          <SoftButton
-            component={Link}
-            href="https://www.creative-tim.com/learning-lab/react/quick-start/soft-ui-dashboard/"
-            target="_blank"
-            rel="noreferrer"
-            color="dark"
-            variant="outlined"
-            fullWidth
-          >
-            view documentation
-          </SoftButton>
-        </SoftBox>
-        <SoftBox display="flex" justifyContent="center">
-          <a
-            className="github-button"
-            href="https://github.com/creativetimofficial/soft-ui-dashboard-react"
-            data-icon="octicon-star"
-            data-size="large"
-            data-show-count="true"
-            aria-label="Star creativetimofficial/soft-ui-dashboard-react on GitHub"
-          >
-            Star
-          </a>
-        </SoftBox>
+        
+        
         <SoftBox mt={3} textAlign="center">
           <SoftBox mb={0.5}>
             <SoftTypography variant="h6">Thank you for sharing!</SoftTypography>
