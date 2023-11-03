@@ -86,7 +86,7 @@ function Employee() {
             headerAlign: 'left',
             editable: true,
             renderCell: (params) => <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <Typography component={"h3"} sx={{ color: "#673ab7", marginTop: "10px" }}>{params.row.full_name}</Typography>
+                <Typography variant={"h6"} sx={{ color: "#673ab7", marginTop: "10px" }}>{params.row.full_name}</Typography>
             </Box>
         },
         {
@@ -98,7 +98,7 @@ function Employee() {
             headerAlign: 'left',
             editable: true,
             renderCell: (params) => <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <Typography component={"p"} sx={{ color: (theme) => theme.palette.primary, marginTop: "10px" }}>{params.row.email}</Typography>
+                <Typography  variant={"h6"} sx={{ color: (theme) => theme.palette.primary, marginTop: "10px" }}>{params.row.email}</Typography>
             </Box>
         },
         {

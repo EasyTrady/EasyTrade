@@ -171,10 +171,13 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
           //     /></option>
           //   </SoftSelect>
           // </> : <></>,
-          <>   <SoftButton variant="outlined" key={0} color="dark" onClick={(event) =>Boolean(open)? setOpen(null):setOpen(event.currentTarget)} sx={{
-            border: "unset", borderRadius: "50%", padding: "0", backgroundColor: open ? "#4A81CA" : "#ECF4FA", width: "40px", height: "40px",
+          <>   <SoftButton variant="outlined" key={0} color="dark" onClick={(event) =>{console.log(Boolean(open));setOpen(event.currentT)}}  sx={{
+            border: "unset", borderRadius: "50%", padding: "0", backgroundColor: Boolean(open) ? "#4A81CA" : "#ECF4FA", width: "40px", height: "40px",
+            ".MuiButtonBase-root:hover":{
+              backgroundColor:"unset !important"
+            }
           }}>
-            <MoreVertIcon sx={ {color:open ? "#ffff" : "#4A81CA"}} />
+            <MoreVertIcon sx={ {color:Boolean(open) ? "#ffff" : "#4A81CA"}} />
 
           </SoftButton>
          <MenuCustom anchor={open}>

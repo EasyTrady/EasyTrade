@@ -43,7 +43,7 @@ import createCache from "@emotion/cache";
 import routes from "routes";
 
 // Soft UI Dashboard React contexts
-import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "context";
+import { useSoftUIController, setMiniSidenav, setOpenConfigurator,setDirection } from "context";
 
 // Images
 import brand from "assets/images/logo-ct.png";
@@ -87,6 +87,8 @@ export default function App() {
 
   // Setting the dir attribute for the body element
   useEffect(() => {
+    console.log(direction)
+    setDirection(dispatch,"ltr")
     document.body.setAttribute("dir", direction);
   }, [direction]);
 
