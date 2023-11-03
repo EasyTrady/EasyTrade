@@ -68,8 +68,6 @@ import AddProduct from "layouts/products/addProduct";
 import TextMobileStepper from "layouts/products/stepper";
 import AddProductPanel from "layouts/products/addProductPanel";
 import HomeSections from "layouts/home/homepage";
-import Register from "layouts/authentication/authentication3/Register3";
-import Login from "layouts/authentication/authentication3/Login3";
 
 const sub_domain = localStorage.getItem('sub_domain')
 const routes = [
@@ -348,7 +346,7 @@ const routes = [
     key: "sign-in",
     route: "/authentication/sign-in",
     icon: <Document size="12px" />,
-    component: <Login />,
+    component: <SignIn />,
     noCollapse: false,
   },
   {
@@ -357,7 +355,7 @@ const routes = [
     key: "sign-up",
     route: "/authentication/sign-up",
     icon: <SpaceShip size="12px" />,
-    component: <Register />,
+    component: <SignUp />,
     noCollapse: false,
   },
 ];

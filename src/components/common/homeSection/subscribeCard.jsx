@@ -238,7 +238,7 @@ const SubscribeCard = ({type}) => {
      
             <ButtonSubScribtion
               onClick={() => {
-                navigate('/register', { state: { subscribtionId: card?.id } });
+                navigate('/authentication/sign-up', { state: { subscribtionId: card?.id } });
               }}
             >
               {t('chooseplan.title')}

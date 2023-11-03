@@ -40,6 +40,7 @@ import MuiPhoneNumber from 'material-ui-phone-number';
 import {  GetShopInfo, SignupUser } from 'store/pages/signupslice';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import SoftInput from 'components/SoftInput';
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
 const FirebaseRegister = ({ ...others  }) => {
@@ -186,7 +187,7 @@ console.log(user);
             
             <FormControl fullWidth error={Boolean(touched.full_name && errors.full_name)} sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-fullname-register">الاسم بالكامل</InputLabel>
-              <OutlinedInput
+              <SoftInput
                 id="outlined-adornment-fullname-register"
                 type="text"
                 value={values.full_name}
@@ -204,7 +205,7 @@ console.log(user);
             </FormControl>
             <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-email-register">البريد الالكتروني</InputLabel>
-              <OutlinedInput
+              <SoftInput
                 id="outlined-adornment-email-register"
                 type="email"
                 value={values.email}
@@ -222,12 +223,12 @@ console.log(user);
 
             <FormControl fullWidth error={Boolean(touched.password && errors.password)} sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-password-register">كلمة المرور</InputLabel>
-              <OutlinedInput
+              <SoftInput
                 id="outlined-adornment-password-register"
                 type={showPassword ? 'text' : 'password'}
                 value={values.password}
                 name="password"
-                label="Password"
+                // label="Password"
                 onBlur={handleBlur}
                 onChange={(e) => {
                   handleChange(e);
@@ -293,7 +294,7 @@ console.log(user);
               </FormControl>
             <FormControl fullWidth error={Boolean(touched.shop_name && errors.shop_name)} sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-storename-register">اسم المتجر</InputLabel>
-              <OutlinedInput
+              <SoftInput
                 id="outlined-adornment-storename-register"
                 type="text"
                 value={values.shop_name}
