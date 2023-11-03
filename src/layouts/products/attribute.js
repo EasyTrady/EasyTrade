@@ -20,6 +20,7 @@ import SoftInput from 'components/SoftInput'
 import SoftBox from 'components/SoftBox'
 import Breadcrumbs from 'examples/Breadcrumbs'
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
+import PropTypes from "prop-types";
 function Attribute({ absolute, light, isMini }) {
     const [open, setOpen] = React.useState(false);
     let dispatch = useDispatch()
