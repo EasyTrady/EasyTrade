@@ -6,6 +6,8 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import AddProduct from './addProduct';
 import AddProductFetures from './addProductFetures';
+import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
+import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
 
 export default function AddProductPanel() {
   const [value, setValue] = React.useState(0);
@@ -15,24 +17,46 @@ export default function AddProductPanel() {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
+    <DashboardLayout>
+      <DashboardNavbar />
+      <Box sx={{  }}>
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" sx={{fontFamily: 'Inter',
+fontSize: '14px',
+fontWeight: 500,
+lineHeight: '17px',
+letterSpacing: '0em',
+textAlign: 'left',
+bgcolor:'transparent',
+'.MuiTabs-indicator': {
+  backgroundColor: '#transparent',
+  height: '100%',
+  width: '100%',
+  color:'#fff !important',
+  zIndex: -1,
+}
+}}>
+          <Tab label="Product details  (1st step)" {...a11yProps(0)} />
+          <Tab label="Product images (2nd step)" {...a11yProps(1)} />
+          <Tab label="Attributes (3rd step)" {...a11yProps(2)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
+      
        <AddProduct/>
+       
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
+     
         <AddProductFetures/>
+       
       </CustomTabPanel>
+
       <CustomTabPanel value={value} index={2}>
+     
         Item Three
+       
       </CustomTabPanel>
-    </Box>
+      </DashboardLayout>
   );
 }
 

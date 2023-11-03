@@ -1,0 +1,114 @@
+
+
+{
+    "signin": {
+        "title": "تسجيل الدخول"
+    },
+    "home":{
+        "title":"الرئيسية"
+    }
+   ,
+    "services":{
+        "title":"الخدمات"
+    }
+   ,
+    "pricing":{
+        "title":"الاسعار"
+    }
+    ,
+    "features":{
+        "title":"المميزات"
+    }
+   ,
+    "contactus":{
+        "title":"تواصل معنا"
+    },
+    "aselateam":{
+        "title":"انشيء متجرك الخاص"
+    }
+   ,
+    "ourteam":{
+        "title":"اطلاق متجر عبر الانترنت في دقائق والنمو لسنوات كل هذا في مكان واحد"
+    },
+    "getforfree":{
+        "title":"ابدأ تجربتك الان"
+    },
+    "enteremail":{
+        "title":"أدخل عنوان بريدك الالكتروني"
+    },
+    "joinourclients":{
+        "title":"قدم لعملائك تجربة دفع وشحن مريحة"
+    },
+    "makefavor":{
+        "title":"(الكروت - المحافظ - التقسيط - الدفع عند الاستلام)"
+    },
+    "pickplan":{
+        "title":"اختر الخطة المناسبة لك"
+    },
+    "priceplan":{
+        "title":"خطط التسعير لموقع الويب الخاص بك في كل مرحلة من مراحل النمو"
+    },
+    "monthly":{
+        "title":"شهرى"
+    },
+    "yearly":{
+        "title":"سنوى"
+    },
+    "seedetails":{
+        "title":"التفاصيل"
+    },
+    "chooseplan":{
+        "title":"اختر الخطة"
+    },
+    "signup":{
+        "title":"إنشاء حساب"
+    },
+    "signout":{
+        "title":" تسجيل الخروج"
+    },
+    "welcome":{
+        "title":"مرحباً بك، قم بإنشاء حساب خاص بك"
+    },
+    "name":{
+        "title":"الإسم"
+    },
+    "password":{
+        "title":"كلمة المرور"
+    },
+    "phone":{
+        "title":"رقم الهاتف"
+    },
+    "email":{
+        "title":"عنوان البريد الإلكترونى"
+    },
+    "storedomain":{
+        "title":"نطاق المتجر على الإنترنت "
+    },
+    "storename":{
+        "title":"اسم المتجر الالكتروني "
+    },
+    "chooseaccount":{
+        "title":"إختر نوع حسابك"
+    },
+    "haveaccount":{
+        "title":" لديك حساب بالفعل؟"
+    },
+    "signinnow":{
+        "title":" سجل الآن"
+    },
+    "company":{
+        "title":"شركة"
+    },
+    "companyname":{
+        "title":"*إسم الشركة"
+    },
+    "indivedual":{
+        "title":"فردى"
+    },
+    "welcomeback":{
+        "title":"مرحبًا بعودتك ! تسجيل الدخول إلى حسابك"
+    },
+    "donthaveaccount":{
+        "title":"ليس لديك حساب ؟"
+    }
+}

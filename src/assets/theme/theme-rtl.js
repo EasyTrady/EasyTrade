@@ -77,7 +77,7 @@ import svgIcon from "assets/theme/components/svgIcon";
 import link from "assets/theme/components/link";
 
 export default createTheme({
-  direction: "rtl",
+  direction: "ltr",
   breakpoints: { ...breakpoints },
   palette: { ...colors },
   typography: { ...typography },

@@ -1,0 +1,31 @@
+import { Box } from '@mui/material';
+import { Footer } from 'components/common/footer/footer';
+import ResponsiveGrid from 'components/common/homeSection/cards';
+import LandingSection from 'components/common/homeSection/landingSection';
+import SubscribeSection from 'components/common/homeSection/subscribeSection';
+import Navbar from 'components/common/navbar/navbar';
+import Achievements from '../../components/common/homeSection/Achievements'
+import CompanySection from '../../components/common/homeSection/companySection'
+// import ContactUs from 'ContactUs/ContactUs.jsx';
+
+
+import React from 'react';
+
+const HomeSections = () => {
+  return (
+    <Box>
+      <Navbar />
+      <LandingSection />
+      
+      {/* <Price/> */}
+      {/* <ContactUs/> */}
+      <Achievements/>
+      <CompanySection />
+      <SubscribeSection />
+      <ResponsiveGrid/>
+      <Footer />
+    </Box>
+  );
+};
+
+export default HomeSections;

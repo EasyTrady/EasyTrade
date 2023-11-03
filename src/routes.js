@@ -67,12 +67,21 @@ import AttributeValue from "layouts/products/valuseAttribute";
 import AddProduct from "layouts/products/addProduct";
 import TextMobileStepper from "layouts/products/stepper";
 import AddProductPanel from "layouts/products/addProductPanel";
+import HomeSections from "layouts/home/homepage";
 
 const sub_domain = localStorage.getItem('sub_domain')
 const routes = [
   {
+    type:'title',
+    name:'Home',
+    key:'home',
+    route:'/',
+    component:<HomeSections/>,
+    noCollapse:false,
+  },
+  {
     type: "collapse",
-    name: "Home",
+    name: "Dashboard",
     key: "dashboard",
     route: `/${sub_domain}/dashboard`,
     icon: <Shop size="12px" />,
