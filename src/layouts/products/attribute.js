@@ -14,13 +14,16 @@ import useControls from 'hooks/useControls'
 import useRequest from 'hooks/useRequest'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import input from "assets/theme/components/form/input";
 import SoftInput from 'components/SoftInput'
-
-function Attribute() {
+import SoftBox from 'components/SoftBox'
+import Breadcrumbs from 'examples/Breadcrumbs'
+import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
+function Attribute({ absolute, light, isMini }) {
     const [open, setOpen] = React.useState(false);
     let dispatch = useDispatch()
+    const route = useLocation().pathname.split("/").slice(1);
     let attributes = useSelector((state) => state.attribute.value)
     let [rows, setRows] = useState([])
     const [openValue, setOpenValue] = React.useState(true);
@@ -163,7 +166,9 @@ function Attribute() {
                 <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                 &nbsp;add new attribute
             </SoftButton>
-            
+            <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
+          <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+        </SoftBox>
             <Dialog open={open} onClose={handleClose}>
                 <Form component="form"
                     childrenProps={{
@@ -270,3 +275,15 @@ function Attribute() {
 }
 
 export default Attribute
+Attribute.defaultProps = {
+    absolute: false,
+    light: false,
+    isMini: false,
+  };
+  
+  // Typechecking props for the Attribute
+  Attribute.propTypes = {
+    absolute: PropTypes.bool,
+    light: PropTypes.bool,
+    isMini: PropTypes.bool,
+  };

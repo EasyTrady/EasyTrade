@@ -10,8 +10,8 @@ import AuthCardWrapper from '../AuthCardWrapper';
 import AuthLogin from '../auth-forms/AuthLogin';
 // import Logo from 'ui-component/Logo';
 // import AuthFooter from 'ui-component/cards/AuthFooter';
-import login from '../../../../assets/images/icons/Social Media Icon Square/login.png';
-
+import login from '../../../assets/images/icons/Social Media Icon Square/login.png';
+import PageLayout from "examples/LayoutContainers/PageLayout"
 
 // assets
 
@@ -22,6 +22,7 @@ const Login = () => {
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
+    <PageLayout>
     <AuthWrapper1>
       <Box
         sx={{
@@ -90,6 +91,7 @@ const Login = () => {
       </Grid>
       </Box>
     </AuthWrapper1>
+    </PageLayout>
   );
 };
 

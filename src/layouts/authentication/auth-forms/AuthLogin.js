@@ -140,7 +140,7 @@ const FirebaseLogin = ({ ...others }) => {
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
-            <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
+            <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput,marginY:"15px" }}>
               <InputLabel htmlFor="outlined-adornment-email-login">البريد الالكتروني</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-email-login"
@@ -159,7 +159,7 @@ const FirebaseLogin = ({ ...others }) => {
               )}
             </FormControl>
 
-            <FormControl fullWidth error={Boolean(touched.password && errors.password)} sx={{ ...theme.typography.customInput }}>
+            <FormControl fullWidth error={Boolean(touched.password && errors.password)} sx={{ ...theme.typography.customInput,marginY:"15px" }}>
               <InputLabel htmlFor="outlined-adornment-password-login" sx={{textAlign:'right',display:'block'}}>كلمة المرور</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password-login"
