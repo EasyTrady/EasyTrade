@@ -11,7 +11,7 @@ import { interFont } from '../themes.jsx';
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [clientWindowHeight, setClientWindowHeight] = useState('');
-  const [t, i18n] = useTranslation('common');
+  const [t, i18n] = useTranslation();
   // eslint-disable-next-line no-unused-vars
   const [backgroundTransparacy, setBackgroundTransparacy] = useState(0);
   // eslint-disable-next-line no-unused-vars
@@ -19,11 +19,11 @@ const Navbar = () => {
   const [boxShadow, setBoxShadow] = useState(0);
   // const { token } = useSelector((state) => state.auth);
   const pages = [
-    t('home.title', { framework: 'React' }),
-    t('services.title'),
-    t('pricing.title'),
-    t('features.title'),
-    t('contactus.title')
+    t('home', { framework: 'React' }),
+    t('services'),
+    t('pricing'),
+    t('features'),
+    t('contactus')
   ];
   const navigate = useNavigate();
   useEffect(() => {

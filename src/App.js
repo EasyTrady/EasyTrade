@@ -38,12 +38,12 @@ import themeRTL from "assets/theme/theme-rtl";
 import rtlPlugin from "stylis-plugin-rtl";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
-
+import HomeSections from "layouts/home/homepage";
 // Soft UI Dashboard React routes
 import routes from "routes";
 
 // Soft UI Dashboard React contexts
-import { useSoftUIController, setMiniSidenav, setOpenConfigurator,setDirection } from "context";
+import { useSoftUIController, setMiniSidenav, setOpenConfigurator,setDirection,setLayout } from "context";
 
 // Images
 import brand from "assets/images/logo-ct.png";
@@ -88,7 +88,7 @@ export default function App() {
   // Setting the dir attribute for the body element
   useEffect(() => {
     console.log(direction)
-    setDirection(dispatch,"ltr")
+    // setDirection(dispatch,"ltr")
     document.body.setAttribute("dir", direction);
   }, [direction]);
 
@@ -103,7 +103,7 @@ export default function App() {
       if (route.collapse) {
         return getRoutes(route.collapse);
       }
-
+      console.log(route,layout)
       if (route.route) {
         return <Route exact path={route.route} element={route.component} key={route.key} />;
       }
@@ -139,6 +139,7 @@ export default function App() {
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={themeRTL}>
         <CssBaseline />
+       
         {layout === "dashboard" && (
           <>
             <Sidenav
@@ -157,12 +158,15 @@ export default function App() {
         <Routes>
           {getRoutes(routes)}
           <Route path="*" element={<Navigate to="/authentication/sign-in" />} />
+          {/* <Route path="/" element={<HomeSections/>} /> */}
+
         </Routes>
       </ThemeProvider>
     </CacheProvider>
   ) : (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      {console.log(direction)}
       {layout === "dashboard" && (
         <>
           <Sidenav
@@ -181,6 +185,8 @@ export default function App() {
       <Routes>
         {getRoutes(routes)}
         <Route path="*" element={<Navigate to="/authentication/sign-in" />} />
+        {/* <Route path="/" element={<HomeSections/>} /> */}
+
       </Routes>
     </ThemeProvider>
   );

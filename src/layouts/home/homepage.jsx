@@ -7,12 +7,13 @@ import Navbar from 'components/common/navbar/navbar';
 import Achievements from '../../components/common/homeSection/Achievements'
 import CompanySection from '../../components/common/homeSection/companySection'
 // import ContactUs from 'ContactUs/ContactUs.jsx';
-
+import PageLayout from "examples/LayoutContainers/PageLayout"
 
 import React from 'react';
 
 const HomeSections = () => {
   return (
+    <PageLayout>
     <Box>
       <Navbar />
       <LandingSection />
@@ -25,6 +26,7 @@ const HomeSections = () => {
       <ResponsiveGrid/>
       <Footer />
     </Box>
+    </PageLayout>
   );
 };
 
