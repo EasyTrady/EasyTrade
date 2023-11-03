@@ -25,7 +25,7 @@ function navbar(theme, ownerState) {
     boxShadow: transparentNavbar || absolute ? "none" : navbarBoxShadow,
     backdropFilter: transparentNavbar || absolute ? "none" : `saturate(200%) blur(${pxToRem(30)})`,
     backgroundColor:
-      transparentNavbar || absolute ? `${transparent.main} !important` : rgba(white.main, 0.8),
+     rgba(white.main, 0.8),
 
     color: () => {
       let color;
@@ -40,11 +40,11 @@ function navbar(theme, ownerState) {
 
       return color;
     },
-    top: absolute ? 0 : pxToRem(12),
+    // top: absolute ? 0 : pxToRem(12),
     minHeight: pxToRem(75),
     display: "grid",
     alignItems: "center",
-    borderRadius: borderRadius.xl,
+    // borderRadius: borderRadius.xl,
     paddingTop: pxToRem(8),
     paddingBottom: pxToRem(8),
     paddingRight: absolute ? pxToRem(8) : 0,
@@ -71,8 +71,8 @@ function navbar(theme, ownerState) {
 }
 
 const navbarContainer = ({ breakpoints }) => ({
-  flexDirection: "column",
-  alignItems: "flex-start",
+  flexDirection: "row",
+  alignItems: "center",
   justifyContent: "space-between",
   pt: 0.5,
   pb: 0.5,
@@ -87,18 +87,20 @@ const navbarContainer = ({ breakpoints }) => ({
 
 const navbarRow = ({ breakpoints }, { isMini }) => ({
   display: "flex",
-  alignItems: "center",
+  textAlign:"left",
   justifyContent: "space-between",
   width: "100%",
-
+padding:"24px",
   [breakpoints.up("md")]: {
-    justifyContent: isMini ? "space-between" : "stretch",
-    width: isMini ? "100%" : "max-content",
+    justifyContent: "space-between",
+
+    // width: isMini ? "100%" : "max-content",
   },
 
   [breakpoints.up("xl")]: {
-    justifyContent: "stretch !important",
-    width: "max-content !important",
+    justifyContent: "space-between",
+
+    // width: "max-content !important",
   },
 });
 

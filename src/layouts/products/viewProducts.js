@@ -13,11 +13,16 @@ import ProjectsTableData from "layouts/tables/data/projectsTableData";
 import { ProductTableData } from "layouts/tables/data/projecttableData";
 import ProductImageDialog from "components/common/product/productImageDialog";
 import SoftButton from "components/SoftButton";
-import { useNavigate } from "react-router-dom";
-function Products() {
+import { useLocation, useNavigate } from "react-router-dom";
+import SoftBox from 'components/SoftBox'
+import Breadcrumbs from 'examples/Breadcrumbs'
+import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
+import PropTypes from "prop-types";
+function Products({ absolute, light, isMini }) {
   const { columns, rows } = ProductTableData();
   const [open, setOpen] = React.useState(false);
   const navigate =useNavigate()
+  const route = useLocation().pathname.split("/").slice(1);
   const handleRouteProduct = () => navigate('/addnewproduct')
   const handleClose = () => setOpen(false);
   const [paginationModel, setPaginationModel] = React.useState({
@@ -109,11 +114,14 @@ function Products() {
     <>
       <DashboardLayout>
         <DashboardNavbar />
+        <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
+          <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+        </SoftBox>
         <SoftButton variant="gradient" color="dark" onClick={handleRouteProduct}>
                 <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                 &nbsp;add new product
             </SoftButton>
-       
+
         <DataGridCustom
           rows={rows}
           columns={columns}
@@ -139,3 +147,15 @@ function Products() {
 }
 
 export default Products;
+Products.defaultProps = {
+  absolute: false,
+  light: false,
+  isMini: false,
+};
+
+// Typechecking props for the Products
+Products.propTypes = {
+  absolute: PropTypes.bool,
+  light: PropTypes.bool,
+  isMini: PropTypes.bool,
+};

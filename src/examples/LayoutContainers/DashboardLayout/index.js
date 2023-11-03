@@ -22,26 +22,29 @@ import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // Soft UI Dashboard React components
-import SoftBox from "components/SoftBox";
 
+import SoftBox from 'components/SoftBox'
+import Breadcrumbs from 'examples/Breadcrumbs'
+import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 // Soft UI Dashboard React context
 import { useSoftUIController, setLayout } from "context";
 
-function DashboardLayout({ children }) {
+function DashboardLayout({ children,absolute, light, isMini }) {
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav } = controller;
   const { pathname } = useLocation();
+  const route = useLocation().pathname.split("/").slice(1);
 
   useEffect(() => {
     setLayout(dispatch, "dashboard");
   }, [pathname]);
 
   return (
-    <SoftBox
+    <><SoftBox
       sx={({ breakpoints, transitions, functions: { pxToRem } }) => ({
         p: 3,
         position: "relative",
-
+        backgroundColor:"#ECF4FA",
         [breakpoints.up("xl")]: {
           marginLeft: miniSidenav ? pxToRem(120) : pxToRem(274),
           transition: transitions.create(["margin-left", "margin-right"], {
@@ -51,14 +54,21 @@ function DashboardLayout({ children }) {
         },
       })}
     >
+
       {children}
+      
     </SoftBox>
+    
+    </>
   );
 }
 
 // Typechecking props for the DashboardLayout
 DashboardLayout.propTypes = {
   children: PropTypes.node.isRequired,
+  absolute: PropTypes.bool,
+  light: PropTypes.bool,
+  isMini: PropTypes.bool,
 };
 
 export default DashboardLayout;

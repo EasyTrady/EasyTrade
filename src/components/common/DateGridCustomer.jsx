@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Icon, Menu, MenuItem } from "@mui/material";
 
 import * as React from 'react';
 // import Box from '@mui/material/Box';
@@ -11,6 +11,7 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
   GridRowModes,
   DataGrid,
@@ -23,11 +24,17 @@ import SoftBadge from "components/SoftBadge";
 import compare from "../../utils/compare";
 import CustomPagination from "./Pagination";
 import SoftSelect from "components/SoftSelect";
+import SoftButton from "components/SoftButton";
+import MenuCustom from "assets/theme/components/menu";
 function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
   checkboxSelection, onEdit, onDelete, sx, rowsPerPageOptions, notProduct = true, onState, onCopy, onPaginationModelChange, ...rest }) {
   const [, setRows] = React.useState(rows);
+ 
+
   let refSelect = React.useRef()
   const [status, setStatus] = React.useState(false)
+  
+
   const [rowModesModel, setRowModesModel] = React.useState({});
 
   const handleRowEditStop = (params, event) => {
@@ -35,10 +42,10 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
       event.defaultMuiPrevented = true;
     }
   };
-
+ 
   const handleEditClick = (id) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
-
+    onEdit(id)
   };
 
   const handleSaveClick = (id) => () => {
@@ -90,7 +97,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
       cellClassName: 'actions',
       getActions: (row) => {
         const isInEditMode = rowModesModel[row?.id]?.mode === GridRowModes.Edit;
-
+        const [open, setOpen] = React.useState()
         if (isInEditMode) {
           return [
             <GridActionsCellItem
@@ -114,56 +121,84 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
         }
 
         return [
-          onEdit && notProduct ? <GridActionsCellItem
+          // onEdit && notProduct ? <GridActionsCellItem
+          //   key={row.id}
+          //   icon={<EditIcon />}
+          //   label="Edit"
+          //   className="textPrimary"
+          //   onClick={handleEditClick(row?.id, row)}
+          //   color="inherit"
+          // /> : <></>,
+          // onDelete && notProduct ? <GridActionsCellItem
+          //   key={row.id}
+          //   icon={<DeleteIcon />}
+          //   label="Delete"
+          //   onClick={handleDeleteClick(row?.id)}
+          //   color="inherit"
+          // /> : <></>, onState ? <><SoftBadge variant="gradient" badgeContent="online" color={status ? "secondary" : "success"} size="xs" container /></> : <></>,
+          // onCopy && notProduct ? <><GridActionsCellItem
+          //   key={row.id}
+          //   icon={<ContentCopyIcon />}
+          //   label="copy"
+          //   className="textPrimary"
+          //   onClick={onCopy}
+          //   color="inherit"
+          // /></> : !notProduct ? <>
+          //   <SoftSelect ref={refSelect} sx={{...input,width:"100%"}}
+          //     >
+          //     <option> <GridActionsCellItem
+          //       key={row.id}
+          //       icon={<DeleteIcon />}
+          //       label="Delete"
+          //       onClick={handleDeleteClick(row?.id)}
+          //       color="inherit"
+          //     /></option>
+          //     <option> <GridActionsCellItem
+          //       key={row.id}
+          //       icon={<EditIcon />}
+          //       label="Edit"
+          //       className="textPrimary"
+          //       onClick={handleEditClick(row?.id, row)}
+          //       color="inherit"
+          //     /></option>
+          //     <option><GridActionsCellItem
+          //       key={row.id}
+          //       icon={<ContentCopyIcon />}
+          //       label="copy"
+          //       className="textPrimary"
+          //       onClick={onCopy}
+          //       color="inherit"
+          //     /></option>
+          //   </SoftSelect>
+          // </> : <></>,
+          <>   <SoftButton variant="outlined" key={0} color="dark" onClick={(event) =>Boolean(open)? setOpen(null):setOpen(event.currentTarget)} sx={{
+            border: "unset", borderRadius: "50%", padding: "0", backgroundColor: open ? "#4A81CA" : "#ECF4FA", width: "40px", height: "40px",
+          }}>
+            <MoreVertIcon sx={ {color:open ? "#ffff" : "#4A81CA"}} />
+
+          </SoftButton>
+         <MenuCustom anchor={open}>
+         { onEdit && notProduct &&  <MenuItem onClick={()=>setOpen(null)}>
+         <GridActionsCellItem
             key={row.id}
-            icon={<EditIcon />}
+            icon={<Box><EditIcon /> <span>edit</span></Box>}
             label="Edit"
             className="textPrimary"
             onClick={handleEditClick(row?.id, row)}
             color="inherit"
-          /> : <></>,
-          onDelete && notProduct ? <GridActionsCellItem
-            key={row.id}
-            icon={<DeleteIcon />}
-            label="Delete"
-            onClick={handleDeleteClick(row?.id)}
-            color="inherit"
-          /> : <></>, onState ? <><SoftBadge variant="gradient" badgeContent="online" color={status ? "secondary" : "success"} size="xs" container /></> : <></>,
-          onCopy && notProduct ? <><GridActionsCellItem
-            key={row.id}
-            icon={<ContentCopyIcon />}
-            label="copy"
-            className="textPrimary"
-            onClick={onCopy}
-            color="inherit"
-          /></> : !notProduct ? <>
-            <SoftSelect ref={refSelect} sx={{...input,width:"100%"}}
-              >
-              <option> <GridActionsCellItem
-                key={row.id}
-                icon={<DeleteIcon />}
-                label="Delete"
-                onClick={handleDeleteClick(row?.id)}
-                color="inherit"
-              /></option>
-              <option> <GridActionsCellItem
-                key={row.id}
-                icon={<EditIcon />}
-                label="Edit"
-                className="textPrimary"
-                onClick={handleEditClick(row?.id, row)}
-                color="inherit"
-              /></option>
-              <option><GridActionsCellItem
-                key={row.id}
-                icon={<ContentCopyIcon />}
-                label="copy"
-                className="textPrimary"
-                onClick={onCopy}
-                color="inherit"
-              /></option>
-            </SoftSelect>
-          </> : <></>,
+          />
+          </MenuItem>}
+          { onDelete && notProduct &&<MenuItem onClick={()=>setOpen(null)}>
+         <GridActionsCellItem
+           key={row.id}
+           icon={<Box sx={{color:(theme)=>theme.palette.error.main}}><DeleteIcon sx={{color:(theme)=>theme.palette.error.main}}/><span>Delete</span></Box>}
+           label="Delete"
+           onClick={handleDeleteClick(row?.id)}
+           color="inherit"
+          ></GridActionsCellItem>
+          </MenuItem>}
+         </MenuCustom>
+          </>
         ];
       },
     },
@@ -199,7 +234,11 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
         sx={{
           ...sx, "& .css-1ui3wbn-MuiInputBase-root-MuiTablePagination-select": {
             width: "15% !important"
-          }, "& .MuiTablePagination-select div.MuiInputBase-root": { maxWidth: "10%" }
+          }, ".rtl-1ui3wbn-MuiInputBase-root-MuiTablePagination-select": { maxWidth: "15% !important" },".MuiDataGrid-cell:focus":{
+            outline:"unset !important"
+          },".rtl-zhhcxq-MuiPaper-root-MuiMenu-paper-MuiPopover-paper":{
+            backgroundColor:"white !important"
+          }
         }}
         onPaginationModelChange={onPaginationModelChange}
         {...rest}
