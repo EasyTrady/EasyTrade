@@ -1,5 +1,9 @@
 import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material'
-import { Collapse, Dialog, Icon, InputLabel, List, ListItemButton, ListItemIcon, ListItemText, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
+import {
+    Collapse, Dialog, Icon, InputLabel, List, ListItemButton,
+    ListItemIcon, ListItemText, MenuItem, Select, Stack, TextField,
+    Typography, Box, DialogTitle, DialogContentText, DialogContent, DialogActions, Button
+} from '@mui/material'
 import SoftButton from 'components/SoftButton'
 import DataGridCustom from 'components/common/DateGridCustomer'
 import Form from 'components/common/Form'
@@ -17,18 +21,64 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import input from "assets/theme/components/form/input";
 import SoftInput from 'components/SoftInput'
+// import SoftInput from "components/SoftInput";
 import SoftBox from 'components/SoftBox'
 import Breadcrumbs from 'examples/Breadcrumbs'
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import PropTypes from "prop-types";
 function Attribute({ absolute, light, isMini }) {
     const [open, setOpen] = React.useState(false);
+    const [openDialog, setOpenDialog] = React.useState(false);
+
     let dispatch = useDispatch()
     const route = useLocation().pathname.split("/").slice(1);
     let attributes = useSelector((state) => state.attribute.value)
     let [rows, setRows] = useState([])
     const [openValue, setOpenValue] = React.useState(true);
+    const [columns, setColumns] = React.useState([
+        {
+            field: 'name',
+            headerName: 'Name',
+            type: 'text',
+            width: 500,
+            align: 'left',
+            headerAlign: 'left',
+            renderCell: (params) => {
+                const { row } = params;
+                return (<Stack direction={"column"} >
+                    <Typography component={"p"}>{row.name}</Typography>
+                    {/* <Typography component={"a"} sx={{ color: (theme) => theme.palette.grey[500], fontSize: "0.8rem", cursor: "pointer" }} onClick={() => navigate(`/${shop_name}/dashboard/attribute/${row?.id}`)}>view</Typography> */}
+                </Stack>
+                );
+            },
+            editable: false,
+            // renderEditCell:renderEditImageCell
+        }
+        , {
+            field: 'values',
+            headerName: 'values',
+            type: 'text',
+            width: 500,
+            align: 'left',
+            headerAlign: 'left',
+            renderCell: (params) => params?.row?.values?.map((ele) => ele.iscolor ? <Box key={ele.id} sx={{
+                display: "flex",
+                justifyContent: "space-evenly",
+                alignItems: "center",
+                backgroundColor: "#cfc4de",
+                borderRadius: "10px",
+                width: "14%",
+                margin: "10px",
+            }}><Typography component={"span"} sx={{
+                width: "10px", height: "10px",
+                backgroundColor: ele.color_value, display: "inline-block", borderRadius: "50%"
+            }}></Typography>{ele.value_name}</Box> : <></>),
+            editable: false,
+            // renderEditCell:renderEditImageCell
+        }
 
+
+    ])
     const handleClick = () => {
         setOpenValue(!openValue);
     };
@@ -79,11 +129,20 @@ function Attribute({ absolute, light, isMini }) {
             method: "delete",
             Token: `Token ${Token}`
         });
+    const [attributeValueRequest, getattributeValueResponce] =
+        useRequest({
+            path: ATTRIBUTES,
+            method: "get",
+            Token: `Token ${Token}`
+        });
     const handleClickOpen = () => {
         setOpen(true);
     };
     const handleClose = () => {
         setOpen(false);
+    };
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
     };
     function handleSubmit() {
         console.log("submit")
@@ -114,39 +173,39 @@ function Attribute({ absolute, light, isMini }) {
             }
         })
     }
-    const columns = [
-        {
-            field: 'name',
-            headerName: 'Name',
-            type: 'text',
-            width: 500,
-            align: 'left',
-            headerAlign: 'left',
-            renderCell: (params) => {
-                const { row } = params;
-                return (<Stack direction={"column"} >
-                    <Typography component={"p"}>{row.name}</Typography>
-                    <Typography component={"a"} sx={{ color: (theme) => theme.palette.grey[500], fontSize: "0.8rem", cursor: "pointer" }} onClick={() => navigate(`/${shop_name}/dashboard/attribute/${row?.id}`)}>view</Typography>
-                </Stack>
-                );
-            },
-            editable: false,
-            // renderEditCell:renderEditImageCell
-        }
-        , {
-            field: 'value_type',
-            headerName: 'value_type',
-            type: 'text',
-            width: 500,
-            align: 'left',
-            headerAlign: 'left',
-            // renderCell: renderImageCell,
-            editable: false,
-            // renderEditCell:renderEditImageCell
-        }
+    // const columns = [
+    //     {
+    //         field: 'name',
+    //         headerName: 'Name',
+    //         type: 'text',
+    //         width: 500,
+    //         align: 'left',
+    //         headerAlign: 'left',
+    //         renderCell: (params) => {
+    //             const { row } = params;
+    //             return (<Stack direction={"column"} >
+    //                 <Typography component={"p"}>{row.name}</Typography>
+    //                 {/* <Typography component={"a"} sx={{ color: (theme) => theme.palette.grey[500], fontSize: "0.8rem", cursor: "pointer" }} onClick={() => navigate(`/${shop_name}/dashboard/attribute/${row?.id}`)}>view</Typography> */}
+    //             </Stack>
+    //             );
+    //         },
+    //         editable: false,
+    //         // renderEditCell:renderEditImageCell
+    //     }
+    //     , {
+    //         field: 'value',
+    //         headerName: 'value',
+    //         type: 'text',
+    //         width: 500,
+    //         align: 'left',
+    //         headerAlign: 'left',
+    //         // renderCell: renderImageCell,
+    //         editable: false,
+    //         // renderEditCell:renderEditImageCell
+    //     }
 
 
-    ]
+    // ]
     const MyCustomNoRowsOverlay = () => (
         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
     );
@@ -154,22 +213,34 @@ function Attribute({ absolute, light, isMini }) {
         attributeRequest({
             onSuccess: (res) => {
                 dispatch({ type: "attribute/set", payload: res.data })
+                res.data.map((ele) => attributeValueRequest({
+                    id: ele.id + "/values",
+                    onSuccess: (res) => {
+
+                        dispatch({ type: "attribute/addValues", payload: { idattribute: ele.id, values: res.data } })
+
+                    }
+                }))
+
             }
         })
     }, [])
     useEffect(() => {
         setRows(attributes)
+        // setColumns((prevs)=>console.log({...prevs,value:attributes.values}))
+        console.log(attributes)
     }, [attributes])
     return (
-        <DashboardLayout>
+        <DashboardLayout >
             <DashboardNavbar />
+            <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
+                <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+            </SoftBox>
             <SoftButton variant="gradient" color="dark" onClick={handleClickOpen}>
                 <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                 &nbsp;add new attribute
             </SoftButton>
-            <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-          <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
-        </SoftBox>
+
             <Dialog open={open} onClose={handleClose}>
                 <Form component="form"
                     childrenProps={{
@@ -199,15 +270,7 @@ function Attribute({ absolute, light, isMini }) {
                         error={Boolean(invalid?.name)}
                         helperText={invalid?.name}
                     /> */}
-                    <SoftInput
-                        placeholder='name'
-                        value={controls.name}
-                        onChange={(e) => setControl("name", e.target.value)}
-                        required={required.includes("name")}
-                        error={Boolean(invalid.name)}
-                        helperText={invalid.name}
-                        sx={input}
-                    />
+
                     {/* <TextField
 
                         // id="filled-size-small"
@@ -257,6 +320,7 @@ function Attribute({ absolute, light, isMini }) {
             <DataGridCustom
                 rows={rows}
                 onDelete={onDelete}
+                onEdit={() => setOpenDialog(!openDialog)}
                 columns={columns}
                 checkboxSelection={true}
                 onRowClick={(e) => { console.log({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
@@ -268,6 +332,41 @@ function Attribute({ absolute, light, isMini }) {
                 }}
 
             />
+
+            <Dialog
+                open={openDialog}
+                onClose={handleCloseDialog}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Edit size attribute
+                </DialogTitle>
+                <DialogTitle id="alert-dialog-title" sx={{ paddingY: "0" }}>
+                    Write at least one value to the attribute</DialogTitle>
+                <Typography component={"label"} sx={{ paddingX: "20px" }}>Attribute name</Typography>
+                <SoftInput
+                    placeholder='name'
+                    value={controls.name}
+                    onChange={(e) => setControl("name", e.target.value)}
+                    required={required.includes("name")}
+                    error={Boolean(invalid.name)}
+                    helperText={invalid.name}
+                    sx={input}
+                />
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Let Google help apps determine location. This means sending anonymous
+                        location data to Google, even when no apps are running.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog}>Disagree</Button>
+                    <Button onClick={handleCloseDialog} autoFocus>
+                        Agree
+                    </Button>
+                </DialogActions>
+            </Dialog>
             {getattributeResponce.failAlert}
             {postattributeResponce.failAlert}
             {DeleteattributerResponce.failAlert}
@@ -280,11 +379,11 @@ Attribute.defaultProps = {
     absolute: false,
     light: false,
     isMini: false,
-  };
-  
-  // Typechecking props for the Attribute
-  Attribute.propTypes = {
+};
+
+// Typechecking props for the Attribute
+Attribute.propTypes = {
     absolute: PropTypes.bool,
     light: PropTypes.bool,
     isMini: PropTypes.bool,
-  };
+};

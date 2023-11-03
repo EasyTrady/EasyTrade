@@ -42,8 +42,8 @@ import Billing from "layouts/billing";
 import VirtualReality from "layouts/virtual-reality";
 import RTL from "layouts/rtl";
 import Profile from "layouts/profile";
-import SignIn from "layouts/authentication/sign-in";
-import SignUp from "layouts/authentication/sign-up";
+import SignIn from "layouts/authentication/authentication3/Login3";
+import SignUp from "layouts/authentication/authentication3/Register3";
 
 // Soft UI Dashboard React icons
 import Shop from "examples/Icons/Shop";

@@ -96,6 +96,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
       width: 100,
       cellClassName: 'actions',
       getActions: (row) => {
+        console.log(row)
         const isInEditMode = rowModesModel[row?.id]?.mode === GridRowModes.Edit;
         const [open, setOpen] = React.useState()
         if (isInEditMode) {
@@ -171,8 +172,12 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
           //     /></option>
           //   </SoftSelect>
           // </> : <></>,
-          <>   <SoftButton variant="outlined" key={0} color="dark" onClick={(event) =>{console.log(Boolean(open));setOpen(event.currentT)}}  sx={{
-            border: "unset", borderRadius: "50%", padding: "0", backgroundColor: Boolean(open) ? "#4A81CA" : "#ECF4FA", width: "40px", height: "40px",
+          <>  
+         
+          <SoftButton variant="outlined" key={0} color="dark" onClick={(event) =>Boolean(open)?setOpen(null):setOpen(event.currentTarget)} 
+           sx={{
+            border: "unset", borderRadius: "50%",
+             padding: "0", backgroundColor: Boolean(open) ? "#4A81CA" : "#ECF4FA", minWidth: "40px", height: "40px",
             ".MuiButtonBase-root:hover":{
               backgroundColor:"unset !important"
             }
