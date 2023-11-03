@@ -31,13 +31,14 @@ function Breadcrumbs({ icon, title, route, light }) {
   const routes = route.slice(0, -1);
 
   return (
-    <SoftBox mr={{ xs: 0, xl: 8 }}>
+    <SoftBox mr={{ xs: 0, xl: 8,textAlign:"left"}}>
       <MuiBreadcrumbs
         sx={{
           "& .MuiBreadcrumbs-separator": {
             color: ({ palette: { white, grey } }) => (light ? white.main : grey[600]),
           },
         }}
+        separator="›"
       >
         <Link to="/">
           <SoftTypography
@@ -47,7 +48,8 @@ function Breadcrumbs({ icon, title, route, light }) {
             opacity={light ? 0.8 : 0.5}
             sx={{ lineHeight: 0 }}
           >
-            <Icon>{icon}</Icon>
+            Home
+            {/* <Icon>{icon}</Icon> */}
           </SoftTypography>
         </Link>
         {routes.map((el) => (
