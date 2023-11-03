@@ -171,7 +171,7 @@ export default function App() {
         <>
           <Sidenav
             color={sidenavColor}
-            brand={brand}
+            brand={logo}
             brandName={shop_name}
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
