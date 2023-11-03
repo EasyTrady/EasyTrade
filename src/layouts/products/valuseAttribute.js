@@ -17,8 +17,10 @@ import { useParams } from 'react-router-dom'
 import input from "assets/theme/components/form/input";
 import SoftInput from 'components/SoftInput'
 
+
 function AttributeValue() {
     const [open, setOpen] = React.useState(false);
+    
     let { id } = useParams()
     let dispatch = useDispatch()
     let attributes = useSelector((state) => state.attribute.value)
@@ -120,20 +122,20 @@ function AttributeValue() {
     }
     const columns = [
         {
-            field: 'color',
-            headerName: 'color',
+            field: 'color_value',
+            headerName: 'color_value',
             type: 'text',
             width: 200,
             align: 'left',
             headerAlign: 'left',
-            renderCell: (params) => <Box sx={{ backgroundColor: params?.row?.color,boxShadow:"0px 4px 10px", borderRadius: "50%", height: "30px", width: "30px" }}>{params?.color}</Box>,
+            renderCell: (params) =>params?.row?.color_value? <Box sx={{ backgroundColor: params?.row?.color_value,boxShadow:"0px 4px 10px", borderRadius: "50%", height: "30px", width: "30px" }}></Box>:<></>,
             editable: false,
             // renderEditCell:renderEditImageCell
         }
         , {
-            field: 'text',
-            headerName: 'text',
-            type: 'text',
+            field: 'value_name',
+            headerName: 'value_name',
+            type: 'value_name',
             width: 200,
             align: 'left',
             headerAlign: 'left',
@@ -141,14 +143,15 @@ function AttributeValue() {
             editable: false,
             // renderEditCell:renderEditImageCell
         }, {
-            field: 'image',
-            headerName: 'image',
+            field: 'image_value',
+            headerName: 'image_value',
             type: 'text',
             width: 200,
             align: 'left',
             headerAlign: 'left',
-            renderCell: (params) => <Avatar src={params.row.image} />,
+            renderCell: (params) =>params.row.image_value? <Avatar src={params.row.image_value} />:<></>,
             editable: false,
+           
             // renderEditCell:renderEditImageCell
         }
 
@@ -168,17 +171,19 @@ function AttributeValue() {
     useEffect(() => {
         if (attributes?.find((ele) => ele.id == id)?.values?.length > 0) {
             setRows(attributes?.find((ele) => ele.id == id)?.values)
-
+            console.log(Object.keys(attributes?.find((ele) => ele.id == id)?.values[0]),columns.map((ele)=>ele.field))
         }
     }, [attributes])
 
     return (
         <DashboardLayout>
             <DashboardNavbar />
+              
             <SoftButton variant="gradient" color="dark" onClick={handleClickOpen}>
                 <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                 &nbsp;add new value to attribute
             </SoftButton>
+            
             <Dialog open={open} onClose={handleClose}>
                 <Form component="form"
                     childrenProps={{

@@ -163,6 +163,7 @@ function Attribute() {
                 <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                 &nbsp;add new attribute
             </SoftButton>
+            
             <Dialog open={open} onClose={handleClose}>
                 <Form component="form"
                     childrenProps={{
