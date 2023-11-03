@@ -65,7 +65,7 @@ function SignIn() {
     <CoverLayout
       title="Welcome back"
       description="Enter your email and password to sign in"
-      // image={curved9}
+      image={curved9}
     >
       <Formik
         initialValues={{

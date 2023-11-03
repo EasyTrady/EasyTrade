@@ -1,9 +1,7 @@
 import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material'
-import {
-    Collapse, Dialog, Icon, InputLabel, List, ListItemButton,
+import { Collapse, Dialog, Icon, InputLabel, List, ListItemButton, 
     ListItemIcon, ListItemText, MenuItem, Select, Stack, TextField,
-    Typography, Box, DialogTitle, DialogContentText, DialogContent, DialogActions, Button
-} from '@mui/material'
+     Typography,Box,DialogTitle ,DialogContentText ,DialogContent ,DialogActions ,Button  } from '@mui/material'
 import SoftButton from 'components/SoftButton'
 import DataGridCustom from 'components/common/DateGridCustomer'
 import Form from 'components/common/Form'
@@ -35,7 +33,7 @@ function Attribute({ absolute, light, isMini }) {
     let attributes = useSelector((state) => state.attribute.value)
     let [rows, setRows] = useState([])
     const [openValue, setOpenValue] = React.useState(true);
-    const [columns, setColumns] = React.useState([
+    const [columns,setColumns]=React.useState([
         {
             field: 'name',
             headerName: 'Name',
@@ -61,18 +59,16 @@ function Attribute({ absolute, light, isMini }) {
             width: 500,
             align: 'left',
             headerAlign: 'left',
-            renderCell: (params) => params?.row?.values?.map((ele) => ele.iscolor ? <Box key={ele.id} sx={{
+            renderCell: (params)=>params?.row?.values?.map((ele)=>ele.iscolor?<Box key={ele.id}sx={{
                 display: "flex",
-                justifyContent: "space-evenly",
-                alignItems: "center",
-                backgroundColor: "#cfc4de",
-                borderRadius: "10px",
-                width: "14%",
-                margin: "10px",
-            }}><Typography component={"span"} sx={{
-                width: "10px", height: "10px",
-                backgroundColor: ele.color_value, display: "inline-block", borderRadius: "50%"
-            }}></Typography>{ele.value_name}</Box> : <></>),
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    backgroundColor: "#cfc4de",
+    borderRadius: "10px",
+    width: "14%",
+    margin: "10px",
+            }}><Typography component={"span"} sx={{width:"10px",height:"10px",
+            backgroundColor:ele.color_value,display:"inline-block",borderRadius:"50%"}}></Typography>{ele.value_name}</Box>:<></>),
             editable: false,
             // renderEditCell:renderEditImageCell
         }
@@ -129,7 +125,7 @@ function Attribute({ absolute, light, isMini }) {
             method: "delete",
             Token: `Token ${Token}`
         });
-    const [attributeValueRequest, getattributeValueResponce] =
+        const [attributeValueRequest, getattributeValueResponce] =
         useRequest({
             path: ATTRIBUTES,
             method: "get",
@@ -213,15 +209,15 @@ function Attribute({ absolute, light, isMini }) {
         attributeRequest({
             onSuccess: (res) => {
                 dispatch({ type: "attribute/set", payload: res.data })
-                res.data.map((ele) => attributeValueRequest({
-                    id: ele.id + "/values",
+                res.data.map((ele)=> attributeValueRequest({
+                    id:ele.id +"/values",
                     onSuccess: (res) => {
 
                         dispatch({ type: "attribute/addValues", payload: { idattribute: ele.id, values: res.data } })
-
+                        
                     }
                 }))
-
+                
             }
         })
     }, [])
@@ -234,13 +230,13 @@ function Attribute({ absolute, light, isMini }) {
         <DashboardLayout >
             <DashboardNavbar />
             <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-                <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
-            </SoftBox>
+          <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+        </SoftBox>
             <SoftButton variant="gradient" color="dark" onClick={handleClickOpen}>
                 <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                 &nbsp;add new attribute
             </SoftButton>
-
+           
             <Dialog open={open} onClose={handleClose}>
                 <Form component="form"
                     childrenProps={{
@@ -270,7 +266,7 @@ function Attribute({ absolute, light, isMini }) {
                         error={Boolean(invalid?.name)}
                         helperText={invalid?.name}
                     /> */}
-
+                    
                     {/* <TextField
 
                         // id="filled-size-small"
@@ -320,7 +316,7 @@ function Attribute({ absolute, light, isMini }) {
             <DataGridCustom
                 rows={rows}
                 onDelete={onDelete}
-                onEdit={() => setOpenDialog(!openDialog)}
+                onEdit={()=>setOpenDialog(!openDialog)}
                 columns={columns}
                 checkboxSelection={true}
                 onRowClick={(e) => { console.log({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
@@ -332,41 +328,41 @@ function Attribute({ absolute, light, isMini }) {
                 }}
 
             />
-
-            <Dialog
-                open={openDialog}
-                onClose={handleCloseDialog}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    Edit size attribute
-                </DialogTitle>
-                <DialogTitle id="alert-dialog-title" sx={{ paddingY: "0" }}>
-                    Write at least one value to the attribute</DialogTitle>
-                <Typography component={"label"} sx={{ paddingX: "20px" }}>Attribute name</Typography>
-                <SoftInput
-                    placeholder='name'
-                    value={controls.name}
-                    onChange={(e) => setControl("name", e.target.value)}
-                    required={required.includes("name")}
-                    error={Boolean(invalid.name)}
-                    helperText={invalid.name}
-                    sx={input}
-                />
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Let Google help apps determine location. This means sending anonymous
-                        location data to Google, even when no apps are running.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseDialog}>Disagree</Button>
-                    <Button onClick={handleCloseDialog} autoFocus>
-                        Agree
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+        Edit size attribute
+        </DialogTitle>
+        <DialogTitle id="alert-dialog-title"sx={{paddingY:"0"}}>
+        Write at least one value to the attribute</DialogTitle>
+        <Typography component={"label"} sx={{paddingX:"20px"}}>Attribute name</Typography>
+        <SoftInput
+                        placeholder='name'
+                        value={controls.name}
+                        onChange={(e) => setControl("name", e.target.value)}
+                        required={required.includes("name")}
+                        error={Boolean(invalid.name)}
+                        helperText={invalid.name}
+                        sx={input}
+                    />
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Disagree</Button>
+          <Button onClick={handleCloseDialog} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
             {getattributeResponce.failAlert}
             {postattributeResponce.failAlert}
             {DeleteattributerResponce.failAlert}
@@ -379,11 +375,11 @@ Attribute.defaultProps = {
     absolute: false,
     light: false,
     isMini: false,
-};
-
-// Typechecking props for the Attribute
-Attribute.propTypes = {
+  };
+  
+  // Typechecking props for the Attribute
+  Attribute.propTypes = {
     absolute: PropTypes.bool,
     light: PropTypes.bool,
     isMini: PropTypes.bool,
-};
+  };
