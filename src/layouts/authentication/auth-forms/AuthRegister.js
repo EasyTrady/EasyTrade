@@ -438,13 +438,8 @@ console.log(user);
                         onChange={handleAvatarChange}
                         style={{ display: 'none' }}
                       />
-<<<<<<< HEAD
                     </Box>
             {/* <Grid container alignItems="center" justifyContent="space-between">
-=======
-                    </Box> */}
-            <Grid container alignItems="center" justifyContent="space-between">
->>>>>>> 52f060a29bd228dabb4a50e3d58bfbefd16fd736
               <Grid item>
                 <FormControlLabel
                   control={

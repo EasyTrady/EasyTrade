@@ -10,7 +10,7 @@ import AuthWrapper1 from '../AuthWrapper1';
 import AuthCardWrapper from '../AuthCardWrapper';
 import AuthRegister from '../auth-forms/AuthRegister';
 // import AuthFooter from 'ui-component/cards/AuthFooter';
-import signup from '../../../../assets/images/icons/Social Media Icon Square/login.png';
+import signup from '../../../assets/images/icons/Social Media Icon Square/login.png';
 
 // assets
 
@@ -40,7 +40,6 @@ const Register = () => {
           // paddingTop: '70px'
         }}
       >
-<<<<<<< HEAD
         <Box component="img" sx={{  width: { xl: '50%', lg: '50%', md: '50%', sm: '100%', sx: '100%' }, height:'100vh'}} src={signup}></Box>
       <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh', bgcolor:'#FFFFFF'}}>
         <Grid item xs={12}>
@@ -78,51 +77,10 @@ const Register = () => {
                      
                     </Grid>
                   </Grid>
-=======
-        <Box
-          component="img"
-          sx={{ width: { xl: '50%', lg: '50%', md: '50%', sm: '100%', sx: '100%' }, height: '100vh' }}
-          src={signup}
-        ></Box>
-        <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh', bgcolor: '#FFFFFF' }}>
-          <Grid item xs={12}>
-            <Box sx={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'column', gap: 2, px: '12px' }}>
-              <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: 'calc(100vh - 68px)' }}>
-                <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
-                  <AuthCardWrapper>
-                    <Grid container spacing={2} alignItems="center" justifyContent="center">
-                      <Grid item xs={12}>
-                        <Grid container direction={matchDownSM ? 'column-reverse' : 'row'} alignItems="center" justifyContent="center">
-                          <Grid item>
-                            <Stack alignItems="center" justifyContent="center" spacing={1}>
-                              <Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
-                                Sign up
-                              </Typography>
-                              <Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
-                                Enter your credentials to continue
-                              </Typography>
-                            </Stack>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <AuthRegister subscribtionId={location?.state?.subscribtionId} />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Divider />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Grid item container direction="column" alignItems="center" xs={12}>
-                          <Typography component={Link} to="/login" variant="subtitle1" sx={{ textDecoration: 'none' }}>
-                            Already have an account?
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </AuthCardWrapper>
->>>>>>> 52f060a29bd228dabb4a50e3d58bfbefd16fd736
                 </Grid>
+                </AuthCardWrapper>
               </Grid>
+            </Grid>
             </Box>
           </Grid>
           <Grid item xs={12} sx={{ m: 3, mt: 1 }}>
