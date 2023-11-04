@@ -95,7 +95,7 @@ const FirebaseRegister = ({ ...others  }) => {
     // changePassword('123456');
     
   }, []);
-console.log(user);
+// console.log(user);
   return (
     <>
       {/* <Grid container direction="column" justifyContent="center" spacing={2}>
@@ -142,7 +142,7 @@ console.log(user);
               
             await dispatch(GetShopInfo({sub_domain_name:res?.payload?.sub_domain})).then((res)=>
             {
-              console.log(res)
+              // console.log(res)
             localStorage.setItem('shop_url',res?.payload?.shop_url)
             localStorage.setItem('dashboard_url',res?.payload?.dashboard_url)
             localStorage.setItem('shop_id',res?.payload?.id)

@@ -110,5 +110,14 @@
     },
     "donthaveaccount":{
         "title":"ليس لديك حساب ؟"
-    }
+    },"emailBasket":"Email content",
+    "descributionEmail":"Write all you need to notify the user with",
+    "emailTitle":"Email title",
+    "describe":"Description",
+    "contentType":"Content type",
+    "Banner":"Banner",
+    "Multipleproducts":"Multiple products",
+    "notvalidemail":"not valid email",
+    "SelectProducts":"Select Products"
+
 }

@@ -90,7 +90,7 @@ const navbarRow = ({ breakpoints }, { isMini }) => ({
   textAlign:"left",
   justifyContent: "space-between",
   width: "100%",
-padding:"24px",
+padding:"10px",
   [breakpoints.up("md")]: {
     justifyContent: "space-between",
 

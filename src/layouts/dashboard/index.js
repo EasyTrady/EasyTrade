@@ -16,6 +16,7 @@ Coded by www.creative-tim.com
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
+import Container from "@mui/material/Container";
 
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
@@ -79,6 +80,7 @@ useEffect(() => {
   return (
     <DashboardLayout>
       <DashboardNavbar />
+      <Container sx={{p:2}}>
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Grid container spacing={3}>
@@ -175,6 +177,7 @@ useEffect(() => {
         </Grid>
       </SoftBox>
       <Footer />
+      </Container >
     </DashboardLayout>
   );
 }
