@@ -109,6 +109,14 @@
     ,
     "donthaveaccount":
         "Don’t have an account ?"
-
+,"emailBasket":"محتوى البريد الإلكتروني",
+"descributionEmail":"اكتب كل ما تحتاجه لإخطار المستخدم به",
+"emailTitle":"عنوان بريد الالكتروني",
+"describe":"وصف",
+"contentType":"نوع محتوي",
+"Banner":"راية",
+"Multipleproducts":"منتجات متعددة",
+"notvalidemail":"ايميل غير متاح",
+"SelectProducts":"اختار من منتجات"
     
 }

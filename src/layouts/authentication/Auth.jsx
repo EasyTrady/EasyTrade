@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 function Auth({children}) {
     const currentTime = new Date().getTime();
     const tokenTimestamp = localStorage.getItem('tokenTimestamp');
+    console.log(tokenTimestamp)
         const twentyFourHours = 24 * 60 * 60 * 1000;
     useEffect(()=>{
          // 24 hours in milliseconds
@@ -24,7 +25,7 @@ function Auth({children}) {
     },[
         currentTime
     ])
-    // console.log()
+    console.log(currentTime - tokenTimestamp > twentyFourHours,Boolean(localStorage.getItem("token")))
    if(Boolean(localStorage.getItem("token"))===true) {
     return (
         <> {children}</>

@@ -1,4 +1,4 @@
-import { Avatar, Box, Typography } from '@mui/material';
+import { Avatar, Box, Typography,Container } from '@mui/material';
 import DataGridCustom from 'components/common/DateGridCustomer';
 import { CUSTOMER } from 'data/api';
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
@@ -112,6 +112,7 @@ function Customer({ absolute, light, isMini }) {
     <>
     <DashboardLayout>
     <DashboardNavbar />
+    <Container sx={{p:2}}>
     <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
                 <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
             </SoftBox>
@@ -126,6 +127,7 @@ function Customer({ absolute, light, isMini }) {
        onPaginationModelChange={setPaginationModel}
       /> 
       {DeleteCustomerrResponce.failAlert}
+      </Container>
   </DashboardLayout></>
   )
 }
