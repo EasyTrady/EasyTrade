@@ -1,4 +1,4 @@
-import { Avatar, Box, Typography } from "@mui/material";
+import { Avatar, Box, Chip, Typography } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import SoftAvatar from "components/SoftAvatar";
 import SoftBox from "components/SoftBox";
@@ -52,14 +52,14 @@ import SoftBadge from "components/SoftBadge";
 export const ProductTableData =() =>{
     return{ columns : [
             {
-              field: 'image',
-              headerName: 'image',
+              field: 'main_image',
+              headerName: 'Image',
               type: 'image',
-              width: 200,
-              height:100,
+              width: 64,
+              height:64,
               align: 'center',
               headerAlign: 'center',
-              renderCell: (params) => <img src={params.row.image}  alt='image' height={80} width={80}/>,
+              renderCell: (params) => <img src={params?.row?.main_image}  alt='image' height={64} width={64}/>,
               editable: true,
               filterable: false,
               sortable: false,disableColumnMenu: true
@@ -78,7 +78,7 @@ export const ProductTableData =() =>{
               field: 'sku',
               headerName: 'SKU',
               type: 'text',
-              width: 200,
+              width: 179.4,
               align: 'center',
               headerAlign: 'center',
               editable: true,
@@ -87,39 +87,50 @@ export const ProductTableData =() =>{
             }, 
              {
               field: 'quantity',
-              headerName: 'quantity',
+              headerName: 'QTY',
               type: 'number',
-              width: 150,
+              width: 76,
               align: 'center',
               headerAlign: 'center',
               editable: true,
         
+            },
+             {
+              field: 'category',
+              headerName: 'Category',
+              type: 'text',
+              width: 186,
+              align: 'center',
+              headerAlign: 'center',
+              editable: true,
+        
+            },
+            {
+              field: 'type',
+              headerName: 'Type',
+              type: 'text',
+              width: 162.5,
+              align: 'center',
+              headerAlign: 'center',
+              renderCell: (params) => <Box sx={{padding:'5px 16px 5px 16px',borderRadius:'130px',height:'30px',display:'flex',alignItems:'center',justifyContent:'center'}}  bgcolor={params.row.is_published?"#ECFDF3":"#FDECEC"} size="small" color={params.row.is_published?"#027A480":"#7A0202"}container >{params.row.is_published?"Published":"Draft"}</Box>,
+              editable: true,
+              filterable: true,
+              sortable: false,
+              disableColumnMenu: true
             },
 
             {
               field: 'price',
               headerName: 'Price',
               type: 'number',
-              width: 100,
+              width: 162.5,
               align: 'center',
               headerAlign: 'center',
               editable: true,
               filterable: true,
               sortable: false,disableColumnMenu: true
             },
-            {
-              field: 'status',
-              headerName: 'Status',
-              type: 'boolean',
-              width: 100,
-              align: 'center',
-              headerAlign: 'center',
-              renderCell: (params) => <SoftBadge variant="gradient" badgeContent={params.row.status?"active":"inactive"} color={params.row.status?"success":"error"} size="xs" container   />,
-              editable: true,
-              filterable: true,
-              sortable: false,
-              disableColumnMenu: true
-            },
+           
           
           ],
 
