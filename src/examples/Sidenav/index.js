@@ -79,7 +79,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, route, path, children,color }) => {
     let returnValue;
     let [open,setOpen]=useState(false)
-    console.log(key,active)
+    // console.log(key,active)
     const menus = children?.map((item) => {
   
       switch (item.type) {

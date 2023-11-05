@@ -87,7 +87,7 @@ export default function App() {
 
   // Setting the dir attribute for the body element
   useEffect(() => {
-    console.log(direction)
+    // console.log(direction)
     setDirection(dispatch,"rtl")
     // document.body.setAttribute("dir", direction);
   }, [direction]);
@@ -103,7 +103,7 @@ export default function App() {
       if (route.collapse) {
         return getRoutes(route.collapse);
       }
-      console.log(route,layout)
+      // console.log(route,layout)
       if (route.route) {
         return <Route exact path={route.route} element={route.component} key={route.key} />;
       }
@@ -166,7 +166,7 @@ export default function App() {
   ) : (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {console.log(direction)}
+      {/* {console.log(direction)} */}
       {layout === "dashboard" && (
         <>
           <Sidenav

@@ -7,7 +7,7 @@ import productImage from '../../assets/images/ivana-square.jpg'
 const ImageBox = ({main_image,onChange}) => {
     const [mainImage, setMainImage] = React.useState(null);
   const handleAvatarChange = (event) => {
-    console.log(event.target.files[0]);
+    // console.log(event.target.files[0]);
     onChange(event.target.files[0])
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -20,7 +20,7 @@ const ImageBox = ({main_image,onChange}) => {
     reader.readAsDataURL(file);
    
   };
- console.log(mainImage);
+//  console.log(mainImage);
   return (
     <>
      {/* <Box sx={{ width: '100%',my:"24px"}}>

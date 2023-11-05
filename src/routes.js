@@ -42,8 +42,8 @@ import Billing from "layouts/billing";
 import VirtualReality from "layouts/virtual-reality";
 import RTL from "layouts/rtl";
 import Profile from "layouts/profile";
-import SignIn from "layouts/authentication/authentication3/Login3";
-import SignUp from "layouts/authentication/authentication3/Register3";
+import SignIn from "layouts/authentication/sign-in";
+import SignUp from "layouts/authentication/sign-up";
 
 // Soft UI Dashboard React icons
 import Shop from "examples/Icons/Shop";
@@ -63,14 +63,17 @@ import Job from "layouts/job";
 import { element } from "prop-types";
 import Attribute from "layouts/products/attribute";
 import AttributeValue from "layouts/products/valuseAttribute";
-
+import InventoryIcon from '@mui/icons-material/Inventory';
 import AddProduct from "layouts/products/addProduct";
 import TextMobileStepper from "layouts/products/stepper";
 import AddProductPanel from "layouts/products/addProductPanel";
 import HomeSections from "layouts/home/homepage";
 import Register from "layouts/authentication/authentication3/Register3";
 import Login from "layouts/authentication/authentication3/Login3";
-
+import Basket from "layouts/basket";
+import GroupIcon from '@mui/icons-material/Group';
+import AlignHorizontalLeftIcon from '@mui/icons-material/AlignHorizontalLeft';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 const sub_domain = localStorage.getItem('sub_domain')
 const routes = [
   {
@@ -101,7 +104,7 @@ const routes = [
     name: "Statistics",
     key: "Statistics",
     route: `/${sub_domain}/dashboard/statistics`,
-    icon: <Shop size="12px" />,
+    icon: <AlignHorizontalLeftIcon size="12px" />,
     component: <Auth><Dashboard /></Auth>,
     noCollapse: false,
     // children: [
@@ -111,14 +114,13 @@ const routes = [
     //     element: <Auth><Dashboard /></Auth>,
     //     type:"title"
     //   }]
-  },
-  
+  }, 
   {
     type: "collapse",
     name: "Products",
     key: "products",
-    route: `/${sub_domain}/dashboard/products`,
-    icon: <Shop size="12px" />,
+    route: `${sub_domain}/dashboard/products`,
+    icon: <InventoryIcon size="12px" />,
     component: <Auth><Products /></Auth>,
     noCollapse: true,
     children: [
@@ -138,7 +140,7 @@ const routes = [
         type: "item"
       },
 
-      , {
+       {
         id: "newproduct",
         title: "Add new product",
         path: `/${sub_domain}/dashboard/products/addnewproduct`,
@@ -151,7 +153,7 @@ const routes = [
         path: `/${sub_domain}/dashboard/products/category`,
         element: <Auth><Products /></Auth>,
         type: 'item',
-      },
+      }
     ]
   },
   {
@@ -160,23 +162,23 @@ const routes = [
     key: "order",
     route: `/${sub_domain}/dashboard/orders`,
     icon: <Shop size="12px" />,
-    component: <Auth><Dashboard /></Auth>,
+    component:  <Auth><Basket /></Auth>,
     noCollapse: true,
     children: [
       {
         id: "order",
         path: `/${sub_domain}/dashboard/order`,
         title: "order",
-        element: <Auth><Dashboard /></Auth>,
+        element:  <Auth><Basket /></Auth>,
         type: "item"
 
       },
       {
-        id: "Abandoned basket",
+        id: "abandonedbasket",
         path: `/${sub_domain}/dashboard/abandonedbasket`,
-        title: "Abandoned basket",
-        element: <Auth><Dashboard /></Auth>,
-        type: "item"
+        title: "abandoned basket",
+        element: <Auth><Basket /></Auth>,
+        type: "item",
       },
 
 
@@ -187,7 +189,7 @@ const routes = [
     name: "customer",
     key: "Customer",
     route: `/${sub_domain}/dashboard/customer`,
-    icon: <Office size="12px" />,
+    icon: <GroupIcon size="12px" />,
     noCollapse: true,
     component: <Auth><Customer /></Auth>,
     children: [{
@@ -215,8 +217,8 @@ const routes = [
     type: "collapse",
     name: "Employees",
     key: "Employees",
-    route: `/${sub_domain}/dashboard/customer`,
-    icon: <Office size="12px" />,
+    route: `/${sub_domain}/dashboard/employee`,
+    icon: <ManageAccountsIcon size="12px" />,
     noCollapse: true,
     component: <Auth><Employee /></Auth>,
     children: [{
@@ -246,6 +248,15 @@ const routes = [
     route: `/${sub_domain}/dashboard/employee`,
     icon: <Office size="12px" />,
     component: <Auth><Employee /></Auth>,
+    noCollapse: false,
+  },
+  {
+    type: "title",
+    name: "abandonedbasket",
+    key: "abandonedbasket",
+    route: `/${sub_domain}/dashboard/abandonedbasket`,
+    icon: <Office size="12px" />,
+    component: <Basket />,
     noCollapse: false,
   },
   {
@@ -305,33 +316,33 @@ const routes = [
     component:<Auth><AddProductPanel /></Auth> ,
     // noCollapse: true,
   },
-  {
-    type: "collapse",
-    name: "Billing",
-    key: "billing",
-    route: "/billing",
-    icon: <CreditCard size="12px" />,
-    component: <Billing />,
-    noCollapse: false,
-  },
-  {
-    type: "collapse",
-    name: "Virtual Reality",
-    key: "virtual-reality",
-    route: "/virtual-reality",
-    icon: <Cube size="12px" />,
-    component: <VirtualReality />,
-    noCollapse: false,
-  },
-  {
-    type: "collapse",
-    name: "RTL",
-    key: "rtl",
-    route: "/rtl",
-    icon: <Settings size="12px" />,
-    component: <RTL />,
-    noCollapse: false,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Billing",
+  //   key: "billing",
+  //   route: "/billing",
+  //   icon: <CreditCard size="12px" />,
+  //   component: <Billing />,
+  //   noCollapse: false,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Virtual Reality",
+  //   key: "virtual-reality",
+  //   route: "/virtual-reality",
+  //   icon: <Cube size="12px" />,
+  //   component: <VirtualReality />,
+  //   noCollapse: false,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "RTL",
+  //   key: "rtl",
+  //   route: "/rtl",
+  //   icon: <Settings size="12px" />,
+  //   component: <RTL />,
+  //   noCollapse: false,
+  // },
   { type: "title", title: "Account Pages", key: "account-pages" },
   {
     type: "collapse",
@@ -348,7 +359,7 @@ const routes = [
     key: "sign-in",
     route: "/authentication/sign-in",
     icon: <Document size="12px" />,
-    component: <Login />,
+    component: <SignIn />,
     noCollapse: false,
   },
   {
@@ -357,7 +368,7 @@ const routes = [
     key: "sign-up",
     route: "/authentication/sign-up",
     icon: <SpaceShip size="12px" />,
-    component: <Register />,
+    component: <SignUp />,
     noCollapse: false,
   },
 ];

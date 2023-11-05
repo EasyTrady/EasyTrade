@@ -7,6 +7,8 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
+import SoftButton from "components/SoftButton";
+
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
@@ -75,22 +77,23 @@ const Form = ({
           spacing={1}
           sx={{ padding: 2, bgcolor: "#fffaff" }}
         >
-          <Button
+    
+          <SoftButton variant="contained" color="white" {...childrenProps.closeBtn}sx={{width:"50%"}}>
+            {Boolean(childrenProps.closeBtn?.children)
+              ? childrenProps.closeBtn.children
+              : "cancel"}
+          </SoftButton>
+          <SoftButton
             variant="contained"
             type="submit"
-            color="primary"
-            sx={{backgroundColor:(theme)=>theme.palette.grey[500]}}
+            color="dark"
+            sx={{backgroundColor:"#510ab3",":hover":{backgroundColor:(theme)=>theme.palette.purple.middle},width:"50%"}}
             {...childrenProps.saveBtn}
           >
             {Boolean(childrenProps.saveBtn?.children)
               ? childrenProps.saveBtn.children
               : "save"}
-          </Button>
-          <Button variant="contained" color="error" {...childrenProps.closeBtn}>
-            {Boolean(childrenProps.closeBtn?.children)
-              ? childrenProps.closeBtn.children
-              : "cancel"}
-          </Button>
+          </SoftButton>
         </Stack>
       )}
     </Paper>

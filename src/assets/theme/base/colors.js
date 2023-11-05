@@ -28,7 +28,10 @@ const colors = {
     main: "#67748e",
     focus: "#67748e",
   },
-
+  blue:{
+    light:"009aff"
+  },
+  purple:{middle:"#510ab3"},
   transparent: {
     main: "transparent",
   },

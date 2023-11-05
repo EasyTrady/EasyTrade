@@ -145,6 +145,7 @@ export default styled(TextField)(({ theme, ownerState }) => {
 
   return {
     backgroundColor: disabled ? `${grey[200]} !important` : white.main,
+    width:"100% !important",
     pointerEvents: disabled ? "none" : "auto",
     ...(size === "small" && smallStyles()),
     ...(size === "large" && largeStyles()),

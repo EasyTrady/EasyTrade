@@ -9,6 +9,9 @@ import  CategorySlice  from './pages/categoriesSlice';
 import  JobSlice  from './pages/jobSlice';
 import ProfileSlice  from './pages/profileSlice';
 import  attributeSlice  from './pages/attributeSlice';
+import CartSlice  from './pages/cartSlice';
+import ProductsSlice  from './pages/productSlice';
+
 const store = configureStore({
   reducer: {
     // customization: customizationSlice,
@@ -20,7 +23,9 @@ const store = configureStore({
     job:JobSlice,
     attribute:attributeSlice,
     // registration:registrationSlice
-     profile:ProfileSlice 
+     profile:ProfileSlice ,
+     cart:CartSlice,
+     products:ProductsSlice
   }
 });
 export default store

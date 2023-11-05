@@ -12,6 +12,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import {
   GridRowModes,
   DataGrid,
@@ -27,7 +28,9 @@ import SoftSelect from "components/SoftSelect";
 import SoftButton from "components/SoftButton";
 import MenuCustom from "assets/theme/components/menu";
 function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
-  checkboxSelection, onEdit, onDelete, sx, rowsPerPageOptions, notProduct = true, onState, onCopy, onPaginationModelChange, ...rest }) {
+  checkboxSelection, onEdit, onDelete, sx, rowsPerPageOptions, notProduct = true, onState,
+  onNotify,
+   onCopy, onPaginationModelChange, ...rest }) {
   const [, setRows] = React.useState(rows);
  
 
@@ -196,6 +199,16 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
             color="inherit"
           />
           </MenuItem>}
+          { onNotify && notProduct &&<MenuItem onClick={()=>setOpen(null)}>
+          <GridActionsCellItem
+            key={row.id}
+            icon={<Box><NotificationsIcon /> <span>Notify client</span></Box>}
+            label="Notify client"
+            className="textPrimary"
+            onClick={()=>onNotify(row)}
+            color="inherit"
+          />
+          </MenuItem>}
           { onDelete && notProduct &&<MenuItem onClick={()=>setOpen(null)}>
          <GridActionsCellItem
            key={row.id}
@@ -205,6 +218,8 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
            color="inherit"
           ></GridActionsCellItem>
           </MenuItem>}
+         
+          
          </MenuCustom>
           </>
         ];
@@ -279,5 +294,7 @@ DataGridCustom.propTypes = {
   rowsPerPageOptions: PropTypes.array, onPaginationModelChange: PropTypes.func,
   onState: PropTypes.func,
   onCopy: PropTypes.func,
-  notProduct: PropTypes.bool
+  notProduct: PropTypes.bool,
+  onNotify: PropTypes.func,
+
 };

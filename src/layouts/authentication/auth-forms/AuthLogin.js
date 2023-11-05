@@ -85,7 +85,7 @@ const FirebaseLogin = ({ ...others }) => {
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
             dispatch(UserSignin(values)).then(async (res) => {
-              console.log(res)
+              // console.log(res)
               if (res.type === 'userSignin/fulfilled') {
                 toast.success('welcome to EasyTrade')
                 
@@ -94,9 +94,9 @@ const FirebaseLogin = ({ ...others }) => {
                   navigate(`/${shop_name}/dashboard`)
 
                 } else {
-                  console.log(res?.payload?.token)
+                  // console.log(res?.payload?.token)
                   await dispatch(GetShopInfo({ token: res?.payload?.token })).then((res) => {
-                    console.log(res)
+                    // console.log(res)
                     localStorage.setItem('shop_url', res?.payload?.shop_url)
                     localStorage.setItem('dashboard_url', res?.payload?.dashboard_url)
                     localStorage.setItem('shop_id', res?.payload?.id)
