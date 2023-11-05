@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Icon, Typography } from "@mui/material";
+import { Avatar, Box, Button, Chip, Divider, Icon, Stack, TextField, Typography } from "@mui/material";
 import DataGridCustom from "components/common/DateGridCustomer";
 import { CUSTOMER } from "data/api";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -19,6 +19,8 @@ import Breadcrumbs from 'examples/Breadcrumbs'
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import PropTypes from "prop-types";
 import { PRODUCTS } from "data/api";
+import { MainButton } from "styles/productStyle";
+import { PrintButton } from "styles/productStyle";
 function Products({ absolute, light, isMini }) {
   const { columns, rows } = ProductTableData();
   const [open, setOpen] = React.useState(false);
@@ -27,6 +29,13 @@ function Products({ absolute, light, isMini }) {
   const route = useLocation().pathname.split("/").slice(1);
   const handleRouteProduct = () => navigate('/addnewproduct')
   const handleClose = () => setOpen(false);
+  const handleClick = () => {
+    console.info('You clicked the Chip.');
+  };
+
+  const handleDelete = () => {
+    console.info('You clicked the delete icon.');
+  };
   const [paginationModel, setPaginationModel] = React.useState({
     page: 0,
     pageSize: 5,
@@ -119,13 +128,37 @@ function Products({ absolute, light, isMini }) {
         <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
           <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
         </SoftBox>
-        <SoftButton variant="gradient" color="dark" onClick={handleRouteProduct}>
+        <Box sx={{px:'24px'}}>
+        <Box sx={{width:'100%',display:'flex',justifyContent:'right',flexDirection:'row',
+}}>
+          <PrintButton>
+          <Icon >print</Icon>
+                &nbsp;Print
+          </PrintButton>
+          <Divider orientation="vertical" sx={{width:'1px'}}/>
+        <MainButton variant="gradient"  onClick={handleRouteProduct}>
                 <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                 &nbsp;add new product
-            </SoftButton>
-
+            </MainButton>
+            </Box>
+            <Box sx={{p:'16px',bgcolor:'#fff',mt:'24px'}}>
+              <TextField sx={{height:'41px',borderRadius:'4px',width:'100%'}} placeholder="Search product name,SKU..."/>
+              <Stack direction="row" spacing={1} mt={1}>
+      <Chip
+        label="Price between : 100 up to 200"
+        onClick={handleClick}
+        onDelete={handleDelete}
+      />
+      <Chip
+        label="out of stock"
+        variant="outlined"
+        onClick={handleClick}
+        onDelete={handleDelete}
+      />
+    </Stack>
+            </Box>
         <DataGridCustom
-          rows={rows}
+          rows={products?.results}
           columns={columns}
           onEdit={()=>{}}
           onDelete={()=>{}}
@@ -138,10 +171,11 @@ function Products({ absolute, light, isMini }) {
           notProduct={false}
           // rowsPerPageOptions={[5, 10, 15, 20]}
           // onPaginationModelChange={setPaginationModel}
-          rowHeight={100}
+          rowHeight={72}
           getRowSpacing={4}
           sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
         />
+        </Box>
         <ProductImageDialog open={open} onClose={handleClose} />
       </DashboardLayout>
       {ResponseGetProducts.successAlert}
