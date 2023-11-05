@@ -18,9 +18,11 @@ import SoftBox from 'components/SoftBox'
 import Breadcrumbs from 'examples/Breadcrumbs'
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import PropTypes from "prop-types";
+import { PRODUCTS } from "data/api";
 function Products({ absolute, light, isMini }) {
   const { columns, rows } = ProductTableData();
   const [open, setOpen] = React.useState(false);
+  const products=useSelector((state)=>state.products.value)
   const navigate =useNavigate()
   const route = useLocation().pathname.split("/").slice(1);
   const handleRouteProduct = () => navigate('/addnewproduct')
@@ -31,8 +33,8 @@ function Products({ absolute, light, isMini }) {
   });
   let dispatch = useDispatch();
   let Token = localStorage.getItem("token");
-  const [customerRequest, getCustomerResponce] = useRequest({
-    path: CUSTOMER,
+  const [RequestGetProducts, ResponseGetProducts] = useRequest({
+    path: PRODUCTS,
     method: "get",
     Token: `Token ${Token}`,
   });
@@ -98,17 +100,17 @@ function Products({ absolute, light, isMini }) {
 
   //   ]
   useEffect(() => {
-    customerRequest({
+    RequestGetProducts({
       onSuccess: (res) => {
         // console.log(res.data)
-        dispatch({ type: "custom/set", payload: { ...res.data } });
+        dispatch({ type: "products/set", payload: { ...res.data } });
       },
     });
   }, []);
   // useEffect(() => {
   //     setRows(customers?.results);
   //   }, [customers])
-  console.log(rows);
+  console.log(products);
   // name / sku / quantity / price / status / action
   return (
     <>
@@ -142,6 +144,8 @@ function Products({ absolute, light, isMini }) {
         />
         <ProductImageDialog open={open} onClose={handleClose} />
       </DashboardLayout>
+      {ResponseGetProducts.successAlert}
+      {ResponseGetProducts.failAlert}
     </>
   );
 }
