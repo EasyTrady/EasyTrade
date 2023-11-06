@@ -10,7 +10,7 @@ const AddProductTitle = ({ switch: showSwitch, title }) => {
       sx={{
         width: '100%',
         height: '56px',
-        padding: '12px 24px', // Adjusted padding values
+        // padding: '0 24px', // Adjusted padding values
         boxShadow: '0px -1px 0px 0px #E5E7E8 inset',
         display: 'flex',
         alignItems: 'center',
@@ -21,7 +21,7 @@ const AddProductTitle = ({ switch: showSwitch, title }) => {
         alignItems: 'center',justifyContent:'space-between'}}>
         <Typography
           sx={{
-            fontFamily: 'Cairo',
+           
             fontSize: '16px',
             fontWeight: 500,
             lineHeight: '24px',

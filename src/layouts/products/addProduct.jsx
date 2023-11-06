@@ -1,4 +1,5 @@
-import { Box, Card, Container, Grid, Switch, Typography } from "@mui/material";
+/* eslint-disable react/prop-types */
+import { Box, Breadcrumbs, Card, Container, Grid, Switch, Typography } from "@mui/material";
 import borders from "assets/theme/base/borders";
 import SoftBox from "components/SoftBox";
 import SoftInput from "components/SoftInput";
@@ -29,8 +30,12 @@ import NumberField from "components/common/NumberFeild";
 import SelectField from "components/common/SelectField";
 import AddProductTitle from "components/common/AddProductTitle";
 import DatePickerField from "components/common/DatePicker";
+import SelectValue from "components/common/SelectValue";
+import { useLocation } from "react-router-dom";
+import { navbarRow } from "examples/Navbars/DashboardNavbar/styles";
 const ReactQuill = require("react-quill");
-const AddProduct = () => {
+const AddProduct = ({light, isMini}) => {
+  const route = useLocation().pathname.split("/").slice(1);
   const { borderWidth, borderColor } = borders;
   const [value, setValue] = useState("");
   let Token = localStorage.getItem("token");
@@ -131,6 +136,9 @@ const AddProduct = () => {
   }
   return (
     <>
+    <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
+                <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+            </SoftBox>
     <Box pt={3} sx={{background: '#FFFFFF',borderRadius:'8px',height:'100%',pb:4
     }}>
       <AddProductTitle title={'Basic info'}/>
@@ -181,7 +189,7 @@ const AddProduct = () => {
               textHelper={controls.category}
               error={Boolean(invalid.category)}
               helperText={invalid.category}
-              sx={{width: "100%"}}
+              sx={{width: "100%",fontSize:'14px'}}
           />
           
             <Box>
@@ -256,7 +264,7 @@ const AddProduct = () => {
  <NumberField
  variant='outlined'
                 label={"SKU"}
-                placeholder={"SKU"}
+                placeholder={"SKU-123456"}
                 value={controls.sku}
                 onChange={(e) => setControl("sku", e.target.value)}
                 required={required.includes("sku")}
@@ -265,7 +273,7 @@ const AddProduct = () => {
                 sx={input}
               />
               <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',gap:'20px'}}>
-              <NumberField
+              <SelectValue
               variant='outlined'
                 label={"Weight*"}
                 placeholder={"Weight"}

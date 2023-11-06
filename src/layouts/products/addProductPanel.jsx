@@ -8,6 +8,7 @@ import AddProduct from './addProduct';
 import AddProductFetures from './addProductFetures';
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
+import { Container } from '@mui/material';
 
 export default function AddProductPanel() {
   const [value, setValue] = React.useState(0);
@@ -19,27 +20,29 @@ export default function AddProductPanel() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <Box sx={{  }}>
+      <Container sx={{ mt:4 }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" sx={{fontFamily: 'Inter',
-fontSize: '14px',
-fontWeight: 500,
+ fontSize:'18px',
+ fonrWeight:600,
 lineHeight: '17px',
 letterSpacing: '0em',
 textAlign: 'left',
-bgcolor:'transparent',
+background:'transparent',
+color:'#5D449B',
 '.MuiTabs-indicator': {
   backgroundColor: '#transparent',
   height: '100%',
   width: '100%',
-  color:'#fff !important',
+  color:'#5D449B !important',
   zIndex: -1,
+ 
 }
 }}>
           <Tab label="Product details  (1st step)" {...a11yProps(0)} />
           <Tab label="Product images (2nd step)" {...a11yProps(1)} />
           <Tab label="Attributes (3rd step)" {...a11yProps(2)} />
         </Tabs>
-      </Box>
+      </Container>
       <CustomTabPanel value={value} index={0}>
       
        <AddProduct/>
@@ -73,7 +76,8 @@ function CustomTabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 3,pt:0 }}>
+         
           <Typography>{children}</Typography>
         </Box>
       )}

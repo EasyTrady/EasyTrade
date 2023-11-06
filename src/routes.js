@@ -325,7 +325,7 @@ const routes = [
     route: `/${sub_domain}/dashboard/products/addnewproduct`,
     icon: <Office size="12px" />,
     component:<Auth><AddProductPanel /></Auth> ,
-    // noCollapse: true,
+     noCollapse: false,
   },
   // {
   //   type: "collapse",

@@ -29,20 +29,20 @@ textAlign: 'left'
         height:'40px !important',
         borderRadius:'4px',
        background:'#F7F8FA',
-      borderColor:'transparent',
+      borderColor:'#C9CDD4',
         ':hover': {
-          border: '1px solid #1B53C5 !important',
+          border: '0.5px solid #005CE8 !important',
         },
-        ':focus-within': { border: '1px solid #005CE8 !important' ,background:'#fff'}
+        ':focus-within': { border: '0px solid #1B53C5 !important' ,background:'#fff'}
       },
       '& .MuiOutlinedInput-root.Mui-disabled': {
         ':hover': {
-          border: '1px solid #1B53C5 !important',
+          border: '0.5px solid #1B53C5 !important',
           boxShadow: 'none'
         }
       },
       '& .MuiOutlinedInput-notchedOutline': {
-        border: '1px solid #C9CDD4'
+        border: '0px solid #C9CDD4'
       },
       // "& .MuiOutlinedInput-root": {
       //   "&.Mui-focused fieldset": {

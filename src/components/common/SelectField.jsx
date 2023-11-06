@@ -4,6 +4,7 @@ import {
   Box,
   CircularProgress,
   MenuItem,
+  Select,
   Stack,
   TextField,
   Typography,
@@ -37,32 +38,32 @@ const SelectField = ({
 }) => {
   return (
     <Box 
-    sx={{ width: "100%",
+    // sx={{ width: "100%",
     
-      '& .MuiSelect-select.MuiInputBase-input.MuiOutlinedInput-input.MuiSelect-select': {
-        height:'32px !important',
-        pl:2,
-        py:0,
-        display:'flex',
-        alignItems:'center',
-        width:'100%',
-       background:'#F7F8FA',
-      borderColor:'#C9CDD4',
-        ':hover': {
-          border: '1px solid #1B53C5 !important',
-        },
-        ':focus-within': { border: '1px solid #1B53C5 !important' ,background:'#fff'}
-      },
-      '& .MuiOutlinedInput-root.Mui-disabled': {
-        ':hover': {
-          border: '1px solid #1B53C5 !important',
-          boxShadow: 'none'
-        }
-      },
-      '& .MuiOutlinedInput-notchedOutline': {
-        border: '1px solid #C9CDD4'
-      },}}
-    // sx={{display:'flex',flexDirection:'column',alignItems:'start',width:'100%',}}
+    //   '& .MuiSelect-select.MuiInputBase-input.MuiOutlinedInput-input.MuiSelect-select': {
+    //     height:'40px !important',
+    //     pl:2,
+    //     py:0,
+    //     display:'flex',
+    //     alignItems:'center',
+    //     width:'100%',
+    //    background:'#F7F8FA',
+    //   borderColor:'#C9CDD4',
+    //     ':hover': {
+    //       border: '0.5px solid #1B53C5 !important',
+    //     },
+    //     ':focus-within': { border: '0px solid #1B53C5 !important' ,background:'#fff'}
+    //   },
+    //   '& .MuiOutlinedInput-root.Mui-disabled': {
+    //     ':hover': {
+    //       border: '1px solid #1B53C5 !important',
+    //       boxShadow: 'none'
+    //     }
+    //   },
+    //   '& .MuiOutlinedInput-notchedOutline': {
+    //     border: '1px solid #C9CDD4'
+    //   },}}
+     sx={{display:'flex',flexDirection:'column',alignItems:'start',width:'100%',}}
     >
     <Typography sx={{
 fontSize: '14px',
@@ -71,10 +72,59 @@ lineHeight:' 20px',
 letterSpacing: '0em',
 textAlign: 'left'
 }}>{label}</Typography>
-    <TextField
+ <Select 
+    defaultValue= ""
+    displayEmpty= {true}
+    onOpen={onOpen}
+    onClose= {onClose}
+    renderValue= {(selected) => {
+      if (!Boolean(selected)) {
+        return (
+          <Typography sx={{ color: "currentColor", opacity: "0.42" }}>
+            {placeholder}
+          </Typography>
+        );
+      } else {
+        return Boolean(renderValue) && typeof renderValue === "function"
+          ? renderValue(selected)
+          : selected;
+      }
+    }}
+    IconComponent={() => <KeyboardArrowDownIcon fontSize="32px" />}
+    sx={{
+        pl:1,
+        fontFamily:'Cairo',
+                boxShadow: "none",
+                height:'40px !important',
+                background:'#F7F8FA',
+               borderColor:'#C9CDD4',
+               fontSize:'14px',
+                ".MuiOutlinedInput-notchedOutline": { border: 0 },
+                "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                  {
+                    border: 0,
+                  },
+                "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                  {
+                    border: 0,
+                  },
+              }} 
+              
+              
+             
+              >
+                 {Boolean(isPending) ? (
+        <Stack justifyContent="center" alignItems="center" sx={{ p: 1 }}>
+          <CircularProgress size="30px" sx={{ color: "gray" }} />
+        </Stack>
+      ) : children?.length ? (
+        children
+      ) : (
+        <MenuItem disabled>فارغ</MenuItem>
+      )}
+              </Select>
+    {/* <Select
       variant={Boolean(variant) ? variant : "standard"}
-      select
-      
       SelectProps={{
         defaultValue: "",
         displayEmpty: true,
@@ -116,7 +166,7 @@ textAlign: 'left'
       ) : (
         <MenuItem disabled>فارغ</MenuItem>
       )}
-    </TextField>
+    </Select> */}
     </Box>
   );
 };
