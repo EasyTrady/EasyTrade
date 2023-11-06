@@ -88,6 +88,7 @@ export default styled(TextField)(({ theme, ownerState }) => {
     backgroundPosition: `right ${pxToRem(12)} center`,
     backgroundSize: `${pxToRem(16)} ${pxToRem(16)}`,
     borderColor: inputColors.error?inputColors.error:"red",
+  
   });
 
   // styles for the input with success={true}
@@ -152,7 +153,7 @@ export default styled(TextField)(({ theme, ownerState }) => {
     ...(error && errorStyles()),
     ...(success && successStyles()),
     ...((iconDirection === "left" || iconDirection === "right") && withIconStyles()),
-
+    
     "&.Mui-focused": {
       borderColor: focusedBorderColorValue,
       paddingLeft: focusedPaddingLeftValue,

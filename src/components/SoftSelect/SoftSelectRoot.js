@@ -1,8 +1,8 @@
-import {  TextField } from "@mui/material";
+import {  Select } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
 import { styled } from "@mui/material/styles";
 
-export default styled("select")(({ theme, ownerState }) => {
+export default styled(Select)(({ theme, ownerState }) => {
   const { palette, boxShadows, functions, typography, borders } = theme;
   const { size, error, success, iconDirection, direction, disabled } = ownerState;
 

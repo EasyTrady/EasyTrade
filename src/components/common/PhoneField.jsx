@@ -14,6 +14,7 @@ import countriesCodes from "../../data/countryCodes";
 import { useSelector } from "react-redux";
 import ReactCountryFlag from "react-country-flag";
 import PropTypes from "prop-types";
+import SoftInput from "components/SoftInput";
 
 const PhoneField = ({
   selectProps = {},
@@ -46,7 +47,7 @@ const PhoneField = ({
       InputProps={{
         startAdornment: (
           <InputAdornment position="start" sx={{ margin: 0 }}>
-            <TextField
+            <SoftInput
               variant="standard"
               select
               sx={{
@@ -132,7 +133,7 @@ const PhoneField = ({
                 </MenuItem>
               ))}
               
-            </TextField>
+            </SoftInput>
           </InputAdornment>
         ),
       }}

@@ -41,7 +41,6 @@ function Basket({absolute, light, isMini}) {
   const [imageData, setImageData] = useState("");
   const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
     useControls([
-
       {
         control: "email",
         value: "",
@@ -55,7 +54,7 @@ function Basket({absolute, light, isMini}) {
       }, {
         control: "describution",
         value: "",
-        isRequired: false,
+        isRequired: true,
         validations: [
           {
             test: /^(?:[A-Za-z\u0600-\u06ff\s]*)$/,
@@ -94,7 +93,8 @@ function Basket({absolute, light, isMini}) {
 
       <Box sx={{
         display: "flex",
-        alignItems: "center"
+        alignItems: "center",
+        position:"relative"
       }}
       >
         {row.products.map((ele) =>
@@ -104,7 +104,7 @@ function Basket({absolute, light, isMini}) {
                 backgroundImage: `url(${elem?.image})`,
                 backgroundColor: "unset !important", width: "40px", height: "40px",
                 position: "absolute",
-                left: `${index === 0 ? 10 : 10 + (index + index)}%`,
+                left: `${index === 0 ? 0 : 20 * (index)}px`,
                 backgroundPosition: "center",
                 backgroundSize: "cover",
               }} >
@@ -125,39 +125,65 @@ function Basket({absolute, light, isMini}) {
   const columns = [
     {
       field: 'id',
-      headerName: 'id',
+      headerName: 'Order Id',
       type: 'image',
       width: 100,
       align: 'left',
       headerAlign: 'left',
       // renderCell: renderImageCell,
       editable: false,
+      filterable: false,
+     disableColumnMenu: true
       // renderEditCell:renderEditImageCell
-    }
-    ,
+    },
     {
-      field: 'products',
-      headerName: 'products',
+      field: 'Client',
+      headerName: 'Client',
+      type: 'image',
+      width: 200,
+      align: 'left',
+      headerAlign: 'left',
+      renderCell: (params)=><Box>
+         <Typography variant={"h6"} sx={{ color: (theme)=>theme.palette.black.main, marginTop: "10px" }}>{params.row.customer_name}</Typography>
+         <Typography variant={"p"} sx={{ color: (theme)=>theme.palette.grey[500], marginTop: "10px" }}>{params.row.customer_phone}</Typography>
+      </Box>,
+      editable: false,
+      filterable: false,
+     disableColumnMenu: true
+      // renderEditCell:renderEditImageCell
+    },
+    {
+      field: 'Products',
+      headerName: 'Products',
       type: 'image',
       width: 100,
       align: 'left',
       headerAlign: 'left',
       renderCell: renderImageCell,
       editable: false,
+      filterable: false,
+     disableColumnMenu: true
       // renderEditCell:renderEditImageCell
     }
     , {
-      field: 'customer_name',
-      headerName: 'customer_name',
+      field: 'Type',
+      headerName: 'Type',
       type: 'text',
-      width: 250,
+      width: 150,
       align: 'left',
       headerAlign: 'left',
       editable: true,
       renderCell: (params) => <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <Typography variant={"h6"} sx={{ color: "#673ab7", marginTop: "10px" }}>{params.row.customer_name}</Typography>
-      </Box>
-    },
+        <Typography variant={"h6"} sx={{ fontSize:"14px",
+        backgroundColor:(theme) =>params.row.is_notified_before? theme.palette.success.hover:theme.palette.error.hover,
+         marginTop: "10px",borderRadius:"5px",padding:"10px",color:(theme) =>params.row.is_notified_before? theme.palette.success.main:theme.palette.error.main }}>
+          {params.row.is_notified_before? <Typography variant={"p"}>active</Typography>:<Typography variant={"p"}>in active</Typography>}
+          </Typography>
+      </Box>,
+       filterable: false,
+      disableColumnMenu: true
+    }
+    ,
     {
       field: 'total_price',
       headerName: 'total price',
@@ -168,16 +194,20 @@ function Basket({absolute, light, isMini}) {
       editable: true,
       renderCell: (params) => <Box sx={{ display: "flex", flexDirection: "column" }}>
         <Typography variant={"h6"} sx={{ color: (theme) => theme.palette.primary, marginTop: "10px" }}>{params.row.total_price}EGP</Typography>
-      </Box>
+      </Box>,
+       filterable: false,
+      disableColumnMenu: true
     },
     {
       field: 'total_shipping_price',
       headerName: 'total shipping price',
       type: 'text',
-      width: 200,
+      width: 100,
       align: 'left',
       headerAlign: 'left',
       editable: true,
+      filterable: false,
+     disableColumnMenu: true
     },
     // {
     //     field: 'job',
@@ -288,10 +318,11 @@ function Basket({absolute, light, isMini}) {
       <DataGridCustom
         rows={rows}
         columns={columns} checkboxSelection={true}
-        onDelete={() => { }}
+        // onDelete={() => { }}
         sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
         onNotify={(ele) => { setOpenDialog(ele); console.log(ele, "row") }}
         rowsPerPageOptions={[5, 10, 15, 20]}
+       
         //  onState={onDelete}
         onPaginationModelChange={setPaginationModel}
       />
