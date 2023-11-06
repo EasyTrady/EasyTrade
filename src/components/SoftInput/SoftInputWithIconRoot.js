@@ -40,9 +40,10 @@ export default styled("div")(({ theme, ownerState }) => {
     border: `${borderWidth[1]} solid`,
     borderRadius: borderRadius.md,
     borderColor: borderColorValue,
-
+   
     "& .MuiInputBase-input": {
       height: pxToRem(20),
+      color:borderColorValue,
     },
   };
 });

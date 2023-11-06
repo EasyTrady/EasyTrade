@@ -18,6 +18,7 @@ import { Link } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
+import { useLocation } from "react-router-dom";
 
 // @mui material components
 import { Breadcrumbs as MuiBreadcrumbs } from "@mui/material";
@@ -29,6 +30,8 @@ import SoftTypography from "components/SoftTypography";
 
 function Breadcrumbs({ icon, title, route, light }) {
   const routes = route.slice(0, -1);
+  let {pathname}=useLocation()
+  console.log(pathname)
 
   return (
     <SoftBox mr={{ xs: 0, xl: 8,textAlign:"left"}}>
@@ -36,7 +39,7 @@ function Breadcrumbs({ icon, title, route, light }) {
         sx={{
           "& .MuiBreadcrumbs-separator": {
             color: ({ palette: { white, grey } }) => (light ? white.main : grey[600]),
-          },
+          },paddingY:"20px"
         }}
         separator="›"
       >
@@ -52,8 +55,9 @@ function Breadcrumbs({ icon, title, route, light }) {
             {/* <Icon>{icon}</Icon> */}
           </SoftTypography>
         </Link>
-        {routes.map((el) => (
-          <Link to={`/${el}`} key={el}>
+        {routes.map((el,index,array) => (
+
+          <Link to={pathname.split(el)[0]+el} key={index}>
             <SoftTypography
               component="span"
               variant="button"
@@ -63,6 +67,7 @@ function Breadcrumbs({ icon, title, route, light }) {
               opacity={light ? 0.8 : 0.5}
               sx={{ lineHeight: 0 }}
             >
+              {console.log(pathname.split(el)[0]+el)}
               {el}
             </SoftTypography>
           </Link>
@@ -77,6 +82,7 @@ function Breadcrumbs({ icon, title, route, light }) {
           {title.replace("-", " ")}
         </SoftTypography>
       </MuiBreadcrumbs>
+      {console.log(title)}
       <SoftTypography
         fontWeight="bold"
         textTransform="capitalize"

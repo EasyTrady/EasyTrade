@@ -53,7 +53,7 @@ function RTL() {
 
   // Changing the direction to rtl
   useEffect(() => {
-    setDirection(dispatch, "ltr");
+    setDirection(dispatch, "rtl");
 
     return () => setDirection(dispatch, "rtl");
   }, []);

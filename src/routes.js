@@ -74,6 +74,7 @@ import Basket from "layouts/basket";
 import GroupIcon from '@mui/icons-material/Group';
 import AlignHorizontalLeftIcon from '@mui/icons-material/AlignHorizontalLeft';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import AddNewEmployee from "layouts/employee/addNewEmployee";
 const sub_domain = localStorage.getItem('sub_domain')
 const routes = [
   {
@@ -295,6 +296,16 @@ const routes = [
     route: `/${sub_domain}/dashboard/attribute/:id`,
     icon: <Shop size="12px" />,
     component: <Auth><AttributeValue /></Auth>,
+    noCollapse: false,
+
+  },
+  {
+    type: "title",
+    name: "values",
+    key: "valuse",
+    route: `/${sub_domain}/dashboard/addNewEmployee`,
+    icon: <Shop size="12px" />,
+    component: <Auth><AddNewEmployee /></Auth>,
     noCollapse: false,
 
   },

@@ -72,9 +72,8 @@
     "name":{
         "title":"الإسم"
     },
-    "password":{
-        "title":"كلمة المرور"
-    },
+    "password":"كلمة المرور"
+    ,
     "phone":{
         "title":"رقم الهاتف"
     },
@@ -110,14 +109,29 @@
     },
     "donthaveaccount":{
         "title":"ليس لديك حساب ؟"
-    },"emailBasket":"Email content",
-    "descributionEmail":"Write all you need to notify the user with",
-    "emailTitle":"Email title",
-    "describe":"Description",
-    "contentType":"Content type",
-    "Banner":"Banner",
-    "Multipleproducts":"Multiple products",
-    "notvalidemail":"not valid email",
-    "SelectProducts":"Select Products"
+    },
 
+    
+"emailBasket":"Email content",
+"descributionEmail":"Write all you need to notify the user with",
+"emailTitle":"Email title",
+"describe":"Description",
+"contentType":"Content type",
+"Banner":"Banner",
+"Multipleproducts":"Multiple products",
+"notvalidemail":"not valid email",
+"SelectProducts":"Select Products",
+"Selected":"Selected :",
+"Deleted":"Deleted",
+"Notifyclient":"Notify client",
+"Edit":"Edit",
+"Block":"Block",
+"CustomerInfo":"Customer Info",
+"ContactInfo":"Contact Info",
+"Fullname":"Full name",
+"Phone":"Phone",
+"Email":"Email",
+"job":"job name",
+"Account":"Account",
+"ConfirmPassword":"Confirm Password"
 }

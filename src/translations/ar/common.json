@@ -109,7 +109,9 @@
     ,
     "donthaveaccount":
         "Don’t have an account ?"
-,"emailBasket":"محتوى البريد الإلكتروني",
+,
+
+"emailBasket":"محتوى البريد الإلكتروني",
 "descributionEmail":"اكتب كل ما تحتاجه لإخطار المستخدم به",
 "emailTitle":"عنوان بريد الالكتروني",
 "describe":"وصف",
@@ -117,6 +119,18 @@
 "Banner":"راية",
 "Multipleproducts":"منتجات متعددة",
 "notvalidemail":"ايميل غير متاح",
-"SelectProducts":"اختار من منتجات"
-    
+"SelectProducts":"اختار من منتجات",
+"Selected":"المحدد :",
+"Deleted":"تم الحذف",
+"Notifyclient":"إخطار العميل",
+"Edit":"تعديل",
+"Block":"حظر",
+"CustomerInfo":"معلومات العملاء",
+"ContactInfo":"معلومات الاتصال",
+"Fullname":"الاسم بالكامل",
+"Phone":"هاتف",
+"Email":"بريد الالكتروني",
+"job":"وظيفة",
+"Account":"حساب",
+"ConfirmPassword":"تاكد كلمة السر"
 }

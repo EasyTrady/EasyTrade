@@ -1,9 +1,11 @@
-import { Box, Icon, Menu, MenuItem } from "@mui/material";
+import { Box, Icon, IconButton, OutlinedInput, Input, InputAdornment, FormControl, Menu, MenuItem, Typography, InputLabel, TextField, Button } from "@mui/material";
 
 import * as React from 'react';
 // import Box from '@mui/material/Box';
 // import Button from '@mui/material/Button';
 // import AddIcon from '@mui/icons-material/Add';
+import Checkbox from '@mui/material/Checkbox';
+import { useTranslation } from 'react-i18next';
 import EditIcon from '@mui/icons-material/Edit';
 import input from "assets/theme/components/form/input";
 import PropTypes from "prop-types";
@@ -12,6 +14,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import BlockIcon from '@mui/icons-material/Block';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import {
   GridRowModes,
@@ -21,22 +24,24 @@ import {
   GridRowEditStopReasons,
   GridActionsCellItem,
 } from '@mui/x-data-grid';
+import SoftBox from "components/SoftBox";
 import SoftBadge from "components/SoftBadge";
 import compare from "../../utils/compare";
 import CustomPagination from "./Pagination";
-import SoftSelect from "components/SoftSelect";
+import Select from '@mui/material/Select';
 import SoftButton from "components/SoftButton";
 import MenuCustom from "assets/theme/components/menu";
+import SoftInput from "components/SoftInput";
 function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
-  checkboxSelection, onEdit, onDelete, sx, rowsPerPageOptions, notProduct = true, onState,
+  checkboxSelection, onEdit, onDelete, onBlock,sx, rowsPerPageOptions, notProduct = true, onState,
   onNotify,
-   onCopy, onPaginationModelChange, ...rest }) {
+  onCopy, onPaginationModelChange, ...rest }) {
   const [, setRows] = React.useState(rows);
- 
+  let { t } = useTranslation("common")
 
   let refSelect = React.useRef()
   const [status, setStatus] = React.useState(false)
-  
+
 
   const [rowModesModel, setRowModesModel] = React.useState({});
 
@@ -45,7 +50,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
       event.defaultMuiPrevented = true;
     }
   };
- 
+
   const handleEditClick = (id) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
     onEdit(id)
@@ -77,12 +82,14 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
 
     const updatedRow = { ...newRow, isNew: false };
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-    let isThereChange = compare(rows.filter((ele) => ele.id == newRow.id).map((elem) => Object.keys(elem).map((eleme) => ([newRow[eleme], elem[eleme], eleme]))))
+    // console.log(rows.filter((ele) => ele.id == newRow.id).map((elem) => Object.keys(elem).map((eleme) => ([newRow[eleme], elem[eleme], eleme]))))
+
+    // let isThereChange = compare(rows.filter((ele) => ele.id == newRow.id).map((elem) => Object.keys(elem).map((eleme) => ([newRow[eleme], elem[eleme], eleme]))))
 
     // if(isThereChange.nochange){
     //   console.log(isThereChange.array)
     // }
-    onEdit(newRow.id, isThereChange.array)
+    onEdit(newRow.id,updatedRow )
     return updatedRow;
   };
 
@@ -90,18 +97,18 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
     setRowModesModel(newRowModesModel);
   };
 
-  const columnsResult = [
+  const columnsResult =Boolean(onEdit||onNotify||onBlock||onDelete)?[
     ...columns,
     {
       field: 'actions',
       type: 'actions',
-      headerName: 'Actions',
-      width: 100,
+      headerName:"Active",
+      width:100,
       cellClassName: 'actions',
       getActions: (row) => {
-        console.log(row)
         const isInEditMode = rowModesModel[row?.id]?.mode === GridRowModes.Edit;
         const [open, setOpen] = React.useState()
+        // console.log( Boolean(onEdit||onNotify||onBlock||onDelete))
         if (isInEditMode) {
           return [
             <GridActionsCellItem
@@ -175,109 +182,199 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
           //     /></option>
           //   </SoftSelect>
           // </> : <></>,
-          <>  
-         
-          <SoftButton variant="outlined" key={0} color="dark" onClick={(event) =>Boolean(open)?setOpen(null):setOpen(event.currentTarget)} 
-           sx={{
-            border: "unset", borderRadius: "50%",
-             padding: "0", backgroundColor: Boolean(open) ? "#4A81CA" : "#ECF4FA", minWidth: "40px", height: "40px",
-            ".MuiButtonBase-root:hover":{
-              backgroundColor:"unset !important"
-            }
-          }}>
-            <MoreVertIcon sx={ {color:Boolean(open) ? "#ffff" : "#4A81CA"}} />
+          <>
+            <SoftButton variant="outlined" key={0} color="dark" onClick={(event) => Boolean(open) ? setOpen(null) : setOpen(event.currentTarget)}
+              sx={{
+                border: "unset", borderRadius: "50%",
+                padding: "0", backgroundColor: Boolean(open) ? "#4A81CA" : "#ECF4FA", minWidth: "40px", height: "40px",
+                "&:hover": {
+                  backgroundColor: "unset !important",
+                  border:"unset"
+                },"&:focus":{
+                  backgroundColor: "unset !important",
+                  border:"unset"
+                }
+              }}>
+              <MoreVertIcon sx={{ color: Boolean(open) ? "#ffff" : "#4A81CA" }} />
 
-          </SoftButton>
-         <MenuCustom anchor={open}>
-         { onEdit && notProduct &&  <MenuItem onClick={()=>setOpen(null)}>
-         <GridActionsCellItem
-            key={row.id}
-            icon={<Box><EditIcon /> <span>edit</span></Box>}
-            label="Edit"
-            className="textPrimary"
-            onClick={handleEditClick(row?.id, row)}
-            color="inherit"
-          />
-          </MenuItem>}
-          { onNotify && notProduct &&<MenuItem onClick={()=>setOpen(null)}>
-          <GridActionsCellItem
-            key={row.id}
-            icon={<Box><NotificationsIcon /> <span>Notify client</span></Box>}
-            label="Notify client"
-            className="textPrimary"
-            onClick={()=>onNotify(row)}
-            color="inherit"
-          />
-          </MenuItem>}
-          { onDelete && notProduct &&<MenuItem onClick={()=>setOpen(null)}>
-         <GridActionsCellItem
-           key={row.id}
-           icon={<Box sx={{color:(theme)=>theme.palette.error.main}}><DeleteIcon sx={{color:(theme)=>theme.palette.error.main}}/><span>Delete</span></Box>}
-           label="Delete"
-           onClick={handleDeleteClick(row?.id)}
-           color="inherit"
-          ></GridActionsCellItem>
-          </MenuItem>}
-         
-          
-         </MenuCustom>
+            </SoftButton>
+            
+            <MenuCustom anchor={open} open={Boolean(open)}>
+              {onEdit && notProduct && <MenuItem onClick={() => setOpen(null)}>
+                <GridActionsCellItem
+                  key={row.id}
+                  icon={<Box><EditIcon /> <span>edit</span></Box>}
+                  label="Edit"
+                  className="textPrimary"
+                  onClick={handleEditClick(row?.id, row)}
+                  color="inherit"
+                />
+              </MenuItem>}
+              {onNotify && notProduct && <MenuItem onClick={() => setOpen(null)}>
+                <GridActionsCellItem
+                  key={row.id}
+                  icon={<Box><NotificationsIcon /> <span>Notify client</span></Box>}
+                  label="Notify client"
+                  className="textPrimary"
+                  onClick={() => onNotify(row)}
+                  color="inherit"
+                />
+              </MenuItem>}
+              {onBlock&& notProduct && <MenuItem onClick={() => setOpen(null)}>
+                <GridActionsCellItem
+                  key={row.id}
+                  icon={<Box><BlockIcon /> <span>{t("Block")}</span></Box>}
+                  label={t("Block")}
+                  className="textPrimary"
+                  onClick={() => onBlock(row.id,row)}
+                  color="inherit"
+                />
+              </MenuItem>}
+              {onDelete && notProduct && <MenuItem onClick={() => setOpen(null)}>
+                <GridActionsCellItem
+                  key={row.id}
+                  icon={<Box sx={{ color: (theme) => theme.palette.error.main }}><DeleteIcon sx={{ color: (theme) => theme.palette.error.main }} /><span>Delete</span></Box>}
+                  label="Delete"
+                  onClick={handleDeleteClick(row?.id)}
+                  color="inherit"
+                ></GridActionsCellItem>
+              </MenuItem>}
+             
+
+            </MenuCustom>
           </>
         ];
       },
     },
-  ];
+  ]:[...columns];
 
   return (
-    <Box
-      sx={{
-        height: rows?.length > 0 ? "auto" : 200,
-        width: '100%',
-        '& .actions': {
-          color: 'text.secondary',
-        },
-        '& .textPrimary': {
-          color: 'text.primary',
-        }, ...sx, marginY: "20px", borderRadius: "20px"
-      }}
-    >
-      <DataGrid
-        rows={rows}
-
-        columns={columnsResult}
-        editMode="row"
-        rowModesModel={rowModesModel}
-        onRowModesModelChange={handleRowModesModelChange}
-        onRowEditStop={handleRowEditStop}
-        processRowUpdate={processRowUpdate}
-        checkboxSelection={checkboxSelection}
-        onRowClick={onRowClick}
-        isRowSelectable={isRowSelectable}
-        initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
-        pageSizeOptions={[5, 10, 15]}
-        sx={{
-          ...sx, "& .css-1ui3wbn-MuiInputBase-root-MuiTablePagination-select": {
-            width: "15% !important"
-          }, ".rtl-1ui3wbn-MuiInputBase-root-MuiTablePagination-select": { maxWidth: "15% !important" },".MuiDataGrid-cell:focus":{
-            outline:"unset !important"
-          },".rtl-zhhcxq-MuiPaper-root-MuiMenu-paper-MuiPopover-paper":{
-            backgroundColor:"white !important"
+    <>
+              
+    <Box sx={{backgroundColor: "white !important",
+    padding: "10px !important",marginY:"10px"}}>
+      <SoftInput
+        id="outlined-adornment-password"
+        type={'text'}
+        value={""}
+        sx={{".MuiInputBase-root":{ overflow: "hidden !important"}}}
+        onChange={() => { }}
+        InputProps={{
+          startAdornment:
+            (<InputAdornment sx={{ position: "absolute", left: "0" }}>
+              <SoftInput
+      select
+      SelectProps={{
+        defaultValue: "",
+        displayEmpty: true,
+        // onOpen: onOpen,
+        // onClose: onClose,
+        renderValue: (selected) => {
+          if (!Boolean(selected)) {
+            return (
+              <Typography sx={{ color: "currentColor", opacity: "0.42",fontSize:"14px" }}>
+                {"Filter By"}
+              </Typography>
+            );
+          } else {
+            return Boolean(renderValue) && typeof renderValue === "function"
+              ? renderValue(selected)
+              : selected;
           }
+        },
+        MenuProps: {
+          PaperProps: {
+            sx: {
+              maxHeight: "200px",
+              overflowY: "auto",
+             
+            },
+          },
+        },
+       
+        // IconComponent: <KeyboardArrowDownIcon></KeyboardArrowDownIcon>,
+        
+      }}
+     
+    />
+     
+              
+             
+            </InputAdornment>)
         }}
-        onPaginationModelChange={onPaginationModelChange}
-        {...rest}
-        onProcessRowUpdateError={(error) => console.log(error)}
-        // slots={{
-        //   toolbar: EditToolbar,
-        // }}
-        // slotProps={{
-        //   toolbar: { setRows, setRowModesModel },
-        // }}
-        // rowHeight={rowHeight}
 
-        rowSpacingType='margin'
-        getRowSpacing={(params) => params === 4}
       />
-    </Box>
+      </Box>
+      <Box>
+        <Checkbox checked />
+        <Typography sx={{ fontSize: "14px" }} variant="span">
+          {t("Selected")}
+        </Typography>
+        {onDelete && <Typography sx={{ color: (theme) => theme.palette.error.main, fontSize: "14px", marginX: "10px" }} variant="span">
+          {t("Deleted")}
+        </Typography>}
+        {onNotify && <Typography sx={{ color: (theme) => theme.palette.purple.middle, fontSize: "14px", marginX: "10px" }} variant="span">
+          {t("Notifyclient")}
+        </Typography>}
+        {onEdit && <Typography sx={{ color: (theme) => theme.palette.purple.middle, fontSize: "14px", marginX: "10px" }} variant="span">
+          {t("Edit")}
+        </Typography>}
+        {onBlock && <Typography sx={{ color: (theme) => theme.palette.purple.middle, fontSize: "14px", marginX: "10px" }} variant="span">
+          {t("Block")}
+        </Typography>}
+      </Box>
+      <Box
+        sx={{
+          height: rows?.length > 0 ? "auto" : 200,
+          width: '100%',
+          '& .actions': {
+            color: 'text.secondary',
+          },
+          '& .textPrimary': {
+            color: 'text.primary',
+          }, ...sx, marginY: "20px", borderRadius: "20px"
+        }}
+      >
+
+        {/* {console.log(isRowSelectable, onRowClick, checkboxSelection)} */}
+        <DataGrid
+          rows={rows}
+
+          columns={columnsResult}
+          editMode="row"
+          rowModesModel={rowModesModel}
+          onRowModesModelChange={handleRowModesModelChange}
+          onRowEditStop={handleRowEditStop}
+          processRowUpdate={processRowUpdate}
+          checkboxSelection={checkboxSelection}
+          onRowClick={onRowClick}
+          isRowSelectable={isRowSelectable}
+          initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
+          pageSizeOptions={[5, 10, 15]}
+          sx={{
+            ...sx, "& .css-1ui3wbn-MuiInputBase-root-MuiTablePagination-select": {
+              width: "15% !important"
+            }, ".rtl-1ui3wbn-MuiInputBase-root-MuiTablePagination-select": { maxWidth: "15% !important" }, ".MuiDataGrid-cell:focus": {
+              outline: "unset !important"
+            }, ".rtl-zhhcxq-MuiPaper-root-MuiMenu-paper-MuiPopover-paper": {
+              backgroundColor: "white !important"
+            }
+          }}
+          onPaginationModelChange={onPaginationModelChange}
+          {...rest}
+          onProcessRowUpdateError={(error) => console.log(error)}
+          // slots={{
+          //   toolbar: EditToolbar,
+          // }}
+          // slotProps={{
+          //   toolbar: { setRows, setRowModesModel },
+          // }}
+          rowHeight={72}
+
+          rowSpacingType='margin'
+          getRowSpacing={(params) => params === 4}
+        />
+      </Box></>
   );
 }
 export default DataGridCustom
@@ -296,5 +393,5 @@ DataGridCustom.propTypes = {
   onCopy: PropTypes.func,
   notProduct: PropTypes.bool,
   onNotify: PropTypes.func,
-
+  onBlock:PropTypes.func,
 };

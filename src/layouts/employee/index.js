@@ -19,67 +19,140 @@ import PhoneField from 'components/common/PhoneField';
 import Form from 'components/common/Form';
 import PasswordField from 'components/common/PasswordField';
 import PictureField from 'components/common/PictureField';
-import { GridActionsCellItem,GridPagination } from '@mui/x-data-grid';
+import { GridActionsCellItem, GridPagination } from '@mui/x-data-grid';
 import SoftBadge from 'components/SoftBadge';
+import SoftInput from 'components/SoftInput';
+import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
+import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
+import { Container } from '@mui/material';
+import moment from 'moment';
+import SoftBox from 'components/SoftBox'
+import Breadcrumbs from 'examples/Breadcrumbs'
 import { JOBS } from 'data/api';
-function Employee() {
+import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
+import PropTypes from "prop-types";
+import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
+import { useNavigate } from 'react-router-dom';
+import PersonIcon from '@mui/icons-material/Person';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+
+function Employee({ absolute, light, isMini }) {
     let { pathname } = useLocation()
+    const sub_domain = localStorage.getItem('sub_domain')
+    const navigate = useNavigate()
     let [click, setClick] = useState({})
     let [openJob, setOpenJob] = useState(false)
-   let {results}= useSelector((state)=>state.job.value)
+    let jobs = useSelector((state) => state.job.value)
+    const route = useLocation().pathname.split("/").slice(1);
+    let { results } = useSelector((state) => state.job.value)
     const [selectedImage, setSelectedImage] = useState(null);
     // let shopName=localStorage.getItem('shop_name')
     let Token = localStorage.getItem('token')
     let refImage = useRef(null)
-    const [image,setImage]=useState("")
+    const [image, setImage] = useState("")
+
     const renderEditImageCell = (params) => {
-        
+
         const { row } = params;
-      
-     
+
+
         return (<>
             <input key={params.row.id} type='file'
-             onChange={(e) => {
-                setImage(URL.createObjectURL(e.target.files[0]))
-            }}  
-            style={{display:"none"}}
-            ref={refImage}
-             />
-            <Avatar src={image ? image : params.row.image} onClick={()=>refImage.current.click()} />
+                onChange={(e) => {
+                    setImage(URL.createObjectURL(e.target.files[0]))
+                }}
+                style={{ display: "none" }}
+                ref={refImage}
+            />
+            <Avatar src={image ? image : params.row.image} onClick={() => refImage.current.click()} />
         </>
         );
     };
     const CustomPagination = (props) => {
-     
+
         return (
             <GridPagination
-            
-            {...props}
-          />
+
+                {...props}
+            />
         );
-      };
+    };
     const renderImageCell = (params) => {
         const { row } = params;
         return (<>
-            <Avatar src={row.image}  />
+            <Avatar src={row.image} />
         </>
         );
     };
+    const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
+    useControls([
+        { control: "image", value: "", isRequired: false },
+        {
+            control: "email",
+            value: "",
+            isRequired: true,
+            validations: [
+                {
+                    test: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                    message: "not valid email"
+                },
+            ],
+        },
+        {
+            control: "full_name",
+            value: "",
+            isRequired: true,
+            validations: [
+                {
+                    test: /^(?:[A-Za-z\u0600-\u06ff\s]*)$/,
+                    message: "not valid name"
+                }
+            ]
+        },
+        {
+            control: "password",
+            value: "",
+            isRequired: true,
+        }, {
+            control: "confirm",
+            value: "",
+            isRequired: true,
+            validations: [
+                {
+                    test: (controls) => new RegExp(`^${controls.password}$`),
+                    message: "الرقم السري لا يطابق",
+                },
+            ],
+        }, {
+            control: "phone",
+            value: "",
+            isRequired: true,
+        }, {
+            control: "code",
+            value: "+20",
+            isRequired: true,
+        },
+        {
+            control: "job",
+            value: "",
+            isRequired: true,
+        }
+    ]);
     const columns = [
         {
-            field: 'image',
-            headerName: 'image',
-            type: 'image',
+            field: 'id',
+            headerName: 'id',
+            type: 'text',
             width: 100,
             align: 'left',
             headerAlign: 'left',
-            renderCell: renderImageCell,
+            // renderCell: renderImageCell,
             editable: false,
             // renderEditCell:renderEditImageCell
         }
         , {
             field: 'full_name',
-            headerName: 'full_name',
+            headerName: 'Employee name',
             type: 'text',
             width: 150,
             align: 'left',
@@ -87,7 +160,100 @@ function Employee() {
             editable: true,
             renderCell: (params) => <Box sx={{ display: "flex", flexDirection: "column" }}>
                 <Typography variant={"h6"} sx={{ color: "#673ab7", marginTop: "10px" }}>{params.row.full_name}</Typography>
-            </Box>
+            </Box>,
+            renderEditCell:(params)=><SoftInput
+            placeholder="Full Name"
+            icon={{ component: <PersonIcon />, direction: "left" }}
+            sx={{ ".MuiInputBase-root": { border: "unset" } }}
+            value={params.row.full_name}
+            onChange={(e) =>params.api.setEditCellValue({
+                    id: params.id,
+                    field: params.field,
+                    value: e.target.value,
+                  })
+            }
+          
+        />
+        },
+        {
+            field: 'job',
+            headerName: 'job',
+            type: 'text',
+            width: 200,
+            align: 'left',
+            headerAlign: 'left',
+            editable: true,
+            renderCell: (params) => <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <Typography variant={"p"} sx={{ color: (theme) => theme.palette.primary, marginTop: "10px", fontSize: "14px" }}>{jobs?.results?.find((ele) => ele.id === params.row.job)?.title}</Typography>
+            </Box>,
+            renderEditCell:(params)=><SoftInput
+            select
+            value={params.row.job}
+            icon={{ component: <WorkOutlineIcon />, direction: "left" }}
+            sx={{ ".MuiInputBase-root": { border: "unset" } }}
+            onChange={(e) =>  params.api.setEditCellValue({
+                id: params.id,
+                field: params.field,
+                value: e.target.value,
+              })}
+            SelectProps={{
+                defaultValue: "",
+                displayEmpty: true,
+                // onOpen: onOpen,
+                // onClose: onClose,
+                renderValue: (selected) => {
+                    if (!Boolean(selected)) {
+                        return (
+                            <Typography sx={{ color: "currentColor", opacity: "0.42", fontSize: "14px" }}>
+                                {"job name"}
+                            </Typography>
+                        );
+                    } else {
+                        console.log(selected)
+                        return jobs?.results?.find((ele)=>ele.id===selected).title;
+                    }
+                },
+                MenuProps: {
+                    PaperProps: {
+                        sx: {
+                            maxHeight: "200px",
+                            overflowY: "auto",
+                            backgroundColor: "white !important"
+                        },
+                    },
+                },
+
+                // IconComponent: <KeyboardArrowDownIcon></KeyboardArrowDownIcon>,
+
+            }}
+
+        >
+            
+            {jobs?.results?.map((ele) => <MenuItem value={ele.id} key={ele.id}>{ele.title}</MenuItem>)}
+        </SoftInput>
+        },
+        {
+            field: 'phone',
+            headerName: 'phone',
+            type: 'text',
+            width: 200,
+            align: 'left',
+            headerAlign: 'left',
+            editable: true,
+            renderEditCell:(params)=><SoftInput
+
+            placeholder="Phone"
+            icon={{ component: <PhoneInTalkIcon />, direction: "left" }}
+            sx={{ ".MuiInputBase-root": { border: "unset" } }}
+            value={params.row.phone}
+            onChange={(e) => params.api.setEditCellValue({
+                id: params.id,
+                field: params.field,
+                value: e.target.value,
+              })}
+            
+        >
+        </SoftInput>
         },
         {
             field: 'email',
@@ -98,82 +264,45 @@ function Employee() {
             headerAlign: 'left',
             editable: true,
             renderCell: (params) => <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <Typography  variant={"h6"} sx={{ color: (theme) => theme.palette.primary, marginTop: "10px" }}>{params.row.email}</Typography>
-            </Box>
+                <Typography variant={"h6"} sx={{ color: (theme) => theme.palette.primary, marginTop: "10px" }}>{params.row.email}</Typography>
+            </Box>,
+            renderEditCell:(params)=><SoftInput
+            placeholder="email"
+            icon={{ component: <MailOutlineIcon />, direction: "left" }}
+            sx={{ ".MuiInputBase-root": { border: "unset" } }}
+            value={params.row.email}
+            onChange={(e) => params.api.setEditCellValue({
+                id: params.id,
+                field: params.field,
+                value: e.target.value,
+              })
+            }
+            required={required.includes("email")}
+            error={Boolean(invalid?.email)}
+            helperText={invalid?.email}
+        />
         },
         {
-            field: 'phone',
-            headerName: 'phone',
+            field: 'created_at',
+            headerName: 'created at',
             type: 'text',
-            width: 200,
+            width: 300,
             align: 'left',
             headerAlign: 'left',
-            editable: true,
-        }, 
-        // {
-        //     field: 'job',
-        //     headerName: 'job',
-        //     type: 'text',
-        //     width: 200,
-        //     align: 'left',
-        //     headerAlign: 'left',
-        //     editable: true,
-        // },
+            editable: false,
+            filterable: false,
+            sortable: false, disableColumnMenu: true,
+            renderCell: (params) => <Typography variant={"p"}
+                sx={{
+                    fontSize: "14px"
+                }}
+            > {moment(params.row.created_at).format('MMMM Do YYYY, h:mm:ss ')} </Typography>
+        },
+
     ]
 
     let [rows, setRows] = useState([])
-    const [{ controls, invalid, required }, { setControl, resetControls, validate,setInvalid }] =
-        useControls([
-            { control: "image", value: "", isRequired: false },
-            {
-                control: "email",
-                value: "",
-                isRequired: true,
-                validations: [
-                    {
-                        test: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                        message: "not valid email"
-                    },
-                ],
-            },
-            {
-                control: "full_name",
-                value: "",
-                isRequired: true,
-                validations: [
-                    {
-                        test: /^(?:[A-Za-z\u0600-\u06ff\s]*)$/,
-                        message: "not valid name"
-                    }
-                ]
-            },
-            {
-                control: "password",
-                value: "",
-                isRequired: true,
-            }, {
-                control: "confirm",
-                value: "",
-                isRequired: true,
-                validations: [
-                    {
-                        test: (controls) => new RegExp(`^${controls.password}$`),
-                        message: "الرقم السري لا يطابق",
-                    },
-                ],
-            }, {
-                control: "phone",
-                value: "",
-                isRequired: true,
-            }, {
-                control: "code",
-                value: "+20",
-                isRequired: true,
-            },
-            { control: "job",
-            value: "",
-            isRequired: true,}
-        ]);
+   
     let employees = useSelector((state) => state.employee.value)
     const [open, setOpen] = React.useState(false);
     const handleClickOpen = () => {
@@ -209,13 +338,13 @@ function Employee() {
             method: "post",
             Token: `Token ${Token}`
         });
-        const [jobRequest, getjobResponce] =
+    const [jobRequest, getjobResponce] =
         useRequest({
             path: JOBS,
             method: "get",
             Token: `Token ${Token}`
         });
-        
+
     let dispatch = useDispatch()
     useEffect(() => {
         employeeRequest({
@@ -225,7 +354,7 @@ function Employee() {
 
             }
         })
-    
+
     }, [])
     useEffect(() => {
 
@@ -234,7 +363,7 @@ function Employee() {
     }, [employees])
 
     function onDelete(row) {
-      
+
         EmployeeDeleteRequest({
             id: row,
             onSuccess: () => {
@@ -243,13 +372,13 @@ function Employee() {
         })
     }
     function onEdit(row, newRow) {
-      
+
         EmployeePatchRequest({
             id: row,
             body: newRow,
             onSuccess: (res) => {
-                dispatch({ type: "employee/patchItem", payload: { id: row ,item:res.data} })
-              
+                dispatch({ type: "employee/patchItem", payload: { id: row, item: res.data } })
+
             }
         })
     }
@@ -259,9 +388,9 @@ function Employee() {
         setControl("image", event.target.files[0])
     };
     function handleSubmit() {
-        
+
         validate().then((output) => {
-          
+
             if (!output.isOk) return;
             EmployeePostRequest({
                 body: controls,
@@ -270,8 +399,8 @@ function Employee() {
                 }
             }).then((res) => {
                 let response = res?.response?.data;
-                
-               
+
+
                 setInvalid(response);
 
             });
@@ -281,147 +410,70 @@ function Employee() {
     const handleOpenMenu = () => {
         setOpenJob(true)
         jobRequest({
-            onSuccess:(res)=>{
+            onSuccess: (res) => {
                 console.log(res)
-                dispatch({type:"job/set",payload:res.data})
+                dispatch({ type: "job/set", payload: res.data })
             }
         })
-      };
-    
-      const handleCloseMenu = () => {
+    };
+
+    const handleCloseMenu = () => {
         setOpenJob(false)
         // Perform any necessary actions when the menu is closed
         console.log('Menu closed');
-      };
-    
+    };
+    useEffect(() => {
+        jobRequest({
+            onSuccess: (res) => {
+                dispatch({ type: "job/set", payload: res.data })
+            }
+        })
+    }, [])
     return (<>
         <DashboardLayout>
             <DashboardNavbar />
-            <SoftButton variant="gradient" color="dark" onClick={handleClickOpen}>
-                <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                &nbsp;add new employee
-            </SoftButton>
-            <Dialog open={open} onClose={handleClose}>
-                <Form component="form"
-                    childrenProps={{
-                        saveBtn: {
-                            onClick: handleSubmit,
-                            disabled: PostEmployeerResponce.isPending,
-                        },
-                        closeBtn: {
-                            onClick: () => {
-                                handleClose()
-                                resetControls();
-                            },
-                            disabled: PostEmployeerResponce.isPending,
-                        }, title: "add employee"
-                    }}>
-                    <TextField
 
-                        // id="filled-size-small"
-                        placeholder='name'
-                        variant="standard"
-                        size="small"
-                        value={controls.full_name}
-                        onChange={(e) =>
-                            setControl("full_name", e.target.value)
-                        }
-                        required={required.includes("full_name")}
-                        error={Boolean(invalid.full_name)}
-                        helperText={invalid.full_name}
-                    />
-                    <TextField
-
-                        // id="filled-size-small"
-                        placeholder='email'
-                        variant="standard"
-                        size="small"
-                        value={controls.email}
-                        onChange={(e) =>
-                            setControl("email", e.target.value)
-                        }
-                        required={required.includes("email")}
-                        error={Boolean(invalid.email)}
-                        helperText={invalid.email}
-                    />
-                    <Select
-                        open={openJob}
-                        value={controls.job?controls.job:"jobs"}
-                        onChange={(e)=>setControl("job", e.target.value)}
-                        onOpen={()=>handleOpenMenu()}
-                        onClose={()=>handleCloseMenu()}
-                        sx={{".MuiSelect-select":{minWidth:"100%"}}}
-                        // MenuProps={{
-                        //     anchorOrigin: {
-                        //         vertical: 'bottom',
-                        //         horizontal: 'left',
-                        //     },
-                        //     transformOrigin: {
-                        //         vertical: 'top',
-                        //         horizontal: 'left',
-                        //     },
-                        //     getContentAnchorEl: null,
-                        // }}
-                       
-                    >
-                        {results.map((ele)=><MenuItem key={ele.id}  value={ele.id}>{ele.title}</MenuItem>)}
-                        
-                    </Select>
-                    <PhoneField
-                        placeholder={"phone"}
-                        required={required.includes("phone")}
-                        requiredCode
-                        selectProps={{
-                            value: controls.code ? controls.code : "+20",
-                            onChange: (e) => setControl("code", e.target.value),
+            
+            <Container sx={{ p: 2 }}>
+                <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
+                    <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+                </SoftBox>
+                <SoftBox mb={{
+                    xs: 1, md: 0, display: "flex", justifyContent: "flex-end",
+                    alignItems: "center"
+                }} sx={{ textAlign: "right" }}>
+                    <Button onClick={() => window.print()} sx={{
+                        backgroundColor: "white !important",
+                        color: "black !important", marginX: "10px", p: 1.5
+                    }}><LocalPrintshopIcon /> Print</Button>
+                    <SoftButton variant="gradient"
+                        sx={{
+                            backgroundColor: (theme) => theme.palette.purple.middle,
+                            color: "white !important", "&:hover": {
+                                backgroundColor: (theme) => theme.palette.purple.middle
+                            }
                         }}
-                        value={controls.phone}
-                        onChange={(e) => setControl("phone", e.target.value)}
-                        error={Boolean(invalid.phone)}
-                        helperText={invalid.phone}
-                        sx={{ ".MuiInputBase-root input": { minWidth: "75% !important" },"..MuiInputBase-root":{ justifyContent: "flex-end"} }}
-                    />
-                    <PasswordField
-                        placeholder={"password"}
-                        required={required.includes("password")}
-                        value={controls.password}
-                        onChange={(e) => setControl("password", e.target.value)}
-                        error={Boolean(invalid.password)}
-                        helperText={invalid.password}
-                        sx={{ ".MuiInputBase-root input": { minWidth: "95% !important" } }}
-                    />
-                    <PasswordField
-
-                        placeholder={"confirmPassword"}
-                        required={required.includes("confirm")}
-                        value={controls.confirm}
-                        onChange={(e) => setControl("confirm", e.target.value)}
-                        error={Boolean(invalid.confirm)}
-                        helperText={invalid.confirm}
-                        sx={{ ".MuiInputBase-root input": { minWidth: "95% !important" } }}
-                    />
-                    {/* <PictureField placeholder={"add image profile"}
-                        error={Boolean(invalid.image)}
-                        helperText={invalid.image}
-                        required={required.includes("image")}
-                        label={"profile"} accept={"image/*"} onChange={handleImageChange} value={selectedImage} /> */}
-                </Form>
-
-
-            </Dialog>
-            <DataGridCustom
-                rows={rows}
-                onDelete={onDelete}
-                columns={columns} 
-                checkboxSelection={true}
-                onRowClick={(e) => { setClick({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
-                sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
-                onEdit={onEdit}
-                style={{".MuiTablePagination-toolbar .MuiInputBase-root":{
-                    width:"15% !important"
-                }}}
-            />
-
+                        onClick={() => navigate(`/${sub_domain}/dashboard/addNewEmployee`)}
+                    >
+                        <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+                        &nbsp;add new employee
+                    </SoftButton>
+                </SoftBox>
+                <DataGridCustom
+                    rows={rows}
+                    onDelete={onDelete}
+                    columns={columns}
+                    checkboxSelection={true}
+                    onRowClick={(e) => { setClick({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
+                    sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
+                    onEdit={onEdit}
+                    style={{
+                        ".MuiTablePagination-toolbar .MuiInputBase-root": {
+                            width: "15% !important"
+                        }
+                    }}
+                />
+            </Container>
             {getemployeeResponce.failAlert}
             {DeleteEmployeerResponce.failAlert}
             {PatchEmployeerResponce.failAlert}
@@ -432,3 +484,16 @@ function Employee() {
 }
 
 export default Employee
+
+Employee.defaultProps = {
+    absolute: false,
+    light: false,
+    isMini: false,
+};
+
+// Typechecking props for the Employee
+Employee.propTypes = {
+    absolute: PropTypes.bool,
+    light: PropTypes.bool,
+    isMini: PropTypes.bool,
+};

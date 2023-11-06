@@ -29,7 +29,7 @@ const colors = {
     focus: "#67748e",
   },
   blue:{
-    light:"009aff"
+    light:"#009aff"
   },
   purple:{middle:"#510ab3"},
   transparent: {
@@ -65,6 +65,7 @@ const colors = {
   success: {
     main: "#82d616",
     focus: "#95dc39",
+    hover:"#ECFDF3"
   },
 
   warning: {
@@ -75,6 +76,7 @@ const colors = {
   error: {
     main: "#ea0606",
     focus: "#c70505",
+    hover:"#FDECEC"
   },
 
   light: {

@@ -59,7 +59,7 @@ export default function App() {
   // Cache for the rtl
   useMemo(() => {
     const cacheRtl = createCache({
-      key: "ltr",
+      key: "rtl",
       stylisPlugins: [rtlPlugin],
     });
 
@@ -88,8 +88,8 @@ export default function App() {
   // Setting the dir attribute for the body element
   useEffect(() => {
     // console.log(direction)
-    setDirection(dispatch,"rtl")
-    // document.body.setAttribute("dir", direction);
+    setDirection(dispatch,"ltr")
+    // document.body.setAttribute("dir", "ltr");
   }, [direction]);
 
   // Setting page scroll to 0 when changing the route
@@ -135,11 +135,11 @@ export default function App() {
     </SoftBox>
   );
 
-  return direction === "ltr" ? (
+  return direction === "rtl" ? (
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={themeRTL}>
         <CssBaseline />
-       
+
         {layout === "dashboard" && (
           <>
             <Sidenav
