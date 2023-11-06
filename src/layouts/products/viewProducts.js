@@ -120,7 +120,7 @@ function Products({ absolute, light, isMini }) {
   //     setRows(customers?.results);
   //   }, [customers])
   console.log(products);
-  // name / sku / quantity / price / status / action
+
   return (
     <>
       <DashboardLayout>
