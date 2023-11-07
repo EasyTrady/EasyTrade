@@ -45,8 +45,8 @@ const Form = ({
     <Paper sx={{ ...sx }} onSubmit={handleSubmit} noValidate {...props}>
       {!Boolean(hideHeader) && (
         <>
-          <Stack sx={{ padding: 2, bgcolor: "#f8f8f9" }}>
-            <Typography sx={{ fontWeight: "bold" }} {...childrenProps.title}>
+          <Stack sx={{padding: 2, bgcolor:(theme)=>theme.palette.white.main,borderRadius:"8px",borderBottom:"2px solid #E5E7E8"}}>
+            <Typography sx={{ fontWeight: "bold" ,}} {...childrenProps.title}>
               {childrenProps.title}
             </Typography>
             <Typography {...childrenProps.subtitle}>
@@ -87,7 +87,7 @@ const Form = ({
             variant="contained"
             type="submit"
             color="dark"
-            sx={{backgroundColor:"#510ab3",":hover":{backgroundColor:(theme)=>theme.palette.purple.middle},width:"50%"}}
+            sx={{backgroundColor:(theme)=>theme.palette.purple.middle,":hover":{backgroundColor:(theme)=>theme.palette.purple.middle},width:"50%"}}
             {...childrenProps.saveBtn}
           >
             {Boolean(childrenProps.saveBtn?.children)

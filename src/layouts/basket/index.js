@@ -6,6 +6,8 @@ import useRequest from 'hooks/useRequest';
 import { CARTLEFT, PRODUCTS,SENDEMAILPRODUCT } from 'data/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react'
+import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Avatar, Container,Radio, FormControlLabel, RadioGroup, FormLabel, Paper, Box, Tooltip, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Icon, MenuItem, Select, TextField, Typography, Autocomplete, ListItemText, Chip } from '@mui/material';
 import SoftInput from 'components/SoftInput'
 import useControls from 'hooks/useControls'
@@ -71,10 +73,14 @@ function Basket({absolute, light, isMini}) {
         isRequired: false,
         validations: [
           {
-            customValidation: (controls) => controls.Products<=3,
+            customValidation: (controls) => controls.Products.length<=2,
             message:"Maximum three products.",
           }
         ]
+      },{
+        control:"banner",
+        value: "",
+        isRequired: false,
       }
 
     ]);
@@ -102,7 +108,7 @@ function Basket({absolute, light, isMini}) {
             <> <Tooltip arrow title={ele?.name ? ele?.name : ""} className="">
               <Paper key={index} elevation={3} sx={{
                 backgroundImage: `url(${elem?.image})`,
-                backgroundColor: "unset !important", width: "40px", height: "40px",
+                backgroundColor: "unset !important", width: "64px", height: "64px",
                 position: "absolute",
                 left: `${index === 0 ? 0 : 20 * (index)}px`,
                 backgroundPosition: "center",
@@ -127,7 +133,7 @@ function Basket({absolute, light, isMini}) {
       field: 'id',
       headerName: 'Order Id',
       type: 'image',
-      width: 100,
+      flex:1,
       align: 'left',
       headerAlign: 'left',
       // renderCell: renderImageCell,
@@ -140,7 +146,7 @@ function Basket({absolute, light, isMini}) {
       field: 'Client',
       headerName: 'Client',
       type: 'image',
-      width: 200,
+      flex:1,
       align: 'left',
       headerAlign: 'left',
       renderCell: (params)=><Box>
@@ -156,7 +162,7 @@ function Basket({absolute, light, isMini}) {
       field: 'Products',
       headerName: 'Products',
       type: 'image',
-      width: 100,
+      flex:1,
       align: 'left',
       headerAlign: 'left',
       renderCell: renderImageCell,
@@ -169,7 +175,7 @@ function Basket({absolute, light, isMini}) {
       field: 'Type',
       headerName: 'Type',
       type: 'text',
-      width: 150,
+      flex:1,
       align: 'left',
       headerAlign: 'left',
       editable: true,
@@ -188,7 +194,7 @@ function Basket({absolute, light, isMini}) {
       field: 'total_price',
       headerName: 'total price',
       type: 'text',
-      width: 100,
+      flex:1,
       align: 'left',
       headerAlign: 'left',
       editable: true,
@@ -198,17 +204,17 @@ function Basket({absolute, light, isMini}) {
        filterable: false,
       disableColumnMenu: true
     },
-    {
-      field: 'total_shipping_price',
-      headerName: 'total shipping price',
-      type: 'text',
-      width: 100,
-      align: 'left',
-      headerAlign: 'left',
-      editable: true,
-      filterable: false,
-     disableColumnMenu: true
-    },
+    // {
+    //   field: 'total_shipping_price',
+    //   headerName: 'total shipping price',
+    //   type: 'text',
+    //   flex:1,
+    //   align: 'left',
+    //   headerAlign: 'left',
+    //   editable: true,
+    //   filterable: false,
+    //  disableColumnMenu: true
+    // },
     // {
     //     field: 'job',
     //     headerName: 'job',
@@ -313,7 +319,10 @@ function Basket({absolute, light, isMini}) {
                 <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
             </SoftBox>
             <SoftBox  mb={{ xs: 1, md: 0 }} sx={{textAlign:"right"}}>
-            <Button onClick={()=>window.print()} sx={{backgroundColor:"white !important",color:"black !important",}}><LocalPrintshopIcon/> Print</Button>
+            <Button onClick={() => window.print()} sx={{
+                        backgroundColor: "white !important",
+                        color: "black !important", marginX: "10px", padding: "13px 16px"
+                    }}><LocalPrintshopIcon /> Print</Button>
       </SoftBox>
       <DataGridCustom
         rows={rows}
@@ -331,6 +340,7 @@ function Basket({absolute, light, isMini}) {
         onClose={handleCloseDialog}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        sx={{"div.MuiPaper-root":{minWidth:"50%"}}}
       >
         <Form component="form"
           childrenProps={{
@@ -350,15 +360,15 @@ function Basket({absolute, light, isMini}) {
           }}>
 
           <DialogTitle sx={{
-            paddingY: "0", fontWeight: 400,
+            padding: "0", fontWeight: 400,
             fontSize: "14px",
             color: "gray",
           }}>
             {t("descributionEmail")}</DialogTitle>
 
 
-          <DialogContent>
-            <Typography variant={"label"} sx={{ display: "block" }}
+          <DialogContent sx={{padding:0}}>
+            <Typography variant={"label"} sx={{ display: "block",fontSize: "14px",marginBottom:"10px", }}
             >{t("emailTitle")}</Typography>
             <SoftInput
               placeholder='email'
@@ -367,14 +377,15 @@ function Basket({absolute, light, isMini}) {
               required={required.includes("email")}
               error={Boolean(invalid.email)}
               helperText={invalid.email}
+              sx={{border: `1px solid !important`,borderColor:(theme)=>theme.palette.grey[400]+"!important",borderRadius:"8px" }}
             // sx={input}
             />
 
-            <Typography variant={"label"} sx={{ display: "block" }} 
+            <Typography variant={"label"} sx={{ display: "block",fontSize: "14px",marginBottom:"10px" }} 
             
             >{t("describe")}</Typography>
 
-            <Typography component="textarea" sx={{ backgroundColor: "black",padding:"10px", border: "1px solid #80808054", width: "100%" ,fontSize:"14px"}}
+            <Typography component="textarea" sx={{ backgroundColor: "black",padding:"10px", border: "1px solid #80808054", width: "100%" ,fontSize:"14px",borderRadius:"8px"}}
               required={required.includes("describution")}
               onChange={(e) => setControl("describution", e.target.value)}
               error={Boolean(invalid.describution)}
@@ -385,16 +396,17 @@ function Basket({absolute, light, isMini}) {
 
 
 
-            <FormLabel id="demo-row-radio-buttons-group-label">{t("contentType")}</FormLabel>
+            <FormLabel id="demo-row-radio-buttons-group-label"sx={{fontSize: "14px"}}>{t("contentType")}</FormLabel>
             <RadioGroup
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="row-radio-buttons-group"
               value={controls.content_type}
+              sx={{marginX:"20px"}}
               onChange={(e) => { setControl("content_type", e.target.value); setImageData("") }}
             >
-              <FormControlLabel value={t("Banner")} control={<Radio />} label={t("Banner")} sx={{ fontWeight: "400" }} />
-              <FormControlLabel value={t("Multipleproducts")} control={<Radio />} label={t("Multipleproducts")} sx={{ fontWeight: "400" }} />
+              <FormControlLabel value={t("Banner")} control={<Radio />} label={t("Banner")} sx={{ ".MuiFormControlLabel-label":{fontWeight: "400",fontSize: "12px"} }} />
+              <FormControlLabel value={t("Multipleproducts")} control={<Radio />} label={t("Multipleproducts")} sx={{".MuiFormControlLabel-label":{fontWeight: "400",fontSize: "12px"} }} />
 
             </RadioGroup>
             {controls.content_type === "Banner" ?
@@ -431,9 +443,9 @@ function Basket({absolute, light, isMini}) {
                   </>
                 )}
               </Typography> :controls.content_type === "Multiple products"? <>
-              <FormLabel id="demo-row-radio-buttons-group-label"sx={{fontSize:"14px"}}>{t("SelectProducts")}</FormLabel>
+              <FormLabel id="demo-row-radio-buttons-group-label"sx={{fontSize:"14px", }}>{t("SelectProducts")}</FormLabel>
               
-                <Autocomplete
+                {/* <Autocomplete
                   loading={getproductResponce.isPending}
                   loadingText="..."
                   options={Products}
@@ -450,14 +462,12 @@ function Basket({absolute, light, isMini}) {
                     }
                     // setControl("amenities_ids", options.map((ele)=>ele.value));
                   }}
-                 
                   getOptionLabel={(option) => option.name}
                   getLimitTagsText={(more)=>`Maximum three products.`}
                   limitTags={3}
                   renderOption={(props, option) => (<li {...props}>
-                   
                     <Avatar alt={option.name} src={option.main_image} sx={{ width: "20px", height: "20px" }} />
-                    <ListItemText primary={option.name} />
+                    <Typography sx={{ color: "gray", fontSize: "14px !important",marginX:"14px" }} variant={"p"}>{option?.name}</Typography>
                   </li>)}
                   multiple
                   renderInput={(params) => {
@@ -468,12 +478,60 @@ function Basket({absolute, light, isMini}) {
                     />
                   }}
                   helperText={invalid.Products}
-                />
-            
-                {controls.Products.map((ele,index)=>index<=2?<SoftBox key={ele} sx={{display:"flex",    justifyContent: "space-evenly",
-    alignItems: "center",marginY:"10px"}}>
+                  sx={{".MuiInputBase-root::before": { content: "none" }}}
+                /> */}
+            <SoftInput
+                                    select
+                                    value={controls.Products}
+                                    icon={{ component: <ExpandMoreIcon />, direction: "right" }}
+                                    sx={{ ".MuiInputBase-root": { border: "unset" },color:"#959FA3"}}
+                                    onChange={(e) => {setControl("Products", [...controls?.Products?.map((elem)=>elem.id),e.target.value].map((ele)=>products?.results.find((elem)=>elem.id===ele)));validate()}}
+                                    required={required.includes("Products")}
+                                    error={Boolean(invalid?.Products)}
+                                    helperText={invalid?.Products}
+                                    onOpen={() => { }}
+                                    SelectProps={{
+                                        defaultValue: "",
+                                        displayEmpty: true,
+                                        // onOpen: onOpen,
+                                        // onClose: onClose,
+                                        renderValue: (selected) => {
+                                            if (!Boolean(selected)) {
+                                                return (
+                                                    <Typography sx={{  opacity: "0.42", fontSize: "14px" ,color:"#959FA3"}} variant="p">
+                                                        {"Vendor"}
+                                                    </Typography>
+                                                );
+                                            } else {
+                                                console.log(selected)
+                                                return products?.results?.find((ele)=>ele.id===selected)?.name;
+                                            }
+                                        },
+                                        MenuProps: {
+                                            PaperProps: {
+                                                sx: {
+                                                    maxHeight: "200px",
+                                                    overflowY: "auto",
+                                                    backgroundColor: "white !important"
+                                                },
+                                            },
+                                        },
+
+                                        // IconComponent: <KeyboardArrowDownIcon></KeyboardArrowDownIcon>,
+
+                                    }}
+
+                                >
+                                  {console.log(controls.Products)}
+                                  {/* {controls.Products.map((ele)=>products?.results.find((elem)=>elem.id===ele))} */}
+                                    {products?.results?.map((ele) => <MenuItem value={ele.id} key={ele.id}>{ele.name}</MenuItem>)}
+                                </SoftInput>
+                {controls.Products.map((ele,index)=>index<=2?<SoftBox key={ele} sx={{display:"flex",justifyContent: "space-between",
+                  alignItems: "center",marginY:"10px"}}>
+                    <SoftBox sx={{display:"flex",alignItem:"center"}}>
                   <Avatar src={ele?.main_image}/>
-                  <Typography sx={{ color: "gray", fontSize: "14px" }}>{ele?.name}</Typography>
+                  <Typography sx={{ color: "gray", fontSize: "14px !important",marginX:"10px" }} variant={"span"}>{ele?.name}</Typography>
+                 </SoftBox>
                  <Button  key={ele} onClick={()=> setControl("Products",controls.Products.filter((elem)=>elem?.id!=ele?.id))}> <DeleteIcon sx={{color:(theme)=>theme.palette.error.main}}/></Button>
                 </SoftBox>:<></>
                 )}

@@ -45,7 +45,7 @@ function DashboardLayout({ children,absolute, light, isMini }) {
         p: 3,
         position: "relative",
         backgroundColor:"#ECF4FA",
-        height:"100vh",
+        minHeight:"100vh",
         padding:"0",
         [breakpoints.up("xl")]: {
           marginLeft: miniSidenav ? pxToRem(120) : pxToRem(274),

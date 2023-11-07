@@ -1,5 +1,8 @@
-import { Dialog, Icon, MenuItem, Select, TextField } from '@mui/material'
+import { Avatar, Container,Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Icon, MenuItem, Select, TextField, Typography } from '@mui/material';
+import Breadcrumbs from 'examples/Breadcrumbs'
+import SoftBox from 'components/SoftBox'
 import SoftButton from 'components/SoftButton'
+import { useTranslation } from 'react-i18next';
 import DataGridCustom from 'components/common/DateGridCustomer'
 import Form from 'components/common/Form'
 import CustomPagination from 'components/common/Pagination'
@@ -12,11 +15,22 @@ import useControls from 'hooks/useControls'
 import useRequest from 'hooks/useRequest'
 import React,{useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import moment from 'moment';
+import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
+import { useLocation, } from 'react-router';
+import PropTypes from "prop-types";
+import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
+import SoftInput from 'components/SoftInput';
+import PersonIcon from '@mui/icons-material/Person';
+import { useNavigate } from 'react-router-dom';
 
-
-function Job() {
+function Job({ absolute, light, isMini }) {
     const [open, setOpen] = React.useState(false);
+    const sub_domain = localStorage.getItem('sub_domain')
+    let {t}= useTranslation("common")
+    const route = useLocation().pathname.split("/").slice(1);
     let dispatch = useDispatch()
+    const navigate = useNavigate()
     let jobs = useSelector((state) => state.job.value)
     let [rows, setRows] = useState([])
     let Token = localStorage.getItem('token')
@@ -52,6 +66,12 @@ function Job() {
         useRequest({
             path: JOBS,
             method: "delete",
+            Token: `Token ${Token}`
+        });
+        const [jobpatchRequest, patchjobrResponce] =
+        useRequest({
+            path: JOBS,
+            method: "patch",
             Token: `Token ${Token}`
         });
     const handleClickOpen = () => {
@@ -91,20 +111,68 @@ function Job() {
     }
     const columns = [
         {
-            field: 'title',
-            headerName: 'title',
+            field: 'id',
+            headerName: 'ID',
             // type: 'text',
-            width: 100,
+            flex:1,
             align: 'left',
             headerAlign: 'left',
             // renderCell: renderImageCell,
             editable: false,
             // renderEditCell:renderEditImageCell
         }
-       
+        ,{
+            field: 'title',
+            headerName: 'Job Name',
+            // type: 'text',
+            flex:1,
+            align: 'left',
+            headerAlign: 'left',
+            // renderCell: renderImageCell,
+            editable: true,
+            renderEditCell:(params)=><SoftInput
+            placeholder="Job Name"
+            icon={{ component: <PersonIcon />, direction: "left" }}
+            sx={{ ".MuiInputBase-root": { border: "unset" } }}
+            value={params.row.full_name}
+            onChange={(e) =>params.api.setEditCellValue({
+                    id: params.id,
+                    field: params.field,
+                    value: e.target.value,
+                  })
+            } />
+            // renderEditCell:renderEditImageCell
+        },
+        {
+            field: 'created_at',
+            headerName: 'created at',
+            type: 'text',
+            flex:1,
+            align: 'left',
+            headerAlign: 'left',
+            editable: false,
+            filterable: false,
+            sortable: false, disableColumnMenu: true,
+            renderCell: (params) => <Typography variant={"p"}
+                sx={{
+                    fontSize: "14px"
+                }}
+            > {moment(params.row.created_at).format('MMMM Do YYYY, h:mm:ss a')} </Typography>
+        },
     
        
     ]
+    function onEdit(row, newRow) {
+
+        jobpatchRequest({
+            id: row,
+            body: newRow,
+            onSuccess: (res) => {
+                dispatch({ type: "job/patchItem", payload: { id: row, item: res.data } })
+
+            }
+        })
+    }
     const MyCustomNoRowsOverlay = () => (
         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
       );
@@ -121,10 +189,31 @@ function Job() {
     return (
         <DashboardLayout>
             <DashboardNavbar />
-            <SoftButton variant="gradient" color="dark" onClick={handleClickOpen}>
-                <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                &nbsp;add new job
-            </SoftButton>
+            <Container sx={{ p: 2 }}>
+            <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
+                    <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+                </SoftBox>
+                <SoftBox mb={{
+                    xs: 1, md: 0, display: "flex", justifyContent: "flex-end",
+                    alignItems: "center"
+                }} sx={{ textAlign: "right" }}>
+                    <Button onClick={() => window.print()} sx={{
+                        backgroundColor: "white !important",
+                        color: "black !important", marginX: "10px", p: 1.5
+                    }}><LocalPrintshopIcon /> Print</Button>
+                    <SoftButton variant="gradient"
+                        sx={{
+                            backgroundColor: (theme) => theme.palette.purple.middle,
+                            color: "white !important", "&:hover": {
+                                backgroundColor: (theme) => theme.palette.purple.middle
+                            }
+                        }}
+                        onClick={() => navigate(`/${sub_domain}/dashboard/addNewJob`)}
+                    >
+                        <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+                        &nbsp;{t("addnewjob")}
+                    </SoftButton>
+                </SoftBox>
             <Dialog open={open} onClose={handleClose}>
                 <Form component="form"
                     childrenProps={{
@@ -172,17 +261,31 @@ function Job() {
                 checkboxSelection={true}
                 onRowClick={(e) => { setClick({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
                 sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
-                // onEdit={onEdit}
+                onEdit={onEdit}
                 
                 slots={{
                     noRowsOverlay: MyCustomNoRowsOverlay
                 }}
               
             />
+            
             {getjobResponce.failAlert}
             {postjobResponce.failAlert}
+            </Container>
         </DashboardLayout>
     )
 }
 
 export default Job
+Job.defaultProps = {
+    absolute: false,
+    light: false,
+    isMini: false,
+};
+
+// Typechecking props for the Job
+Job.propTypes = {
+    absolute: PropTypes.bool,
+    light: PropTypes.bool,
+    isMini: PropTypes.bool,
+};

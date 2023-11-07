@@ -133,5 +133,18 @@
 "Email":"Email",
 "job":"job name",
 "Account":"Account",
-"ConfirmPassword":"Confirm Password"
+"ConfirmPassword":"Confirm Password",
+"addnewjob":"add new job",
+"addnewproduct":"add new product",
+"addnewCustomer":"add new Customer",
+"addnewemployee":"add new employee",
+"addnewattribute":"Add new attribute",
+"editattribute":"Edit attribute",
+"descributionAttribute":"Write at least one value to the attribute",
+"Attributename":"Attribute name",
+"colorHex":"There is color Hex",
+"password":"password",
+"Addvalue":"Add value",
+"ClearAll":"Clear All"
+
 }

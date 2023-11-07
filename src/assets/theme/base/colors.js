@@ -31,7 +31,7 @@ const colors = {
   blue:{
     light:"#009aff"
   },
-  purple:{middle:"#510ab3"},
+  purple:{middle:"#5D449B",hover:"#F9F5FF"},
   transparent: {
     main: "transparent",
   },

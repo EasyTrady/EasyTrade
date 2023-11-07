@@ -75,6 +75,8 @@ import GroupIcon from '@mui/icons-material/Group';
 import AlignHorizontalLeftIcon from '@mui/icons-material/AlignHorizontalLeft';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import AddNewEmployee from "layouts/employee/addNewEmployee";
+import AddNewJob from "layouts/job/addNewJob";
+
 const sub_domain = localStorage.getItem('sub_domain')
 const routes = [
   {
@@ -309,6 +311,17 @@ const routes = [
     noCollapse: false,
 
   },
+  {
+    type: "title",
+    name: "values",
+    key: "valuse",
+    route: `/${sub_domain}/dashboard/addNewJob`,
+    icon: <Shop size="12px" />,
+    component: <Auth><AddNewJob /></Auth>,
+    noCollapse: false,
+
+  },
+  
   // {
   //   type: "collapse",
   //   name: "Tables",

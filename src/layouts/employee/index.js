@@ -20,6 +20,7 @@ import Form from 'components/common/Form';
 import PasswordField from 'components/common/PasswordField';
 import PictureField from 'components/common/PictureField';
 import { GridActionsCellItem, GridPagination } from '@mui/x-data-grid';
+import { useTranslation } from 'react-i18next';
 import SoftBadge from 'components/SoftBadge';
 import SoftInput from 'components/SoftInput';
 import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
@@ -38,6 +39,7 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 
 function Employee({ absolute, light, isMini }) {
     let { pathname } = useLocation()
+    let {t}= useTranslation("common")
     const sub_domain = localStorage.getItem('sub_domain')
     const navigate = useNavigate()
     let [click, setClick] = useState({})
@@ -143,7 +145,7 @@ function Employee({ absolute, light, isMini }) {
             field: 'id',
             headerName: 'id',
             type: 'text',
-            width: 100,
+            flex:1,
             align: 'left',
             headerAlign: 'left',
             // renderCell: renderImageCell,
@@ -154,12 +156,12 @@ function Employee({ absolute, light, isMini }) {
             field: 'full_name',
             headerName: 'Employee name',
             type: 'text',
-            width: 150,
+            flex:1,
             align: 'left',
             headerAlign: 'left',
             editable: true,
             renderCell: (params) => <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <Typography variant={"h6"} sx={{ color: "#673ab7", marginTop: "10px" }}>{params.row.full_name}</Typography>
+                <Typography variant={"p"} sx={{fontSize:"14px" }}>{params.row.full_name}</Typography>
             </Box>,
             renderEditCell:(params)=><SoftInput
             placeholder="Full Name"
@@ -179,12 +181,12 @@ function Employee({ absolute, light, isMini }) {
             field: 'job',
             headerName: 'job',
             type: 'text',
-            width: 200,
+            flex:1,
             align: 'left',
             headerAlign: 'left',
             editable: true,
             renderCell: (params) => <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <Typography variant={"p"} sx={{ color: (theme) => theme.palette.primary, marginTop: "10px", fontSize: "14px" }}>{jobs?.results?.find((ele) => ele.id === params.row.job)?.title}</Typography>
+                <Typography variant={"p"} sx={{ color: (theme) => theme.palette.primary, fontSize: "14px" }}>{jobs?.results?.find((ele) => ele.id === params.row.job)?.title}</Typography>
             </Box>,
             renderEditCell:(params)=><SoftInput
             select
@@ -236,7 +238,7 @@ function Employee({ absolute, light, isMini }) {
             field: 'phone',
             headerName: 'phone',
             type: 'text',
-            width: 200,
+            flex:1,
             align: 'left',
             headerAlign: 'left',
             editable: true,
@@ -259,13 +261,13 @@ function Employee({ absolute, light, isMini }) {
             field: 'email',
             headerName: 'email',
             type: 'text',
-            width: 250,
+            flex:1,
             align: 'left',
             headerAlign: 'left',
             editable: true,
-            renderCell: (params) => <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <Typography variant={"h6"} sx={{ color: (theme) => theme.palette.primary, marginTop: "10px" }}>{params.row.email}</Typography>
-            </Box>,
+            // renderCell: (params) => <Box sx={{ display: "flex", flexDirection: "column" }}>
+            //     <Typography variant={"h6"} sx={{ fontSize:"14px",fontWeight:"400"  }}>{params.row.email}</Typography>
+            // </Box>,
             renderEditCell:(params)=><SoftInput
             placeholder="email"
             icon={{ component: <MailOutlineIcon />, direction: "left" }}
@@ -286,17 +288,13 @@ function Employee({ absolute, light, isMini }) {
             field: 'created_at',
             headerName: 'created at',
             type: 'text',
-            width: 300,
+            flex:1,
             align: 'left',
             headerAlign: 'left',
             editable: false,
             filterable: false,
             sortable: false, disableColumnMenu: true,
-            renderCell: (params) => <Typography variant={"p"}
-                sx={{
-                    fontSize: "14px"
-                }}
-            > {moment(params.row.created_at).format('MMMM Do YYYY, h:mm:ss ')} </Typography>
+            renderCell: (params) => {moment(params.row.created_at).format('MMMM Do YYYY, h:mm:ss a')}
         },
 
     ]
@@ -456,7 +454,7 @@ function Employee({ absolute, light, isMini }) {
                         onClick={() => navigate(`/${sub_domain}/dashboard/addNewEmployee`)}
                     >
                         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                        &nbsp;add new employee
+                        &nbsp;{t("addnewemployee")}
                     </SoftButton>
                 </SoftBox>
                 <DataGridCustom
