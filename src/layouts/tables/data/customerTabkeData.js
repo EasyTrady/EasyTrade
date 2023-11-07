@@ -106,7 +106,7 @@ function onDelete(row,data){
               width: "100%"}}>
                  <Avatar src={params.row.image} />
                  <Box>
-                 <Typography variant={"h5"} sx={{color:"#673ab7",fontSize:"14px"}}>{params.row.full_name}</Typography>
+                 <Typography variant={"h5"} sx={{fontSize:"14px"}}>{params.row.full_name}</Typography>
                  <Typography variant={"h5"} sx={{fontSize:"14px"}}>{params.row.email}</Typography>
 
                  </Box>

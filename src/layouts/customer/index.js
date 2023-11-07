@@ -15,12 +15,12 @@ import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 import SoftBox from 'components/SoftBox'
 import Breadcrumbs from 'examples/Breadcrumbs'
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
-import { useLocation,useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import SoftButton from 'components/SoftButton';
 function Customer({ absolute, light, isMini }) {
   const { columns, rows } = CustomersTableData()
   const route = useLocation().pathname.split("/").slice(1);
-  const navigate=useNavigate()
+  const navigate = useNavigate()
   const [paginationModel, setPaginationModel] = React.useState({
     page: 0,
     pageSize: 5,
@@ -29,7 +29,7 @@ function Customer({ absolute, light, isMini }) {
   let Token = localStorage.getItem('token')
   let sub_domain = localStorage.getItem('sub_domain')
 
-  
+
   const [customerRequest, getCustomerResponce] =
     useRequest({
       path: CUSTOMER,
@@ -122,10 +122,14 @@ function Customer({ absolute, light, isMini }) {
           <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
             <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
           </SoftBox>
-          <SoftBox mb={{ xs: 1, md: 0, display:"flex",    justifyContent: "flex-end",
-    alignItems: "center" }} sx={{ textAlign: "right" }}>
-            <Button onClick={() => window.print()} sx={{ backgroundColor: "white !important",
-             color: "black !important", marginX:"10px",p:1.5}}><LocalPrintshopIcon /> Print</Button>
+          <SoftBox mb={{
+            xs: 1, md: 0, display: "flex", justifyContent: "flex-end",
+            alignItems: "center"
+          }} sx={{ textAlign: "right" }}>
+            <Button onClick={() => window.print()} sx={{
+              backgroundColor: "white !important",
+              color: "black !important", marginX: "10px", p: 1.5
+            }}><LocalPrintshopIcon /> Print</Button>
             {/* <SoftButton variant="gradient"
             sx={{backgroundColor:(theme)=>theme.palette.purple.middle,
             color:"white !important","&:hover":{
@@ -144,8 +148,8 @@ function Customer({ absolute, light, isMini }) {
             sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
             // onDelete={onDelete}
             rowsPerPageOptions={[5, 10, 15, 20]}
-           
-            
+
+
             onPaginationModelChange={setPaginationModel}
           />
           {DeleteCustomerrResponce.failAlert}

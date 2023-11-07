@@ -173,7 +173,7 @@ function SignIn() {
                 <SoftInput type="email" placeholder="Email" value={values.email}
                 name="email"
                 onBlur={handleBlur}
-                onChange={handleChange} />
+                onChange={handleChange}/>
               </SoftBox>
               {touched.email && errors.email && (
                 <FormHelperText error id="standard-weight-helper-text-email-login">

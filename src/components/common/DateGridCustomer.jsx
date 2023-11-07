@@ -33,7 +33,7 @@ import SoftButton from "components/SoftButton";
 import MenuCustom from "assets/theme/components/menu";
 import SoftInput from "components/SoftInput";
 function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
-  checkboxSelection, onEdit, onDelete, onBlock,sx, rowsPerPageOptions, notProduct = true, onState,
+  checkboxSelection, onEdit,onDialog, onDelete, onBlock,sx, rowsPerPageOptions, notProduct = true, onState,
   onNotify,
   onCopy, onPaginationModelChange, ...rest }) {
   const [, setRows] = React.useState(rows);
@@ -55,7 +55,10 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
     onEdit(id)
   };
-
+  const handleDialogClick = (id,row) => () => {
+    // setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+    onDialog(id)
+  };
   const handleSaveClick = (id) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
 
@@ -207,6 +210,16 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
                   label="Edit"
                   className="textPrimary"
                   onClick={handleEditClick(row?.id, row)}
+                  color="inherit"
+                />
+              </MenuItem>}
+              {onDialog && notProduct && <MenuItem onClick={() => setOpen(null)}>
+                <GridActionsCellItem
+                  key={row.id}
+                  icon={<Box><EditIcon /> <span>edit</span></Box>}
+                  label="Edit"
+                  className="textPrimary"
+                  onClick={handleDialogClick(row?.id, row)}
                   color="inherit"
                 />
               </MenuItem>}
@@ -399,4 +412,5 @@ DataGridCustom.propTypes = {
   notProduct: PropTypes.bool,
   onNotify: PropTypes.func,
   onBlock:PropTypes.func,
+  onDialog:PropTypes.func
 };

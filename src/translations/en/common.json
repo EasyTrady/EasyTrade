@@ -145,6 +145,12 @@
 "colorHex":"There is color Hex",
 "password":"password",
 "Addvalue":"Add value",
-"ClearAll":"Clear All"
-
+"ClearAll":"Clear All",
+"Dashboard":"Dashboard",
+"Statistics":"Statistics",
+"Products":"Products",
+"AdvertisingCookies":"Advertising Cookies",
+"Alwaysactive":"Always active",
+"JobName":"Job Name",
+"parent":"Parent"
 }

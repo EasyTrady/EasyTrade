@@ -12,7 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import { useEffect } from "react";
+import React,{ useEffect } from "react";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -45,6 +45,7 @@ import gradientLineChartData from "layouts/rtl/data/gradientLineChartData";
 
 // Soft UI Dashboard React contexts
 import { useSoftUIController, setDirection } from "context";
+
 
 function RTL() {
   const [, dispatch] = useSoftUIController();

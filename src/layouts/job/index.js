@@ -1,4 +1,4 @@
-import { Avatar, Container,Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Icon, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Avatar, Container, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Icon, MenuItem, Select, TextField, Typography } from '@mui/material';
 import Breadcrumbs from 'examples/Breadcrumbs'
 import SoftBox from 'components/SoftBox'
 import SoftButton from 'components/SoftButton'
@@ -13,7 +13,7 @@ import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import useControls from 'hooks/useControls'
 import useRequest from 'hooks/useRequest'
-import React,{useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment';
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
@@ -27,7 +27,7 @@ import { useNavigate } from 'react-router-dom';
 function Job({ absolute, light, isMini }) {
     const [open, setOpen] = React.useState(false);
     const sub_domain = localStorage.getItem('sub_domain')
-    let {t}= useTranslation("common")
+    let { t } = useTranslation("common")
     const route = useLocation().pathname.split("/").slice(1);
     let dispatch = useDispatch()
     const navigate = useNavigate()
@@ -40,15 +40,15 @@ function Job({ absolute, light, isMini }) {
             method: "get",
             Token: `Token ${Token}`
         });
-        const [jobpostRequest,postjobResponce] =
+    const [jobpostRequest, postjobResponce] =
         useRequest({
             path: JOBS,
             method: "post",
             Token: `Token ${Token}`
         });
-    const [{ controls, invalid, required }, { setControl, resetControls, validate,setInvalid }] =
+    const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
         useControls([
-           
+
             {
                 control: "title",
                 value: "",
@@ -60,15 +60,15 @@ function Job({ absolute, light, isMini }) {
                     }
                 ]
             },
-            
+
         ]);
-        const [jobDeleteRequest, DeletejobrResponce] =
+    const [jobDeleteRequest, DeletejobrResponce] =
         useRequest({
             path: JOBS,
             method: "delete",
             Token: `Token ${Token}`
         });
-        const [jobpatchRequest, patchjobrResponce] =
+    const [jobpatchRequest, patchjobrResponce] =
         useRequest({
             path: JOBS,
             method: "patch",
@@ -88,23 +88,23 @@ function Job({ absolute, light, isMini }) {
             jobpostRequest({
                 body: controls,
                 onSuccess: (res) => {
-                    dispatch({type:"job/addItem",payload:res.data})
+                    dispatch({ type: "job/addItem", payload: res.data })
                     console.log(res.data, controls)
                 }
             }).then((res) => {
                 let response = res?.response?.data;
                 console.log(res)
-               
+
                 setInvalid(response);
 
             });
         })
 
     }
-    function onDelete(row){
+    function onDelete(row) {
         jobDeleteRequest({
-            id:row,
-            onSuccess:()=>{
+            id: row,
+            onSuccess: () => {
                 dispatch({ type: "job/deleteItem", payload: { id: row } })
             }
         })
@@ -114,40 +114,40 @@ function Job({ absolute, light, isMini }) {
             field: 'id',
             headerName: 'ID',
             // type: 'text',
-            flex:1,
+            flex: 1,
             align: 'left',
             headerAlign: 'left',
             // renderCell: renderImageCell,
             editable: false,
             // renderEditCell:renderEditImageCell
         }
-        ,{
+        , {
             field: 'title',
             headerName: 'Job Name',
             // type: 'text',
-            flex:1,
+            flex: 1,
             align: 'left',
             headerAlign: 'left',
             // renderCell: renderImageCell,
             editable: true,
-            renderEditCell:(params)=><SoftInput
-            placeholder="Job Name"
-            icon={{ component: <PersonIcon />, direction: "left" }}
-            sx={{ ".MuiInputBase-root": { border: "unset" } }}
-            value={params.row.full_name}
-            onChange={(e) =>params.api.setEditCellValue({
+            renderEditCell: (params) => <SoftInput
+                placeholder="Job Name"
+                icon={{ component: <PersonIcon />, direction: "left" }}
+                sx={{ ".MuiInputBase-root": { border: "unset" } }}
+                value={params.row.full_name}
+                onChange={(e) => params.api.setEditCellValue({
                     id: params.id,
                     field: params.field,
                     value: e.target.value,
-                  })
-            } />
+                })
+                } />
             // renderEditCell:renderEditImageCell
         },
         {
             field: 'created_at',
             headerName: 'created at',
             type: 'text',
-            flex:1,
+            flex: 1,
             align: 'left',
             headerAlign: 'left',
             editable: false,
@@ -159,8 +159,8 @@ function Job({ absolute, light, isMini }) {
                 }}
             > {moment(params.row.created_at).format('MMMM Do YYYY, h:mm:ss a')} </Typography>
         },
-    
-       
+
+
     ]
     function onEdit(row, newRow) {
 
@@ -175,22 +175,22 @@ function Job({ absolute, light, isMini }) {
     }
     const MyCustomNoRowsOverlay = () => (
         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-      );
-    useEffect(()=>{
+    );
+    useEffect(() => {
         jobRequest({
-            onSuccess:(res)=>{
-                dispatch({type:"job/set",payload:res.data})
+            onSuccess: (res) => {
+                dispatch({ type: "job/set", payload: res.data })
             }
         })
-    },[])
-    useEffect(()=>{
+    }, [])
+    useEffect(() => {
         setRows(jobs?.results)
-    },[jobs])
+    }, [jobs])
     return (
         <DashboardLayout>
             <DashboardNavbar />
             <Container sx={{ p: 2 }}>
-            <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
+                <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
                     <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
                 </SoftBox>
                 <SoftBox mb={{
@@ -214,63 +214,63 @@ function Job({ absolute, light, isMini }) {
                         &nbsp;{t("addnewjob")}
                     </SoftButton>
                 </SoftBox>
-            <Dialog open={open} onClose={handleClose}>
-                <Form component="form"
-                    childrenProps={{
-                        saveBtn: {
-                            onClick: handleSubmit,
-                            disabled: postjobResponce.isPending,
-                        },
-                        closeBtn: {
-                            onClick: () => {
-                                handleClose()
-                                resetControls();
+                <Dialog open={open} onClose={handleClose}>
+                    <Form component="form"
+                        childrenProps={{
+                            saveBtn: {
+                                onClick: handleSubmit,
+                                disabled: postjobResponce.isPending,
                             },
-                            disabled: postjobResponce.isPending,
-                        }, title: "add job"
-                    }}>
-                    <TextField
+                            closeBtn: {
+                                onClick: () => {
+                                    handleClose()
+                                    resetControls();
+                                },
+                                disabled: postjobResponce.isPending,
+                            }, title: "add job"
+                        }}>
+                        <TextField
 
-                        // id="filled-size-small"
-                        placeholder='title'
-                        variant="standard"
-                        size="small"
-                        value={controls.title}
-                        onChange={(e) =>
-                            setControl("title", e.target.value)
-                        }
-                        required={required.includes("title")}
-                        error={Boolean(invalid?.title)}
-                        helperText={invalid?.title}
-                    />
-                 
-                   
-                    {/* <PictureField placeholder={"add image profile"}
+                            // id="filled-size-small"
+                            placeholder='title'
+                            variant="standard"
+                            size="small"
+                            value={controls.title}
+                            onChange={(e) =>
+                                setControl("title", e.target.value)
+                            }
+                            required={required.includes("title")}
+                            error={Boolean(invalid?.title)}
+                            helperText={invalid?.title}
+                        />
+
+
+                        {/* <PictureField placeholder={"add image profile"}
                         error={Boolean(invalid.image)}
                         helperText={invalid.image}
                         required={required.includes("image")}
                         label={"profile"} accept={"image/*"} onChange={handleImageChange} value={selectedImage} /> */}
-                </Form>
+                    </Form>
 
 
-            </Dialog>
-            <DataGridCustom
-                rows={rows}
-                onDelete={onDelete}
-                columns={columns} 
-                checkboxSelection={true}
-                onRowClick={(e) => { setClick({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
-                sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
-                onEdit={onEdit}
-                
-                slots={{
-                    noRowsOverlay: MyCustomNoRowsOverlay
-                }}
-              
-            />
-            
-            {getjobResponce.failAlert}
-            {postjobResponce.failAlert}
+                </Dialog>
+                <DataGridCustom
+                    rows={rows}
+                    onDelete={onDelete}
+                    columns={columns}
+                    checkboxSelection={true}
+                    onRowClick={(e) => { setClick({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
+                    sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
+                    onEdit={onEdit}
+
+                    slots={{
+                        noRowsOverlay: MyCustomNoRowsOverlay
+                    }}
+
+                />
+
+                {getjobResponce.failAlert}
+                {postjobResponce.failAlert}
             </Container>
         </DashboardLayout>
     )

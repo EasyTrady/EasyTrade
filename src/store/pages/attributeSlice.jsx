@@ -43,7 +43,7 @@ export const attributeSlice = createSlice({
     deleteValueofAttribute:(state,action)=>{
       state.value.find((ele)=>ele.id==action.payload.idattribute)["values"]=state.value.find((ele)=>ele.id==action.payload.idattribute)["values"]?.filter((elem)=>elem.id!=action.payload.idValue)
     },addValue:(state,action)=>{
-      state.value.find((ele)=>ele.id==action.payload.idvalue)["values"]?.push(action.payload.value)
+      state.value.find((ele)=>ele.id==action.payload.idvalue)["values"]?state.value.find((ele)=>ele.id==action.payload.idvalue)["values"].push(action.payload.value):state.value.find((ele)=>ele.id==action.payload.idvalue)["values"]=[action.payload.value]
     }
   },
 });

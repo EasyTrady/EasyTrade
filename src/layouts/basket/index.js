@@ -27,7 +27,7 @@ function Basket({absolute, light, isMini}) {
   let carts = useSelector((state) => state.cart.value)
   let products = useSelector((state) => state.products.value)
   const route = useLocation().pathname.split("/").slice(1);
-
+  const formDate=new FormData()
   let dispatch = useDispatch()
   let { t } = useTranslation('common')
   const [openDialog, setOpenDialog] = React.useState(null);
@@ -252,6 +252,8 @@ function Basket({absolute, light, isMini}) {
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
+    formDate?.append("banner",e.target.files[0])
+    setControl("banner",JSON.stringify(e.dataTransfer.files[0]))
     if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -263,6 +265,10 @@ function Basket({absolute, light, isMini}) {
   const handleChange = (e) => {
     e.preventDefault();
     const file = e.target.files[0];
+      formDate?.append("banner",e.target.files[0])
+
+    setControl("banner",e.target.files[0])
+    console.log(e.target.files[0])
     if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -277,14 +283,24 @@ function Basket({absolute, light, isMini}) {
   const  handleSubmit=(e)=>{
     e.preventDefault();
     validate().then(( isOk ) => {
-      console.log(openDialog)
+      console.log(controls.banner)
       if (!isOk) return;
+      
+      controls?.Products?.map((ele)=>formDate.append("products[]",ele.id))
+     formDate.append('customers[]', openDialog?.row?.customer_id)
+    //   for (var i = 0; i < .length; i++) {
+    //     formDate.append('customers[]', [openDialog.row.customer_id][i]);
+    // }
+      // formDate.append("customers",JSON.stringify([openDialog.row.customer_id]))
+      formDate?.append("body",controls?.describution)
+      formDate?.append("title",controls?.email)
+
       SendEmailProductRequest({
-        body:{
-          "products":controls?.Products.map((ele)=>ele.id),
-          "customers":[openDialog.row.customer_id],
-          "body":controls?.describution,
-          "title":controls?.email
+        body:formDate
+        ,onSuccess:(res)=>{
+          console.log(res.data)
+          resetControls()
+          setOpenDialog(null)
         }
       })
     })
@@ -311,6 +327,7 @@ function Basket({absolute, light, isMini}) {
     console.log(products)
     setProducts(products?.results)
   }, [carts, products])
+  useEffect(()=>{},[imageData])
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -419,6 +436,7 @@ function Basket({absolute, light, isMini}) {
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
+                overflow:"hidden"
               }} onDrop={handleDrop} onDragOver={handleDragOver} >
                 {imageData ? (
                   <><Typography component={"input"} type="file"
@@ -433,7 +451,7 @@ function Basket({absolute, light, isMini}) {
                   <><CollectionsIcon sx={{ color: "gray" }} />
                     <Typography sx={{ color: "gray", fontSize: "14px" }}>Drop your image here , or </Typography>
                     <Typography component={"input"} type="file"
-
+                      onChange={handleChange}
                       accept="image/*"
                       sx={{ display: "none" }}
                       ref={imageRef}

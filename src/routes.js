@@ -36,6 +36,7 @@ Coded by www.creative-tim.com
 */
 
 // Soft UI Dashboard React layouts
+import React from "react";
 import Dashboard from "layouts/dashboard";
 import Tables from "layouts/tables";
 import Billing from "layouts/billing";
@@ -77,7 +78,9 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import AddNewEmployee from "layouts/employee/addNewEmployee";
 import AddNewJob from "layouts/job/addNewJob";
 
+
 const sub_domain = localStorage.getItem('sub_domain')
+
 const routes = [
   {
     type:'title',

@@ -137,7 +137,7 @@ export default styled(TextField)(({ theme, ownerState }) => {
     }
 
     return {
-      borderColor: transparent.main,
+      borderColor: (theme)=>theme.palette.grey[400],
       borderRadius: withIconBorderRadiusValue,
       paddingLeft: withIconPaddingLeftValue,
       paddingRight: withIconPaddingRightValue,
@@ -165,6 +165,6 @@ export default styled(TextField)(({ theme, ownerState }) => {
     "&.MuiInputBase-multiline": {
       padding: `${pxToRem(10)} ${pxToRem(12)}`,
     },
-    ".MuiInputBase-root": { border: "unset" }, 
+    ".MuiInputBase-root": {border: `1px solid`,borderColor:grey[400],borderRadius:"8px"}, 
   };
 });
