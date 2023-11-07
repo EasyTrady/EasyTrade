@@ -153,7 +153,7 @@ export default styled(TextField)(({ theme, ownerState }) => {
     ...(error && errorStyles()),
     ...(success && successStyles()),
     ...((iconDirection === "left" || iconDirection === "right") && withIconStyles()),
-    
+
     "&.Mui-focused": {
       borderColor: focusedBorderColorValue,
       paddingLeft: focusedPaddingLeftValue,
@@ -165,5 +165,6 @@ export default styled(TextField)(({ theme, ownerState }) => {
     "&.MuiInputBase-multiline": {
       padding: `${pxToRem(10)} ${pxToRem(12)}`,
     },
+    ".MuiInputBase-root": { border: "unset" }, 
   };
 });

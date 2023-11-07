@@ -89,7 +89,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
     // if(isThereChange.nochange){
     //   console.log(isThereChange.array)
     // }
-    onEdit(newRow.id,updatedRow )
+    onEdit(newRow.id,updatedRow?updatedRow:newRow)
     return updatedRow;
   };
 
@@ -103,7 +103,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
       field: 'actions',
       type: 'actions',
       headerName:"Active",
-      width:100,
+      flex: 1,
       cellClassName: 'actions',
       getActions: (row) => {
         const isInEditMode = rowModesModel[row?.id]?.mode === GridRowModes.Edit;
@@ -252,7 +252,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
     <>
               
     <Box sx={{backgroundColor: "white !important",
-    padding: "10px !important",marginY:"10px"}}>
+    padding: "10px !important",marginY:"10px", ".MuiInputBase-root": { border: `1px solid !important`,borderColor:(theme)=>theme.palette.grey[400]+"!important" }, }}>
       <SoftInput
         id="outlined-adornment-password"
         type={'text'}
@@ -295,7 +295,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
         // IconComponent: <KeyboardArrowDownIcon></KeyboardArrowDownIcon>,
         
       }}
-     
+    
     />
      
               
@@ -349,18 +349,23 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
           checkboxSelection={checkboxSelection}
           onRowClick={onRowClick}
           isRowSelectable={isRowSelectable}
-          initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
-          pageSizeOptions={[5, 10, 15]}
+          setPagination={false}
+          // initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
+          // pageSizeOptions={[5, 10, 15]}
           sx={{
             ...sx, "& .css-1ui3wbn-MuiInputBase-root-MuiTablePagination-select": {
               width: "15% !important"
             }, ".rtl-1ui3wbn-MuiInputBase-root-MuiTablePagination-select": { maxWidth: "15% !important" }, ".MuiDataGrid-cell:focus": {
               outline: "unset !important"
-            }, ".rtl-zhhcxq-MuiPaper-root-MuiMenu-paper-MuiPopover-paper": {
-              backgroundColor: "white !important"
-            }
+            }, 
+              backgroundColor: "white !important",
+          
+              borderRadius:"8px !important", '&.Mui-selected':{
+                backgroundColor: "white !important",
+              }
+            
           }}
-          onPaginationModelChange={onPaginationModelChange}
+          // onPaginationModelChange={onPaginationModelChange}
           {...rest}
           onProcessRowUpdateError={(error) => console.log(error)}
           // slots={{
@@ -370,7 +375,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
           //   toolbar: { setRows, setRowModesModel },
           // }}
           rowHeight={72}
-
+          
           rowSpacingType='margin'
           getRowSpacing={(params) => params === 4}
         />
