@@ -106,7 +106,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
       field: 'actions',
       type: 'actions',
       headerName:"Active",
-      flex: 1,
+      width: 200,
       cellClassName: 'actions',
       getActions: (row) => {
         const isInEditMode = rowModesModel[row?.id]?.mode === GridRowModes.Edit;
@@ -363,6 +363,8 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
           onRowClick={onRowClick}
           isRowSelectable={isRowSelectable}
           setPagination={false}
+          // autoHeight={true}
+          hideFooter
           // initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
           // pageSizeOptions={[5, 10, 15]}
           sx={{
@@ -375,6 +377,8 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
           
               borderRadius:"8px !important", '&.Mui-selected':{
                 backgroundColor: "white !important",
+              },overflowX: 'scroll', "& .MuiDataGrid-virtualScroller": {
+                overflow: "auto"
               }
             
           }}

@@ -41,7 +41,7 @@ function Attribute({ absolute, light, isMini }) {
     const [openDialog, setOpenDialog] = React.useState(false);
     const [openDialogEdit, setOpenDialogEdit] = React.useState(false);
     const [addvalue, setaddvalue] = React.useState(false);
-   
+
     const sub_domain = localStorage.getItem('sub_domain')
     let dispatch = useDispatch()
     let { t } = useTranslation("common")
@@ -135,24 +135,24 @@ function Attribute({ absolute, light, isMini }) {
                 control: "id",
                 value: "",
                 isRequired: false,
-               
+
             },
             {
                 control: "value_name",
                 value: "",
                 isRequired: false,
-               
+
             },
             {
                 control: "color_value",
                 value: "",
                 isRequired: false,
-               
+
             },
             {
                 control: "name",
                 value: "",
-                isRequired: openDialogEdit?false:true,
+                isRequired: openDialogEdit ? false : true,
                 validations: [
                     {
                         test: /^(?:[A-Za-z\u0600-\u06ff\s]*)$/,
@@ -184,7 +184,7 @@ function Attribute({ absolute, light, isMini }) {
                 value: [],
                 isRequired: false,
 
-            },{
+            }, {
                 control: "iscolor",
                 value: false,
                 isRequired: false,
@@ -197,7 +197,7 @@ function Attribute({ absolute, light, isMini }) {
             method: "delete",
             Token: `Token ${Token}`
         });
-        const [attributevalueDeleteRequest, DeletevalueattributerResponce] =
+    const [attributevalueDeleteRequest, DeletevalueattributerResponce] =
         useRequest({
             path: ATTRIBUTES,
             method: "delete",
@@ -209,26 +209,26 @@ function Attribute({ absolute, light, isMini }) {
             method: "get",
             Token: `Token ${Token}`
         });
-        const [attributeValuepostRequest, postValueattributeResponce] =
+    const [attributeValuepostRequest, postValueattributeResponce] =
         useRequest({
             path: ATTRIBUTES,
             method: "post",
             Token: `Token ${Token}`,
-            contentType:"multipart/form-data",
+            contentType: "multipart/form-data",
         });
-        const [attributeEditRequest, editattributeResponce] =
+    const [attributeEditRequest, editattributeResponce] =
         useRequest({
             path: ATTRIBUTES,
             method: "patch",
             Token: `Token ${Token}`,
-            contentType:"multipart/form-data",
+            contentType: "multipart/form-data",
         });
-        const [attributeValueeditRequest, editValueattributeResponce] =
+    const [attributeValueeditRequest, editValueattributeResponce] =
         useRequest({
             path: ATTRIBUTES,
             method: "patch",
             Token: `Token ${Token}`,
-            contentType:"multipart/form-data",
+            contentType: "multipart/form-data",
         });
     const handleClickOpen = () => {
         setOpen(true);
@@ -247,54 +247,54 @@ function Attribute({ absolute, light, isMini }) {
         validate().then((output) => {
             console.log(output)
             if (!output.isOk) return;
-            if(openDialogEdit){
+            if (openDialogEdit) {
                 attributeEditRequest({
-                    id:controls.id,
-                    body:{
-                        name:controls.name
-                    },onSuccess:(res) => {
-                        dispatch({ type: "attribute/patchItem", payload:{id:controls.id,item:res.data }})
-                        
+                    id: controls.id,
+                    body: {
+                        name: controls.name
+                    }, onSuccess: (res) => {
+                        dispatch({ type: "attribute/patchItem", payload: { id: controls.id, item: res.data } })
+
                         attributeValuepostRequest({
-                            id:controls.id+"/values",
-                            body:{
-                                value_name:controls?.value_name,
-                                iscolor:controls?.iscolor,
-                                color_value:controls?.color_value
+                            id: controls.id + "/values",
+                            body: {
+                                value_name: controls?.value_name,
+                                iscolor: controls?.iscolor,
+                                color_value: controls?.color_value
                             },
                             onSuccess: (resValue) => {
-                                console.log(resValue.data,res.data)
-    
-                                dispatch({ type: "attribute/addValue", payload: { idvalue: res.data.id, value: {...resValue.data} } })
+                                console.log(resValue.data, res.data)
+
+                                dispatch({ type: "attribute/addValue", payload: { idvalue: res.data.id, value: { ...resValue.data } } })
                                 resetControls()
                                 setOpenDialog(false)
                             }
                         })
-                    
+
                     }
                 })
-            }else{
+            } else {
                 attributepostRequest({
                     body: {
-                        name:controls.name
+                        name: controls.name
                     },
                     onSuccess: (res) => {
                         dispatch({ type: "attribute/addItem", payload: res.data })
-                       
+
                         attributeValuepostRequest({
-                            id:res.data.id+"/values",
-                            body:{
-                                value_name:controls?.value_name,
-                                iscolor:controls?.iscolor,
-                                color_value:controls?.color_value
+                            id: res.data.id + "/values",
+                            body: {
+                                value_name: controls?.value_name,
+                                iscolor: controls?.iscolor,
+                                color_value: controls?.color_value
                             },
                             onSuccess: (resValue) => {
-                                
-    
-                                dispatch({ type: "attribute/addValue", payload: { idvalue: res.data.id, value: {...resValue.data} } })
+
+
+                                dispatch({ type: "attribute/addValue", payload: { idvalue: res.data.id, value: { ...resValue.data } } })
                                 resetControls()
                                 setOpenDialog(false)
-    
+
                             }
                         })
                         console.log(res.data, controls)
@@ -302,12 +302,12 @@ function Attribute({ absolute, light, isMini }) {
                 }).then((res) => {
                     let response = res?.response?.data;
                     console.log(res)
-    
+
                     setInvalid(response);
-    
+
                 });
             }
-            
+
         })
 
     }
@@ -320,16 +320,16 @@ function Attribute({ absolute, light, isMini }) {
             }
         })
     }
-    function onDeleteValue(row,valueId) {
+    function onDeleteValue(row, valueId) {
         attributeDeleteRequest({
-            id: row + "/values/"+valueId,
+            id: row + "/values/" + valueId,
             onSuccess: () => {
-                dispatch({ type: "attribute/deleteValueofAttribute", payload: { idattribute: row, idValue: valueId} })
+                dispatch({ type: "attribute/deleteValueofAttribute", payload: { idattribute: row, idValue: valueId } })
             }
         })
     }
 
-    
+
     const MyCustomNoRowsOverlay = () => (
         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
     );
@@ -363,8 +363,8 @@ function Attribute({ absolute, light, isMini }) {
         console.log(attributes)
     }, [attributes])
     useEffect(() => {
-        
-    }, [controls,controls.values])
+
+    }, [controls, controls.values])
     return (
         <DashboardLayout >
             <DashboardNavbar />
@@ -394,7 +394,7 @@ function Attribute({ absolute, light, isMini }) {
                                 backgroundColor: (theme) => theme.palette.purple.middle
                             }, padding: "7px 16px 7px 16px"
                         }}
-                        onClick={() => { setOpenDialog(true); setOpenDialogEdit(false);resetControls() }}
+                        onClick={() => { setOpenDialog(true); setOpenDialogEdit(false); resetControls() }}
                     >
                         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                         &nbsp;{t("addnewattribute")}
@@ -499,7 +499,7 @@ function Attribute({ absolute, light, isMini }) {
                     onClose={handleCloseDialog}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
-                    sx={{".MuiPaper-root":{minWidth:"50%"},}}
+                    sx={{ ".MuiPaper-root": { minWidth: "50%" }, }}
                 >
                     <Form component="form"
                         childrenProps={{
@@ -518,8 +518,10 @@ function Attribute({ absolute, light, isMini }) {
                                 // disabled: postjobResponce.isPending,
                             },
                             title: openDialogEdit ? t("editattribute") : t("addnewattribute")
-                        }} sx={{ borderRadius:"8px",display: "flex",
-                        flexDirection: "column"}}>
+                        }} sx={{
+                            borderRadius: "8px", display: "flex",
+                            flexDirection: "column"
+                        }}>
                         <DialogTitle sx={{
                             padding: "0", fontWeight: 400,
                             fontSize: "14px",
@@ -528,7 +530,7 @@ function Attribute({ absolute, light, isMini }) {
                             {t("descributionAttribute")}</DialogTitle>
                         <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", marginBottom: "5px" }}
                         >{t("Attributename")}
-                           
+
                         </Typography>
                         <SoftInput
                             placeholder='Attribute name'
@@ -568,7 +570,7 @@ function Attribute({ absolute, light, isMini }) {
                         // sx={input}
                         />
                         <SoftBox sx={{ display: "flex" }}>
-                            <Checkbox checked={controls.iscolor} onClick={()=>setControl("iscolor",!controls.iscolor)}/>
+                            <Checkbox checked={controls.iscolor} onClick={() => setControl("iscolor", !controls.iscolor)} />
                             <Typography sx={{ fontSize: "14px" }} variant="span">
                                 {t("colorHex")}
                             </Typography>
@@ -589,53 +591,53 @@ function Attribute({ absolute, light, isMini }) {
                                 <TableCell align="left" sx={{ width: "50%", borderRight: "1px solid #8080807d" }}>{ele.value_name}</TableCell>
                                 <TableCell align="right" sx={{ width: "50%" }}>
                                     {console.log(ele.id)}
-                                    <DeleteIcon sx={{ color: (theme) => theme.palette.error.main }} onClick={()=>onDeleteValue(controls.id,ele.id)}/>
-                                    </TableCell>
+                                    <DeleteIcon sx={{ color: (theme) => theme.palette.error.main }} onClick={() => onDeleteValue(controls.id, ele.id)} />
+                                </TableCell>
                             </Typography>)}
-                            {addvalue&&!controls.iscolor?<SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
-                                <SoftInput  placeholder='value'
-                            sx={{ ".MuiInputBase-root": { border: `unset !important`,borderBottom:"1px solid gray" }, }}
-                            value={controls.value_name}
-                            onChange={(e) => setControl("value_name", e.target.value)}
-                            required={required.includes("value_name")}
-                            error={Boolean(invalid?.value_name)}
-                            helperText={invalid?.value_name}/>
+                            {addvalue && !controls.iscolor ? <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
+                                <SoftInput placeholder='value'
+                                    sx={{ ".MuiInputBase-root": { border: `unset !important`, borderBottom: "1px solid gray" }, }}
+                                    value={controls.value_name}
+                                    onChange={(e) => setControl("value_name", e.target.value)}
+                                    required={required.includes("value_name")}
+                                    error={Boolean(invalid?.value_name)}
+                                    helperText={invalid?.value_name} />
 
-                                 
-                            </SoftBox>:addvalue&&controls.iscolor&&<>
-                            <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
-                                <SoftInput  placeholder='value'
-                            sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
-                            value={controls.value_name}
-                            onChange={(e) => setControl("value_name", e.target.value)}
-                            required={required.includes("value_name")}
-                            error={Boolean(invalid?.value_name)}
-                            helperText={invalid?.value_name}/>
 
-                                 
-                            </SoftBox>
-                            <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
-                                <SoftInput  placeholder='color'
-                            sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
-                            value={controls.color_value}
-                            onChange={(e) => setControl("color_value", e.target.value)}
-                            required={required.includes("color_value")}
-                            error={Boolean(invalid?.color_value)}
-                            helperText={invalid?.color_value}/>
+                            </SoftBox> : addvalue && controls.iscolor && <>
+                                <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
+                                    <SoftInput placeholder='value'
+                                        sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
+                                        value={controls.value_name}
+                                        onChange={(e) => setControl("value_name", e.target.value)}
+                                        required={required.includes("value_name")}
+                                        error={Boolean(invalid?.value_name)}
+                                        helperText={invalid?.value_name} />
 
-                                 
-                            </SoftBox>
+
+                                </SoftBox>
+                                <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
+                                    <SoftInput placeholder='color'
+                                        sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
+                                        value={controls.color_value}
+                                        onChange={(e) => setControl("color_value", e.target.value)}
+                                        required={required.includes("color_value")}
+                                        error={Boolean(invalid?.color_value)}
+                                        helperText={invalid?.color_value} />
+
+
+                                </SoftBox>
                             </>}
-                            
+
                             <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
                                 <Typography sx={{ fontSize: "14px", padding: "15px", height: "40px", color: (theme) => theme.palette.purple.middle, textDecoration: "underline !important" }}
                                     component="a"
-                                    onClick={()=>setaddvalue(!addvalue)}
+                                    onClick={() => setaddvalue(!addvalue)}
                                 >{t("Addvalue")}
                                 </Typography>
                                 <Typography sx={{ fontSize: "14px", padding: "15px", height: "40px", color: (theme) => theme.palette.purple.middle, textDecoration: "underline !important" }}
                                     component="a"
-                                    onClick={()=>{}}
+                                    onClick={() => { }}
                                 >{t("ClearAll")}
                                 </Typography>
                             </SoftBox>
