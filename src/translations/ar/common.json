@@ -138,6 +138,7 @@
 "addnewCustomer":"اضافة عميل جديد",
 "addnewemployee":"اضافة موظف جديد",
 "addnewattribute":"اضافة سمة جديد",
+"addnewcategory":"اضافة تصنيف جديد",
 "editattribute":"تعديل سمة ",
 "descributionAttribute":"اكتب قيمة واحدة على الأقل للسمة",
 "Attributename":"اسم السمة",

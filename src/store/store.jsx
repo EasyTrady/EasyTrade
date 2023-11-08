@@ -9,6 +9,8 @@ import  CategorySlice  from './pages/categoriesSlice';
 import  JobSlice  from './pages/jobSlice';
 import ProfileSlice  from './pages/profileSlice';
 import  attributeSlice  from './pages/attributeSlice';
+// import  CategorySlice  from './pages/categoriesSlice';
+
 import CartSlice  from './pages/cartSlice';
 import ProductsSlice  from './pages/productSlice';
 
@@ -25,7 +27,8 @@ const store = configureStore({
     // registration:registrationSlice
      profile:ProfileSlice ,
      cart:CartSlice,
-     products:ProductsSlice
+     products:ProductsSlice,
+    //  category:CategorySlice
   }
 });
 export default store

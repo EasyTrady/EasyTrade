@@ -58,6 +58,7 @@ import Cube from "examples/Icons/Cube";
 import Customer from "layouts/customer";
 import Employee from "layouts/employee";
 import Products from "layouts/products/viewProducts";
+import Category from "layouts/products/category";
 
 import Auth from "layouts/authentication/Auth";
 import Job from "layouts/job";
@@ -155,11 +156,11 @@ const routes = [
       },
       {
         id: "category",
-        title: "Category",
+        title: "category",
         path: `/${sub_domain}/dashboard/products/category`,
-        element: <Auth><Products /></Auth>,
+        element: <Auth><Category /></Auth>,
         type: 'item',
-      }
+      },
     ]
   },
   {
@@ -267,6 +268,15 @@ const routes = [
   },
   {
     type: "title",
+    name: "Category",
+    key: "category",
+    route: `/${sub_domain}/dashboard/products/category`,
+    icon: <Shop size="12px" />,
+    component: <Auth><Category /></Auth>,
+    noCollapse: false,
+  },
+  {
+    type: "title",
     name: "Dashboard",
     key: "Dashboard",
     route: `/${sub_domain}/dashboard`,
@@ -274,7 +284,6 @@ const routes = [
     component: <Auth><Dashboard /></Auth>,
     noCollapse: false,
   },
-
   {
     type: "title",
     name: "Jobs",
@@ -284,6 +293,7 @@ const routes = [
     component: <Auth><Job /></Auth>,
     noCollapse: false,
   },
+ 
   {
     type: "title",
     name: "Attribute",
