@@ -139,12 +139,19 @@
 "addnewCustomer":"add new Customer",
 "addnewemployee":"add new employee",
 "addnewattribute":"Add new attribute",
+"addnewcategory":"add new category",
 "editattribute":"Edit attribute",
 "descributionAttribute":"Write at least one value to the attribute",
 "Attributename":"Attribute name",
 "colorHex":"There is color Hex",
 "password":"password",
 "Addvalue":"Add value",
-"ClearAll":"Clear All"
-
+"ClearAll":"Clear All",
+"Dashboard":"Dashboard",
+"Statistics":"Statistics",
+"Products":"Products",
+"AdvertisingCookies":"Advertising Cookies",
+"Alwaysactive":"Always active",
+"JobName":"Job Name",
+"parent":"Parent"
 }

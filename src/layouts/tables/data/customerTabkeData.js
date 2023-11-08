@@ -88,7 +88,7 @@ function onDelete(row,data){
         field: 'id',
         headerName: 'id',
         type: 'id',
-        flex:1,
+        width:100,
         align: 'left',
         headerAlign: 'left',
         editable: true,
@@ -99,14 +99,14 @@ function onDelete(row,data){
               field: 'Customer',
               headerName: 'Customer',
               type: 'image',
-              flex:1,
+              width:300,
               align: 'left',
               headerAlign: 'left',
               renderCell: (params) =><Box sx={{display:"flex",justifyContent: "space-evenly",
-              width: "100%"}}>
+              }}>
                  <Avatar src={params.row.image} />
-                 <Box>
-                 <Typography variant={"h5"} sx={{color:"#673ab7",fontSize:"14px"}}>{params.row.full_name}</Typography>
+                 <Box sx={{marginX:"10px"}}>
+                 <Typography variant={"h5"} sx={{fontSize:"14px"}}>{params.row.full_name}</Typography>
                  <Typography variant={"h5"} sx={{fontSize:"14px"}}>{params.row.email}</Typography>
 
                  </Box>
@@ -122,7 +122,7 @@ function onDelete(row,data){
               field: 'phone',
               headerName: 'Phone number',
               type: 'text',
-              flex:1,
+              width:222,
               align: 'left',
               headerAlign: 'left',
               editable: true,
@@ -134,23 +134,19 @@ function onDelete(row,data){
               field: 'created_at',
               headerName: 'created at',
               type: 'text',
-              flex:1,
+              width:222,
               align: 'left',
               headerAlign: 'left',
               editable: true,
               filterable: false,
               sortable: false,disableColumnMenu: true,
-              renderCell:(params)=> <Typography variant={"p"}
-              sx={{
-                fontSize:"14px"
-              }}
-              > {moment(params.row.created_at).format('MMMM Do YYYY, h:mm:ss ')} </Typography>
+              renderCell:(params)=>{moment(params.row.created_at).format('MMMM Do YYYY, h:mm:ss ')}
             },
             {
               field: 'is_active',
               headerName: 'is_active',
               type: 'text',
-              flex:1,
+              width:222,
               align: 'left',
               headerAlign: 'left',
               editable: true,

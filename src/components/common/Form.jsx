@@ -45,11 +45,11 @@ const Form = ({
     <Paper sx={{ ...sx }} onSubmit={handleSubmit} noValidate {...props}>
       {!Boolean(hideHeader) && (
         <>
-          <Stack sx={{padding: 2, bgcolor:(theme)=>theme.palette.white.main,borderRadius:"8px",borderBottom:"2px solid #E5E7E8"}}>
-            <Typography sx={{ fontWeight: "bold" ,}} {...childrenProps.title}>
+          <Stack sx={{padding: 2, bgcolor:(theme)=>theme.palette.white.main,borderRadius:"8px",borderBottom:"2px solid #E5E7E8",display:"flex",justifyContent:"space-between",flexDirection:"row"}}>
+            <Typography sx={{ fontWeight: "bold" ,fontSize:"16px"}} {...childrenProps.title}>
               {childrenProps.title}
             </Typography>
-            <Typography {...childrenProps.subtitle}>
+            <Typography sx={{fontSize:"14px"}}{...childrenProps.subtitle}>
               {childrenProps.subtitle}
             </Typography>
           </Stack>
@@ -60,9 +60,7 @@ const Form = ({
         sx={{
           display: sm ? "flex" : "grid",
           flexDirection: "column",
-          gridTemplateColumns: `repeat(auto-fit, minmax(${
-            Boolean(minChildWidth) ? minChildWidth : sm ? "210px" : "310px"
-          }, ${Boolean(maxChildWidth) ? maxChildWidth : "1fr"}))`,
+          gridTemplateColumns: `repeat(auto-fit, minmax("1fr"}))`,
           rowGap: "10px",
           columnGap: "10%",
           p: 2,

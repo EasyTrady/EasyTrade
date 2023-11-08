@@ -3,12 +3,12 @@ import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
 import DataGridCustom from 'components/common/DateGridCustomer';
 import useRequest from 'hooks/useRequest';
-import { CARTLEFT, PRODUCTS,SENDEMAILPRODUCT } from 'data/api';
+import { CARTLEFT, PRODUCTS, SENDEMAILPRODUCT } from 'data/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react'
 import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Avatar, Container,Radio, FormControlLabel, RadioGroup, FormLabel, Paper, Box, Tooltip, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Icon, MenuItem, Select, TextField, Typography, Autocomplete, ListItemText, Chip } from '@mui/material';
+import { Avatar, Container, Radio, FormControlLabel, RadioGroup, FormLabel, Paper, Box, Tooltip, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Icon, MenuItem, Select, TextField, Typography, Autocomplete, ListItemText, Chip } from '@mui/material';
 import SoftInput from 'components/SoftInput'
 import useControls from 'hooks/useControls'
 import input from "assets/theme/components/form/input";
@@ -22,12 +22,12 @@ import { useLocation } from 'react-router-dom';
 import PropTypes from "prop-types";
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
-function Basket({absolute, light, isMini}) {
+function Basket({ absolute, light, isMini }) {
   let Token = localStorage.getItem('token')
   let carts = useSelector((state) => state.cart.value)
   let products = useSelector((state) => state.products.value)
   const route = useLocation().pathname.split("/").slice(1);
-
+  const formDate = new FormData()
   let dispatch = useDispatch()
   let { t } = useTranslation('common')
   const [openDialog, setOpenDialog] = React.useState(null);
@@ -73,12 +73,12 @@ function Basket({absolute, light, isMini}) {
         isRequired: false,
         validations: [
           {
-            customValidation: (controls) => controls.Products.length<=2,
-            message:"Maximum three products.",
+            customValidation: (controls) => controls.Products.length <= 2,
+            message: "Maximum three products.",
           }
         ]
-      },{
-        control:"banner",
+      }, {
+        control: "banner",
         value: "",
         isRequired: false,
       }
@@ -100,7 +100,7 @@ function Basket({absolute, light, isMini}) {
       <Box sx={{
         display: "flex",
         alignItems: "center",
-        position:"relative"
+        position: "relative"
       }}
       >
         {row.products.map((ele) =>
@@ -133,60 +133,62 @@ function Basket({absolute, light, isMini}) {
       field: 'id',
       headerName: 'Order Id',
       type: 'image',
-      flex:1,
+      width: 100,
       align: 'left',
       headerAlign: 'left',
       // renderCell: renderImageCell,
       editable: false,
       filterable: false,
-     disableColumnMenu: true
+      disableColumnMenu: true
       // renderEditCell:renderEditImageCell
     },
     {
       field: 'Client',
       headerName: 'Client',
       type: 'image',
-      flex:1,
+      width: 300,
       align: 'left',
       headerAlign: 'left',
-      renderCell: (params)=><Box>
-         <Typography variant={"h6"} sx={{ color: (theme)=>theme.palette.black.main, marginTop: "10px" }}>{params.row.customer_name}</Typography>
-         <Typography variant={"p"} sx={{ color: (theme)=>theme.palette.grey[500], marginTop: "10px" }}>{params.row.customer_phone}</Typography>
+      renderCell: (params) => <Box>
+        <Typography variant={"h6"} sx={{ color: (theme) => theme.palette.black.main, marginTop: "10px" }}>{params.row.customer_name}</Typography>
+        <Typography variant={"p"} sx={{ color: (theme) => theme.palette.grey[500], marginTop: "10px" }}>{params.row.customer_phone}</Typography>
       </Box>,
       editable: false,
       filterable: false,
-     disableColumnMenu: true
+      disableColumnMenu: true
       // renderEditCell:renderEditImageCell
     },
     {
       field: 'Products',
       headerName: 'Products',
       type: 'image',
-      flex:1,
+      width: 200,
       align: 'left',
       headerAlign: 'left',
       renderCell: renderImageCell,
       editable: false,
       filterable: false,
-     disableColumnMenu: true
+      disableColumnMenu: true
       // renderEditCell:renderEditImageCell
     }
     , {
       field: 'Type',
       headerName: 'Type',
       type: 'text',
-      flex:1,
+      width: 100,
       align: 'left',
       headerAlign: 'left',
       editable: true,
       renderCell: (params) => <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <Typography variant={"h6"} sx={{ fontSize:"14px",
-        backgroundColor:(theme) =>params.row.is_notified_before? theme.palette.success.hover:theme.palette.error.hover,
-         marginTop: "10px",borderRadius:"5px",padding:"10px",color:(theme) =>params.row.is_notified_before? theme.palette.success.main:theme.palette.error.main }}>
-          {params.row.is_notified_before? <Typography variant={"p"}>active</Typography>:<Typography variant={"p"}>in active</Typography>}
-          </Typography>
+        <Typography variant={"h6"} sx={{
+          fontSize: "14px",
+          backgroundColor: (theme) => params.row.is_notified_before ? theme.palette.success.hover : theme.palette.error.hover,
+          marginTop: "10px", borderRadius: "5px", padding: "10px", color: (theme) => params.row.is_notified_before ? theme.palette.success.main : theme.palette.error.main
+        }}>
+          {params.row.is_notified_before ? <Typography variant={"p"}>active</Typography> : <Typography variant={"p"}>in active</Typography>}
+        </Typography>
       </Box>,
-       filterable: false,
+      filterable: false,
       disableColumnMenu: true
     }
     ,
@@ -194,14 +196,14 @@ function Basket({absolute, light, isMini}) {
       field: 'total_price',
       headerName: 'total price',
       type: 'text',
-      flex:1,
+      width: 100,
       align: 'left',
       headerAlign: 'left',
       editable: true,
       renderCell: (params) => <Box sx={{ display: "flex", flexDirection: "column" }}>
         <Typography variant={"h6"} sx={{ color: (theme) => theme.palette.primary, marginTop: "10px" }}>{params.row.total_price}EGP</Typography>
       </Box>,
-       filterable: false,
+      filterable: false,
       disableColumnMenu: true
     },
     // {
@@ -239,19 +241,21 @@ function Basket({absolute, light, isMini}) {
       method: "get",
       Token: `Token ${Token}`
     });
-    const [SendEmailProductRequest, getsendemailproductResponce] =
+  const [SendEmailProductRequest, getsendemailproductResponce] =
     useRequest({
       path: SENDEMAILPRODUCT,
       method: "post",
       Token: `Token ${Token}`
     });
-    
+
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
+    formDate?.append("banner", e.target.files[0])
+    setControl("banner", JSON.stringify(e.dataTransfer.files[0]))
     if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -263,6 +267,10 @@ function Basket({absolute, light, isMini}) {
   const handleChange = (e) => {
     e.preventDefault();
     const file = e.target.files[0];
+    formDate?.append("banner", e.target.files[0])
+
+    setControl("banner", e.target.files[0])
+    console.log(e.target.files[0])
     if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -274,21 +282,31 @@ function Basket({absolute, light, isMini}) {
   const handleDragOver = (e) => {
     e.preventDefault();
   };
-  const  handleSubmit=(e)=>{
+  const handleSubmit = (e) => {
     e.preventDefault();
-    validate().then(( isOk ) => {
-      console.log(openDialog)
+    validate().then((isOk) => {
+      console.log(controls.banner)
       if (!isOk) return;
+
+      controls?.Products?.map((ele) => formDate.append("products[]", ele.id))
+      formDate.append('customers[]', openDialog?.row?.customer_id)
+      //   for (var i = 0; i < .length; i++) {
+      //     formDate.append('customers[]', [openDialog.row.customer_id][i]);
+      // }
+      // formDate.append("customers",JSON.stringify([openDialog.row.customer_id]))
+      formDate?.append("body", controls?.describution)
+      formDate?.append("title", controls?.email)
+
       SendEmailProductRequest({
-        body:{
-          "products":controls?.Products.map((ele)=>ele.id),
-          "customers":[openDialog.row.customer_id],
-          "body":controls?.describution,
-          "title":controls?.email
+        body: formDate
+        , onSuccess: (res) => {
+          console.log(res.data)
+          resetControls()
+          setOpenDialog(null)
         }
       })
     })
-    
+
   }
 
   useEffect(() => {
@@ -311,141 +329,143 @@ function Basket({absolute, light, isMini}) {
     console.log(products)
     setProducts(products?.results)
   }, [carts, products])
+  useEffect(() => { }, [imageData])
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <Container sx={{p:2}}>
-      <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-                <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
-            </SoftBox>
-            <SoftBox  mb={{ xs: 1, md: 0 }} sx={{textAlign:"right"}}>
-            <Button onClick={() => window.print()} sx={{
-                        backgroundColor: "white !important",
-                        color: "black !important", marginX: "10px", padding: "13px 16px"
-                    }}><LocalPrintshopIcon /> Print</Button>
-      </SoftBox>
-      <DataGridCustom
-        rows={rows}
-        columns={columns} checkboxSelection={true}
-        // onDelete={() => { }}
-        sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
-        onNotify={(ele) => { setOpenDialog(ele); console.log(ele, "row") }}
-        rowsPerPageOptions={[5, 10, 15, 20]}
-       
-        //  onState={onDelete}
-        onPaginationModelChange={setPaginationModel}
-      />
-      <Dialog
-        open={Boolean(openDialog)}
-        onClose={handleCloseDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        sx={{"div.MuiPaper-root":{minWidth:"50%"}}}
-      >
-        <Form component="form"
-          childrenProps={{
-            saveBtn: {
-              onClick: handleSubmit,
-              disabled: getsendemailproductResponce.isPending,
-              children: "send Email"
-            },
-            closeBtn: {
-              onClick: () => {
-                setOpenDialog(null)
-                // handleClose()
-                // resetControls();
+      <Container sx={{ p: 2 }}>
+        <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
+          <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+        </SoftBox>
+        <SoftBox mb={{ xs: 1, md: 0 }} sx={{ textAlign: "right" }}>
+          <Button onClick={() => window.print()} sx={{
+            backgroundColor: "white !important",
+            color: "black !important", marginX: "10px", padding: "13px 16px"
+          }}><LocalPrintshopIcon /> Print</Button>
+        </SoftBox>
+        <DataGridCustom
+          rows={rows}
+          columns={columns} checkboxSelection={true}
+          // onDelete={() => { }}
+          sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
+          onNotify={(ele) => { setOpenDialog(ele); console.log(ele, "row") }}
+          rowsPerPageOptions={[5, 10, 15, 20]}
+
+          //  onState={onDelete}
+          onPaginationModelChange={setPaginationModel}
+        />
+        <Dialog
+          open={Boolean(openDialog)}
+          onClose={handleCloseDialog}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          sx={{ "div.MuiPaper-root": { minWidth: "50%" } }}
+        >
+          <Form component="form"
+            childrenProps={{
+              saveBtn: {
+                onClick: handleSubmit,
+                disabled: getsendemailproductResponce.isPending,
+                children: "send Email"
               },
-              disabled: getsendemailproductResponce.isPending,
-            }, title: t("emailBasket")
-          }}>
+              closeBtn: {
+                onClick: () => {
+                  setOpenDialog(null)
+                  // handleClose()
+                  // resetControls();
+                },
+                disabled: getsendemailproductResponce.isPending,
+              }, title: t("emailBasket")
+            }}>
 
-          <DialogTitle sx={{
-            padding: "0", fontWeight: 400,
-            fontSize: "14px",
-            color: "gray",
-          }}>
-            {t("descributionEmail")}</DialogTitle>
-
-
-          <DialogContent sx={{padding:0}}>
-            <Typography variant={"label"} sx={{ display: "block",fontSize: "14px",marginBottom:"10px", }}
-            >{t("emailTitle")}</Typography>
-            <SoftInput
-              placeholder='email'
-              value={controls.email}
-              onChange={(e) => setControl("email", e.target.value)}
-              required={required.includes("email")}
-              error={Boolean(invalid.email)}
-              helperText={invalid.email}
-              sx={{border: `1px solid !important`,borderColor:(theme)=>theme.palette.grey[400]+"!important",borderRadius:"8px" }}
-            // sx={input}
-            />
-
-            <Typography variant={"label"} sx={{ display: "block",fontSize: "14px",marginBottom:"10px" }} 
-            
-            >{t("describe")}</Typography>
-
-            <Typography component="textarea" sx={{ backgroundColor: "black",padding:"10px", border: "1px solid #80808054", width: "100%" ,fontSize:"14px",borderRadius:"8px"}}
-              required={required.includes("describution")}
-              onChange={(e) => setControl("describution", e.target.value)}
-              error={Boolean(invalid.describution)}
-              helperText={invalid.describution}
-            >
-
-            </Typography>
+            <DialogTitle sx={{
+              padding: "0", fontWeight: 400,
+              fontSize: "14px",
+              color: "gray",
+            }}>
+              {t("descributionEmail")}</DialogTitle>
 
 
+            <DialogContent sx={{ padding: 0 }}>
+              <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", marginBottom: "10px", }}
+              >{t("emailTitle")}</Typography>
+              <SoftInput
+                placeholder='email'
+                value={controls.email}
+                onChange={(e) => setControl("email", e.target.value)}
+                required={required.includes("email")}
+                error={Boolean(invalid.email)}
+                helperText={invalid.email}
+                sx={{ border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", borderRadius: "8px" }}
+              // sx={input}
+              />
 
-            <FormLabel id="demo-row-radio-buttons-group-label"sx={{fontSize: "14px"}}>{t("contentType")}</FormLabel>
-            <RadioGroup
-              row
-              aria-labelledby="demo-row-radio-buttons-group-label"
-              name="row-radio-buttons-group"
-              value={controls.content_type}
-              sx={{marginX:"20px"}}
-              onChange={(e) => { setControl("content_type", e.target.value); setImageData("") }}
-            >
-              <FormControlLabel value={t("Banner")} control={<Radio />} label={t("Banner")} sx={{ ".MuiFormControlLabel-label":{fontWeight: "400",fontSize: "12px"} }} />
-              <FormControlLabel value={t("Multipleproducts")} control={<Radio />} label={t("Multipleproducts")} sx={{".MuiFormControlLabel-label":{fontWeight: "400",fontSize: "12px"} }} />
+              <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", marginBottom: "10px" }}
 
-            </RadioGroup>
-            {controls.content_type === "Banner" ?
-              <Typography component={"div"} sx={{
-                width: "100%",
-                height: "20vh",
-                border: "1px dashed gray",
-                marginTop: "10px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }} onDrop={handleDrop} onDragOver={handleDragOver} >
-                {imageData ? (
-                  <><Typography component={"input"} type="file"
-                    onChange={handleChange}
-                    accept="image/*"
-                    sx={{ display: "none" }}
-                    ref={imageRef}
-                  />
-                    <img src={imageData} alt="Dropped" onClick={() => imageRef?.current?.click()} />
-                  </>
-                ) : (
-                  <><CollectionsIcon sx={{ color: "gray" }} />
-                    <Typography sx={{ color: "gray", fontSize: "14px" }}>Drop your image here , or </Typography>
-                    <Typography component={"input"} type="file"
+              >{t("describe")}</Typography>
 
+              <Typography component="textarea" sx={{ backgroundColor: "black", padding: "10px", border: "1px solid #80808054", width: "100%", fontSize: "14px", borderRadius: "8px" }}
+                required={required.includes("describution")}
+                onChange={(e) => setControl("describution", e.target.value)}
+                error={Boolean(invalid.describution)}
+                helperText={invalid.describution}
+              >
+
+              </Typography>
+
+
+
+              <FormLabel id="demo-row-radio-buttons-group-label" sx={{ fontSize: "14px" }}>{t("contentType")}</FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
+                value={controls.content_type}
+                sx={{ marginX: "20px" }}
+                onChange={(e) => { setControl("content_type", e.target.value); setImageData("") }}
+              >
+                <FormControlLabel value={t("Banner")} control={<Radio />} label={t("Banner")} sx={{ ".MuiFormControlLabel-label": { fontWeight: "400", fontSize: "12px" } }} />
+                <FormControlLabel value={t("Multipleproducts")} control={<Radio />} label={t("Multipleproducts")} sx={{ ".MuiFormControlLabel-label": { fontWeight: "400", fontSize: "12px" } }} />
+
+              </RadioGroup>
+              {controls.content_type === "Banner" ?
+                <Typography component={"div"} sx={{
+                  width: "100%",
+                  height: "20vh",
+                  border: "1px dashed gray",
+                  marginTop: "10px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  overflow: "hidden"
+                }} onDrop={handleDrop} onDragOver={handleDragOver} >
+                  {imageData ? (
+                    <><Typography component={"input"} type="file"
+                      onChange={handleChange}
                       accept="image/*"
                       sx={{ display: "none" }}
                       ref={imageRef}
-                    /> <Typography onClick={() => imageRef.current.click()} component={"a"}
-                      sx={{ cursor: "pointer", color: (theme) => theme.palette.blue.light, fontSize: "14px" }}> select  click to browse </Typography>
+                    />
+                      <img src={imageData} alt="Dropped" onClick={() => imageRef?.current?.click()} />
+                    </>
+                  ) : (
+                    <><CollectionsIcon sx={{ color: "gray" }} />
+                      <Typography sx={{ color: "gray", fontSize: "14px" }}>Drop your image here , or </Typography>
+                      <Typography component={"input"} type="file"
+                        onChange={handleChange}
+                        accept="image/*"
+                        sx={{ display: "none" }}
+                        ref={imageRef}
+                      /> <Typography onClick={() => imageRef.current.click()} component={"a"}
+                        sx={{ cursor: "pointer", color: (theme) => theme.palette.blue.light, fontSize: "14px" }}> select  click to browse </Typography>
 
-                  </>
-                )}
-              </Typography> :controls.content_type === "Multiple products"? <>
-              <FormLabel id="demo-row-radio-buttons-group-label"sx={{fontSize:"14px", }}>{t("SelectProducts")}</FormLabel>
-              
-                {/* <Autocomplete
+                    </>
+                  )}
+                </Typography> : controls.content_type === "Multiple products" ? <>
+                  <FormLabel id="demo-row-radio-buttons-group-label" sx={{ fontSize: "14px", }}>{t("SelectProducts")}</FormLabel>
+
+                  {/* <Autocomplete
                   loading={getproductResponce.isPending}
                   loadingText="..."
                   options={Products}
@@ -480,67 +500,69 @@ function Basket({absolute, light, isMini}) {
                   helperText={invalid.Products}
                   sx={{".MuiInputBase-root::before": { content: "none" }}}
                 /> */}
-            <SoftInput
-                                    select
-                                    value={controls.Products}
-                                    icon={{ component: <ExpandMoreIcon />, direction: "right" }}
-                                    sx={{ ".MuiInputBase-root": { border: "unset" },color:"#959FA3"}}
-                                    onChange={(e) => {setControl("Products", [...controls?.Products?.map((elem)=>elem.id),e.target.value].map((ele)=>products?.results.find((elem)=>elem.id===ele)));validate()}}
-                                    required={required.includes("Products")}
-                                    error={Boolean(invalid?.Products)}
-                                    helperText={invalid?.Products}
-                                    onOpen={() => { }}
-                                    SelectProps={{
-                                        defaultValue: "",
-                                        displayEmpty: true,
-                                        // onOpen: onOpen,
-                                        // onClose: onClose,
-                                        renderValue: (selected) => {
-                                            if (!Boolean(selected)) {
-                                                return (
-                                                    <Typography sx={{  opacity: "0.42", fontSize: "14px" ,color:"#959FA3"}} variant="p">
-                                                        {"Vendor"}
-                                                    </Typography>
-                                                );
-                                            } else {
-                                                console.log(selected)
-                                                return products?.results?.find((ele)=>ele.id===selected)?.name;
-                                            }
-                                        },
-                                        MenuProps: {
-                                            PaperProps: {
-                                                sx: {
-                                                    maxHeight: "200px",
-                                                    overflowY: "auto",
-                                                    backgroundColor: "white !important"
-                                                },
-                                            },
-                                        },
+                  <SoftInput
+                    select
+                    value={controls.Products}
+                    icon={{ component: <ExpandMoreIcon />, direction: "right" }}
+                    sx={{ ".MuiInputBase-root": { border: "unset" }, color: "#959FA3" }}
+                    onChange={(e) => { setControl("Products", [...controls?.Products?.map((elem) => elem.id), e.target.value].map((ele) => products?.results.find((elem) => elem.id === ele))); validate() }}
+                    required={required.includes("Products")}
+                    error={Boolean(invalid?.Products)}
+                    helperText={invalid?.Products}
+                    onOpen={() => { }}
+                    SelectProps={{
+                      defaultValue: "",
+                      displayEmpty: true,
+                      // onOpen: onOpen,
+                      // onClose: onClose,
+                      renderValue: (selected) => {
+                        if (!Boolean(selected)) {
+                          return (
+                            <Typography sx={{ opacity: "0.42", fontSize: "14px", color: "#959FA3" }} variant="p">
+                              {"Vendor"}
+                            </Typography>
+                          );
+                        } else {
+                          console.log(selected)
+                          return products?.results?.find((ele) => ele.id === selected)?.name;
+                        }
+                      },
+                      MenuProps: {
+                        PaperProps: {
+                          sx: {
+                            maxHeight: "200px",
+                            overflowY: "auto",
+                            backgroundColor: "white !important"
+                          },
+                        },
+                      },
 
-                                        // IconComponent: <KeyboardArrowDownIcon></KeyboardArrowDownIcon>,
+                      // IconComponent: <KeyboardArrowDownIcon></KeyboardArrowDownIcon>,
 
-                                    }}
+                    }}
 
-                                >
-                                  {console.log(controls.Products)}
-                                  {/* {controls.Products.map((ele)=>products?.results.find((elem)=>elem.id===ele))} */}
-                                    {products?.results?.map((ele) => <MenuItem value={ele.id} key={ele.id}>{ele.name}</MenuItem>)}
-                                </SoftInput>
-                {controls.Products.map((ele,index)=>index<=2?<SoftBox key={ele} sx={{display:"flex",justifyContent: "space-between",
-                  alignItems: "center",marginY:"10px"}}>
-                    <SoftBox sx={{display:"flex",alignItem:"center"}}>
-                  <Avatar src={ele?.main_image}/>
-                  <Typography sx={{ color: "gray", fontSize: "14px !important",marginX:"10px" }} variant={"span"}>{ele?.name}</Typography>
-                 </SoftBox>
-                 <Button  key={ele} onClick={()=> setControl("Products",controls.Products.filter((elem)=>elem?.id!=ele?.id))}> <DeleteIcon sx={{color:(theme)=>theme.palette.error.main}}/></Button>
-                </SoftBox>:<></>
-                )}
-              
-              </>:<></>}
+                  >
+                    {console.log(controls.Products)}
+                    {/* {controls.Products.map((ele)=>products?.results.find((elem)=>elem.id===ele))} */}
+                    {products?.results?.map((ele) => <MenuItem value={ele.id} key={ele.id}>{ele.name}</MenuItem>)}
+                  </SoftInput>
+                  {controls.Products.map((ele, index) => index <= 2 ? <SoftBox key={ele} sx={{
+                    display: "flex", justifyContent: "space-between",
+                    alignItems: "center", marginY: "10px"
+                  }}>
+                    <SoftBox sx={{ display: "flex", alignItem: "center" }}>
+                      <Avatar src={ele?.main_image} />
+                      <Typography sx={{ color: "gray", fontSize: "14px !important", marginX: "10px" }} variant={"span"}>{ele?.name}</Typography>
+                    </SoftBox>
+                    <Button key={ele} onClick={() => setControl("Products", controls.Products.filter((elem) => elem?.id != ele?.id))}> <DeleteIcon sx={{ color: (theme) => theme.palette.error.main }} /></Button>
+                  </SoftBox> : <></>
+                  )}
 
-          </DialogContent>
-        </Form>
-      </Dialog>
+                </> : <></>}
+
+            </DialogContent>
+          </Form>
+        </Dialog>
       </Container>
     </DashboardLayout>
   )

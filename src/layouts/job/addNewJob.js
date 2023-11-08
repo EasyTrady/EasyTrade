@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 import useControls from 'hooks/useControls';
 import Form from 'components/common/Form';
 import { useTranslation } from 'react-i18next';
-import { Avatar, Stack, Container, InputLabel, Radio, FormControlLabel, RadioGroup, FormLabel, Paper, Box, Tooltip, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Icon, MenuItem, Select, TextField, Typography, Autocomplete, ListItemText, Chip } from '@mui/material';
+import { Avatar, Switch,Divider,Stack, Container, InputLabel, Radio, FormControlLabel, RadioGroup, FormLabel, Paper, Box, Tooltip, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Icon, MenuItem, Select, TextField, Typography, Autocomplete, ListItemText, Chip } from '@mui/material';
 import SoftInput from "components/SoftInput";
 import PersonIcon from '@mui/icons-material/Person';
 import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
@@ -43,22 +43,11 @@ function AddNewJob({ absolute, light, isMini }) {
             method: "post",
             Token: `Token ${Token}`
         });
-    const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
+        const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
         useControls([
-            { control: "image", value: "", isRequired: false },
+
             {
-                control: "email",
-                value: "",
-                isRequired: true,
-                validations: [
-                    {
-                        test: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                        message: "not valid email"
-                    },
-                ],
-            },
-            {
-                control: "full_name",
+                control: "title",
                 value: "",
                 isRequired: true,
                 validations: [
@@ -68,34 +57,7 @@ function AddNewJob({ absolute, light, isMini }) {
                     }
                 ]
             },
-            {
-                control: "password",
-                value: "",
-                isRequired: true,
-            }, {
-                control: "confirm",
-                value: "",
-                isRequired: true,
-                validations: [
-                    {
-                        test: (controls) => new RegExp(`^${controls.password}$`),
-                        message: "الرقم السري لا يطابق",
-                    },
-                ],
-            }, {
-                control: "phone",
-                value: "",
-                isRequired: true,
-            }, {
-                control: "code",
-                value: "+20",
-                isRequired: true,
-            },
-            {
-                control: "job",
-                value: "",
-                isRequired: true,
-            }
+
         ]);
     function handleSubmit() {
 
@@ -103,7 +65,9 @@ function AddNewJob({ absolute, light, isMini }) {
 
             if (!output.isOk) return;
             JobPostRequest({
-                body: controls,
+                body: {
+                    title:controls.title
+                },
                 onSuccess: (res) => {
                     resetControls()
                     console.log(res.data, controls)
@@ -130,67 +94,52 @@ function AddNewJob({ absolute, light, isMini }) {
             <DashboardLayout>
                 <DashboardNavbar />
                 <Container>
-                <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-                    <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
-                </SoftBox>
+                    <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
+                        <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+                    </SoftBox>
                 </Container>
-                <Container sx={{ p: 2, display: "flex", justifyContent: "space-between" }}>
-                    <Form component="form"
-                        childrenProps={{
-                            title: t("ContactInfo")
-                        }} sx={{ width: "47%" }} hideFooter={true}>
-                        <Box sx={{ display: "flex", flexDirection: "column" }}>
-                            <Box sx={{ marginY: "6px" }}>
-                                <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("Fullname")}</InputLabel>
+                <Container sx={{ p: 2, display: "flex",gap:"6px" }}>
+                    <SoftBox sx={{width:"50%"}}>
+                    <Box sx={{ marginY: "6px" ,marginBottom:"20px"}}>
+                                <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("JobName")}</InputLabel>
                                 <SoftInput
-                                    placeholder="Full Name"
-                                    icon={{ component: <PersonIcon />, direction: "left" }}
-                                    sx={{ ".MuiInputBase-root": { border: "unset" } }}
-                                    value={controls.full_name}
-                                    onChange={(e) =>
-                                        setControl("full_name", e.target.value)
-                                    }
-                                    required={required.includes("full_name")}
-                                    error={Boolean(invalid?.full_name)}
-                                    helperText={invalid?.full_name}
-                                />
-                            </Box>
-                            <Box sx={{ marginY: "6px" }}>
-                                <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("Phone")}</InputLabel>
-                                <SoftInput
-
-                                    placeholder="Phone"
-                                    icon={{ component: <PhoneInTalkIcon />, direction: "left" }}
-                                    sx={{ ".MuiInputBase-root": { border: "unset" } }}
-                                    value={controls.phone}
-                                    onChange={(e) => setControl("phone", e.target.value)}
-                                    error={Boolean(invalid?.phone)}
-                                    helperText={invalid?.phone}
-                                >
-                                </SoftInput>
-                            </Box>
-                            <Box sx={{ marginY: "6px" }}>
-                                <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("Email")}</InputLabel>
-                                <SoftInput
-                                    placeholder="email"
+                                    placeholder={t("JobName")}
                                     icon={{ component: <MailOutlineIcon />, direction: "left" }}
                                     sx={{ ".MuiInputBase-root": { border: "unset" } }}
-                                    value={controls.email}
+                                    value={controls.title}
                                     onChange={(e) =>
-                                        setControl("email", e.target.value)
+                                        setControl("title", e.target.value)
                                     }
-                                    required={required.includes("email")}
-                                    error={Boolean(invalid?.email)}
-                                    helperText={invalid?.email}
+                                    required={required.includes("title")}
+                                    error={Boolean(invalid?.title)}
+                                    helperText={invalid?.title}
                                 />
                             </Box>
-                            <Box sx={{ marginY: "6px" }}>
-                                <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("job")}</InputLabel>
+                    <Form component="form"
+                        childrenProps={{
+                            title: t("AdvertisingCookies"),
+                            subtitle:t("Alwaysactive")
+                        }}hideFooter={true}>
+                        <Box sx={{ display: "flex", flexDirection: "column" }}>
+                            <Box sx={{ marginY: "6px",marginBottom:"20px",display:"flex",justifyContent:"space-between" }}>
+                                <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("Fullname")}</InputLabel>
+                                <SoftBox sx={{display:"flex" ,alignItems:"center"}}> 
+                                      <Divider sx={{ flexGrow: 1 }} orientation="vertical"/>
+                                      <Switch  defaultChecked color="default" />
+                                      </SoftBox>
+                            </Box>
+                        </Box>
+
+                    </Form>
+                    </SoftBox>
+                    <SoftBox sx={{width:"50%",display:"flex",flexDirection:"column"}}>
+                    <Box sx={{ marginY: "6px",marginBottom:"14px"}}>
+                                <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("parent")}</InputLabel>
                                 <SoftInput
                                     select
                                     value={controls.job}
-                                    icon={{ component: <WorkOutlineIcon />, direction: "left" }}
-                                    sx={{ ".MuiInputBase-root": { border: "unset" } }}
+                                    // icon={{ component: <WorkOutlineIcon />, direction: "left" }}
+                                    sx={{ ".MuiInputBase-root": { border: "unset"  } }}
                                     onChange={(e) => setControl("job", e.target.value)}
                                     required={required.includes("job")}
                                     error={Boolean(invalid?.job)}
@@ -205,12 +154,12 @@ function AddNewJob({ absolute, light, isMini }) {
                                             if (!Boolean(selected)) {
                                                 return (
                                                     <Typography sx={{ color: "currentColor", opacity: "0.42", fontSize: "14px" }}>
-                                                        {"job name"}
+                                                        {t("parent")}
                                                     </Typography>
                                                 );
                                             } else {
                                                 console.log(selected)
-                                                return jobs?.results?.find((ele)=>ele.id===selected).title;
+                                                return jobs?.results?.find((ele) => ele.id === selected).title;
                                             }
                                         },
                                         MenuProps: {
@@ -231,48 +180,23 @@ function AddNewJob({ absolute, light, isMini }) {
                                     {jobs?.results?.map((ele) => <MenuItem value={ele.id} key={ele.id}>{ele.title}</MenuItem>)}
                                 </SoftInput>
                             </Box>
-
-                        </Box>
-
-                    </Form>
-                    <Form component="form"
+                            <Form component="form"
                         childrenProps={{
-                            title: t("Account")
-                        }} sx={{ width: "47%" }} hideFooter={true}>
+                            title: t("AdvertisingCookies"),
+                            subtitle:t("Alwaysactive")
+                        }}hideFooter={true}>
                         <Box sx={{ display: "flex", flexDirection: "column" }}>
-                            <Box sx={{ marginY: "6px" }}>
-                                <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("password")}</InputLabel>
-
-                                <PasswordField
-
-                                    placeholder={"Password"}
-                                    required={required.includes("password")}
-                                    value={controls.password}
-                                    onChange={(e) => setControl("password", e.target.value)}
-                                    error={Boolean(invalid?.password)}
-                                    helperText={invalid?.password}
-                                    sx={{ ".MuiInputBase-root input": { minWidth: "95% !important" }, ".MuiInputBase-root": { border: "unset" }, ".MuiInputBase-root::before": { content: "none" } }}
-                                    icon={{ component: <LockOpenIcon />, direction: "left" }}
-                                />
+                            <Box sx={{ marginY: "6px",marginBottom:"20px",display:"flex",justifyContent:"space-between" }}>
+                                <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("JobName")}</InputLabel>
+                                <SoftBox sx={{display:"flex" ,alignItems:"center"}}> 
+                                      <Divider sx={{ flexGrow: 1 }} orientation="vertical"/>
+                                      <Switch  defaultChecked color="default" />
+                                      </SoftBox>
                             </Box>
-                            <Box sx={{ marginY: "6px" }}>
-                                <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("ConfirmPassword")}</InputLabel>
-                                <PasswordField
-
-                                    placeholder={"Password"}
-                                    required={required.includes("confirm")}
-                                    value={controls.confirm}
-                                    onChange={(e) => setControl("confirm", e.target.value)}
-                                    error={Boolean(invalid?.confirm)}
-                                    helperText={invalid?.confirm}
-                                    sx={{ ".MuiInputBase-root input": { minWidth: "95% !important" }, ".MuiInputBase-root": { border: "unset" }, ".MuiInputBase-root::before": { content: "none" } }}
-                                    icon={{ component: <LockOpenIcon />, direction: "left" }}
-                                /></Box>
-
                         </Box>
 
                     </Form>
-
+                    </SoftBox>
                 </Container>
                 <Stack
                     direction="row"

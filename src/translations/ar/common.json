@@ -138,10 +138,18 @@
 "addnewCustomer":"اضافة عميل جديد",
 "addnewemployee":"اضافة موظف جديد",
 "addnewattribute":"اضافة سمة جديد",
+"addnewcategory":"اضافة تصنيف جديد",
 "editattribute":"تعديل سمة ",
 "descributionAttribute":"اكتب قيمة واحدة على الأقل للسمة",
 "Attributename":"اسم السمة",
 "colorHex":"هناك لون ",
 "Addvalue":"اضافة قيمة",
-"ClearAll":"مسح الكل"
+"ClearAll":"مسح الكل",
+"Dashboard":"اللوحة تحكم",
+"Statistics":"احصايات",
+"Products":"منتجات",
+"AdvertisingCookies":"ملفات تعريف الارتباط الإعلانية",
+"Alwaysactive":"دائما نشط",
+"JobName":"اسم الوظيفة",
+"parent":""
 }

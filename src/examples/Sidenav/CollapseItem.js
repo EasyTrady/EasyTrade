@@ -17,11 +17,13 @@ import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography, u
 
 // assets
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import { useTranslation } from 'react-i18next';
 
 // ==============================|| SIDEBAR MENU LIST ITEMS ||============================== //
 
 const NavItem = ({ item }) => {
   const theme = useTheme();
+  let {t}=useTranslation()
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(null);
   const { pathname } = useLocation();
@@ -104,7 +106,7 @@ const handleClick = () => {
           <Typography component={Link}  color={(theme)=>theme.palette.grey[600]} to={item.path} sx={{    fontWeight: 400,
             fontSize: "0.875rem",
             lineHeight: 0,}}>
-            {item.title}
+            {t(item.title)}
           </Typography>
         }
         
