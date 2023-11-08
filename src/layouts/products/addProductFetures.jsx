@@ -1,4 +1,4 @@
-import { Box, Card, Typography } from "@mui/material";
+import { Box, Card, Icon, Typography } from "@mui/material";
 import input from "assets/theme/components/form/input";
 import NumberField from "components/common/NumberFeild";
 import useControls from "hooks/useControls";
@@ -9,6 +9,7 @@ import ImageBox from "components/common/imageBox";
 import PictureField from "components/common/PictureField";
 import ImagesAlbums from "components/common/ImagesAlbums";
 import AddIcon from "@mui/icons-material/Add";
+import SoftButton from "components/SoftButton";
 const AddProductFetures = () => {
   // add status of fields
   const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
@@ -35,12 +36,13 @@ const AddProductFetures = () => {
     },
     { control: "mpn", value: "", isRequired: true },
     { control: "countries", value: [], isRequired: true },
-    { control: "main_image", value: {}, isRequired: true },
+    { control: "main_image", value: [], isRequired: true },
     { control: "product_images", value: [], isRequired: true },
   ]);
   console.log(controls.product_images);
   return (
-    <Box sx={{ p: 3, display: "flex", flexDirection: "column", gap: 3 }}>
+    <Box sx={{display:'flex',flexDirection:'column',justifyContent:'space-between',gap:2}}>
+    <Box sx={{ p: 3, display: "flex", flexDirection: "column", gap: 3 ,bgcolor:'#fff'}}>
       <Box
         sx={{
           display: "flex",
@@ -62,16 +64,34 @@ const AddProductFetures = () => {
         >
           Note : Maximum 12 photo
         </Typography>
-        <Box sx={{ borderRadius: "50%", background: "#F0F6FF" }}>
+        <Box sx={{ borderRadius: "100px", background: "#F0F6FF",padding: '5px',display:'flex',alignItem:'center',justifyContent:'center' }}
+        onClick={() => {
+          document.getElementById("profile_image").click();
+        }}
+        >
           <AddIcon />
         </Box>
       </Box>
-      {/* <ImageBox main_image={controls.main_image} onChange={(e) => setControl("main_image", e)} />
+      <ImageBox main_image={controls.main_image} onChange={(e) => setControl("main_image", e)} />
 
-      <ImagesAlbums
+      {/* <ImagesAlbums
         value={controls.product_images}
         onChange={(e) => setControl("product_images", e)}
       /> */}
+    </Box>
+    <Box sx={{display:'flex',justifyContent:'flex-end',alignItems:'center'}}>
+      <SoftButton variant="gradient"
+                        sx={{
+                            backgroundColor: (theme) => theme.palette.purple.middle,
+                            color: "white !important", "&:hover": {
+                                backgroundColor: (theme) => theme.palette.purple.middle
+                            },width: '260px'
+                        }}
+                        onClick={() => {}}
+                    >
+                        Next
+                    </SoftButton>
+    </Box>
     </Box>
   );
 };

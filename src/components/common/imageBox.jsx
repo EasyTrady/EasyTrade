@@ -1,29 +1,42 @@
-import { Box } from '@mui/material';
-import SoftAvatar from 'components/SoftAvatar';
-import SoftButton from 'components/SoftButton';
-import React from 'react'
-import productImage from '../../assets/images/ivana-square.jpg'
+import { Box, Button, Typography } from "@mui/material";
+import SoftAvatar from "components/SoftAvatar";
+import SoftButton from "components/SoftButton";
+import React from "react";
+import productImage from "../../assets/images/ivana-square.jpg";
+import image from '../../assets/images/icons/image.svg'
 // eslint-disable-next-line react/prop-types
-const ImageBox = ({main_image,onChange}) => {
-    const [mainImage, setMainImage] = React.useState(null);
+const ImageBox = ({ main_image, onChange }) => {
+  const [mainImages, setMainImages] = React.useState([]);
+
   const handleAvatarChange = (event) => {
-    // console.log(event.target.files[0]);
-    onChange(event.target.files[0])
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    //   setImageFile(file);
-    
-    reader.onload = (e) => {
-      setMainImage(reader.result);
-     
-    };
-    reader.readAsDataURL(file);
-   
+    const files = event.target.files;
+    const readers = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        const imageDataUrl = reader.result;
+        setMainImages((prevImages) => [...prevImages, imageDataUrl]);
+      };
+
+      readers.push(reader);
+      readers[i].readAsDataURL(files[i]);
+    }
   };
-//  console.log(mainImage);
+  //  console.log(mainImage);
   return (
-    <>
-     {/* <Box sx={{ width: '100%',my:"24px"}}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        overflowX: "auto",
+        overflowY:'hidden',
+        gap: "20px",
+      }}
+    >
+      {/* <Box sx={{ width: '100%',my:"24px"}}>
               
               <SoftButton
               sx={{backgroundColor:`#3C83C4 !important`}}
@@ -36,65 +49,189 @@ const ImageBox = ({main_image,onChange}) => {
               </SoftButton>
             
           </Box> */}
-          <Box sx={{ width: '30%', border:` 1px solid #d5d5d5 }`,borderRadius: `12px`}}>
+
+      {mainImages.length > 0 ? (
+        mainImages.map((img, index) => (
+          <Box
+            sx={{
+              width: "251px",
+              height: " 219px",
+              borderRadius: "8px",
+              // border: "0.2px solid #000000",
+              border: '0.2px solid #E5E7E8'
+            }}
+            key={index}
+          >
             {/* view image selected */}
-            
-              {mainImage ? (
-                <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 2 }}>
-                  <img
-                    src={mainImage || productImage}
-                    alt="profile_image"
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      borderRadius: `12px  12px 0px 0px `
-                    }}
-                  />
-                </Box>
-              ) : (
-                <Box
-                  component={'img'}
-                  src={mainImage || productImage}
-                  alt="image"
-                  sx={{ width: '100%', height: '100%' , borderRadius: `12px  12px 0px 0px `
+            <Box sx={{ width: "251px", height: "167.03px" }}>
+              <img
+                src={img}
+                alt={`Image ${index + 1}`}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "fill",
+                  borderRadius: `8px  8px 0px 0px `,
                 }}
-                  // sx={{ height: "50%", width: "60%" }}
-                />
-              )}
-            
+              />
+            </Box>
             <input
+              multiple
               id="profile_image"
               name="profile_image"
               type="file"
               accept="image/*"
               onChange={handleAvatarChange}
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
             />
-            <Box
-              sx={{
-                width: '100%',
-                p: 1,
-                border: '#d5d5d5',
-                backgroundColor: '#d5d5d5',
-                display: 'flex',
-                flexDirection: 'row',
-                gap: 2,
-                borderRadius: `0px 0px 12px  12px `
+            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Button
+                sx={{
+                  width: "180px",
 
-              }}
-            >
-              {/* <SoftAvatar  sx={{ backgroundColor: '#fff', p: 1, height: '34px', width: '34px' }}>
-                <DeleteIcon sx={{ color: 'red', zIndex: 1000 }} />
-              </SoftAvatar> */}
-              <SoftButton 
-              onClick={() => {
-                document.getElementById('profile_image').click();
-              }}
-              sx={{ fontSize: '10px' }}>Main product image</SoftButton>
+                  padding: "0px 24px 0px 24px",
+                  borderRadius: "12px",
+                  gap: "8px",
+                  background: "#FDEDED",
+                  textTransform: "none",
+                  my: "5px",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  lineHeight: "40px",
+                  letterSpacing: "0em",
+                  color: "#E84646",
+                  ":hover": {
+                    color: "#E84646",
+                    background: "#FDEDED",
+                  },
+                }}
+                onClick={() => {
+                  // document.getElementById("profile_image").click();
+                }}
+              >
+                Remove Main image
+              </Button>
             </Box>
           </Box>
-    </>
-  )
-}
+        ))
+      ) : (
+        <Box sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          overflowX: "auto",
+          gap: "20px",
+        }}>
+        <Box
+          sx={{
+            width: "251px",
+            height: " 222px",
+            borderRadius: "8px",
+            border: "0.2px solid #E5E7E8",
+          }}
+          
+        >
+          {/* view image selected */}
+          <Box sx={{ width: "251px", height: "167.03px" }}>
+            <img
+              src={productImage}
+              alt={`Image`}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "fill",
+                borderRadius: `8px  8px 0px 0px `,
+              }}
+            />
+          </Box>
+          <input
+            multiple
+            id="profile_image"
+            name="profile_image"
+            type="file"
+            accept="image/*"
+            onChange={handleAvatarChange}
+            style={{ display: "none" }}
+          />
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Button
+              sx={{
+                width: "180px",
 
-export default ImageBox
+                padding: "0px 24px 0px 24px",
+                borderRadius: "12px",
+                gap: "8px",
+                background: "#FDEDED",
+                textTransform: "none",
+                my: "6.6px",
+
+                fontSize: "14px",
+                fontWeight: 600,
+                lineHeight: "40px",
+                letterSpacing: "0em",
+                color: "#E84646",
+                ":hover": {
+                  color: "#E84646 !important",
+                  background: "#FDEDED !important",
+                },
+              }}
+              onClick={() => {
+                // document.getElementById("profile_image").click();
+              }}
+            >
+              Remove Main image
+            </Button>
+          </Box>
+        </Box>
+        {Array.from({length:3},(_,index)=>(
+           <Box 
+           key={index}
+           sx={{width: '251px',
+           height: '219px',
+           borderRadius: '8px',
+           border: '2px',
+           border: '2px solid #E5E7E8',
+           background:  '#FFFFFF',
+           display:'flex',
+           alignItems:'center',
+           justifyContent:'center',
+           flexDirection:'column'
+           }}>
+             <Box sx={{width: '149px',
+           height: '96px',
+           display:'flex',
+           alignItems:'center',
+           justifyContent:'center',
+           gap:'12px',
+           flexDirection:'column'
+           }}>
+             <img src={image} alt='image'/>
+               <Typography sx={{color: '#626C70',
+           textAlign: 'center',
+           fontFamily: 'Inter',
+           fontSize: '14px',
+           fontWeight: 400,
+           lineHeight: '20px'}}>
+               Drop your image here , or  
+               <Typography
+               component={'span'}
+               sx={{color: ' #005CE8',
+           fontFamily: 'Inter',
+           fontSize: '14px',
+           fontWeight: 500,
+           lineHeight: '20px'}}
+           onClick={() => {
+            document.getElementById("profile_image").click();
+          }}
+           >select click to browse</Typography>
+               </Typography>
+           </Box>
+                   </Box>  
+        ))}   
+        </Box>
+      )}
+    </Box>
+  );
+};
+
+export default ImageBox;
