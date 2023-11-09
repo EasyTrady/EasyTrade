@@ -39,40 +39,51 @@ const SubscribePanel = () => {
   };
   return (
     <Box>
-      <Box maxHeight={39} sx={{ mx: 'auto', width: { xl: '13%', md: '13.6%', sm: '25%', xs: '40%' } }}>
+      <Box sx={{
+        mx: 'auto', justifyContent: 'center',
+        display: 'flex',
+        flexDirection: 'column'
+      }}>
         <Tabs
           textColor="inherit"
           value={value}
           onChange={handelChange}
           centered
           sx={{
-            borderRadius: '38px',
             border: '2px solid #5D449B',
-            maxHeight: '39px',
-            fontSize: '16px',
-            textTransform: 'none',
-            '.MuiTabs-indicator': {
-              backgroundColor: '#5D449B',
-              height: '100%',
-              width: '100%',
-              color:'#fff !important',
-              borderRadius: '38px',
-              zIndex: -1,
-            }
+            borderRadius: '10px',
+            padding: '5px 40px',
+            my: '30px',
+            width: 'fit-content',
           }}
         >
-        <Tab sx={{color:'#989898'}} label={t('yearly.title', { framwork: 'react' })} {...a11yProps(0)} />
-          <Tab sx={{color:'#A8A8A8'}} label={t('monthly.title', { framwork: 'react' })} {...a11yProps(1)} />
+          <Tab sx={{
+            margin: '0 20px',
+            padding: '10px 30px',
+            "&.Mui-selected, &.Mui-selected:hover": {
+              color: "white !important",
+              backgroundColor: '#5D449B'
+            }
+          }} label={t('yearly.title', { framwork: 'react' })} {...a11yProps(0)} />
+          <Tab sx={{
+            margin: '0 20px',
+            padding: '10px 30px',
+            "&.Mui-selected, &.Mui-selected:hover": {
+              color: "white !important",
+
+              backgroundColor: '#5D449B'
+            }
+          }} label={t('monthly.title', { framwork: 'react' })} {...a11yProps(1)} />
         </Tabs>
       </Box>
-      {/* <Box sx={{width:'100%',overflowX:'auto',display:'flex',flexDirection:'row'}}> */}
-      <TabPanel value={value} index={0}>
-        <SubscribeCard type="annual" />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <SubscribeCard type="monthly" />
-      </TabPanel>
-      {/* </Box> */}
+      <Box sx={{}}>
+        <TabPanel value={value} index={0}>
+          <SubscribeCard type="annual" />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <SubscribeCard type="monthly" />
+        </TabPanel>
+      </Box>
     </Box>
   );
 };

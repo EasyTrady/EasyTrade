@@ -40,13 +40,29 @@ import { Formik } from 'formik';
 import { SIGNUP } from "data/api";
 import { SHOP } from "data/api";
 import useRequest from "hooks/useRequest";
-import { FormControl } from "@mui/material";
+import { Box, FormControl } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import PhoneField from "components/common/PhoneField";
+import PageLayout from "examples/LayoutContainers/PageLayout";
+import AuthWrapper1 from "../AuthWrapper1";
+import {  useLocation } from 'react-router-dom';
+
+// material-ui
+
+import {  Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
+
+// project imports
+
+import AuthCardWrapper from '../AuthCardWrapper';
+import AuthRegister from '../auth-forms/AuthRegister';
+// import AuthFooter from 'ui-component/cards/AuthFooter';
+import signup from '../../../assets/images/icons/Social Media Icon Square/login.png';
+
 
 function SignUp({ ...others  }) {
   const sub_domain = localStorage.getItem('sub_domain')
   const theme = useTheme();
+  const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   const [agreement, setAgremment] = useState(true);
 
   const handleSetAgremment = () => setAgremment(!agreement);
@@ -57,21 +73,9 @@ function SignUp({ ...others  }) {
     path:SHOP,method:"post"
   })
   return (
-    <BasicLayout
-      title="Welcome!"
-      description="Use these awesome forms to login or create new account in your project for free."
-      image={curved6}
-    >
+   
       <Card>
-        <SoftBox p={3} mb={1} textAlign="center">
-          <SoftTypography variant="h5" fontWeight="medium">
-            Register with
-          </SoftTypography>
-        </SoftBox>
-        <SoftBox mb={2}>
-          <Socials />
-        </SoftBox>
-        <Separator />
+      
         <Formik
         initialValues={{
           full_name: '',
@@ -162,94 +166,79 @@ function SignUp({ ...others  }) {
       >
            {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate  {...others}>
-        <SoftBox pt={2} pb={3} px={3}>
-          <SoftBox component="form" role="form">
-          <FormControl fullWidth error={Boolean(touched.full_name && errors.full_name)} sx={{ ...theme.typography.customInput }}>
-            <SoftBox mb={2}>
-              <SoftInput placeholder="Name"  value={values.full_name}
-                margin="normal"
-                name="full_name"
-                onBlur={handleBlur}
-                onChange={handleChange} />
-            </SoftBox>
-            </FormControl>
-            <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-            <SoftBox mb={2}>
-              <SoftInput type="email" placeholder="Email" name="email"value={values.email}
-                onBlur={handleBlur}
-                onChange={handleChange} />
-            </SoftBox>
-            </FormControl>
-            <FormControl fullWidth error={Boolean(touched.password && errors.password)} sx={{ ...theme.typography.customInput }}>
-            <SoftBox mb={2}>
-              <SoftInput type="password" placeholder="Password"   name="password"value={values.password}
-                onBlur={handleBlur}
-                onChange={handleChange}/>
-            </SoftBox>
-            </FormControl>
-            <FormControl fullWidth error={Boolean(touched.password && errors.password)} sx={{ ...theme.typography.customInput }}>
-            <SoftBox mb={2}>
-            <PhoneField
-                      
-                      placeholder={"phone"}
-                 
-                      selectProps={{
-                          value: values.code ? values.code : "+20",
-                          onChange:handleChange,
-                      }}
-                      value={values.phone}
-                      onChange={handleChange}
-                    
-                      sx={{".MuiInputBase-root input":{minWidth:"95% !important"}}}
-                  />
-            </SoftBox>
-            </FormControl>
-            <SoftBox display="flex" alignItems="center">
-              <Checkbox checked={agreement} onChange={handleSetAgremment} />
-              <SoftTypography
-                variant="button"
-                fontWeight="regular"
-                onClick={handleSetAgremment}
-                sx={{ cursor: "poiner", userSelect: "none" }}
-              >
-                &nbsp;&nbsp;I agree the&nbsp;
-              </SoftTypography>
-              <SoftTypography
-                component="a"
-                href="#"
-                variant="button"
-                fontWeight="bold"
-                textGradient
-              >
-                Terms and Conditions
-              </SoftTypography>
-            </SoftBox>
-            <SoftBox mt={4} mb={1} >
-              <SoftButton variant="gradient" color="dark" fullWidth onClick={(e)=>handleSubmit(e)}>
-                sign up
-              </SoftButton>
-            </SoftBox>
-            <SoftBox mt={3} textAlign="center">
-              <SoftTypography variant="button" color="text" fontWeight="regular">
-                Already have an account?&nbsp;
-                <SoftTypography
-                  component={Link}
-                  to="/authentication/sign-in"
-                  variant="button"
-                  color="dark"
-                  fontWeight="bold"
-                  textGradient
-                >
-                  Sign in
-                </SoftTypography>
-              </SoftTypography>
-            </SoftBox>
-          </SoftBox>
-        </SoftBox>
+        <PageLayout>
+    <AuthWrapper1>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: {
+            xl: 'row',
+            lg: 'row',
+            md: 'row',
+            sm: 'column',
+            xs: 'column'
+          },
+          gap: 2,
+          justifyContent: 'space-between',
+          overflow: 'auto',
+          bgcolor: '#FFFFFF'
+          // paddingTop: '70px'
+        }}
+      >
+        <Box component="img" sx={{ width: { xl: '50%', lg: '50%', md: '50%', sm: '100%', sx: '100%' }, height: '100%' }} src={signup}></Box>
+      <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh', bgcolor: '#FFFFFF' }}>
+        <Grid item xs={12}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'column', gap: 2, px: '12px' }}>
+
+          <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: 'calc(100vh - 68px)' }}>
+            <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
+              <AuthCardWrapper>
+                <Grid container spacing={2} alignItems="center" justifyContent="center">
+                  <Grid item xs={12}>
+                    <Grid container direction={matchDownSM ? 'column-reverse' : 'row'} alignItems="center" justifyContent="center">
+                      <Grid item>
+                        <Stack alignItems="center" justifyContent="center" spacing={1}>
+                          <Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
+                            تسجيل حساب
+                          </Typography>
+                          <Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
+                            مرحبًا! الرجاء ادخال التفاصيل الخاصة بك
+                          </Typography>
+                        </Stack>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <AuthRegister subscribtionId={location?.state?.subscribtionId} />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Divider />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Grid item container direction="column" alignItems="center" xs={12}>
+                      <Typography component={Link} to="/login" variant="subtitle1" sx={{ textDecoration: 'none', color: '#5D449B' }}>
+                          لديك حساب بالفعل؟ تسجيل الدخول
+                      </Typography>
+
+                    </Grid>
+                  </Grid>
+                </Grid>
+                </AuthCardWrapper>
+              </Grid>
+            </Grid>
+            </Box>
+          </Grid>
+          <Grid item xs={12} sx={{ m: 3, mt: 1 }}>
+            {/* <AuthFooter /> */}
+          </Grid>
+        </Grid>
+      </Box>
+    </AuthWrapper1>
+    </PageLayout>
         </form>)}
         </Formik>
       </Card>
-    </BasicLayout>
+   
   );
 }
 

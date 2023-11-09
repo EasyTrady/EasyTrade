@@ -19,6 +19,7 @@ import Breadcrumbs from 'examples/Breadcrumbs'
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import PropTypes from "prop-types";
 import { PRODUCTS } from "data/api";
+import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 import { MainButton } from "styles/productStyle";
 import { PrintButton } from "styles/productStyle";
 function Products({ absolute, light, isMini }) {
@@ -27,7 +28,7 @@ function Products({ absolute, light, isMini }) {
   const products=useSelector((state)=>state.products.value)
   const navigate =useNavigate()
   const route = useLocation().pathname.split("/").slice(1);
-  const handleRouteProduct = () => navigate('/addnewproduct')
+  const sub_domain = localStorage.getItem('sub_domain')
   const handleClose = () => setOpen(false);
   const handleClick = () => {
     console.info('You clicked the Chip.');
@@ -129,18 +130,33 @@ function Products({ absolute, light, isMini }) {
           <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
         </SoftBox>
         <Box sx={{px:'24px'}}>
-        <Box sx={{width:'100%',display:'flex',justifyContent:'right',flexDirection:'row',
-}}>
-          <PrintButton>
-          <Icon >print</Icon>
-                &nbsp;Print
-          </PrintButton>
-          <Divider orientation="vertical" sx={{width:'1px'}}/>
-        <MainButton variant="gradient"  onClick={handleRouteProduct}>
-                <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                &nbsp;add new product
-            </MainButton>
-            </Box>
+        <SoftBox mb={{
+                    xs: 1, md: 0, display: "flex", justifyContent: "flex-end",
+                    alignItems: "center"
+                }} sx={{ textAlign: "right" }}>
+                    <Button onClick={() => window.print()}
+                        sx={{
+                            backgroundColor: "white !important",
+                            color: "black !important", marginX: "10px", padding: "13px 16px"
+                        }}>
+                        <LocalPrintshopIcon />
+                        Print
+                    </Button>
+                    <Divider orientation="vertical" sx={{ width: '1px', height: "72px" }} />
+
+                    <SoftButton variant="gradient"
+                        sx={{
+                            backgroundColor: (theme) => theme.palette.purple.middle,
+                            color: "white !important", "&:hover": {
+                                backgroundColor: (theme) => theme.palette.purple.middle
+                            }, padding: "7px 16px 7px 16px"
+                        }}
+                        onClick={() => navigate(`/${sub_domain}/dashboard/products/addnewproduct`)}
+                    >
+                        <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+                        &nbsp;Add new product
+                    </SoftButton>
+                </SoftBox>
             <Box sx={{p:'16px',bgcolor:'#fff',mt:'24px'}}>
               <TextField sx={{height:'41px',borderRadius:'4px',width:'100%'}} placeholder="Search product name,SKU..."/>
               <Stack direction="row" spacing={1} mt={1}>
@@ -166,7 +182,7 @@ function Products({ absolute, light, isMini }) {
           checkboxSelection={true}
           onRowClick={(e,row) => {
             console.log(e,row);
-            setClick({ ...e.id });
+            // setClick({ ...e.id });
           }}
           notProduct={false}
           // rowsPerPageOptions={[5, 10, 15, 20]}

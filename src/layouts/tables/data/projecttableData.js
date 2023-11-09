@@ -1,4 +1,4 @@
-import { Avatar, Box, Chip, Typography } from "@mui/material";
+import { Avatar, Box, Chip, Stack, Typography } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import SoftAvatar from "components/SoftAvatar";
 import SoftBox from "components/SoftBox";
@@ -53,28 +53,26 @@ export const ProductTableData =() =>{
     return{ columns : [
             {
               field: 'main_image',
-              headerName: 'Image',
+              headerName: 'product',
               type: 'image',
-              width: 64,
-              height:64,
+              width: 180,
+              height:72,
               align: 'center',
               headerAlign: 'center',
-              renderCell: (params) => <img src={params?.row?.main_image}  alt='image' height={64} width={64}/>,
+              renderCell: (params) => {
+                const { row } = params;
+                return (<Stack direction={"row"} justifyContent={'flex-start'} alignItems={'center'}>
+                    <SoftBox sx={{width:"64px",height:"64px",borderRadius:"8px",display:'flex',alignItems:'centter'}}><img src={row.main_image} style={{width:"100%",borderRadius:"8px"}}/></SoftBox>
+                    <Typography component={"p"} sx={{ fontSize: "14px",marginX:"10px" }}>{row.name}</Typography>
+                    {/* <Typography component={"a"} sx={{ color: (theme) => theme.palette.grey[500], fontSize: "0.8rem", cursor: "pointer" }} onClick={() => navigate(`/${shop_name}/dashboard/attribute/${row?.id}`)}>view</Typography> */}
+                </Stack>
+                );
+            },
               editable: true,
               filterable: false,
               sortable: false,disableColumnMenu: true
             }
-            , {
-              field: 'name',
-              headerName: 'name',
-              type: 'text',
-              width: 150,
-              align: 'center',
-              headerAlign: 'center',
-              editable: true,
-              filterable: false,
-              sortable: false,disableColumnMenu: true
-            },{
+           ,{
               field: 'sku',
               headerName: 'SKU',
               type: 'text',
