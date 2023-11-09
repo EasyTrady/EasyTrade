@@ -153,5 +153,17 @@
 "AdvertisingCookies":"Advertising Cookies",
 "Alwaysactive":"Always active",
 "JobName":"Job Name",
-"parent":"Parent"
+"parent":"Parent",
+"UploadcategoryPhoto":"Upload category Photo",
+"Remember":"Remember:",
+"alertaddnewcategory":"For best results, use an image at least 200px by 200px in .jpg or .png format",
+"categoryname":"Category Name",
+"Type":"Type",
+"child":"child",
+"Childfrom":"Child from",
+"Categoryparentname":"Category parent name",
+"addnewattribute":"A new attribute has been added",
+"deleteattribute":"An attribute was deleted successfully",
+"editattribute":"An attribute has been modified successfully",
+"postCategoryresult":"done add category successfully"
 }

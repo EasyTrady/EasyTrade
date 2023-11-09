@@ -85,7 +85,8 @@ function SignIn() {
              
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('tokenTimestamp', new Date().getTime());
-                if (sub_domain !== "undefined"&&sub_domain !== null) {
+                console.log(sub_domain)
+                if (Boolean(sub_domain)) {
                  
                   navigate(`/${sub_domain}/dashboard`)
 

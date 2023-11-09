@@ -151,5 +151,18 @@
 "AdvertisingCookies":"ملفات تعريف الارتباط الإعلانية",
 "Alwaysactive":"دائما نشط",
 "JobName":"اسم الوظيفة",
-"parent":""
+"parent":"اصل",
+"UploadcategoryPhoto":"تحميل صورة الفئة",
+"Remember":"تذكر:",
+"alertaddnewcategory":"للحصول على أفضل النتائج، استخدم صورة بحجم 200 × 200 بكسل على الأقل بتنسيق .jpg أو .png",
+"categoryname":"اسم تصنيف",
+"Type":"نوع",
+"child":"تابع",
+"Childfrom":"تابع من",
+"Categoryparentname":"اسم أصل الفئة",
+"addnewattribute":"تم اضافة سمه جديد",
+"deleteattribute":"تم حذف سمة بنجاح",
+"editattribute":"تم تعديل سمة بنجاح",
+"postCategoryresult":"تم إضافة فئة بنجاح"
+
 }

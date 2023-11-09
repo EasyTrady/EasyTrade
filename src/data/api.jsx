@@ -7,7 +7,9 @@ export const PROFILE=`${BaseUrl}accounts/shop/info/`
 
 // "products/categories/"
 export const CUSTOMER= `${BaseUrl}shop/dashboard/customers/`
-export const CATEGORY= `${BaseUrl}/products/categories/`
+export const CATEGORY= `${BaseUrl}products/categories/`
+export const ORDERS= `${BaseUrl}shop/dashboard/orders/`
+
 export const ATTRIBUTES= `${BaseUrl}/products/attributes/`
 export const CARTLEFT= `${BaseUrl}shop/dashboard/cartsleft/`
 export const PRODUCTS= `${BaseUrl}/products/`
