@@ -127,7 +127,8 @@ function Attribute({ absolute, light, isMini }) {
         useRequest({
             path: ATTRIBUTES,
             method: "post",
-            Token: `Token ${Token}`
+            Token: `Token ${Token}`,
+            successMessage:t("addnewattribute")
         });
     const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
         useControls([
@@ -195,7 +196,8 @@ function Attribute({ absolute, light, isMini }) {
         useRequest({
             path: ATTRIBUTES,
             method: "delete",
-            Token: `Token ${Token}`
+            Token: `Token ${Token}`,
+            successMessage:t("deleteattribute")
         });
     const [attributevalueDeleteRequest, DeletevalueattributerResponce] =
         useRequest({
@@ -222,6 +224,7 @@ function Attribute({ absolute, light, isMini }) {
             method: "patch",
             Token: `Token ${Token}`,
             contentType: "multipart/form-data",
+            successMessage:t("editattribute")
         });
     const [attributeValueeditRequest, editValueattributeResponce] =
         useRequest({
@@ -653,7 +656,12 @@ function Attribute({ absolute, light, isMini }) {
                 </Dialog>
                 {getattributeResponce.failAlert}
                 {postattributeResponce.failAlert}
+                {postattributeResponce.successAlert}
                 {DeleteattributerResponce.failAlert}
+                {DeleteattributerResponce.successAlert}
+                            {editattributeResponce.failAlert}
+                            {editattributeResponce.successAlert}
+
             </Container>
         </DashboardLayout>
     )

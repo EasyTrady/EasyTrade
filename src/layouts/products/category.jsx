@@ -23,6 +23,9 @@ import {
 } from '@mui/material'
 function Category({ absolute, light, isMini }) {
     const route = useLocation().pathname.split("/").slice(1);
+  const sub_domain = localStorage.getItem('sub_domain')
+
+   let navigate= useNavigate()
     let categories = useSelector((state) => state.category.value)
    let dispatch= useDispatch()
     let [rows, setRows] = useState([])
@@ -123,7 +126,7 @@ function Category({ absolute, light, isMini }) {
                                 backgroundColor: (theme) => theme.palette.purple.middle
                             }, padding: "7px 16px 7px 16px"
                         }}
-                        onClick={() => { setOpenDialog(true); setOpenDialogEdit(false); resetControls() }}
+                        onClick={() => navigate(`/${sub_domain}/dashboard/products/addnewCategory`)}
                     >
                         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                         &nbsp;{t("addnewcategory")}

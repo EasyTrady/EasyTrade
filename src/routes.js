@@ -78,7 +78,8 @@ import AlignHorizontalLeftIcon from '@mui/icons-material/AlignHorizontalLeft';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import AddNewEmployee from "layouts/employee/addNewEmployee";
 import AddNewJob from "layouts/job/addNewJob";
-
+import Addnewcategory from "layouts/products/addnewcategory";
+import Order from "layouts/order"
 
 const sub_domain = localStorage.getItem('sub_domain')
 
@@ -176,7 +177,7 @@ const routes = [
         id: "order",
         path: `/${sub_domain}/dashboard/order`,
         title: "order",
-        element:  <Auth><Basket /></Auth>,
+        element:  <Auth><Order /></Auth>,
         type: "item"
 
       },
@@ -259,6 +260,15 @@ const routes = [
   },
   {
     type: "title",
+    name: "Orders",
+    key: "Orders",
+    route: `/${sub_domain}/dashboard/order`,
+    icon: <Office size="12px" />,
+    component: <Auth><Order /></Auth>,
+    noCollapse: false,
+  },
+  {
+    type: "title",
     name: "abandonedbasket",
     key: "abandonedbasket",
     route: `/${sub_domain}/dashboard/abandonedbasket`,
@@ -273,6 +283,15 @@ const routes = [
     route: `/${sub_domain}/dashboard/products/category`,
     icon: <Shop size="12px" />,
     component: <Auth><Category /></Auth>,
+    noCollapse: false,
+  },
+  {
+    type: "title",
+    name: "AddnewCategory",
+    key: "addnewCategory",
+    route: `/${sub_domain}/dashboard/products/addnewCategory`,
+    icon: <Shop size="12px" />,
+    component: <Auth><Addnewcategory /></Auth>,
     noCollapse: false,
   },
   {
