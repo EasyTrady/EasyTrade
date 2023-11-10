@@ -109,7 +109,7 @@ export default function Price () {
               <TableCell sx={{ textAlign: 'right' }}>
                 {text}
               </TableCell>
-              {[<CheckCircleIcon sx={{ color: '#6495ed' }} />, <CheckCircleIcon sx={{ color: '#6495ed' }} />, <CheckCircleIcon sx={{ color: '#6495ed' }} />, <CheckCircleIcon sx={{ color: '#6495ed' }} />, <CheckCircleIcon sx={{ color: '#6495ed' }} />].map((text) => (
+              {[<CheckCircleIcon sx={{ color: '#6495ed' }} />, <CheckCircleIcon sx={{ color: '#6495ed' }} />, <CheckCircleIcon sx={{ color: '#6495ed' }} />, <CheckCircleIcon sx={{ color: '#6495ed' }} />].map((text) => (
                 <TableCell key={text}>
                    <Typography> {text}</Typography>
                 </TableCell>

@@ -207,7 +207,6 @@ const SubscribeCard = ({ type }) => {
     my: "5px 20px",
   };
   return (
-<<<<<<< HEAD
     <Box sx={boxStyle}>
       {isLoading
         ? [1, 2, 3, 4].map((item, indx) => (
@@ -220,32 +219,6 @@ const SubscribeCard = ({ type }) => {
                 sx={cardStyle}
                 onMouseOver={() => handleMouseOver(i)}
                 onMouseOut={handleMouseOut}
-=======
-
-    <Box sx={boxStyle} >
-      {isLoading ? [1, 2, 3, 4].map((item, indx) => (
-        <Skeleton key={item + indx} variant='rectangle' width={400} height={400} sx={{ borderRadius: '10px', marginTop: '70px' }} />)) : subscribtion?.map((card, i) => {
-          return (
-
-            <Box key={`${card.id} ${i}`} sx={cardStyle} onMouseOver={() => handleMouseOver(i)} onMouseOut={handleMouseOut}>
-              <TitleText sx={{ textAlign: 'right' }}>{card.name}</TitleText>
-              {card.hasOwnProperty.call('offer') && isHovering === i && <Typography sx={offerStyle}>{card.offer}</Typography>}
-              <Box sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'end', 
-                justifyContent: 'end'
-              }}>
-                <Typography>شهريا/</Typography>
-                <Typography variant="h2" margin='0' sx={PriceStyle}>${card.price}</Typography>
-              </Box>
-              <Divider width="90%" sx={{ mx: 'auto', my: '18px' }} />
-              <ButtonSubScribtion
-                onClick={() => {
-                  console.log(card.id)
-                  navigate('/authentication/sign-up', { state: { subscribtionId: card.id } });
-                }}
->>>>>>> 99c9cb039bd4ad5615d69515a3670db9098eacc3
               >
                 <TitleText sx={{ textAlign: "right" }}>{card.name}</TitleText>
                 {card.hasOwnProperty.call("offer") && isHovering === i && (
