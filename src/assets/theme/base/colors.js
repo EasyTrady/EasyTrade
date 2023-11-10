@@ -29,7 +29,9 @@ const colors = {
     focus: "#67748e",
   },
   blue:{
-    light:"#009aff"
+    light:"#009aff",
+    main:"#005CE8",
+    hover:"#F0F6FF"
   },
   purple:{middle:"#5D449B",hover:"#F9F5FF"},
   transparent: {
@@ -63,7 +65,7 @@ const colors = {
   },
 
   success: {
-    main: "#82d616",
+    main: "#027A48",
     focus: "#95dc39",
     hover:"#ECFDF3"
   },
