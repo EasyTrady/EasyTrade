@@ -52,7 +52,7 @@ import {  Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material'
 // project imports
 
 import AuthCardWrapper from '../AuthCardWrapper';
-import AuthRegister from '../auth-forms/AuthRegister';
+import AuthRegister from '../../authentication/auth-forms/AuthRegister';
 // import AuthFooter from 'ui-component/cards/AuthFooter';
 import signup from '../../../assets/images/icons/Social Media Icon Square/login.png';
 

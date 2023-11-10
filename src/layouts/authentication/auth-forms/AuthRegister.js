@@ -42,16 +42,17 @@ import {  GetShopInfo, SignupUser } from 'store/pages/signupslice';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SoftInput from 'components/SoftInput';
-import { SIGNUP } from "data/api";
-import { SHOP } from "data/api";
+import { SIGNUP,SHOP } from "data/api";
+import SoftButton from "components/SoftButton";
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
 const FirebaseRegister = ({ ...others  }) => {
   const sub_domain = localStorage.getItem('sub_domain')
+  const formData = new FormData();
  
   const theme = useTheme();
   const scriptedRef = useScriptRef();
-  const formData = new FormData();
+ 
   const dispatch=useDispatch()
   const navigate=useNavigate()
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
@@ -67,9 +68,10 @@ const FirebaseRegister = ({ ...others  }) => {
   const handleAvatarChange = (event, functionChange) => {
     const file = event.target.files[0];
     const reader = new FileReader();
+    // formData?.append("logo", event.target.files[0]);
+    functionChange({ target: { name:"logo" , value: event?.target?.files[0]} })
     // setImageFile(file);
     reader.onload = () => {
-      functionChange({ target: { name: "logo", value: file } })
 
       setAvatarUrl(reader.result);
     };
@@ -77,7 +79,8 @@ const FirebaseRegister = ({ ...others  }) => {
 
   };
   let [signUpRequest,signUPResponse]=useRequest({
-    path:SIGNUP,method:"post"
+        
+        path:SIGNUP,method:"post",contentType: "multipart/form-data",
   })
   let [ShopInfoRequest,ShopInfoResponse]=useRequest({
     path:SHOP,method:"post"
@@ -114,16 +117,15 @@ const FirebaseRegister = ({ ...others  }) => {
           </Box>
         </Grid>
       </Grid> */}
-
-<Formik
+ <Formik
         initialValues={{
           full_name: '',
           email: '',
           password: '',
           shop_name: '',
           sub_domain: '',
-          subscription:others?.subscribtionId,
-          logo:"",
+          subscription:others.subscribtionId,
+          // logo:"",
           phone:"",
           code:"+20"
           // is_company:'',
@@ -136,81 +138,84 @@ const FirebaseRegister = ({ ...others  }) => {
           phone: Yup.string().max(20).required('Phone is required'),
           shop_name: Yup.string().max(255).required('Store name is required'),
           sub_domain: Yup.string().max(255).required('Store Domain is required'),
-          logo: Yup.string().required("add logo please"),
-          code: Yup.string().required('code is required'),
+          logo:Yup.mixed().required("add logo please"),
+          // code: Yup.string().required('code is required'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          console.log(values)
-          // try {
-            Object.keys(values).forEach((key) => formData.append(key, values[key]));
-            // formData.append('logo',imageFile)
-            // formData.append('phone',phone)
-       
-            signUpRequest({
-              body:formData,
-              onSuccess:async(res)=>{
-                if(res?.type==='signupUser/fulfilled'){
-                  toast.success('welcome to EasyTrade')
-                  navigate('/register/creatingshop')
-                  if (sub_domain !== "undefined") {
+          console.log(values,"on submit")
+            //  try {
+             Object.entries(values).forEach(([key, value])=>formData.append(key,value));
+             
+            //  formData.append('logo',values.logo)
+            //  formData.append('phone',phone)
+            // console.log(va)
+             signUpRequest({
+               body:formData,
+               onSuccess:async(res)=>{
+                 console.log(res,"rsjkdklsj")
+                  // if(res?.type==='signupUser/fulfilled'){
+                  //   toast.success('welcome to EasyTrade')
+                    // navigate('/register/creatingshop')
+                
 
-                    navigate(`/${sub_domain}/dashboard`)
-  
-                  } else {
                     
-                    await ShopInfoRequest({ onSuccess:(response)=>{
-                      localStorage.setItem('shop_url', response?.payload?.shop_url)
-                      localStorage.setItem('dashboard_url', response?.payload?.dashboard_url)
-                      localStorage.setItem('shop_id', response?.payload?.id)
-                      localStorage.setItem('shop_name', response?.payload?.shop_name)
-                      localStorage.setItem('sub_domain', response?.payload?.sub_domain)
-                      navigate(`/${response?.payload?.sub_domain}/dashboard`)
-                    } })
   
-                  }
+                  
+                    
+                      
+                        localStorage.setItem('shop_url', res?.data?.shop_url)
+                        localStorage.setItem('dashboard_url', res?.data?.dashboard_url)
+                        localStorage.setItem('shop_id', res?.data?.id)
+                        localStorage.setItem('shop_name', res?.data?.shop_name)
+                        localStorage.setItem('sub_domain', res?.data?.sub_domain)
+                        navigate(`/authentication/sign-in`)
+                   
+  
+                    
                  
     
-                }else{
-                  // console.log(...Object.keys(res.payload).map((ele)=>({[ele]:res.payload[ele]})))
-                  setErrors(res.payload)
-                  // const errorMessage = typeof res.payload === 'string' ? res.payload : 'An error occurred'; // Assuming res.payload is the error message
-                  // toast.error(errorMessage,{
-                  //   position: "bottom-left",
-                  //   autoClose: 5000,
-                  //   hideProgressBar: false,
-                  //   closeOnClick: true,
-                  //   pauseOnHover: true,
-                  //   draggable: true,
-                  //   progress: undefined,
-                  //   theme: "light",
-                  //   className: 'toast-message'
-                  //   })
-                }
-              }
-            })
-          // }
+                  // }else{
+                  //    console.log(res.data)
+                  //   setErrors(res.payload)
+                    //  const errorMessage = typeof res.payload === 'string' ? res.payload : 'An error occurred';  
+                    //  toast.error(errorMessage,{
+                    //    position: "bottom-left",
+                    //    autoClose: 5000,
+                    //    hideProgressBar: false,
+                    //    closeOnClick: true,
+                    //    pauseOnHover: true,
+                    //    draggable: true,
+                    //    progress: undefined,
+                    //    theme: "light",
+                    //    className: 'toast-message'
+                    //    })
+                  // }
+               }
+             })
+         
           
-          //   if (scriptedRef.current) {
-          //     setStatus({ success: true });
-          //     setSubmitting(false);
-          //   }
-          // } catch (err) {
-          //   console.error(err,"error");
-          //   if (scriptedRef.current) {
-          //     setStatus({ success: false });
-          //     setErrors({ submit: err.message });
-          //     setSubmitting(false);
-          //   }
-          // }
+            //  if (scriptedRef.current) {
+            //    setStatus({ success: true });
+            //     setSubmitting(false);
+            //  }
+          //  } catch (err) {
+          //    console.log(err,"eettoe")
+          //    if (scriptedRef.current) {
+          //      setStatus({ success: false });
+          //      setErrors({ submit: err.message });
+          //       setSubmitting(false);
+          //    }
+          //  }
         }}
       >
-           {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-          <form noValidate onSubmit={handleSubmit} {...others}>
-            {console.log(values)}
-            <FormControl fullWidth error={Boolean(touched.full_name && errors.full_name)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-fullname-register" >الاسم بالكامل</InputLabel>
+        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+          <form noValidate  {...others}>
+            {console.log(errors)}
+            <FormControl fullWidth error={Boolean(touched?.full_name && errors?.full_name)} sx={{ ...theme.typography.customInput }}>
+              {/* <InputLabel htmlFor="outlined-adornment-fullname-register" >الاسم بالكامل</InputLabel> */}
               <SoftInput
                 id="outlined-adornment-fullname-register"
+                placeholder="الاسم بالكامل"
                 type="text"
                 value={values.full_name}
                 margin="normal"
@@ -218,42 +223,47 @@ const FirebaseRegister = ({ ...others  }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 inputProps={{}}
+
                 // sx={{".M":{marginY:"10px"}}}
               />
-              {touched.full_name && errors.full_name && (
+              {/* {console.log(errors.full_name)} */}
+              {touched?.full_name && errors?.full_name && (
                 <FormHelperText error id="standard-weight-helper-text--register">
                   {errors.full_name}
                 </FormHelperText>
               )}
             </FormControl>
-            <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
+            <FormControl fullWidth error={Boolean(touched?.email && errors?.email)} sx={{ ...theme.typography.customInput }}>
 
-              <InputLabel sx={{
+              {/* <InputLabel sx={{
                 backgroundColor: '#f8f9fa'
-              }} htmlFor="outlined-adornment-email-register">البريد الالكتروني</InputLabel>
+              }} htmlFor="outlined-adornment-email-register">البريد الالكتروني</InputLabel> */}
               <SoftInput
+              placeholder="البريد الالكتروني"
                 id="outlined-adornment-email-register"
                 type="email"
                 value={values.email}
                 name="email"
                 onBlur={handleBlur}
                 onChange={handleChange}
-
+                sx={{ ".MuiInputBase-root": { marginY:"10px" }}}
               />
-              {touched.email && errors.email && (
+              {touched?.email && errors?.email && (
                 <FormHelperText error id="standard-weight-helper-text--register">
                   {errors.email}
                 </FormHelperText>
               )}
             </FormControl>
 
-            <FormControl fullWidth error={Boolean(touched.password && errors.password)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-password-register">كلمة المرور</InputLabel>
+            <FormControl fullWidth error={Boolean(touched?.password && errors?.password)} sx={{ ...theme.typography.customInput }}>
+              {/* <InputLabel htmlFor="outlined-adornment-password-register">كلمة المرور</InputLabel> */}
               <SoftInput
+                placeholder="كلمة المرور"
                 id="outlined-adornment-password-register"
                 type={showPassword ? 'text' : 'password'}
                 value={values.password}
                 name="password"
+                sx={{ ".MuiInputBase-root": { marginY:"10px" }}}
                 // label="Password"
                 onBlur={handleBlur}
                 onChange={(e) => {
@@ -275,7 +285,7 @@ const FirebaseRegister = ({ ...others  }) => {
                 }
                 inputProps={{}}
               />
-              {touched.password && errors.password && (
+              {touched?.password && errors?.password && (
                 <FormHelperText error id="standard-weight-helper-text-password-register">
                   {errors.password}
                 </FormHelperText>
@@ -297,7 +307,7 @@ const FirebaseRegister = ({ ...others  }) => {
                 </Box>
               </FormControl>
             )}
-            <FormControl fullWidth error={Boolean(touched.phone && errors.phone)} sx={{ ...theme.typography.customInput }} >
+            <FormControl fullWidth error={Boolean(touched?.phone && errors?.phone)} sx={{ ...theme.typography.customInput }} >
               <MuiPhoneNumber
                defaultCountry={'eg'}
                id="outlined-adornment-phone-register"
@@ -312,15 +322,16 @@ const FirebaseRegister = ({ ...others  }) => {
                 variant='outlined'
                 placeholder='Phone number'
                 />
-                {touched.phone && errors.phone && (
+                {touched?.phone && errors?.phone && (
                 <FormHelperText error id="standard-weight-helper-text--register">
                   {errors.phone}
                 </FormHelperText>
                 )}
               </FormControl>
-            <FormControl fullWidth error={Boolean(touched.shop_name && errors.shop_name)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-storename-register">اسم المتجر</InputLabel>
+            <FormControl fullWidth error={Boolean(touched?.shop_name && errors?.shop_name)} sx={{ ...theme.typography.customInput }}>
+              {/* <InputLabel htmlFor="outlined-adornment-storename-register">اسم المتجر</InputLabel> */}
               <SoftInput
+              placeholder="اسم المتجر"
                 id="outlined-adornment-storename-register"
                 type="text"
                 value={values.shop_name}
@@ -328,17 +339,19 @@ const FirebaseRegister = ({ ...others  }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 inputProps={{}}
+                sx={{ ".MuiInputBase-root": { marginY:"10px" }}}
               />
-              {touched.shop_name && errors.shop_name && (
+              {touched?.shop_name && errors?.shop_name && (
                 <FormHelperText error id="standard-weight-helper-text--register">
                   {errors.shop_name}
                 </FormHelperText>
               )}
             </FormControl>
-            {/* <FormControl fullWidth error={Boolean(touched.sub_domain && errors.sub_domain)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-register">Online Store Domain</InputLabel>
+          <FormControl fullWidth error={Boolean(touched?.sub_domain && errors?.sub_domain)} sx={{ ...theme.typography.customInput }}>
+              {/* <InputLabel htmlFor="outlined-adornment-email-register">Online Store Domain</InputLabel> */}
               <OutlinedInput
-                id="outlined-adornment-subdomain-register"
+              placeholder="store domain"
+                id="outlined-adornment-email-register"
                 type="text"
                 value={values.sub_domain}
                 name="sub_domain"
@@ -350,12 +363,12 @@ const FirebaseRegister = ({ ...others  }) => {
                   'aria-label': 'subdomain',
                 }}
               />
-              {touched.storedomain && errors.storedomain && (
+              {touched?.storedomain && errors?.storedomain && (
                 <FormHelperText error id="standard-weight-helper-text--register">
                   {errors.storedomain}
                 </FormHelperText>
               )}
-            </FormControl> */}
+            </FormControl> 
             {/* <FormControl fullWidth error={Boolean(touched.is_company && errors.is_company)} sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-email-register">Account Type</InputLabel>
               <Select
@@ -381,7 +394,7 @@ const FirebaseRegister = ({ ...others  }) => {
                 </FormHelperText>
               )}
             </FormControl> */}
-              <FormControl error={Boolean(touched.logo && errors.logo)}>
+              <FormControl error={Boolean(touched?.logo && errors?.logo)}>
               <Box sx={{ width: '90px' }} >
                 <label htmlFor="profile_image" style={{ position: 'relative' }}>
                   <IconButton
@@ -422,7 +435,7 @@ const FirebaseRegister = ({ ...others  }) => {
                 />
               </Box>
 
-              {touched.logo && errors.logo && (
+              {touched?.logo && errors?.logo && (
                 <FormHelperText error id="standard-weight-helper-text--register">
                   {errors.logo}
                 </FormHelperText>
@@ -483,7 +496,7 @@ const FirebaseRegister = ({ ...others  }) => {
                 />
               </Grid>
             </Grid> */}
-            {errors.submit && (
+            {errors?.submit && (
               <Box sx={{ mt: 3 }}>
                 <FormHelperText error>{errors.submit}</FormHelperText>
               </Box>
@@ -491,9 +504,12 @@ const FirebaseRegister = ({ ...others  }) => {
 
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
-                <Button fullWidth size="large" type="submit" variant="contained" color="secondary"sx={{ borderRadius: '12px' ,backgroundColor:'#5D449B',color:'white'}}>
+
+                <SoftButton  fullWidth onClick={(e)=>handleSubmit(e)}
+                 size="large" type="submit" variant="contained" sx={{ borderRadius: '12px',backgroundColor:'#5D449B',color:'white' }}onSubmit={(e)=>handleSubmit(e)}>
+
                   انشاء حساب
-                </Button>
+                </SoftButton>
               </AnimateButton>
             </Box>
             <Grid item xs={12}>
@@ -545,10 +561,11 @@ const FirebaseRegister = ({ ...others  }) => {
           </form>
         )}
       </Formik>
-      {signUPResponse.failAlert}
-      {ShopInfoResponse.failAlert}
+     
 
       <ToastContainer />
+      {signUPResponse.failAlert}
+      {ShopInfoResponse.failAlert}
     </>
   );
 };
