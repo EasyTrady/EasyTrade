@@ -17,6 +17,10 @@ import LanguageIcon from '@mui/icons-material/Language';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import home from '../../../assets/images/icons/Social Media Icon Square/logo.svg';
+
+
+
+
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [clientWindowHeight, setClientWindowHeight] = useState('');
@@ -77,6 +81,10 @@ const Navbar = () => {
             }
           }}
         >
+              {/* <img src={logo} alt="logo" />
+            <Box sx={{
+              marginLeft :'10px',
+            }}></Box> */}
           <Box sx={{
             display: 'flex',
             justifyContent: 'center',
@@ -113,7 +121,8 @@ const Navbar = () => {
                   textAlign: 'center',
                   fontWeight: 600,
                   // lineHeight: "29.98px",
-                  color: '#FFFFFF'
+                  color: '#FFFFFF',
+                  width:{sm:'20%',lg:'80%',xl:'80%',md:'100%'}
                 }}
               >
                 {t('تسجيل الدخول', { framework: 'React' })}
@@ -141,8 +150,9 @@ const Navbar = () => {
                 </Button>
               ))}
             </Box>
-            <Box component="img" src={home} />
+            <Box component="img" src={home} sx={{width:{xs:'30%',sm:'30%',lg:'20%',xl:'20%',md:'20%'},marginLeft:'10px'}}/>
           </Box>
+              
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton

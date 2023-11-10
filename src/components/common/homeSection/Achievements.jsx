@@ -17,16 +17,12 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function RowAndColumnSpacing() {
   return (
     <Container sx={{
-      // display: 'flex',
-      // flexDirection: 'column',
-      // justifyContent: 'center',
-      // alignItems: 'center',
-      // minHeight: '50vh'
+      width: '100%'
     }}>
       <Typography sx={{ fontSize: '50px', fontWeight: 300, textAlign: 'center', marginTop: '60px', marginBottom: '60px' }}>انجازاتنا</Typography>
-      <Box sx={{ width:'120%'}} >
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} >
-          <Grid item xs={2} sx={{
+      <Box  >
+        <Grid container sx={{textAlign:'center',justifyContent:'center', display: 'flex', width: '100%', alignItems: 'start'}}>
+          <Grid item xs={4} md={3} lg={2} sx={{
             borderRight: '2px solid #C4C4C4',
             padding: '16px',
             
@@ -45,7 +41,7 @@ export default function RowAndColumnSpacing() {
               bgcolor: '#f8f9fa'
             }}>عملاء</Item>
           </Grid>
-          <Grid item xs={2} sx={{ borderRight: '2px solid #C4C4C4', padding: '16px' }}>
+          <Grid item xs={4} md={3} lg={2} sx={{ borderRight: '2px solid #C4C4C4', padding: '16px' }}>
             <Item sx={{
               fontSize: '35px',
               boxShadow: 'none',
@@ -60,7 +56,7 @@ export default function RowAndColumnSpacing() {
 
             }}>تطبيق</Item>
           </Grid>
-          <Grid item xs={2} sx={{ borderRight: '2px solid #C4C4C4', padding: '16px' }}>
+          <Grid item xs={4} md={3} lg={2} sx={{ borderRight: '2px solid #C4C4C4', padding: '16px' }}>
             <Item sx={{
               fontSize: '35px',
               fontWeight: 900,
@@ -75,7 +71,7 @@ export default function RowAndColumnSpacing() {
               bgcolor: '#f8f9fa'
             }}>صفحات</Item>
           </Grid>
-          <Grid item xs={2} sx={{ borderRight: '2px solid #C4C4C4', padding: '16px' }}>
+          <Grid item xs={4} md={3} lg={2} sx={{ borderRight: '2px solid #C4C4C4', padding: '16px' }}>
             <Item sx={{
               fontSize: '35px',
               boxShadow: 'none',
@@ -90,7 +86,7 @@ export default function RowAndColumnSpacing() {
               bgcolor: '#f8f9fa'
             }}>شركات النجاح</Item>
           </Grid>
-          <Grid item xs={2} sx={{ padding: '16px' }}>
+          <Grid item xs={4} md={3} lg={2} sx={{ padding: '16px' }}>
             <Item sx={{
               fontSize: '35px',
               fontWeight: 900,

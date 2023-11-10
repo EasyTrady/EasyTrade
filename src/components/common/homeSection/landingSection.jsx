@@ -239,7 +239,7 @@ export default function landingSection () {
           </Box>
         </Grid>
         <Grid xs={12} md={6}>
-          <Stack sx={{ pt: '10%', width: '100%', textAlign: 'center', mt: '10%' }}>
+          <Stack sx={{ pt: '2%', width: '100%', textAlign: 'center', mt: '10%' }}>
             <Typography
               sx={{
                 fontSize: '25px',
