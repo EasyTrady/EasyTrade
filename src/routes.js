@@ -98,7 +98,7 @@ const routes = [
     type: "collapse",
     name: "Dashboard",
     key: "dashboard",
-    route: `/${sub_domain}/dashboard`,
+    route: `/:${sub_domain}/dashboard`,
     icon: <Shop size="12px" />,
     component: <Auth><Dashboard /></Auth>,
     noCollapse: false,

@@ -74,10 +74,7 @@ const FirebaseLogin = ({ ...others }) => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-  useEffect(()=>{
-    console.log(sub_domain)
-
-  },[sub_domain])
+ 
   return (
     <>
       <Grid container direction="column" justifyContent="center" spacing={2}>
@@ -103,8 +100,10 @@ const FirebaseLogin = ({ ...others }) => {
               onSuccess:async(res)=>{
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('tokenTimestamp', new Date(res.data.expiry).getTime());
-                console.log(Boolean(sub_domain))
                 if (Boolean(sub_domain)) {
+                  console.log(Boolean(sub_domain))
+
+
                   navigate(`/${sub_domain}/dashboard`)
 
                 } else {
