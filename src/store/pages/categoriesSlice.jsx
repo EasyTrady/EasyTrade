@@ -8,6 +8,7 @@ export const CategorySlice = createSlice({
   reducers: {
     set: (state, action) => {
       state.value = action.payload;
+     
     },
     reset: (state) => {
       state.value =[];

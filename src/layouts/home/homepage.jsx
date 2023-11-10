@@ -10,6 +10,8 @@ import CompanySection from '../../components/common/homeSection/companySection'
 import PageLayout from "examples/LayoutContainers/PageLayout"
 
 import React from 'react';
+import Price from 'layouts/Price/Price';
+import ContactUs from 'layouts/ContactUs/ContactUs';
 // import Price from 'layouts/Price/Price';
 // import ContactUs from 'layouts/ContactUs/ContactUs';
 
@@ -20,8 +22,8 @@ const HomeSections = () => {
       <Navbar />
       <LandingSection />
       
-      {/* <Price/>
-      <ContactUs/> */}
+      <Price/>
+      <ContactUs/>
       <Achievements/>
       <CompanySection />
       <SubscribeSection />
