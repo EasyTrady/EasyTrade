@@ -42,7 +42,6 @@ function Attribute({ absolute, light, isMini }) {
     const [openDialogEdit, setOpenDialogEdit] = React.useState(false);
     const [addvalue, setaddvalue] = React.useState(false);
 
-    const sub_domain = localStorage.getItem('sub_domain')
     let dispatch = useDispatch()
     let { t } = useTranslation("common")
     const route = useLocation().pathname.split("/").slice(1);
@@ -54,7 +53,7 @@ function Attribute({ absolute, light, isMini }) {
             field: 'name',
             headerName: 'Attribute Name',
             type: 'text',
-            flex: 1,
+            width: 200,
             align: 'left',
             headerAlign: 'left',
             renderCell: (params) => {
@@ -72,7 +71,7 @@ function Attribute({ absolute, light, isMini }) {
             field: 'values',
             headerName: 'values',
             type: 'text',
-            flex: 1,
+            width: 700,
             align: 'left',
             headerAlign: 'left',
             renderCell: (params) => params?.row?.values?.map((ele) => ele.iscolor ? <Box key={ele.id} sx={{
@@ -128,7 +127,7 @@ function Attribute({ absolute, light, isMini }) {
             path: ATTRIBUTES,
             method: "post",
             Token: `Token ${Token}`,
-            successMessage:t("addnewattribute")
+            successMessage:t("addnewattributemessage")
         });
     const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
         useControls([
