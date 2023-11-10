@@ -221,7 +221,8 @@ const SubscribeCard = ({ type }) => {
               <Divider width="90%" sx={{ mx: 'auto', my: '18px' }} />
               <ButtonSubScribtion
                 onClick={() => {
-                  navigate('/authentication/sign-up', { state: { subscribtionId: card?.id } });
+                  console.log(card.id)
+                  navigate('/authentication/sign-up', { state: { subscribtionId: card.id } });
                 }}
               >
                 {t('chooseplan.title')}
