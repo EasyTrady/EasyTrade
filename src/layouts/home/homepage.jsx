@@ -23,8 +23,8 @@ const HomeSections = () => {
       {/* <Price/>
       <ContactUs/> */}
       <Achievements/>
-      <CompanySection />
       <SubscribeSection />
+      <CompanySection />
       <ResponsiveGrid/>
       <Footer />
     </Box>

@@ -41,7 +41,7 @@ const Login = () => {
           // paddingTop: '70px'
         }}
       >
-        <Box component="img" sx={{  width: { xl: '60%', lg: '60%', md: '50%', sm: '100%', sx: '100%' }, height:'100vh'}} src={login}></Box>
+        <Box component="img" sx={{  width: { xl: '60%', lg: '60%', md: '50%', sm: '100%', sx: '100%' }, height:{ xl:'100vh', lg: '100vh', md:'100vh', sm: '30vh', sx: '30vh'}}} src={login}></Box>
       <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh',bgcolor:'#FFFFFF' }}>
         <Grid item xs={12}>
           <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: 'calc(100vh - 68px)' }}>
