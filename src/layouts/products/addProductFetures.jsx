@@ -11,6 +11,7 @@ import ImagesAlbums from "components/common/ImagesAlbums";
 import AddIcon from "@mui/icons-material/Add";
 import SoftButton from "components/SoftButton";
 import useRequest from "hooks/useRequest";
+import { PRODUCTS } from "data/api";
 const AddProductFetures = () => {
   let Token = localStorage.getItem("token");
   const [AddProductImagesRequest, AddProductImagesResponce] = useRequest({

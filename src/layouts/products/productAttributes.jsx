@@ -24,6 +24,7 @@ import React from "react";
 import useRequest from "hooks/useRequest";
 import { ATTRIBUTES } from "data/api";
 import { useDispatch, useSelector } from "react-redux";
+import useControls from "hooks/useControls";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -40,6 +41,11 @@ const ProductAttributes = () => {
   let Token = localStorage.getItem('token')
   let attributes = useSelector((state) => state.attribute.value)
   const dispatch=useDispatch()
+  const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
+  
+    { control: "attributes", value: '', isRequired: false },
+    { control: "product_images", value: [], isRequired: false },
+  ]);
   const [attributeRequest, attributeResponse] =
         useRequest({
             path: ATTRIBUTES,
@@ -97,15 +103,20 @@ const ProductAttributes = () => {
           label={"Select attribute"}
           placeholder={"Select..."}
           onOpen={getAttributies}
+          renderValue={(selected) => {
+            return attributes.find(
+              (attributes) => attributes.id === selected
+            )?.name
+            }}
           isPending={attributeResponse.isPending}
-          // value={controls.attribute}
-          // onChange={(e) => setControl("attribute", e.target.value)}
-          // required={required.includes("attribute")}
-          // error={Boolean(invalid.attribute)}
-          // helperText={invalid.attribute}
+          value={controls.attributes}
+          onChange={(e) => setControl("attributes", e.target.value)}
+          required={required.includes("attributes")}
+          error={Boolean(invalid.attributes)}
+          helperText={invalid.attributes}
           sx={input}
         >
-          
+
           {attributes.map((attribute)=>(
             <MenuItem key={attribute.id} value={attribute.id}>{attribute.name}</MenuItem>
           ))}

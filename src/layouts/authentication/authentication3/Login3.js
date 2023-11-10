@@ -7,7 +7,7 @@ import {Box, Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/materi
 // project imports
 import AuthWrapper1 from '../AuthWrapper1';
 import AuthCardWrapper from '../AuthCardWrapper';
-import AuthLogin from '../auth-forms/AuthLogin';
+ import AuthLogin from '../auth-forms/AuthLogin';
 // import Logo from 'ui-component/Logo';
 // import AuthFooter from 'ui-component/cards/AuthFooter';
 import login from '../../../assets/images/icons/Social Media Icon Square/login.png';
@@ -68,7 +68,7 @@ const Login = () => {
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
-                    <AuthLoginin />
+                    <AuthLogin />
                   </Grid>
                   <Grid item xs={12}>
                     <Divider />

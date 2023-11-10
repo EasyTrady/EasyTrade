@@ -72,7 +72,7 @@ const AddProduct = ({ light, isMini }) => {
   };
   //   form status control
   const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
-    { control: "main_image", value: "", isRequired: true },
+    { control: "main_image", value: "", isRequired: false },
     {
       control: "name",
       value: "",
@@ -169,10 +169,11 @@ const AddProduct = ({ light, isMini }) => {
     });
   };
   // form request add product
-  const [AddProductRequest, AddProductResponce] = useRequestشيي({
+  const [AddProductRequest, AddProductResponce] = useRequest({
     path: PRODUCTS,
     method: "post",
     Token: `Token ${Token}`,
+    contentType:'multipart/form-data'
   });
   function handleSubmit() {
     
@@ -212,23 +213,32 @@ const AddProduct = ({ light, isMini }) => {
       }).then((res) => {
         let response = res?.response?.data;
         console.log(res);
-        // const responseBody = filter({
-        //   obj: {
-        //     name: response?.name?.join(""),
-        //     quantity: response?.quantity?.join(" "),
-        //     price: response?.price?.join(" "),
-        //     sku: response?.sku?.join(" "),
-        //     mpn: response.mpn.join(""),
-        //     gtin: response.gtin.join(""),
-        //     weight: response?.weight?.join(" "),
-        //     minimum_quantity: response?.minimum_quantity?.join(" "),
-        //     minimum_quantity: response?.maximum_quantity?.join(" "),
-        //     product_categories: response?.category?.join(" "),
-        //     description: response?.description?.join(" "),
-        //     main_image: response?.main_image,
-        //   },
-        //   output: "object",
-        // });
+        const responseBody = filter({
+          obj: {
+             product_categories: response.product_categories,
+            sku: response.sku,
+            mpn: response.mpn,
+            gtin: response.gtin,
+            name: response.name,
+            description: response.description,
+            price: response.price,
+            main_image: response.main_image,
+            discount: response.discount,
+            discount_start_date: response.discount_start_date,
+            discount_end_date: response.discount_end_date,
+            is_percentage_discount: response.is_percentage_discount,
+            purchase_price: response.purchase_price,
+            custom_shipping_price: response.custom_shipping_price,
+            maximum_order_quantity: response.maximum_order_quantity,
+            is_piblished: response.is_piblished,
+            in_taxes: response.in_taxes,
+            require_shipping: response.require_shipping,
+            quantity: response.quantity,
+            weight: response.weight,
+            dimensions: response.dimensions,
+          },
+          output: "object",
+        });
 
         setInvalid(responseBody);
         resetControls("");
@@ -290,13 +300,18 @@ const AddProduct = ({ light, isMini }) => {
               thousandSeparator
               isPending={getcategoryResponce.isPending}
               onOpen={getCategory}
+              renderValue={(selected) => {
+												return category.find(
+												  (category) => category.id === selected
+												)?.name
+											  }}
               value={controls.product_categories}
               onChange={(e) => setControl("product_categories", e.target.value)}
               required={required.includes("product_categories")}
               textHelper={controls.category}
               error={Boolean(invalid.product_categories)}
               helperText={invalid.product_categories}
-              sx={{ width: "100%", fontSize: "14px" }}
+              sx={{ width: "100%", fontSize: "14px",background:'#fff' }}
             >
               {category?.map((category) => (
                 <MenuItem key={category.id} value={category?.id}>
