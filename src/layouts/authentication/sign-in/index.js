@@ -38,8 +38,6 @@ import curved9 from "assets/images/curved-images/curved-6.jpg";
 import { Formik } from "formik";
 import { Box, Divider, FormControl, FormControlLabel, FormHelperText, Grid, IconButton, InputAdornment, Stack, Typography, useMediaQuery } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import useRequest from "hooks/useRequest";
-import { SIGNIN ,PROFILE} from "data/api";
 import { useNavigate } from "react-router-dom";
 import PageLayout from "examples/LayoutContainers/PageLayout";
 import AuthWrapper1 from "../AuthWrapper1";
@@ -49,19 +47,11 @@ import AuthLogin from '../../authentication/auth-forms/AuthLogin';
 function SignIn() {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-  
   const [rememberMe, setRememberMe] = useState(true);
-  const sub_domain = localStorage.getItem('sub_domain')
-  let Token=localStorage.getItem('token')
   let navigate=useNavigate()
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
   const [showPassword, setShowPassword] = useState(false);
-  let [signInRequest,signInResponse]=useRequest({
-    path:SIGNIN,method:"post"
-  })
-  let [ShopInfoRequest,ShopInfoResponse]=useRequest({
-    path:PROFILE,method:"get",Token:`Token ${Token}`
-  })
+ 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -71,97 +61,13 @@ function SignIn() {
   };
   return (
    <>
-      <Formik
-        initialValues={{
-          email: '',
-          password: ''
-        }}
-        validationSchema={Yup.object().shape({
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-          password: Yup.string().max(255).required('Password is required')
-        })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+      
          
-            signInRequest({
-              body:values,
-              onSuccess:async(res)=>{
-                
-             
-                localStorage.setItem('token', res.data.token);
-                localStorage.setItem('tokenTimestamp', new Date().getTime());
-                console.log(sub_domain)
-                if (Boolean(sub_domain)) {
-                 
-                  navigate(`/${sub_domain}/dashboard`)
-
-                } else {
-                  
-                  await ShopInfoRequest({ onSuccess:(response)=>{
-                    
-                    localStorage.setItem('shop_url', response?.data?.shop_url)
-                    localStorage.setItem('dashboard_url', response?.data?.dashboard_url)
-                    localStorage.setItem('shop_id', response?.data?.id)
-                    localStorage.setItem('shop_name', response?.data?.shop_name)
-                    localStorage.setItem('image', response?.data?.logo)
-                    localStorage.setItem('email', response?.data?.user?.email)
-                    localStorage.setItem('phone', response?.data?.user?.phone)
-                    localStorage.setItem('sub_domain', response?.data?.sub_domain)
-                    navigate(`/${response?.data?.sub_domain}/dashboard`)
-                  } })
-
-                }
-              }
-            })
-            // dispatch(UserSignin(values)).then(async (res) => {
-            //   console.log(res)
-            //   if (res.type === 'userSignin/fulfilled') {
-            //     toast.success('welcome to EasyTrade')
-
-            //     if (shop_name !== "undefined") {
-
-            //       navigate(`/${shop_name}/dashboard`)
-
-            //     } else {
-            //       console.log(res?.payload?.token)
-            //       await dispatch(GetShopInfo({ token: res?.payload?.token })).then((res) => {
-            //         console.log(res)
-            //         localStorage.setItem('shop_url', res?.payload?.shop_url)
-            //         localStorage.setItem('dashboard_url', res?.payload?.dashboard_url)
-            //         localStorage.setItem('shop_id', res?.payload?.id)
-            //         localStorage.setItem('shop_name', res?.payload?.shop_name)
-            //         navigate(`/${res?.payload?.shop_name}/dashboard`)
-            //       })
-
-            //     }
-
-            //   } else {
-            //     // console.log(Object.keys(res.payload).map((ele)=>res.payload[ele][0])[0],"error")
-            //     // setErrors({ password: res.payload.non_field_errors[0] });
-
-              
-            //   }
-            // });
-          //   if (scriptedRef.current) {
-          //     setStatus({ success: true });
-          //     setSubmitting(false);
-          //   }
-          // } catch (err) {
-          //   console.error(err);
-          //   if (scriptedRef.current) {
-          //     setStatus({ success: false });
-          //     setErrors({ submit: err.message });
-          //     setSubmitting(false);
-          //   }
-          // }
-          }}
-      >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-          <form noValidate onSubmit={handleSubmit}>
             <PageLayout>
-    <AuthWrapper1>
-      <Box
-        sx={{
-          display: 'flex',
+           <AuthWrapper1>
+            <Box
+              sx={{
+            display: 'flex',
           flexDirection: {
             xl: 'row',
             lg: 'row',
@@ -227,9 +133,9 @@ function SignIn() {
       </Box>
     </AuthWrapper1>
     </PageLayout>
-          </form>
-        )}
-      </Formik>
+        
+        {/* )}
+      </Formik> */}
       {/* <SoftBox component="form" role="form">
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
@@ -279,8 +185,7 @@ function SignIn() {
           </SoftTypography>
         </SoftBox>
       </SoftBox> */}
-      {signInResponse.failAlert}
-      {ShopInfoResponse.failAlert}
+      
       </>
   );
 }

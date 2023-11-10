@@ -178,7 +178,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
                         localStorage.removeItem('shop_name')
                         localStorage.removeItem('image')
                         localStorage.removeItem('email')
-                        localStorage.removeItem('phone')  
+                        localStorage.removeItem('phone')
+                        localStorage.removeItem('sub_domain')   
                       }
                     }}
                   >

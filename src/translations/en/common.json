@@ -162,8 +162,12 @@
 "child":"child",
 "Childfrom":"Child from",
 "Categoryparentname":"Category parent name",
-"addnewattribute":"A new attribute has been added",
+"addnewattributemessage":"A new attribute has been added",
 "deleteattribute":"An attribute was deleted successfully",
 "editattribute":"An attribute has been modified successfully",
-"postCategoryresult":"done add category successfully"
+"postCategoryresult":"done add category successfully",
+"OrderId":"Order Id",
+"Subtotal":"Subtotal",
+"total":"Total",
+"Activity":"Activity"
 }

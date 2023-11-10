@@ -160,9 +160,13 @@
 "child":"تابع",
 "Childfrom":"تابع من",
 "Categoryparentname":"اسم أصل الفئة",
-"addnewattribute":"تم اضافة سمه جديد",
+"addnewattributemessage":"تم اضافة سمه جديد",
 "deleteattribute":"تم حذف سمة بنجاح",
 "editattribute":"تم تعديل سمة بنجاح",
-"postCategoryresult":"تم إضافة فئة بنجاح"
+"postCategoryresult":"تم إضافة فئة بنجاح",
+"OrderId":"رقم الطلب",
+"Subtotal":"المجموع الفرعي",
+"total":"مجموع",
+"Activity":"نشاط"
 
 }

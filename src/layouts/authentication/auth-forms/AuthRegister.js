@@ -32,6 +32,7 @@ import useScriptRef from 'hooks/useScriptRef';
 import Google from 'assets/images/icons/social-google.svg';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
+import useRequest from "hooks/useRequest";
 
 // assets
 import Visibility from '@mui/icons-material/Visibility';
@@ -41,9 +42,12 @@ import {  GetShopInfo, SignupUser } from 'store/pages/signupslice';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SoftInput from 'components/SoftInput';
+import { SIGNUP } from "data/api";
+import { SHOP } from "data/api";
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
 const FirebaseRegister = ({ ...others  }) => {
+  const sub_domain = localStorage.getItem('sub_domain')
  
   const theme = useTheme();
   const scriptedRef = useScriptRef();
@@ -51,7 +55,7 @@ const FirebaseRegister = ({ ...others  }) => {
   const dispatch=useDispatch()
   const navigate=useNavigate()
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-  const customization = useSelector((state) => state.customization);
+  
   const user = useSelector((state) => state.registration.user);
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(true);
@@ -72,7 +76,12 @@ const FirebaseRegister = ({ ...others  }) => {
     reader.readAsDataURL(file);
 
   };
-
+  let [signUpRequest,signUPResponse]=useRequest({
+    path:SIGNUP,method:"post"
+  })
+  let [ShopInfoRequest,ShopInfoResponse]=useRequest({
+    path:SHOP,method:"post"
+  })
   const googleHandler = async () => {
     console.error('Register');
   };
@@ -93,7 +102,7 @@ const FirebaseRegister = ({ ...others  }) => {
 
   useEffect(() => {
     // changePassword('123456');
-    
+    console.log(others?.subscribtionId)
   }, []);
 // console.log(user);
   return (
@@ -106,16 +115,17 @@ const FirebaseRegister = ({ ...others  }) => {
         </Grid>
       </Grid> */}
 
-      <Formik
+<Formik
         initialValues={{
           full_name: '',
           email: '',
           password: '',
           shop_name: '',
           sub_domain: '',
-          subscription:others.subscribtionId,
+          subscription:others?.subscribtionId,
           logo:"",
-          phone:""
+          phone:"",
+          code:"+20"
           // is_company:'',
           
         }}
@@ -127,65 +137,78 @@ const FirebaseRegister = ({ ...others  }) => {
           shop_name: Yup.string().max(255).required('Store name is required'),
           sub_domain: Yup.string().max(255).required('Store Domain is required'),
           logo: Yup.string().required("add logo please"),
-          
+          code: Yup.string().required('code is required'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          try {
+          console.log(values)
+          // try {
             Object.keys(values).forEach((key) => formData.append(key, values[key]));
             // formData.append('logo',imageFile)
             // formData.append('phone',phone)
-            
-            dispatch(SignupUser(formData)).then(async(res) => {
-              if(res?.type==='signupUser/fulfilled'){
-              toast.success('welcome to EasyTrade')
-              navigate('/register/creatingshop')
-              
-            await dispatch(GetShopInfo({sub_domain_name:res?.payload?.sub_domain})).then((res)=>
-            {
-              // console.log(res)
-            localStorage.setItem('shop_url',res?.payload?.shop_url)
-            localStorage.setItem('dashboard_url',res?.payload?.dashboard_url)
-            localStorage.setItem('shop_id',res?.payload?.id)
-            localStorage.setItem('shop_name',res?.payload?.shop_name)
-          }
-            )
+       
+            signUpRequest({
+              body:formData,
+              onSuccess:async(res)=>{
+                if(res?.type==='signupUser/fulfilled'){
+                  toast.success('welcome to EasyTrade')
+                  navigate('/register/creatingshop')
+                  if (sub_domain !== "undefined") {
 
-            }else{
-              // console.log(...Object.keys(res.payload).map((ele)=>({[ele]:res.payload[ele]})))
-              setErrors(res.payload)
-              // const errorMessage = typeof res.payload === 'string' ? res.payload : 'An error occurred'; // Assuming res.payload is the error message
-              // toast.error(errorMessage,{
-              //   position: "bottom-left",
-              //   autoClose: 5000,
-              //   hideProgressBar: false,
-              //   closeOnClick: true,
-              //   pauseOnHover: true,
-              //   draggable: true,
-              //   progress: undefined,
-              //   theme: "light",
-              //   className: 'toast-message'
-              //   })
-            }
-            });
+                    navigate(`/${sub_domain}/dashboard`)
+  
+                  } else {
+                    
+                    await ShopInfoRequest({ onSuccess:(response)=>{
+                      localStorage.setItem('shop_url', response?.payload?.shop_url)
+                      localStorage.setItem('dashboard_url', response?.payload?.dashboard_url)
+                      localStorage.setItem('shop_id', response?.payload?.id)
+                      localStorage.setItem('shop_name', response?.payload?.shop_name)
+                      localStorage.setItem('sub_domain', response?.payload?.sub_domain)
+                      navigate(`/${response?.payload?.sub_domain}/dashboard`)
+                    } })
+  
+                  }
+                 
+    
+                }else{
+                  // console.log(...Object.keys(res.payload).map((ele)=>({[ele]:res.payload[ele]})))
+                  setErrors(res.payload)
+                  // const errorMessage = typeof res.payload === 'string' ? res.payload : 'An error occurred'; // Assuming res.payload is the error message
+                  // toast.error(errorMessage,{
+                  //   position: "bottom-left",
+                  //   autoClose: 5000,
+                  //   hideProgressBar: false,
+                  //   closeOnClick: true,
+                  //   pauseOnHover: true,
+                  //   draggable: true,
+                  //   progress: undefined,
+                  //   theme: "light",
+                  //   className: 'toast-message'
+                  //   })
+                }
+              }
+            })
+          // }
           
-            if (scriptedRef.current) {
-              setStatus({ success: true });
-              setSubmitting(false);
-            }
-          } catch (err) {
-            console.error(err);
-            if (scriptedRef.current) {
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
-            }
-          }
+          //   if (scriptedRef.current) {
+          //     setStatus({ success: true });
+          //     setSubmitting(false);
+          //   }
+          // } catch (err) {
+          //   console.error(err,"error");
+          //   if (scriptedRef.current) {
+          //     setStatus({ success: false });
+          //     setErrors({ submit: err.message });
+          //     setSubmitting(false);
+          //   }
+          // }
         }}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+           {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
+            {console.log(values)}
             <FormControl fullWidth error={Boolean(touched.full_name && errors.full_name)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-fullname-register">الاسم بالكامل</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-fullname-register" >الاسم بالكامل</InputLabel>
               <SoftInput
                 id="outlined-adornment-fullname-register"
                 type="text"
@@ -195,6 +218,7 @@ const FirebaseRegister = ({ ...others  }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 inputProps={{}}
+                // sx={{".M":{marginY:"10px"}}}
               />
               {touched.full_name && errors.full_name && (
                 <FormHelperText error id="standard-weight-helper-text--register">
@@ -467,7 +491,7 @@ const FirebaseRegister = ({ ...others  }) => {
 
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
-                <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary"sx={{ borderRadius: '12px' }}>
+                <Button fullWidth size="large" type="submit" variant="contained" color="secondary"sx={{ borderRadius: '12px' ,backgroundColor:'#5D449B',color:'white'}}>
                   انشاء حساب
                 </Button>
               </AnimateButton>
@@ -521,6 +545,9 @@ const FirebaseRegister = ({ ...others  }) => {
           </form>
         )}
       </Formik>
+      {signUPResponse.failAlert}
+      {ShopInfoResponse.failAlert}
+
       <ToastContainer />
     </>
   );

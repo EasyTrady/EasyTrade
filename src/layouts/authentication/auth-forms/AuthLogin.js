@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
@@ -34,6 +34,8 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import useRequest from "hooks/useRequest";
+import { SIGNIN ,PROFILE} from "data/api";
 
 import Google from 'assets/images/icons/social-google.svg';
 import { ToastContainer, toast } from 'react-toastify';
@@ -46,6 +48,8 @@ import { GetShopInfo } from 'store/pages/signupslice';
 const FirebaseLogin = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
+  let Token=localStorage.getItem('token')
+
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   const customization = useSelector((state) => state.customization);
   const [checked, setChecked] = useState(true);
@@ -55,16 +59,25 @@ const FirebaseLogin = ({ ...others }) => {
   const googleHandler = async () => {
     console.error('Login');
   };
+  const sub_domain = localStorage.getItem('sub_domain')
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
-
+  let [signInRequest,signInResponse]=useRequest({
+    path:SIGNIN,method:"post"
+  })
+  let [ShopInfoRequest,ShopInfoResponse]=useRequest({
+    path:PROFILE,method:"get",Token:`Token ${Token}`
+  })
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+  useEffect(()=>{
+    console.log(sub_domain)
 
+  },[sub_domain])
   return (
     <>
       <Grid container direction="column" justifyContent="center" spacing={2}>
@@ -74,7 +87,6 @@ const FirebaseLogin = ({ ...others }) => {
           </Box>
         </Grid> */}
       </Grid>
-
       <Formik
         initialValues={{
           email: '',
@@ -85,63 +97,82 @@ const FirebaseLogin = ({ ...others }) => {
           password: Yup.string().max(255).required('Password is required')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          try {
-            dispatch(UserSignin(values)).then(async (res) => {
-              // console.log(res)
-              if (res.type === 'userSignin/fulfilled') {
-                toast.success('welcome to EasyTrade')
-                
-                if (shop_name!=="undefined") {
-
-                  navigate(`/${shop_name}/dashboard`)
+         console.log(values)
+            signInRequest({
+              body:values,
+              onSuccess:async(res)=>{
+                localStorage.setItem('token', res.data.token);
+                localStorage.setItem('tokenTimestamp', new Date(res.data.expiry).getTime());
+                console.log(Boolean(sub_domain))
+                if (Boolean(sub_domain)) {
+                  navigate(`/${sub_domain}/dashboard`)
 
                 } else {
-                  // console.log(res?.payload?.token)
-                  await dispatch(GetShopInfo({ token: res?.payload?.token })).then((res) => {
-                    // console.log(res)
-                    localStorage.setItem('shop_url', res?.payload?.shop_url)
-                    localStorage.setItem('dashboard_url', res?.payload?.dashboard_url)
-                    localStorage.setItem('shop_id', res?.payload?.id)
-                    localStorage.setItem('shop_name', res?.payload?.shop_name)
-                    navigate(`/${res?.payload?.shop_name}/dashboard`)
-                  })
+                  
+                  await ShopInfoRequest({ 
+                    token:`Token ${res.data.token}`,onSuccess:(response)=>{
+                    
+                    localStorage.setItem('shop_url', response?.data?.shop_url)
+                    localStorage.setItem('dashboard_url', response?.data?.dashboard_url)
+                    localStorage.setItem('shop_id', response?.data?.id)
+                    localStorage.setItem('shop_name', response?.data?.shop_name)
+                    localStorage.setItem('image', response?.data?.logo)
+                    localStorage.setItem('email', response?.data?.user?.email)
+                    localStorage.setItem('phone', response?.data?.user?.phone)
+                    localStorage.setItem('sub_domain', response?.data?.sub_domain)
+                    console.log(response?.data)
+                    navigate(`/${response?.data?.sub_domain}/dashboard`)
+                  } })
 
                 }
-
-              } else {
-                // console.log(Object.keys(res.payload).map((ele)=>res.payload[ele][0])[0],"error")
-                // setErrors({ password: res.payload.non_field_errors[0] });
-
-                const errorMessage = typeof res.payload === 'string' ? res.payload :  res.payload.non_field_errors[0]; // Assuming res.payload is the error message
-                toast.error(errorMessage, {
-                  position: 'bottom-left',
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: 'light',
-                  className: 'toast-message'
-                });
               }
-            });
-            if (scriptedRef.current) {
-              setStatus({ success: true });
-              setSubmitting(false);
-            }
-          } catch (err) {
-            console.error(err);
-            if (scriptedRef.current) {
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
-            }
-          }
-        }}
+            })
+            // dispatch(UserSignin(values)).then(async (res) => {
+            //   console.log(res)
+            //   if (res.type === 'userSignin/fulfilled') {
+            //     toast.success('welcome to EasyTrade')
+
+            //     if (shop_name !== "undefined") {
+
+            //       navigate(`/${shop_name}/dashboard`)
+
+            //     } else {
+            //       console.log(res?.payload?.token)
+            //       await dispatch(GetShopInfo({ token: res?.payload?.token })).then((res) => {
+            //         console.log(res)
+            //         localStorage.setItem('shop_url', res?.payload?.shop_url)
+            //         localStorage.setItem('dashboard_url', res?.payload?.dashboard_url)
+            //         localStorage.setItem('shop_id', res?.payload?.id)
+            //         localStorage.setItem('shop_name', res?.payload?.shop_name)
+            //         navigate(`/${res?.payload?.shop_name}/dashboard`)
+            //       })
+
+            //     }
+
+            //   } else {
+            //     // console.log(Object.keys(res.payload).map((ele)=>res.payload[ele][0])[0],"error")
+            //     // setErrors({ password: res.payload.non_field_errors[0] });
+
+              
+            //   }
+            // });
+          //   if (scriptedRef.current) {
+          //     setStatus({ success: true });
+          //     setSubmitting(false);
+          //   }
+          // } catch (err) {
+          //   console.error(err);
+          //   if (scriptedRef.current) {
+          //     setStatus({ success: false });
+          //     setErrors({ submit: err.message });
+          //     setSubmitting(false);
+          //   }
+          // }
+          }}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
+            {console.log(values)}
            <FormControl
               fullWidth
               error={Boolean(touched.email && errors.email)}
@@ -152,6 +183,10 @@ const FirebaseLogin = ({ ...others }) => {
                 sx={{
                   direction: 'rtl'
                 }}
+                name="email"
+                value={values.email}
+                onBlur={handleBlur}
+                onChange={handleChange}
                 placeholder="البريد الالكتروني"
               ></TextField>
               {/* <InputLabel htmlFor="outlined-adornment-email-login">البريد الالكتروني</InputLabel>
@@ -212,8 +247,12 @@ const FirebaseLogin = ({ ...others }) => {
                     direction: 'rtl',
                     width:'100%'
                   }}
+                  name="password"
+                  value={values.password}
                   type={showPassword ? 'text' : 'password'}
                   placeholder="كلمة المرور"
+                  onBlur={handleBlur}
+                onChange={handleChange}
                 ></TextField>
                 <InputAdornment sx={{
                   position: 'absolute',
@@ -269,14 +308,14 @@ const FirebaseLogin = ({ ...others }) => {
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
                 <Button
-                  sx={{ borderRadius: '12PX', padding: '10px, 18px, 10px, 18px' }}
+                  sx={{ borderRadius: '12PX', padding: '10px, 18px, 10px, 18px' ,backgroundColor:'#5D449B',color:'white'}}
                   disableElevation
                   disabled={isSubmitting}
                   fullWidth
                   size="large"
                   type="submit"
                   variant="contained"
-                  color="secondary"
+                
                 >
                   تسجيل الدخول
                 </Button>
@@ -346,6 +385,8 @@ const FirebaseLogin = ({ ...others }) => {
         </AnimateButton>
       </Grid>
       <ToastContainer />
+      {signInResponse.failAlert}
+      {ShopInfoResponse.failAlert}
     </>
   );
 };

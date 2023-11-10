@@ -80,6 +80,8 @@ import AddNewEmployee from "layouts/employee/addNewEmployee";
 import AddNewJob from "layouts/job/addNewJob";
 import Addnewcategory from "layouts/products/addnewcategory";
 import Order from "layouts/order"
+import DetailOrder from "layouts/order/detailOrder"
+
 
 const sub_domain = localStorage.getItem('sub_domain')
 
@@ -265,6 +267,14 @@ const routes = [
     route: `/${sub_domain}/dashboard/order`,
     icon: <Office size="12px" />,
     component: <Auth><Order /></Auth>,
+    noCollapse: false,
+  },{
+    type: "title",
+    name: "Orders",
+    key: "Orders",
+    route: `/${sub_domain}/dashboard/order/:id`,
+    icon: <Office size="12px" />,
+    component: <Auth><DetailOrder /></Auth>,
     noCollapse: false,
   },
   {

@@ -68,6 +68,7 @@ const useRequest = ({
     body =null,
 
     noHeaders = false,
+    token=Token
   } = {}) => {
     setIsPending(true);
 
@@ -97,7 +98,7 @@ const useRequest = ({
       ...(!noHeaders && {
         headers: {
           //prettier-ignore
-          "Authorization":Token ?`${Token}`:"",
+          "Authorization":token ?`${token}`:"",
           "Accept-Language": "en-US,en;",
           "Content-Type":contentType
         },

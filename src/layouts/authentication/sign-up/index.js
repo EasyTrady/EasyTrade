@@ -37,9 +37,7 @@ import Separator from "layouts/authentication/components/Separator";
 import curved6 from "assets/images/curved-images/curved14.jpg";
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import { SIGNUP } from "data/api";
-import { SHOP } from "data/api";
-import useRequest from "hooks/useRequest";
+
 import { Box, FormControl } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import PhoneField from "components/common/PhoneField";
@@ -60,112 +58,18 @@ import signup from '../../../assets/images/icons/Social Media Icon Square/login.
 
 
 function SignUp({ ...others  }) {
-  const sub_domain = localStorage.getItem('sub_domain')
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   const [agreement, setAgremment] = useState(true);
-
+  const location = useLocation();
+  const { state } = location;
   const handleSetAgremment = () => setAgremment(!agreement);
-  let [signUpRequest,signUPResponse]=useRequest({
-    path:SIGNUP,method:"post"
-  })
-  let [ShopInfoRequest,ShopInfoResponse]=useRequest({
-    path:SHOP,method:"post"
-  })
+ console.log(others,"others",state)
   return (
    
       <Card>
       
-        <Formik
-        initialValues={{
-          full_name: '',
-          email: '',
-          password: '',
-          shop_name: '',
-          sub_domain: '',
-          subscription:others.subscribtionId,
-          logo:"",
-          phone:"",
-          code:"+20"
-          // is_company:'',
-          
-        }}
-        validationSchema={Yup.object().shape({
-          full_name: Yup.string().max(255).required('Name is required'),
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-          password: Yup.string().max(255).required('Password is required'),
-          phone: Yup.string().max(20).required('Phone is required'),
-          shop_name: Yup.string().max(255).required('Store name is required'),
-          sub_domain: Yup.string().max(255).required('Store Domain is required'),
-          logo: Yup.string().required("add logo please"),
-          code: Yup.string().required('code is required'),
-        })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          try {
-            Object.keys(values).forEach((key) => formData.append(key, values[key]));
-            // formData.append('logo',imageFile)
-            // formData.append('phone',phone)
        
-            signUpRequest({
-              body:formData,
-              onSuccess:async(res)=>{
-                if(res?.type==='signupUser/fulfilled'){
-                  toast.success('welcome to EasyTrade')
-                  navigate('/register/creatingshop')
-                  if (sub_domain !== "undefined") {
-
-                    navigate(`/${sub_domain}/dashboard`)
-  
-                  } else {
-                    
-                    await ShopInfoRequest({ onSuccess:(response)=>{
-                      localStorage.setItem('shop_url', response?.payload?.shop_url)
-                      localStorage.setItem('dashboard_url', response?.payload?.dashboard_url)
-                      localStorage.setItem('shop_id', response?.payload?.id)
-                      localStorage.setItem('shop_name', response?.payload?.shop_name)
-                      localStorage.setItem('sub_domain', response?.payload?.sub_domain)
-                      navigate(`/${response?.payload?.sub_domain}/dashboard`)
-                    } })
-  
-                  }
-                 
-    
-                }else{
-                  // console.log(...Object.keys(res.payload).map((ele)=>({[ele]:res.payload[ele]})))
-                  setErrors(res.payload)
-                  // const errorMessage = typeof res.payload === 'string' ? res.payload : 'An error occurred'; // Assuming res.payload is the error message
-                  // toast.error(errorMessage,{
-                  //   position: "bottom-left",
-                  //   autoClose: 5000,
-                  //   hideProgressBar: false,
-                  //   closeOnClick: true,
-                  //   pauseOnHover: true,
-                  //   draggable: true,
-                  //   progress: undefined,
-                  //   theme: "light",
-                  //   className: 'toast-message'
-                  //   })
-                }
-              }
-            })
-         
-          
-            if (scriptedRef.current) {
-              setStatus({ success: true });
-              setSubmitting(false);
-            }
-          } catch (err) {
-           
-            if (scriptedRef.current) {
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
-            }
-          }
-        }}
-      >
-           {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-          <form noValidate  {...others}>
         <PageLayout>
     <AuthWrapper1>
       <Box
@@ -209,7 +113,7 @@ function SignUp({ ...others  }) {
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
-                    <AuthRegister subscribtionId={location?.state?.subscribtionId} />
+                    <AuthRegister subscribtionId={state?.subscribtionId} />
                   </Grid>
                   <Grid item xs={12}>
                     <Divider />
@@ -235,8 +139,8 @@ function SignUp({ ...others  }) {
       </Box>
     </AuthWrapper1>
     </PageLayout>
-        </form>)}
-        </Formik>
+        {/* </form>)}
+        </Formik> */}
       </Card>
    
   );

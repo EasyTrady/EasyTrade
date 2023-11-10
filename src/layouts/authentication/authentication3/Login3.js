@@ -57,7 +57,7 @@ const Login = () => {
                     <Grid container direction={matchDownSM ? 'column-reverse' : 'row'} alignItems="center" justifyContent="center">
                       <Grid item>
                         <Stack alignItems="center" justifyContent="center" spacing={1}>
-                          <Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
+                          <Typography color={theme.palette.secondary.main}  gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
                             تسجيل الدخول 
                           </Typography>
                           <Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
@@ -68,7 +68,7 @@ const Login = () => {
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
-                    <AuthLogin />
+                    <AuthLoginin />
                   </Grid>
                   <Grid item xs={12}>
                     <Divider />
