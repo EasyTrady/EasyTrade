@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Box, Breadcrumbs, Card, Container, Grid, Switch, Typography } from "@mui/material";
+import { Box, Breadcrumbs, Card, Container, Grid, MenuItem, Switch, Typography } from "@mui/material";
 import borders from "assets/theme/base/borders";
 import SoftBox from "components/SoftBox";
 import SoftInput from "components/SoftInput";
@@ -33,8 +33,14 @@ import DatePickerField from "components/common/DatePicker";
 import SelectValue from "components/common/SelectValue";
 import { useLocation } from "react-router-dom";
 import { navbarRow } from "examples/Navbars/DashboardNavbar/styles";
+import { PRODUCTS } from "data/api";
+import { CATEGORY } from "data/api";
+import { useDispatch, useSelector } from "react-redux";
 const ReactQuill = require("react-quill");
+
 const AddProduct = ({light, isMini}) => {
+  const category=useSelector((state)=>state.category.value)
+  const dispatch=useDispatch()
   const route = useLocation().pathname.split("/").slice(1);
   const { borderWidth, borderColor } = borders;
   const [value, setValue] = useState("");
@@ -55,11 +61,11 @@ const AddProduct = ({light, isMini}) => {
   };
   //   form status control
   const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
-    { control: "image", value: "", isRequired: true },
+    { control: "main_image", value: "", isRequired: true },
     {
       control: "name",
       value: "",
-      isRequired: true,
+      isRequired: false,
       validations: [
         {
           test: /^(?:[A-Za-z\u0600-\u06ff\s]*)$/,
@@ -70,7 +76,7 @@ const AddProduct = ({light, isMini}) => {
     {
       control: "quantity",
       value: "",
-      isRequired: true,
+      isRequired: false,
       validations: [
         {
           test: /[^0-9]/g,
@@ -81,22 +87,47 @@ const AddProduct = ({light, isMini}) => {
     {
       control: "price",
       value: "",
-      isRequired: true,
+      isRequired: false,
     },
     {
       control: "sku",
       value: "",
-      isRequired: true,
+      isRequired: false,
     },
-    { control: "weight", value: "", isRequired: true },
-    { control: "minimum_quantity", value: "", isRequired: true },
-    { control: "maximum_quantity", value: "", isRequired: true },
-    { control: "description", value: "", isRequired: true },
-    { control: "category", value: "", isRequired: true },
+    {
+      control: "mpn",
+      value: "",
+      isRequired: false,
+    },
+    {
+      control: "gtin",
+      value: "",
+      isRequired: false,
+    },
+    { control: "weight", value: "", isRequired: false },
+    { control: "minimum_quantity", value: "", isRequired: false },
+    { control: "maximum_quantity", value: "", isRequired: false },
+    { control: "description", value: "", isRequired: false },
+    { control: "product_categories", value: "", isRequired: false },
   ]);
+  const [categoryRequest, getcategoryResponce] =
+  useRequest({
+      path: CATEGORY,
+      method: "get",
+      Token: `Token ${Token}`
+  });
+
+  const getCategory=()=>{
+    categoryRequest({
+      onSuccess: (res) => {
+        console.log(res.data);
+        dispatch({ type: "category/set", payload: res?.data })
+    }
+    })
+  }
   // form request add product
   const [AddProductRequest, AddProductResponce] = useRequest({
-    path: EMPLOYEE,
+    path: PRODUCTS,
     method: "post",
     Token: `Token ${Token}`,
   });
@@ -105,7 +136,7 @@ const AddProduct = ({light, isMini}) => {
     validate().then((output) => {
       console.log(output);
       if (!output.isOk) return;
-      EmployeePostRequest({
+      AddProductRequest({
         body: controls,
         onSuccess: (res) => {
           console.log(res.data, controls);
@@ -119,12 +150,14 @@ const AddProduct = ({light, isMini}) => {
             quantity: response?.quantity?.join(" "),
             price: response?.price?.join(" "),
             sku: response?.sku?.join(" "),
+            mpn:response.mpn.join(""),
+            gtin:response.gtin.join(""),
             weight: response?.weight?.join(" "),
-            channel: response?.channel?.join(" "),
             minimum_quantity: response?.minimum_quantity?.join(" "),
             minimum_quantity: response?.maximum_quantity?.join(" "),
-            category: response?.category?.join(" "),
+            product_categories: response?.category?.join(" "),
             description: response?.description?.join(" "),
+            main_image:response?.main_image
           },
           output: "object",
         });
@@ -134,6 +167,7 @@ const AddProduct = ({light, isMini}) => {
       });
     });
   }
+
   return (
     <>
     <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
@@ -183,6 +217,8 @@ const AddProduct = ({light, isMini}) => {
               placeholder="category"
               label="Category"
               thousandSeparator
+              isPending={getcategoryResponce.isPending}
+              onOpen={getCategory}
               value={controls.category}
               onChange={(e) => setControl("category", e.target.value)}
               required={required.includes("category")}
@@ -190,9 +226,13 @@ const AddProduct = ({light, isMini}) => {
               error={Boolean(invalid.category)}
               helperText={invalid.category}
               sx={{width: "100%",fontSize:'14px'}}
-          />
+          >
+            {category?.map((category)=>(
+              <MenuItem key={category.id} value={category?.id}>{category?.name}</MenuItem>
+            ))}
+          </SelectField>
           
-            <Box>
+            <Box sx={{mt:"24px"}}>
           <Typography sx={{
             fontSize: '14px',
             fontWeight: 400,
@@ -240,8 +280,8 @@ const AddProduct = ({light, isMini}) => {
         label={"barcode"}
         placeholder={"barcode"}
         value={controls.mpn}
-        onChange={(e) => setControl("barcode", e.target.value)}
-        required={required.includes("barcode")}
+        onChange={(e) => setControl("mpn", e.target.value)}
+        required={required.includes("mpn")}
         error={Boolean(invalid.mpn)}
         helperText={invalid.mpn}
         // icon={{ component: <DnsOutlinedIcon />, direction: "left" }}
@@ -250,13 +290,13 @@ const AddProduct = ({light, isMini}) => {
         />
     <NumberField
         variant='outlined'
-        label={"Gtn"}
-        placeholder={"Gtn"}
-        value={controls.gtn}
-        onChange={(e) => setControl("gtn", e.target.value)}
-        required={required.includes("gtn")}
-        error={Boolean(invalid.gtn)}
-        helperText={invalid.gtn}
+        label={"Gtin"}
+        placeholder={"Gtin"}
+        value={controls.gtin}
+        onChange={(e) => setControl("gtin", e.target.value)}
+        required={required.includes("gtin")}
+        error={Boolean(invalid.gtin)}
+        helperText={invalid.gtin}
         // icon={{ component: <DnsOutlinedIcon />, direction: "left" }}
         sx={input}
         borderBottom='none'
@@ -356,7 +396,7 @@ const AddProduct = ({light, isMini}) => {
                 
                 sx={input}
               />
-        <NumberField
+        {/* <NumberField
         variant='outlined'
         label={"shipping price"}
         placeholder={"99 EGP"}
@@ -368,7 +408,7 @@ const AddProduct = ({light, isMini}) => {
         // icon={{ component: <DnsOutlinedIcon />, direction: "left" }}
         sx={input}
         borderBottom='none'
-        />
+        /> */}
     </Container>
     </Box>
     <Box pt={3} sx={{background: '#FFFFFF',borderRadius:'8px',height:'100%',pb:4,mt:2.5
@@ -407,8 +447,26 @@ textAlign: 'left'
 }}>End date*</Typography>
         <DatePickerField/>
         </Box>
+       
       </Container>
     </Box>
+    <Box sx={{display:'flex',justifyContent:'flex-end',alignItems:'center',mt:'24px'}}>
+      <SoftButton 
+      type='submit'
+      variant="gradient"
+                        sx={{
+                            backgroundColor: (theme) => theme.palette.purple.middle,
+                            color: "white !important", "&:hover": {
+                                backgroundColor: (theme) => theme.palette.purple.middle
+                            },width: '260px'
+                        }}
+                        onClick={handleSubmit}
+                    >
+                        Next
+                    </SoftButton>
+    </Box>
+    {AddProductResponce.failAlert}
+    {AddProductResponce.successAlert}
     </>
   );
 };

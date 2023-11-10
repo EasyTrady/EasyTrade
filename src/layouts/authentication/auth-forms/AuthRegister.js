@@ -51,7 +51,7 @@ const FirebaseRegister = ({ ...others  }) => {
   const dispatch=useDispatch()
   const navigate=useNavigate()
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-  const customization = useSelector((state) => state.customization);
+  
   const user = useSelector((state) => state.registration.user);
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(true);

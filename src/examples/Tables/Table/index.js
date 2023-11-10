@@ -74,7 +74,7 @@ function Table({ columns, rows }) {
         borderBottom={`${borderWidth[1]} solid ${light.main}`}
       >
        
-        {name.toUpperCase()}
+        {name?.toUpperCase()}
       </SoftBox>
     );
   });
