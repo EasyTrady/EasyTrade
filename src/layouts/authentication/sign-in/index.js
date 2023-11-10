@@ -31,17 +31,25 @@ import SoftButton from "components/SoftButton";
 
 // Authentication layout components
 import CoverLayout from "layouts/authentication/components/CoverLayout";
+import login from '../../../assets/images/icons/Social Media Icon Square/login.png';
 
 // Images
 import curved9 from "assets/images/curved-images/curved-6.jpg";
 import { Formik } from "formik";
-import { FormControl, FormControlLabel, FormHelperText, IconButton, InputAdornment, Stack } from "@mui/material";
+import { Box, Divider, FormControl, FormControlLabel, FormHelperText, Grid, IconButton, InputAdornment, Stack, Typography, useMediaQuery } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import useRequest from "hooks/useRequest";
 import { SIGNIN ,PROFILE} from "data/api";
 import { useNavigate } from "react-router-dom";
-
+import PageLayout from "examples/LayoutContainers/PageLayout";
+import AuthWrapper1 from "../AuthWrapper1";
+import AuthCardWrapper from "../AuthCardWrapper";
+import { useTheme } from "@emotion/react";
+import AuthLogin from '../../authentication/auth-forms/AuthLogin';
 function SignIn() {
+  const theme = useTheme();
+  const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+  
   const [rememberMe, setRememberMe] = useState(true);
   const sub_domain = localStorage.getItem('sub_domain')
   let Token=localStorage.getItem('token')
@@ -62,11 +70,7 @@ function SignIn() {
     event.preventDefault();
   };
   return (
-    <CoverLayout
-      title="Welcome back"
-      description="Enter your email and password to sign in"
-      image={curved9}
-    >
+   <>
       <Formik
         initialValues={{
           email: '',
@@ -153,147 +157,76 @@ function SignIn() {
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>
-            <FormControl fullWidth error={Boolean(touched.email && errors.email)} >
-              {/* <InputLabel htmlFor="outlined-adornment-email-login">Email Address</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-email-login"
-                type="email"
-                value={values.email}
-                name="email"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                label="Email Address"
-                inputProps={{}}
-              /> */}
-              <SoftBox mb={2}>
-                <SoftBox mb={1} ml={0.5}>
-                  <SoftTypography component="label" variant="caption" fontWeight="bold">
-                    Email
-                  </SoftTypography>
-                </SoftBox>
-                <SoftInput type="email" placeholder="Email" value={values.email}
-                name="email"
-                onBlur={handleBlur}
-                onChange={handleChange}/>
-              </SoftBox>
-              {touched.email && errors.email && (
-                <FormHelperText error id="standard-weight-helper-text-email-login">
-                  {errors.email}
-                </FormHelperText>
-              )}
-            </FormControl>
+            <PageLayout>
+    <AuthWrapper1>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: {
+            xl: 'row',
+            lg: 'row',
+            md: 'row',
+            sm: 'column',
+            xs: 'column'
+          },
+          gap: 2,
+          justifyContent: 'space-between',
+          overflow: 'auto',
+          bgcolor: '#FFFFFF'
+          // paddingTop: '70px'
+        }}
+      >
+        <Box component="img" sx={{ width: { xl: '60%', lg: '60%', md: '50%', sm: '100%', sx: '100%' }, height: '100vh' }} src={login}></Box>
+      <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh', bgcolor: '#FFFFFF' }}>
+        <Grid item xs={12}>
+          <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: 'calc(100vh - 68px)' }}>
+            <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
+              <AuthCardWrapper>
+                <Grid container spacing={2} alignItems="center" justifyContent="center">
+                  <Grid item sx={{ mb: 3 }}>
+                    <Link to="#">
+                      {/* <Logo /> */}
+                    </Link>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Grid container direction={matchDownSM ? 'column-reverse' : 'row'} alignItems="center" justifyContent="center">
+                      <Grid item>
+                        <Stack alignItems="center" justifyContent="center" spacing={1}>
+                          <Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
+                            تسجيل الدخول
+                          </Typography>
+                          <Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
+                            مرحبًا بعودتك! برجاء ادخال التفاصيل الخاصة بك
+                          </Typography>
+                        </Stack>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <AuthLogin />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Divider />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Grid item container direction="column" alignItems="center" xs={12}>
+                      {/* <Typography component={Link} to="/register" variant="subtitle1" sx={{ textDecoration: 'none' }}>
+                        Don&apos;t have an account?
+                      </Typography> */}
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </AuthCardWrapper>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} sx={{ m: 3, mt: 1 }}>
 
-            <FormControl fullWidth error={Boolean(touched.password && errors.password)} >
-              {/* <InputLabel htmlFor="outlined-adornment-password-login">Password</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-password-login"
-                type={showPassword ? 'text' : 'password'}
-                value={values.password}
-                name="password"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                      size="large"
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Password"
-                inputProps={{}}
-              /> */}
-                <SoftBox mb={2}>
-          <SoftBox mb={1} ml={0.5}>
-            <SoftTypography component="label" variant="caption" fontWeight="bold">
-              Password
-            </SoftTypography>
-          </SoftBox>
-          <SoftInput type={showPassword ? 'text' : 'password'} placeholder="Password" value={values.password}
-                name="password"
-                onBlur={handleBlur}
-                onChange={handleChange} 
-                 endAdornment={
-                  <InputAdornment  sx={{position: "absolute",
-                    right: "13px",}}>
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                      size="large"
-                    >
-                      {showPassword ? <Visibility/> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }/>
-        </SoftBox>
-              {touched.password && errors.password && (
-                <FormHelperText error id="standard-weight-helper-text-password-login">
-                  {errors.password}
-                </FormHelperText>
-              )}
-            </FormControl>
-            {/* <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-              <FormControlLabel
-                control={
-                  <Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} name="checked" color="primary" />
-                }
-                label="Remember me"
-              />
-              <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
-                Forgot Password?
-              </Typography>
-            </Stack>
-            {errors.submit && (
-              <Box sx={{ mt: 3 }}>
-                <FormHelperText error>{errors.submit}</FormHelperText>
-              </Box>
-            )}
-
-            <Box sx={{ mt: 2 }}>
-              <AnimateButton>
-                <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
-                  Sign in
-                </Button>
-              </AnimateButton>
-            </Box> */}
-            <SoftBox display="flex" alignItems="center">
-          <Switch checked={rememberMe} onChange={handleSetRememberMe} />
-          <SoftTypography
-            variant="button"
-            fontWeight="regular"
-            onClick={handleSetRememberMe}
-            sx={{ cursor: "pointer", userSelect: "none" }}
-          >
-            &nbsp;&nbsp;Remember me
-          </SoftTypography>
-        </SoftBox>
-        <SoftBox mt={4} mb={1}>
-          <SoftButton fullWidth size="large" type="submit"  variant="contained" color="secondary">
-            sign in
-          </SoftButton>
-        </SoftBox>
-        <SoftBox mt={3} textAlign="center">
-          <SoftTypography variant="button" color="text" fontWeight="regular">
-            Don&apos;t have an account?{" "}
-            <SoftTypography
-              component={Link}
-              to="/authentication/sign-up"
-              variant="button"
-              color="info"
-              fontWeight="medium"
-              textGradient
-            >
-              Sign up
-            </SoftTypography>
-          </SoftTypography>
-        </SoftBox>
+        </Grid>
+      </Grid>
+      </Box>
+    </AuthWrapper1>
+    </PageLayout>
           </form>
         )}
       </Formik>
@@ -348,7 +281,7 @@ function SignIn() {
       </SoftBox> */}
       {signInResponse.failAlert}
       {ShopInfoResponse.failAlert}
-    </CoverLayout>
+      </>
   );
 }
 

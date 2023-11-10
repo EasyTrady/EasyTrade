@@ -1,13 +1,22 @@
-import { AppBar, Box, Button, Container, Divider, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
+import {
+  AppBar,
+  Box,
+  Button,
+  ButtonBase,
+  Container,
+  Divider,
+  IconButton,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import LanguageIcon from '@mui/icons-material/Language';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import logo from '../../../assets/images/g14.png';
-import { ThemeProvider } from '@mui/system';
-import { interFont } from '../themes.jsx';
-
+import home from '../../../assets/images/icons/Social Media Icon Square/logo.svg';
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [clientWindowHeight, setClientWindowHeight] = useState('');
@@ -19,11 +28,11 @@ const Navbar = () => {
   const [boxShadow, setBoxShadow] = useState(0);
   // const { token } = useSelector((state) => state.auth);
   const pages = [
-    t('home', { framework: 'React' }),
-    t('services'),
-    t('pricing'),
-    t('features'),
-    t('contactus')
+    t('تواصل معنا', { framework: 'React' }),
+    t('الصفات'),
+    t('الباقات والأسعار'),
+    t('الخدمات'),
+    t('الرئيسية')
   ];
   const navigate = useNavigate();
   useEffect(() => {
@@ -36,11 +45,11 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    let backgroundTransparacyVar = clientWindowHeight / 600;
+    const backgroundTransparacyVar = clientWindowHeight / 600;
 
     if (backgroundTransparacyVar < 1) {
-      let paddingVar = 20 - backgroundTransparacyVar * 20;
-      let boxShadowVar = backgroundTransparacyVar * 0.1;
+      const paddingVar = 20 - backgroundTransparacyVar * 20;
+      const boxShadowVar = backgroundTransparacyVar * 0.1;
       setBackgroundTransparacy(backgroundTransparacyVar);
       setPadding(paddingVar);
       setBoxShadow(boxShadowVar);
@@ -56,61 +65,83 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar   position="fixed" sx={{ background:'#cde3f3', boxShadow: boxShadow}}>
+    <AppBar position="fixed" sx={{ background: '#cde3f3', boxShadow }}>
       <Container maxWidth="xl">
         <Toolbar
           sx={{
-            padding:0,
+            padding: 0,
             '& hr': {
               mx: 1,
-              color: '#7F7F7F',
-              my: 2
+              color: '#7F7F7F'
+              // my: 2,
             }
           }}
         >
-          {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
-          <Box
-            
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { md: 'flex', xs: 'none' },
-              fontFamily: 'Cairo',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              textDecoration: 'none'
-            }}
-          >
-            <img src={logo} alt="logo" />
-            <Box sx={{
-              marginLeft :'10px',
-            }}>
-                <ThemeProvider theme={interFont}>
-                {/* <CssBaseline /> */}
-                <Typography
-                  sx={{
-                    fontSize: '18px',
-                    fontWeight: 'bold',
-                    color: '#7E3E98',
-                    letterSpacing: 1,
-                    fontFamily:'inter',
-
-                  }} >EASYTRADE</Typography>
-              </ThemeProvider>
-
-              <Typography
-                sx={{
-                  fontSize: '12px',
-                  color: '#293D9B',
-                  letterSpacing: 1,
-                  fontFamily:'Arial'
-
+          <Box sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%'
+          }}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-evenly',
+                alignItems: 'center',
+                gap: '5px'
+              }}
+            >
+              <LanguageIcon
+                height="22px"
+                width="22px"
+                style={{ color: '#272C2E' }}
+                onClick={() => {
+                  const currentLanguage = i18n.language;
+                  const newLanguage = currentLanguage === 'ar' ? 'en' : 'ar';
+                  i18n.changeLanguage(newLanguage);
                 }}
+              />
+              <Divider sx={{ height: '50px' }} orientation="vertical" flexItem />
 
-
-              >ONLINE SHOP & MORE</Typography>
+              <ButtonBase
+                onClick={() => navigate('/login')}
+                sx={{
+                  padding: '10px',
+                  backgroundColor: '#5D449B',
+                  borderRadius: '12px',
+                  fontSize: '16px',
+                  textAlign: 'center',
+                  fontWeight: 600,
+                  // lineHeight: "29.98px",
+                  color: '#FFFFFF'
+                }}
+              >
+                {t('تسجيل الدخول', { framework: 'React' })}
+              </ButtonBase>
             </Box>
+
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'end' }}>
+              {pages.map((page) => (
+                <Button
+                  key={page}
+                  onClick={() => {
+                    page[0] && navigate('/');
+                    console.log(page);
+                  }}
+                  sx={{
+                    my: 2,
+                    color: '#272C2E',
+                    display: 'block',
+                    fontSize: '15px',
+                    fontWeight: 500,
+                    textTransform: 'none'
+                  }}
+                >
+                  {page}
+                </Button>
+              ))}
+            </Box>
+            <Box component="img" src={home} />
           </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -148,126 +179,6 @@ const Navbar = () => {
               ))}
             </Menu>
           </Box>
-          {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
-          {/* <img src={logo} alt="logo" /> */}
-          <ThemeProvider theme={interFont}>
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              color: '#7E3E98',
-              fontWeight: 700,
-              letterSpacing: 1,
-              textDecoration: 'none'
-            }}
-          >
-            EASYTRADE
-          </Typography>
-          </ThemeProvider>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, ml: 5 }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={() => {
-                  page[0] && navigate('/');
-                  console.log(page)
-                }}
-                sx={{ my: 2, color: '#272C2E', display: 'block', fontSize: '15px', fontWeight: 500, textTransform: 'none' }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
-
-          {/* <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box> */}
-          {/* {token ? (
-            <Button
-              onClick={() => localStorage.removeItem('api_token')}
-              sx={{
-                width: { xl: '10%', lg: '20%' },
-                height: '30px',
-                padding: '10px',
-                backgroundColor: '#D351B0',
-                borderRadius: '38px',
-                fontSize: '16px',
-                textAlign: 'center',
-                fontWeight: 600,
-                lineHeight: '29.98px',
-                color: '#FFFFFF',
-                ml: 3,
-                ':hover': { backgroundColor: '#D351B0' },
-                textTransform: 'none'
-              }}
-            >
-              {t('signout.title')}
-            </Button>
-          ) : ( */}
-          <Button
-            onClick={() => navigate('/login')}
-            sx={{
-              width: { xl: '10%', lg: '20%' },
-              height: '30px',
-              padding: '10px',
-              backgroundColor: '#5D449B',
-              borderRadius: '38px',
-              fontSize: '16px',
-              textAlign: 'center',
-              fontWeight: 600,
-              lineHeight: '29.98px',
-              color: '#FFFFFF',
-              ml: 3,
-              ':hover': { backgroundColor: '#5D449B' },
-              textTransform: 'none'
-            }}
-          >
-            {t('signin.title', { framework: 'React' })}
-          </Button>
-          {/* )} */}
-          <Divider orientation="vertical" flexItem />
-          <LanguageIcon
-            height="22px"
-            width="22px"
-            style={{ marginRight: '8%', color: '#272C2E' }}
-            onClick={() => {
-              const currentLanguage = i18n.language;
-              const newLanguage = currentLanguage === 'ar' ? 'en' : 'ar';
-              i18n.changeLanguage(newLanguage);
-            }}
-          />
         </Toolbar>
       </Container>
     </AppBar>

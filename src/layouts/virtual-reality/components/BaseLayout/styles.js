@@ -20,7 +20,7 @@ function baseLayout({ functions, breakpoints }) {
   const { pxToRem } = functions;
 
   return {
-    width: "100vw",
+    // width: "100vw",
     minHeight: "100vh",
     overflow: "hidden",
 

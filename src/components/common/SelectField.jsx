@@ -80,7 +80,7 @@ textAlign: 'left'
     renderValue= {(selected) => {
       if (!Boolean(selected)) {
         return (
-          <Typography sx={{ color: "currentColor", opacity: "0.42" }}>
+          <Typography sx={{ color: "currentColor", opacity: "0.42",fontSize:'14px',fontWeight:400 }}>
             {placeholder}
           </Typography>
         );

@@ -13,10 +13,12 @@ import {
   FormHelperText,
   Grid,
   IconButton,
+  Input,
   InputAdornment,
   InputLabel,
   OutlinedInput,
   Stack,
+  TextField,
   Typography,
   useMediaQuery
 } from '@mui/material';
@@ -140,8 +142,19 @@ const FirebaseLogin = ({ ...others }) => {
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
-            <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput,marginY:"15px" }}>
-              <InputLabel htmlFor="outlined-adornment-email-login">البريد الالكتروني</InputLabel>
+           <FormControl
+              fullWidth
+              error={Boolean(touched.email && errors.email)}
+              sx={{ ...theme.typography.customInput, marginY: '15px' }}
+            >
+              <TextField
+              variant='outlined'
+                sx={{
+                  direction: 'rtl'
+                }}
+                placeholder="البريد الالكتروني"
+              ></TextField>
+              {/* <InputLabel htmlFor="outlined-adornment-email-login">البريد الالكتروني</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-email-login"
                 type="email"
@@ -151,7 +164,7 @@ const FirebaseLogin = ({ ...others }) => {
                 onChange={handleChange}
                 label="Email Address"
                 inputProps={{}}
-              />
+              /> */}
               {touched.email && errors.email && (
                 <FormHelperText error id="standard-weight-helper-text-email-login">
                   {errors.email}
@@ -159,8 +172,12 @@ const FirebaseLogin = ({ ...others }) => {
               )}
             </FormControl>
 
-            <FormControl fullWidth error={Boolean(touched.password && errors.password)} sx={{ ...theme.typography.customInput,marginY:"15px" }}>
-              <InputLabel htmlFor="outlined-adornment-password-login" sx={{textAlign:'right',display:'block'}}>كلمة المرور</InputLabel>
+            <FormControl
+              fullWidth
+              error={Boolean(touched.password && errors.password)}
+              sx={{ ...theme.typography.customInput, marginY: '15px' }}
+            >
+              {/* <InputLabel htmlFor="outlined-adornment-password-login" sx={{textAlign:'right',display:'block'}}>كلمة المرور</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password-login"
                 type={showPassword ? 'text' : 'password'}
@@ -183,7 +200,40 @@ const FirebaseLogin = ({ ...others }) => {
                 }
                 label="Password"
                 inputProps={{}}
-              />
+              /> */}
+              <Box
+                sx={{
+                  position: 'relative'
+                }}
+              >
+                <TextField
+                variant='outlined'
+                  sx={{
+                    direction: 'rtl',
+                    width:'100%'
+                  }}
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="كلمة المرور"
+                ></TextField>
+                <InputAdornment sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '0',
+                  padding: '0',
+                  transform: 'translate(5px, -50%)'
+                }} position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                    size="large"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              </Box>
+
               {touched.password && errors.password && (
                 <FormHelperText error id="standard-weight-helper-text-password-login">
                   {errors.password}
@@ -193,11 +243,20 @@ const FirebaseLogin = ({ ...others }) => {
             <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
               <FormControlLabel
                 control={
-                  <Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} name="checked" color="primary" />
+                  <Checkbox
+                    checked={checked}
+                    onChange={(event) => setChecked(event.target.checked)}
+                    name="checked"
+                    color="primary"
+                  />
                 }
                 label="تذكرني"
               />
-              <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
+              <Typography
+                variant="subtitle1"
+                color="secondary"
+                sx={{ textDecoration: 'none', cursor: 'pointer' }}
+              >
                 هل نسيت كلمة المرور ؟
               </Typography>
             </Stack>
@@ -209,8 +268,17 @@ const FirebaseLogin = ({ ...others }) => {
 
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
-                <Button sx={{borderRadius:'12PX',padding:'10px, 18px, 10px, 18px',}} disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
-                  تسجيل الدخول 
+                <Button
+                  sx={{ borderRadius: '12PX', padding: '10px, 18px, 10px, 18px' }}
+                  disableElevation
+                  disabled={isSubmitting}
+                  fullWidth
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                  color="secondary"
+                >
+                  تسجيل الدخول
                 </Button>
               </AnimateButton>
             </Box>
@@ -259,15 +327,21 @@ const FirebaseLogin = ({ ...others }) => {
               color: 'grey.700',
               backgroundColor: theme.palette.grey[50],
               borderColor: theme.palette.grey[100],
-              padding:'10px 16px 10px 16px',
-              marginTop:'20px',
-              borderRadius:'8px'
+              padding: '10px 16px 10px 16px',
+              marginTop: '20px',
+              borderRadius: '8px'
             }}
           >
             <Box sx={{ mr: { xs: 1, sm: 2, width: 20 } }}>
-              <img src={Google} alt="google" width={16} height={16} style={{ marginRight: matchDownSM ? 8 : 16 }}  />
+              <img
+                src={Google}
+                alt="google"
+                width={16}
+                height={16}
+                style={{ marginRight: matchDownSM ? 8 : 16 }}
+              />
             </Box>
-            تسجيل الدخول بحساب جوجل 
+            تسجيل الدخول بحساب جوجل
           </Button>
         </AnimateButton>
       </Grid>

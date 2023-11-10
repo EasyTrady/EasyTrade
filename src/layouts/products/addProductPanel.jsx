@@ -9,6 +9,7 @@ import AddProductFetures from './addProductFetures';
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
 import { Container } from '@mui/material';
+import ProductAttributes from './productAttributes';
 
 export default function AddProductPanel() {
   const [value, setValue] = React.useState(0);
@@ -56,7 +57,7 @@ color:'#5D449B',
 
       <CustomTabPanel value={value} index={2}>
      
-        Item Three
+       <ProductAttributes/>
        
       </CustomTabPanel>
       </DashboardLayout>

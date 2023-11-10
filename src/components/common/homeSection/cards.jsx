@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import CardMedia from '@mui/material/CardMedia';
-import { Typography } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import imgs from '../../../assets/images/icons/images.png';
 import coding from '../../../assets/images/icons/coding.png';
 import time from '../../../assets/images/icons/save-time.png';
@@ -9,371 +10,145 @@ import performance from '../../../assets/images/icons/performance4.png';
 import folder from '../../../assets/images/icons/folder.png';
 import ui from '../../../assets/images/icons/ui-design.png';
 
+export function Card ({ title, desc, img, bgcolor, className }) {
+  return (
+    <Grid
+      className={className}
+      sx={{
+        padding: '18px',
+        borderRadius: '8px',
+        border: '1px solid rgb(227, 232, 239)',
+        position: 'relative',
+        width: { xs: '100%', md: 'calc(50% - 40px)', lg: 'calc(100% / 3 - 40px)' },
+        margin: { xs: '30px 0', md: '30px 20px', lg: '30px 20px' }
+      }}
+    >
+          <Container>
 
-export default function ResponsiveGrid() {
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          width: '100%'
+        }}
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            backgroundColor: bgcolor,
+            padding: '20px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: '50%',
+            top: '0',
+            right: '0',
+            transform: 'translate(-30px,-50%)'
+          }}
+        >
+          <Box
+            sx={{
+              maxHeight: '60px',
+              aspectRatio: '1'
+            }}
+            component="img"
+            src={img}
+          />
+        </Box>
+      </Box>
+      <Box sx={{ pt: '40px', overflow: 'hidden' }}>
+        <Typography
+          sx={{
+            display: 'block',
+            fontSize: '20px',
+            textAlign: 'right',
+            fontWeight: 900,
+            fontFamily: 'Cairo',
+            padding: '5px 10px',
+            flexDirection: 'column'
+          }}
+        >
+          {title}
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: '18px',
+            textAlign: 'right',
+            display: 'block',
+            fontWeight: 50,
+            fontFamily: 'Cairo',
+            padding: '10px',
+            flexDirection: 'column'
+          }}
+        >
+          {desc}
+        </Typography>
+      </Box>
+      </Container>
+
+    </Grid>
+  );
+}
+
+export default function ResponsiveGrid () {
+  const data = [
+    {
+      title: 'بجميع المقاسات',
+      img: imgs,
+      desc: '  احتياجاتك من خلال تقنيات وموارد قابلة للتطوير لضمان بقاء لوحة الادارة الخاصة بك فعالة وفعّالة مع ',
+      bgcolor: '#FFFEF5'
+    },
+    {
+      title: ' تقليل التطوير',
+      img: coding,
+      desc: 'من خلال إعداد السمة بسهولة والتعليمات البرمجية الواضحة مع خيارات التخطيطات المرنة',
+      bgcolor: '#FFF9F5'
+    },
+    {
+      title: 'توفير الوقت والتكلفة',
+      img: time,
+      desc: ' من خلال توفير واجهة مستخدم معدة مسبقًا، مما يسمح لهم بالتركيز على جوانب أخرى من المشروع',
+      bgcolor: '#F5FFFB'
+    },
+    {
+      title: 'واجهة مستخدم جميلة ',
+      img: ui,
+      desc: 'من خلال توفير تصميم واضح وبديهي وشكل ومظهر متسقين',
+      bgcolor: '#FFF5F5'
+    },
+    {
+      title: 'موثقة ومدعومة بشكل جيد',
+      img: folder,
+      desc: 'من خلال الأسئلة الشائعة لمساعدة المستخدمين على فهم EasyTrade واستخدامها بشكل فعال',
+      bgcolor: '#FCF5FF'
+    },
+    {
+      title: 'تتمحور حول الأداء',
+      img: performance,
+      desc: ' هو قالب لوحة معلومات يركز على الأداء، وقد تم تصميمه لتقديم الأداء الأمثل للوحة الإدارة الخاصة بك',
+      bgcolor: '#F5F7FF'
+    }
+  ];
   return (
     <Grid
       container
-      sx={{ padding: '50px', gridGap: '20px', justifyContent: 'center' }}
+      sx={{ padding: '50px', justifyContent: 'shrink', display: 'flex' }}
       spacing={{ xs: 2, md: 3 }}
       columns={{ xs: 4, sm: 8, md: 12 }}
     >
-      
-        <Grid
-          sx={{
-           padding:"18px",
-            borderRadius: '8px',
-            overflow: 'hidden',
-            border: '1px solid rgb(227, 232, 239)',
-            height: '40vh'
-          }}
-          xs={2}
-          sm={3}
-          md={3}
-          key="1"
-        >
-          <CardMedia
-            component="img"
-            sx={{
-              width: '70px',
-              marginLeft: 'auto',
-              marginRight: 0,
-              display: 'block',
-              // borderRadius:'50%',
-              bgcolor:'#FFFEF5',
-             alignItems:'center',
-             padding:'5px 0 0 5px'
-             
-            }}
-            image={imgs}
-            alt="Paella dish"
+      {data.map((card, index) => {
+        return (
+          <Card
+            key={index}
+            title={card.title}
+            desc={card.desc}
+            img={card.img}
+            bgcolor={card.bgcolor}
+            className="mohamed"
           />
-          <Typography
-            sx={{
-              marginLeft: 'auto',
-              marginRight: 0,
-              display: 'block',
-              fontSize: '20px',
-              textAlign:'right',
-              fontWeight: 900,
-              fontFamily: 'Cairo',
-              padding: '5px 10px',
-              flexDirection: 'column'
-            }}
-          >
-            بجميع المقاسات
-          </Typography>
-          <Typography
-            sx={{
-              marginLeft: 'auto',
-              marginRight: 0,
-              display: 'block',
-              textAlign:'right',
-              fontSize: '18px',
-              fontWeight: 50,
-              fontFamily: 'Cairo',
-              padding: '10px',
-              flexDirection: 'column',
-            }}
-          >
-          من خلال تقنيات وموارد قابلة للتطوير لضمان بقاء لوحة الادارة الخاصة بك فعالة وفعّالة مع تطوير احتياجاتك
-          </Typography>
-        </Grid>
-        <Grid
-          sx={{
-            padding:"18px",
-            borderRadius: '8px',
-            border: '1px solid rgb(227, 232, 239)',
-            height: '40vh'
-          }}
-          xs={2}
-          sm={3}
-          md={3}
-          key="1"
-        >
-          <CardMedia
-            component="img"
-            sx={{
-              width: '70px',
-              // borderRadius:'50%',
-              // bgcolor:'#FFFEF5',
-              marginLeft: 'auto',
-              textAlign:'right',
-              marginRight: 0,
-              display: 'block',
-             alignItems:'center',
-             padding:'5px 0 0 5px'
-            }}
-            image={coding}
-            alt="Paella dish"
-          />
-          <Typography
-            sx={{
-              marginLeft: 'auto',
-              marginRight: 0,
-              display: 'block',
-              fontSize: '20px',
-              textAlign:'right',
-              fontWeight: 900,
-              fontFamily: 'Cairo',
-              padding: '5px 10px',
-              flexDirection: 'column'
-            }}
-          >
-            تقليل التطوير 
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: '18px',
-              marginLeft: 'auto',
-              textAlign:'right',
-              marginRight: 0,
-              display: 'block',
-              fontWeight: 50,
-              fontFamily: 'Cairo',
-              padding: '10px',
-              flexDirection: 'column'
-            }}
-          >
-         من خلال اعداد السمة بسهولة والتعليمات البرمجية الواضحة مع خيارات التخطيطات المرنة 
-          </Typography>
-        </Grid>
-        <Grid
-          sx={{
-            padding:"18px",
-            borderRadius: '8px',
-            overflow: 'hidden',
-            border: '1px solid rgb(227, 232, 239)',
-            height: '40vh'
-          }}
-          xs={2}
-          sm={3}
-          md={3}
-          key="1"
-        >
-          <CardMedia
-            component="img"
-            sx={{
-              width: '70px',
-              // borderRadius:'50%',
-              // bgcolor:'#FFFEF5',
-              marginLeft: 'auto',
-              marginRight: 0,
-              display: 'block',
-             alignItems:'center',
-             padding:'5px 0 0 5px'
-            }}
-            image={time}
-            alt="Paella dish"
-          />
-          <Typography
-            sx={{
-              fontSize: '20px',
-              marginLeft: 'auto',
-              marginRight: 0,
-              display: 'block',
-              textAlign:'right',
-              fontWeight: 900,
-              fontFamily: 'Cairo',
-              padding: '5px 10px',
-              flexDirection: 'column'
-            }}
-          >
-            توفير الوقت والتكلفة
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: '18px',
-              marginLeft: 'auto',
-              marginRight: 0,
-              textAlign:'right',
-              display: 'block',
-              fontWeight: 50,
-              fontFamily: 'Cairo',
-              padding: '10px',
-              flexDirection: 'column'
-            }}
-          >
-            من خلال توفير واجهة مستخدم معدة مسبقًا,مما يسمح لهم بالتركيز على جوانب أخرى من المشروع 
-          </Typography>
-        </Grid>
-        <Grid
-          sx={{
-            padding:"18px",
-            borderRadius: '8px',
-            overflow: 'hidden',
-            border: '1px solid rgb(227, 232, 239)',
-            height: '40vh'
-          }}
-          xs={2}
-          sm={3}
-          md={3}
-          key="1"
-        >
-          <CardMedia
-            component="img"
-            sx={{
-              width: '70px',
-              // borderRadius:'50%',
-              // bgcolor:'#FFFEF5',
-             alignItems:'center',
-             marginLeft: 'auto',
-             marginRight: 0,
-             display: 'block',
-             padding:'5px 0 0 5px'
-            }}
-            image={performance}
-            alt="Paella dish"
-          />
-          <Typography
-            sx={{
-              fontSize: '18px',
-              marginLeft: 'auto',
-              marginRight: 0,
-              textAlign:'right',
-              display: 'block',
-              fontWeight: 900,
-              fontFamily: 'Cairo',
-              padding: '5px 10px',
-              flexDirection: 'column'
-            }}
-          >
-            تتمحور حول الأداء
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: '16px', marginLeft: 'auto',
-              marginRight: 0,
-              display: 'block',
-              fontWeight: 50,
-              textAlign:'right',
-              fontFamily: 'Cairo',
-              padding: '10px',
-              flexDirection: 'column'
-            }}
-          >
-            هو قالب لوحة معلومات يركز على الأداء, وقد تم تصميمه لتقديم الأداء الأمثل للوحة الادارة الخاصة بك
-          </Typography>
-        </Grid>
-        <Grid
-          sx={{
-            padding:"18px",
-            borderRadius: '8px',
-            overflow: 'hidden',
-            border: '1px solid rgb(227, 232, 239)',
-            height: '40vh'
-          }}
-          xs={2}
-          sm={3}
-          md={3}
-          key="1"
-        >
-          <CardMedia
-            component="img"
-            sx={{
-              width: '70px',
-              // borderRadius:'50%',
-              // bgcolor:'#FFFEF5',
-              marginLeft: 'auto',
-              marginRight: 0,
-              display: 'block',
-             alignItems:'center',
-             padding:'5px 0 0 5px'
-            }}
-            image={folder}
-            alt="Paella dish"
-          />
-          <Typography
-            sx={{
-              fontSize: '20px',
-              marginLeft: 'auto',
-              marginRight: 0,
-              display: 'block',
-              textAlign:'right',
-              fontWeight: 900,
-              fontFamily: 'Cairo',
-              padding: '5px 10px',
-              flexDirection: 'column'
-            }}
-          >
-            موثقة ومدعومة بشكل جيد 
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: '16px',
-              marginLeft: 'auto',
-              marginRight: 0,
-              display: 'block',
-              textAlign:'right',
-              fontWeight: 50,
-              fontFamily: 'Cairo',
-              padding: '10px',
-              flexDirection: 'column',
-            }}
-          >
-        من خلال الاسئلة الشائعة لمساعدة المستخدمين على فهم EASYTRADE واستخدامها بشكل فعال 
-       </Typography>
-        </Grid>
-        <Grid
-          sx={{
-            height: '40vh',
-            padding:"18px",
-            borderRadius: '8px',
-            overflow: 'hidden',
-            border: '1px solid rgb(227, 232, 239)',
-          }}
-          xs={2}
-          sm={3}
-          md={3}
-          key="1"
-        >
-          <CardMedia
-            component="img"
-            sx={{
-              width: '70px',
-              // borderRadius:'50%',
-              // bgcolor:'#FFFEF5',
-             alignItems:'center',
-             marginLeft: 'auto',
-             marginRight: 0,
-             display: 'block',
-             padding:'5px 0 0 5px'
-            }}
-            image={ui}
-            alt="Paella dish"
-          />
-          <Typography
-            sx={{
-              fontSize: '20px',
-              marginLeft: 'auto',
-              marginRight: 0,
-              display: 'block',
-              textAlign:'right',
-              fontWeight: 900,
-              fontFamily: 'Cairo',
-              padding: '5px 10px',
-              flexDirection: 'column'
-            }}
-          >
-            واجهة مستخدم جميلة 
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: '18px',
-              marginLeft: 'auto',
-              marginRight: 0,
-              display: 'block',
-              fontWeight: 50,
-              textAlign:'right',
-              fontFamily: 'Cairo',
-              padding: ' 5px 10px',
-              flexDirection: 'column'
-            }}
-          >
-            من خلال توفير تصميم واضح وبديهي وشكل ومظهر متسقين
-          </Typography>
-        </Grid>
-      
+        );
+      })}
     </Grid>
+
   );
 }
