@@ -40,8 +40,8 @@ function Attribute({ absolute, light, isMini }) {
     const [open, setOpen] = React.useState(false);
     const [openDialog, setOpenDialog] = React.useState(false);
     const [openDialogEdit, setOpenDialogEdit] = React.useState(false);
-    const [addvalue, setaddvalue] = React.useState(false);
-
+    let [addvalue, setaddvalue] = React.useState(false);
+    let [counter,setCounter]=React.useState(0);
     let dispatch = useDispatch()
     let { t } = useTranslation("common")
     const route = useLocation().pathname.split("/").slice(1);
@@ -139,13 +139,13 @@ function Attribute({ absolute, light, isMini }) {
             },
             {
                 control: "value_name",
-                value: "",
+                value: [],
                 isRequired: false,
 
             },
             {
                 control: "color_value",
-                value: "",
+                value: [],
                 isRequired: false,
 
             },
@@ -365,8 +365,9 @@ function Attribute({ absolute, light, isMini }) {
         console.log(attributes)
     }, [attributes])
     useEffect(() => {
+        console.log(counter)
 
-    }, [controls, controls.values])
+    }, [controls, controls.values,counter])
     return (
         <DashboardLayout >
             <DashboardNavbar />
@@ -592,56 +593,62 @@ function Attribute({ absolute, light, isMini }) {
 
                                 <TableCell align="left" sx={{ width: "50%", borderRight: "1px solid #8080807d" }}>{ele.value_name}</TableCell>
                                 <TableCell align="right" sx={{ width: "50%" }}>
-                                    {console.log(ele.id)}
+                                    
                                     <DeleteIcon sx={{ color: (theme) => theme.palette.error.main }} onClick={() => onDeleteValue(controls.id, ele.id)} />
                                 </TableCell>
                             </Typography>)}
-                            {addvalue && !controls.iscolor ? <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
+                            {addvalue && !controls.iscolor ?Array.from({ length: counter }, (_, index) =>  <SoftBox key={index} sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
                                 <SoftInput placeholder='value'
                                     sx={{ ".MuiInputBase-root": { border: `unset !important`, borderBottom: "1px solid gray" }, }}
-                                    value={controls.value_name}
-                                    onChange={(e) => setControl("value_name", e.target.value)}
+                                    value={controls.value_name[index]}
+                                    onBlur={(e) => setControl("value_name", [...controls.value_name, e.target.value])}
+
                                     required={required.includes("value_name")}
                                     error={Boolean(invalid?.value_name)}
                                     helperText={invalid?.value_name} />
+                                   
 
-
-                            </SoftBox> : addvalue && controls.iscolor && <>
+                            </SoftBox>) : addvalue && controls.iscolor && Array.from({ length: counter }, (_, index) => <SoftBox key={index}>
                                 <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
                                     <SoftInput placeholder='value'
                                         sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
-                                        value={controls.value_name}
-                                        onChange={(e) => setControl("value_name", e.target.value)}
+                                        value={controls.value_name[index]}
+                                        // onChange={(e) => setControl("value_name", e.target.value)}
+                                        onBlur={(e) => setControl("value_name", controls.value_name.push(e.target.value))}
                                         required={required.includes("value_name")}
                                         error={Boolean(invalid?.value_name)}
                                         helperText={invalid?.value_name} />
 
 
                                 </SoftBox>
+                               
                                 <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
                                     <SoftInput placeholder='color'
                                         sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
-                                        value={controls.color_value}
-                                        onChange={(e) => setControl("color_value", e.target.value)}
+                                        value={controls.color_value[index]}
+                                        onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
                                         required={required.includes("color_value")}
                                         error={Boolean(invalid?.color_value)}
                                         helperText={invalid?.color_value} />
 
 
                                 </SoftBox>
-                            </>}
-
+                            </SoftBox>)
+                                
+                            }
+                            {console.log(Array(counter).fill(counter),addvalue,controls.value_name)}
                             <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
                                 <Typography sx={{ fontSize: "14px", padding: "15px", height: "40px", color: (theme) => theme.palette.purple.middle, textDecoration: "underline !important" }}
                                     component="a"
-                                    onClick={() => setaddvalue(!addvalue)}
+                                    onClick={() => {setaddvalue(counter>3?!addvalue:true);
+                                        setCounter(counter>3?1:++counter);}}
                                 >{t("Addvalue")}
                                 </Typography>
-                                <Typography sx={{ fontSize: "14px", padding: "15px", height: "40px", color: (theme) => theme.palette.purple.middle, textDecoration: "underline !important" }}
+                                {/* <Typography sx={{ fontSize: "14px", padding: "15px", height: "40px", color: (theme) => theme.palette.purple.middle, textDecoration: "underline !important" }}
                                     component="a"
                                     onClick={() => { }}
                                 >{t("ClearAll")}
-                                </Typography>
+                                </Typography> */}
                             </SoftBox>
 
 
