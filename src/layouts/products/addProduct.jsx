@@ -47,6 +47,7 @@ import { PRODUCTS } from "data/api";
 import { CATEGORY } from "data/api";
 import { useDispatch, useSelector } from "react-redux";
 import filter from "utils/ClearNull";
+import PictureField from "components/common/PictureField";
 const ReactQuill = require("react-quill");
 
 const AddProduct = ({ light, isMini }) => {
@@ -251,14 +252,14 @@ const AddProduct = ({ light, isMini }) => {
       <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
         <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
       </SoftBox>
-      <Box pt={3} sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", pb: 4 }}>
+      <Box  sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", pb: 4 }}>
         <AddProductTitle title={"Basic info"} />
         <Container>
           <SoftBox
-            py={3}
+            py={'20px'}
             display="flex"
             flexDirection="column"
-            gap={2}
+            gap={"20px"}
             sx={{ width: "100%", height: "100%" }}
           >
             <InputField
@@ -320,7 +321,7 @@ const AddProduct = ({ light, isMini }) => {
               ))}
             </SelectField>
 
-            <Box sx={{ mt: "24px" }}>
+            <Box sx={{ mb: "20px" }}>
               <Typography
                 sx={{
                   fontSize: "14px",
@@ -335,14 +336,14 @@ const AddProduct = ({ light, isMini }) => {
               <ReactQuill
                 theme="snow"
                 value={controls.description}
-                onChange={(e)=>setControl('description',e.target.value)}
+                onChange={(e)=>setControl('description',e)}
                 placeholder="Typing the description of product."
                 onBlur={(e) => validate({ content: e.index })}
                 modules={modules}
-                style={{ height: "118px" }}
+                style={{ height: "118px"}}
               />
             </Box>
-            <Box mt={4}>
+            <Box my={4}>
               <ReactQuill
                 theme="snow"
                 value={value}
@@ -350,7 +351,7 @@ const AddProduct = ({ light, isMini }) => {
                 placeholder="Typing the description of product."
                 onBlur={(e) => validate({ content: e.index })}
                 modules={modules}
-                style={{ height: "118px", mt: 4 }}
+                style={{ height: "118px",  }}
               />
             </Box>
 
@@ -478,7 +479,7 @@ const AddProduct = ({ light, isMini }) => {
         </Container>
       </Box>
       <Box
-        pt={3}
+        
         sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", pb: 4, mt: 2.5 }}
       >
         <AddProductTitle title={"Additional info"} />
@@ -487,11 +488,11 @@ const AddProduct = ({ light, isMini }) => {
             variant="outlined"
             label={"Purchase price"}
             placeholder={"Purchase price"}
-            value={controls.purchase_price}
+            value={controls?.purchase_price}
             onChange={(e) => setControl("purchase_price", e.target.value)}
-            required={required.includes("purchase_price")}
-            error={Boolean(invalid.purchase_price)}
-            helperText={invalid.purchase_price}
+            required={required?.includes("purchase_price")}
+            error={Boolean(invalid?.purchase_price)}
+            helperText={invalid?.purchase_price}
             // icon={{ component: <DnsOutlinedIcon />, direction: "left" }}
             sx={input}
             borderBottom="none"
@@ -502,9 +503,9 @@ const AddProduct = ({ light, isMini }) => {
             placeholder={"99 EGP"}
             value={controls.price}
             onChange={(e) => setControl("price", e.target.value)}
-            required={required.includes("price")}
-            error={Boolean(invalid.price)}
-            helperText={invalid.price}
+            required={required?.includes("price")}
+            error={Boolean(invalid?.price)}
+            helperText={invalid?.price}
             sx={input}
           />
           <NumberField
@@ -513,9 +514,9 @@ const AddProduct = ({ light, isMini }) => {
         placeholder={"99 EGP"}
         value={controls.custom_shipping_price}
         onChange={(e) => setControl("custom_shipping_price", e.target.value)}
-        required={required.includes("custom_shipping_price")}
-        error={Boolean(invalid.custom_shipping_price)}
-        helperText={invalid.custom_shipping_price}
+        required={required?.includes("custom_shipping_price")}
+        error={Boolean(invalid?.custom_shipping_price)}
+        helperText={invalid?.custom_shipping_price}
         // icon={{ component: <DnsOutlinedIcon />, direction: "left" }}
         sx={input}
         borderBottom='none'
@@ -523,7 +524,7 @@ const AddProduct = ({ light, isMini }) => {
         </Container>
       </Box>
       <Box
-        pt={3}
+       
         sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", pb: 4, mt: 2.5 }}
       >
         <AddProductTitle title={"Discount details (Optional)"} />
@@ -571,11 +572,12 @@ const AddProduct = ({ light, isMini }) => {
         </Container>
       </Box>
       <Box
-        pt={3}
+        
         sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", pb: 4, mt: 2.5 }}
       >
         <AddProductTitle title={"Toggles"} />
-        <Container sx={{ display: "flex", flexDirection: "column", gap: "20px", mt: "20px" }}>
+        <Container >
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "20px", mt: "20px" }}>
           <FormControlLabel
             sx={{
               fontFamily: "Inter",
@@ -631,6 +633,12 @@ const AddProduct = ({ light, isMini }) => {
               />
             }
           />
+          <PictureField
+          value={controls.main_image}
+          onChange={(e)=>setControl('main_image',e.target.value)}
+          />
+          </Box>
+
         </Container>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: "24px" }}>

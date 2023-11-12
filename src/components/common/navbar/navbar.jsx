@@ -134,8 +134,8 @@ const Navbar = () => {
                 <Button
                   key={page}
                   onClick={() => {
-                    page[0] && navigate('/');
-                    console.log(page);
+                    page[0] && navigate('/')|| page[4] && navigate('/contactus')||page[2] && navigate('/price')
+                   
                   }}
                   sx={{
                     my: 2,

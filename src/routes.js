@@ -81,6 +81,8 @@ import AddNewJob from "layouts/job/addNewJob";
 import Addnewcategory from "layouts/products/addnewcategory";
 import Order from "layouts/order"
 import DetailOrder from "layouts/order/detailOrder"
+import ContactUs from "layouts/ContactUs/ContactUs";
+import Price from "layouts/Price/Price";
 
 
 const sub_domain = localStorage.getItem('sub_domain')
@@ -92,6 +94,22 @@ const routes = [
     key:'home',
     route:'/',
     component:<HomeSections/>,
+    noCollapse:false,
+  },
+  {
+    type:'title',
+    name:'ContactUS',
+    key:'contactus',
+    route:'/contactus',
+    component:<ContactUs/>,
+    noCollapse:false,
+  },
+  {
+    type:'title',
+    name:'Price',
+    key:'price',
+    route:'/price',
+    component:<Price/>,
     noCollapse:false,
   },
   {

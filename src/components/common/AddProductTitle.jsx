@@ -9,16 +9,18 @@ const AddProductTitle = ({ switch: showSwitch, title }) => {
     <Box
       sx={{
         width: '100%',
-        height: '56px',
-        // padding: '0 24px', // Adjusted padding values
+        
+        // height: '56px',
+         padding: '12px 24px 12px 24px', // Adjusted padding values
         boxShadow: '0px -1px 0px 0px #E5E7E8 inset',
         display: 'flex',
         alignItems: 'center',
       }}
     >
-      <Container>
+      {/* <Container> */}
         <Box sx={{ display: 'flex',
-        alignItems: 'center',justifyContent:'space-between'}}>
+        width:'100%',
+       justifyContent:'space-between'}}>
         <Typography
           sx={{
            
@@ -31,9 +33,12 @@ const AddProductTitle = ({ switch: showSwitch, title }) => {
         >
           {title}
         </Typography>
+        <Box sx={{ display: 'flex',
+        alignItems: 'center',justifyContent:'end'}}>
         {showSwitch && <Switch {...label} defaultChecked />}
         </Box>
-      </Container>
+        </Box>
+      {/* </Container> */}
     </Box>
   );
 };
