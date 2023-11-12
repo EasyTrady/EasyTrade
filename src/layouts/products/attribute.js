@@ -204,12 +204,7 @@ function Attribute({ absolute, light, isMini }) {
             method: "delete",
             Token: `Token ${Token}`
         });
-    const [attributeValueRequest, getattributeValueResponce] =
-        useRequest({
-            path: ATTRIBUTES,
-            method: "get",
-            Token: `Token ${Token}`
-        });
+    
     const [attributeValuepostRequest, postValueattributeResponce] =
         useRequest({
             path: ATTRIBUTES,

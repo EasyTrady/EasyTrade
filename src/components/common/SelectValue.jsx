@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Box, IconButton, InputAdornment, MenuItem, Select, TextField, Typography } from '@mui/material'
+import { Box, Divider, IconButton, InputAdornment, MenuItem, Select, TextField, Typography } from '@mui/material'
 import React from 'react'
 
 import { NumericFormat } from 'react-number-format'
@@ -54,12 +54,14 @@ textAlign: 'left'
       // } 
       }}
     />
+    <Divider style={{ backgroundColor:'red',width:'100%',height:'100%',alignSelf: "stretch" }} variant="middle" orientation="vertical" flexItem   />
     <Select 
     value={type}
     onChange={onChange}
     sx={{
-        '&..MuiSelect-outlined':{width:'20% !important'},
-        pl:1,
+        '&.MuiSelect-outlined':{width:'20% !important'},
+        border:"none",
+        width:'20% !important',
         fontFamily:'Cairo',
                 boxShadow: "none",
                 height:'40px !important',
@@ -77,10 +79,10 @@ textAlign: 'left'
               }} 
               size="small"
               IconComponent={() => <KeyboardArrowDownIcon />}
-              defaultValue={'g'}
+              defaultValue={'true'}
               displayEmpty
               >
-                <MenuItem value=''>g</MenuItem>
+                <MenuItem value='true'>Precentage</MenuItem>
                 <MenuItem value='gram'>g</MenuItem>
                 <MenuItem value='kilo'>kilo</MenuItem>
               </Select>

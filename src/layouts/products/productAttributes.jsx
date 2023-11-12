@@ -4,6 +4,7 @@ import {
   Checkbox,
   Container,
   Divider,
+  MenuItem,
   Paper,
   Table,
   TableBody,
@@ -20,6 +21,10 @@ import InputField from "components/common/TextField";
 import Edit from "../../assets/images/Edit.svg";
 import Delete from "../../assets/images/Delete.svg";
 import React from "react";
+import useRequest from "hooks/useRequest";
+import { ATTRIBUTES } from "data/api";
+import { useDispatch, useSelector } from "react-redux";
+import useControls from "hooks/useControls";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -33,6 +38,38 @@ const rows = [
   createData("Gingerbread", 356, 16.0, 49, 3.9),
 ];
 const ProductAttributes = () => {
+  let Token = localStorage.getItem('token')
+  let attributes = useSelector((state) => state.attribute.value)
+  const dispatch=useDispatch()
+  const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
+  
+    { control: "attributes", value: '', isRequired: false },
+    { control: "product_images", value: [], isRequired: false },
+  ]);
+  const [attributeRequest, attributeResponse] =
+        useRequest({
+            path: ATTRIBUTES,
+            method: "get",
+            Token: `Token ${Token}`
+        });
+
+        const getAttributies=()=>{
+          attributeRequest({
+            onSuccess: (res) => {
+                dispatch({ type: "attribute/set", payload: res.data })
+                // res.data.map((ele) => attributeValueRequest({
+                //     id: ele.id + "/values",
+                //     onSuccess: (res) => {
+
+                //         dispatch({ type: "attribute/addValues", payload: { idattribute: ele.id, values: res.data } })
+
+                //     }
+                // }))
+
+            }
+        })
+
+        }
   return (
     <Container
       maxWidth="xl"
@@ -65,13 +102,25 @@ const ProductAttributes = () => {
           variant="outlined"
           label={"Select attribute"}
           placeholder={"Select..."}
-          // value={controls.attribute}
-          // onChange={(e) => setControl("attribute", e.target.value)}
-          // required={required.includes("attribute")}
-          // error={Boolean(invalid.attribute)}
-          // helperText={invalid.attribute}
+          onOpen={getAttributies}
+          renderValue={(selected) => {
+            return attributes.find(
+              (attributes) => attributes.id === selected
+            )?.name
+            }}
+          isPending={attributeResponse.isPending}
+          value={controls.attributes}
+          onChange={(e) => setControl("attributes", e.target.value)}
+          required={required.includes("attributes")}
+          error={Boolean(invalid.attributes)}
+          helperText={invalid.attributes}
           sx={input}
-        />
+        >
+
+          {attributes.map((attribute)=>(
+            <MenuItem key={attribute.id} value={attribute.id}>{attribute.name}</MenuItem>
+          ))}
+        </SelectField>
       </Box>
       <Divider />
 

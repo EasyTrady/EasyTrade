@@ -307,14 +307,14 @@ const FirebaseLogin = ({ ...others }) => {
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
                 <Button
-                  sx={{ borderRadius: '12PX', padding: '10px, 18px, 10px, 18px' }}
+                  sx={{ borderRadius: '12PX', padding: '10px, 18px, 10px, 18px' ,backgroundColor:'#5D449B',color:'white'}}
                   disableElevation
                   disabled={isSubmitting}
                   fullWidth
                   size="large"
                   type="submit"
                   variant="contained"
-                  color="secondary"
+                
                 >
                   تسجيل الدخول
                 </Button>

@@ -504,8 +504,10 @@ const FirebaseRegister = ({ ...others  }) => {
 
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
+
                 <SoftButton  fullWidth onClick={(e)=>handleSubmit(e)}
-                 size="large" type="submit" variant="contained" color="secondary"sx={{ borderRadius: '12px' }}onSubmit={(e)=>handleSubmit(e)}>
+                 size="large" type="submit" variant="contained" sx={{ borderRadius: '12px',backgroundColor:'#5D449B',color:'white' }}onSubmit={(e)=>handleSubmit(e)}>
+
                   انشاء حساب
                 </SoftButton>
               </AnimateButton>

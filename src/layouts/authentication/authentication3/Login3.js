@@ -7,7 +7,7 @@ import {Box, Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/materi
 // project imports
 import AuthWrapper1 from '../AuthWrapper1';
 import AuthCardWrapper from '../AuthCardWrapper';
-import AuthLogin from '../auth-forms/AuthLogin';
+ import AuthLogin from '../auth-forms/AuthLogin';
 // import Logo from 'ui-component/Logo';
 // import AuthFooter from 'ui-component/cards/AuthFooter';
 import login from '../../../assets/images/icons/Social Media Icon Square/login.png';
@@ -41,7 +41,7 @@ const Login = () => {
           // paddingTop: '70px'
         }}
       >
-        <Box component="img" sx={{  width: { xl: '60%', lg: '60%', md: '50%', sm: '100%', sx: '100%' }, height:'100vh'}} src={login}></Box>
+        <Box component="img" sx={{  width: { xl: '60%', lg: '60%', md: '50%', sm: '100%', sx: '100%' }, height:{ xl:'100vh', lg: '100vh', md:'100vh', sm: '30vh', sx: '30vh'}}} src={login}></Box>
       <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh',bgcolor:'#FFFFFF' }}>
         <Grid item xs={12}>
           <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: 'calc(100vh - 68px)' }}>
@@ -57,7 +57,7 @@ const Login = () => {
                     <Grid container direction={matchDownSM ? 'column-reverse' : 'row'} alignItems="center" justifyContent="center">
                       <Grid item>
                         <Stack alignItems="center" justifyContent="center" spacing={1}>
-                          <Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
+                          <Typography color={theme.palette.secondary.main}  gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
                             تسجيل الدخول 
                           </Typography>
                           <Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>

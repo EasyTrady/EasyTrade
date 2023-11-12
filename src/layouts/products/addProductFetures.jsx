@@ -10,36 +10,55 @@ import PictureField from "components/common/PictureField";
 import ImagesAlbums from "components/common/ImagesAlbums";
 import AddIcon from "@mui/icons-material/Add";
 import SoftButton from "components/SoftButton";
+import useRequest from "hooks/useRequest";
+import { PRODUCTS } from "data/api";
 const AddProductFetures = () => {
+  let Token = localStorage.getItem("token");
+  const [AddProductImagesRequest, AddProductImagesResponce] = useRequest({
+    path: PRODUCTS+id+'/images',
+    method: "post",
+    Token: `Token ${Token}`,
+  });
   // add status of fields
   const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
-    { control: "image", value: "", isRequired: true },
-    {
-      control: "discount",
-      value: "",
-      isRequired: true,
-    },
-    {
-      control: "purchase_price",
-      value: "",
-      isRequired: true,
-    },
-    {
-      control: "shipping_price",
-      value: "",
-      isRequired: true,
-    },
-    {
-      control: "gtn",
-      value: "",
-      isRequired: true,
-    },
-    { control: "mpn", value: "", isRequired: true },
-    { control: "countries", value: [], isRequired: true },
-    { control: "main_image", value: [], isRequired: true },
+  
+    { control: "main_image", value: {}, isRequired: true },
     { control: "product_images", value: [], isRequired: true },
   ]);
-  console.log(controls.product_images);
+  function handleSubmit() {
+    
+    validate().then((output) => {
+      console.log(output);
+      if (!output.isOk) return;
+      AddProductImagesRequest({
+        body: filter({
+          obj: {
+            main_image: controls.main_image,
+            product_images: controls.product_images,
+           
+          },
+          output: "formData",
+        }),
+        onSuccess: (res) => {
+          console.log(res.data, controls);
+        },
+      }).then((res) => {
+        let response = res?.response?.data;
+        console.log(res);
+        // const responseBody = filter({
+        //   obj: {
+        //     name: response?.name?.join(""),
+        //     quantity: response?.quantity?.join(" "),
+        //    
+        //   },
+        //   output: "object",
+        // });
+
+        setInvalid(responseBody);
+        resetControls("");
+      });
+    });
+  }
   return (
     <Box sx={{display:'flex',flexDirection:'column',justifyContent:'space-between',gap:2}}>
     <Box sx={{ p: 3, display: "flex", flexDirection: "column", gap: 3 ,bgcolor:'#fff'}}>
@@ -87,7 +106,7 @@ const AddProductFetures = () => {
                                 backgroundColor: (theme) => theme.palette.purple.middle
                             },width: '260px'
                         }}
-                        onClick={() => {}}
+                        onClick={handleSubmit}
                     >
                         Next
                     </SoftButton>

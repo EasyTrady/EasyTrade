@@ -42,7 +42,7 @@ const Register = () => {
           // paddingTop: '70px'
         }}
       >
-        <Box component="img" sx={{  width: { xl: '50%', lg: '50%', md: '50%', sm: '100%', sx: '100%' }, height:'100vh'}} src={signup}></Box>
+        <Box component="img" sx={{  width: { xl: '50%', lg: '50%', md: '50%', sm: '0%', sx: '0%' }, height:{ xl:'100vh', lg: '100vh', md:'100vh', sm: '30vh', sx: '30vh'}}} src={signup}></Box>
       <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh', bgcolor:'#FFFFFF'}}>
         <Grid item xs={12}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'column', gap: 2, px: '12px' }}>
