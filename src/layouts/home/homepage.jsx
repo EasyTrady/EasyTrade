@@ -16,7 +16,7 @@ import React from 'react';
 // import ContactUs from 'layouts/ContactUs/ContactUs';
 // import Price from 'layouts/Price/Price';
 // import ContactUs from 'layouts/ContactUs/ContactUs';
-// import Price from 'layouts/Price/Price';
+import Price from 'layouts/Price/Price';
 // import ContactUs from 'layouts/ContactUs/ContactUs';
 
 const HomeSections = () => {
@@ -26,8 +26,8 @@ const HomeSections = () => {
       <Navbar />
       <LandingSection />
       
-        {/* <Price/> 
-      <ContactUs/>  */}
+        <Price/> 
+      {/* <ContactUs/>   */}
       <Achievements/>
       <SubscribeSection />
       <CompanySection />
