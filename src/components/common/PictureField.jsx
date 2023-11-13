@@ -22,7 +22,7 @@ function PictureField({
         ref={ref}
         onChange={(e) => {
         //   setValue(e.target.files);
-          onChange(e);
+          onChange(e.target.files[0]);
         }}
         style={{ display: "none" }}
       

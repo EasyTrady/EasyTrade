@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Box, Card, Icon, Typography } from "@mui/material";
 import input from "assets/theme/components/form/input";
 import NumberField from "components/common/NumberFeild";
@@ -12,7 +13,7 @@ import AddIcon from "@mui/icons-material/Add";
 import SoftButton from "components/SoftButton";
 import useRequest from "hooks/useRequest";
 import { PRODUCTS } from "data/api";
-const AddProductFetures = () => {
+const AddProductFetures = ({id}) => {
   let Token = localStorage.getItem("token");
   const [AddProductImagesRequest, AddProductImagesResponce] = useRequest({
     path: PRODUCTS+id+'/images',
@@ -33,7 +34,7 @@ const AddProductFetures = () => {
       AddProductImagesRequest({
         body: filter({
           obj: {
-            main_image: controls.main_image,
+           
             product_images: controls.product_images,
            
           },

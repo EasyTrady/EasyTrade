@@ -4,7 +4,7 @@ import React from 'react'
 
 import { NumericFormat } from 'react-number-format'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-const SelectValue = ({variant,label,handleValueChange,type,onChange,...rest}) => {
+const SelectValue = ({variant,label,value,handleValueChange,type,onChange,...rest}) => {
   return (
     <Box sx={{display:'flex',flexDirection:'column',alignItems:'start',width:'100%',  }}>
    <Typography sx={{
@@ -19,6 +19,7 @@ textAlign: 'left'
     <NumericFormat
       customInput={TextField}
       variant={Boolean(variant) ? variant : "standard"}
+      value={value}
       onChange={handleValueChange}
       {...rest}
       sx={{ width: "100%",
@@ -83,8 +84,8 @@ textAlign: 'left'
               displayEmpty
               >
                 <MenuItem value='true'>Precentage</MenuItem>
-                <MenuItem value='gram'>g</MenuItem>
-                <MenuItem value='kilo'>kilo</MenuItem>
+                <MenuItem value='false'>g</MenuItem>
+                
               </Select>
     </Box>
     </Box>

@@ -13,7 +13,7 @@ export default function DatePickerField({value,onChange}) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
-  inputFormat="MM/dd/yyyy"
+  inputFormat="YYYY-MM-DDThh:mm[:ss[.uuuuuu]][+HH:MM|-HH:MM|Z]"
   value={value}
   onChange={onChange}
   renderInput={(params) => <TextField {...params} fullWidth  sx={{idth:'100%'}}/>}  

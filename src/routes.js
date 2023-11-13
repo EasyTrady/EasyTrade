@@ -168,13 +168,13 @@ const routes = [
         type: "item"
       },
 
-       {
-        id: "newproduct",
-        title: "Add new product",
-        path: `/${sub_domain}/dashboard/products/addnewproduct`,
-        element: <Auth><AddProductPanel /></Auth>,
-        type: 'item',
-      },
+      //  {
+      //   id: "newproduct",
+      //   title: "Add new product",
+      //   path: `/${sub_domain}/dashboard/products/addnewproduct`,
+      //   element: <Auth><AddProductPanel /></Auth>,
+      //   type: 'item',
+      // },
       {
         id: "category",
         title: "category",

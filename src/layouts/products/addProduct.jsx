@@ -73,7 +73,7 @@ const AddProduct = ({ light, isMini }) => {
   };
   //   form status control
   const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
-    { control: "main_image", value: "", isRequired: false },
+    { control: "main_image", value: {}, isRequired: false },
     {
       control: "name",
       value: "",
@@ -94,12 +94,7 @@ const AddProduct = ({ light, isMini }) => {
       control: "quantity",
       value: "",
       isRequired: false,
-      validations: [
-        {
-          test: /[^0-9]/g,
-          message: "not valid quantity",
-        },
-      ],
+      
     },
     {
       control: "price",
@@ -154,6 +149,9 @@ const AddProduct = ({ light, isMini }) => {
     { control: "custom_shipping_price", value: "", isRequired: false },
     { control: "dimensions", value: "", isRequired: false },
     { control: "weight", value: "", isRequired: false },
+    { control: "in_taxes", value: "", isRequired: false },
+    { control: "is_piblished", value: "", isRequired: false },
+    { control: "weight", value: "", isRequired: false },
   ]);
   const [categoryRequest, getcategoryResponce] = useRequest({
     path: CATEGORY,
@@ -184,7 +182,7 @@ const AddProduct = ({ light, isMini }) => {
       AddProductRequest({
         body: filter({
           obj: {
-            product_categories: controls.product_categories,
+            product_categories: controls.product_categories||"12",
             sku: controls.sku,
             mpn: controls.mpn,
             gtin: controls.gtin,
@@ -193,8 +191,8 @@ const AddProduct = ({ light, isMini }) => {
             price: controls.price,
             main_image: controls.main_image,
             discount: controls.discount,
-            discount_start_date: controls.discount_start_date,
-            discount_end_date: controls.discount_end_date,
+            discount_start_date: controls.discount_start_date.toISOString(),
+            discount_end_date: controls.discount_end_date.toISOString(),
             is_percentage_discount: controls.is_percentage_discount,
             purchase_price: controls.purchase_price,
             custom_shipping_price: controls.custom_shipping_price,
@@ -216,37 +214,37 @@ const AddProduct = ({ light, isMini }) => {
         console.log(res);
         const responseBody = filter({
           obj: {
-             product_categories: response.product_categories,
-            sku: response.sku,
-            mpn: response.mpn,
-            gtin: response.gtin,
-            name: response.name,
-            description: response.description,
-            price: response.price,
-            main_image: response.main_image,
-            discount: response.discount,
-            discount_start_date: response.discount_start_date,
-            discount_end_date: response.discount_end_date,
-            is_percentage_discount: response.is_percentage_discount,
-            purchase_price: response.purchase_price,
-            custom_shipping_price: response.custom_shipping_price,
-            maximum_order_quantity: response.maximum_order_quantity,
-            is_piblished: response.is_piblished,
-            in_taxes: response.in_taxes,
-            require_shipping: response.require_shipping,
-            quantity: response.quantity,
-            weight: response.weight,
-            dimensions: response.dimensions,
+             product_categories: response?.product_categories,
+            sku: response?.sku,
+            mpn: response?.mpn,
+            gtin: response?.gtin,
+            name: response?.name,
+            description: response?.description,
+            price: response?.price,
+            main_image: response?.main_image,
+            discount: response?.discount,
+            discount_start_date: response?.discount_start_date,
+            discount_end_date: response?.discount_end_date,
+            is_percentage_discount: response?.is_percentage_discount,
+            purchase_price: response?.purchase_price,
+            custom_shipping_price: response?.custom_shipping_price,
+            maximum_order_quantity: response?.maximum_order_quantity,
+            is_piblished: response?.is_piblished,
+            in_taxes: response?.in_taxes,
+            require_shipping: response?.require_shipping,
+            quantity: response?.quantity,
+            weight: response?.weight,
+            dimensions: response?.dimensions,
           },
           output: "object",
         });
 
-        setInvalid(responseBody);
+        // setInvalid(responseBody);
         resetControls("");
       });
     });
   }
-
+console.log(controls.in_taxes);
   return (
     <>
       <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
@@ -298,24 +296,24 @@ const AddProduct = ({ light, isMini }) => {
               variant="outlined"
               placeholder="category"
               label="Category"
-              thousandSeparator
+              
               isPending={getcategoryResponce.isPending}
               onOpen={getCategory}
               renderValue={(selected) => {
-												return category.find(
+												return category?.find(
 												  (category) => category.id === selected
 												)?.name
 											  }}
               value={controls.product_categories}
               onChange={(e) => setControl("product_categories", e.target.value)}
               required={required.includes("product_categories")}
-              textHelper={controls.category}
+              textHelper={controls.product_categories}
               error={Boolean(invalid.product_categories)}
               helperText={invalid.product_categories}
               sx={{ width: "100%", fontSize: "14px",background:'#fff' }}
             >
-              {category?.map((category) => (
-                <MenuItem key={category.id} value={category?.id}>
+              {category?.map((category,index) => (
+                <MenuItem key={`${category.id} ${index}`} value={category.id}>
                   {category?.name}
                 </MenuItem>
               ))}
@@ -529,15 +527,17 @@ const AddProduct = ({ light, isMini }) => {
       >
         <AddProductTitle title={"Discount details (Optional)"} />
         <Container sx={{ display: "flex", flexDirection: "column", gap: "20px", mt: "20px" }}>
-          <NumberField
+          <SelectValue
             variant="outlined"
-            placeholder={"Discount"}
+            label={"Discount"}
             value={controls.discount}
-            onChange={(e) => setControl("discount", e.target.value)}
+            type={controls.is_percentage_discount}
+            onChange={(e) => setControl("is_percentage_discount", e.target.value)}
+            handleValueChange={(e) => setControl("discount", e.target.value)}
             required={required.includes("discount")}
             error={Boolean(invalid.discount)}
             helperText={invalid.discount}
-            icon={{ component: <DnsOutlinedIcon />, direction: "left" }}
+            
             sx={input}
             borderBottom="none"
           />
@@ -553,7 +553,7 @@ const AddProduct = ({ light, isMini }) => {
             >
               Start date*
             </Typography>
-            <DatePickerField value={controls.discount_start_date} onChange={(e)=>setControl('discount_start_date',e.target.value)}/>
+            <DatePickerField value={controls.discount_start_date} onChange={(e)=>setControl('discount_start_date',e)}/>
           </Box>
           <Box>
             <Typography
@@ -567,7 +567,7 @@ const AddProduct = ({ light, isMini }) => {
             >
               End date*
             </Typography>
-            <DatePickerField value={controls.discount_end_date} onChange={(e)=>setControl('discount_end_date',e.target.value)}/>
+            <DatePickerField value={controls.discount_end_date} onChange={(e)=>setControl('discount_end_date',e)}/>
           </Box>
         </Container>
       </Box>
@@ -578,6 +578,7 @@ const AddProduct = ({ light, isMini }) => {
         <AddProductTitle title={"Toggles"} />
         <Container >
           <Box sx={{ display: "flex", flexDirection: "column", gap: "20px", mt: "20px" }}>
+            <Box  sx={{ display: "flex", flexDirection: "row", justifyContent:'space-between',  }}>
           <FormControlLabel
             sx={{
               fontFamily: "Inter",
@@ -633,9 +634,10 @@ const AddProduct = ({ light, isMini }) => {
               />
             }
           />
+          </Box>
           <PictureField
           value={controls.main_image}
-          onChange={(e)=>setControl('main_image',e.target.value)}
+          onChange={(e)=>setControl('main_image',e)}
           />
           </Box>
 
