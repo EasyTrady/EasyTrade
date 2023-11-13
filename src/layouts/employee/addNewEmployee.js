@@ -26,10 +26,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import SoftButton from 'components/SoftButton';
 function AddNewEmployee({ absolute, light, isMini }) {
     const route = useLocation().pathname.split("/").slice(1);
+    const sub_domain = localStorage.getItem('sub_domain')
     let { t } = useTranslation('common')
     let dispatch = useDispatch()
     let jobs = useSelector((state) => state.job.value)
+    const navigate = useNavigate()
 
+    const location = useLocation();
+    const { state } = location;
     let Token = localStorage.getItem('token')
     const [jobRequest, getjobResponce] =
         useRequest({
@@ -43,8 +47,10 @@ function AddNewEmployee({ absolute, light, isMini }) {
             method: "post",
             Token: `Token ${Token}`
         });
+        
     const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
         useControls([
+            {control: "id", value: "", isRequired: false},
             { control: "image", value: "", isRequired: false },
             {
                 control: "email",
@@ -71,11 +77,11 @@ function AddNewEmployee({ absolute, light, isMini }) {
             {
                 control: "password",
                 value: "",
-                isRequired: true,
+                isRequired:Boolean(state?.dataRow)?false:true,
             }, {
                 control: "confirm",
                 value: "",
-                isRequired: true,
+                isRequired: Boolean(state?.dataRow)?false:true,
                 validations: [
                     {
                         test: (controls) => new RegExp(`^${controls.password}$`),
@@ -97,24 +103,50 @@ function AddNewEmployee({ absolute, light, isMini }) {
                 isRequired: true,
             }
         ]);
+        const [EmployeePatchRequest, PatchEmployeerResponce] =
+        useRequest({
+            path: EMPLOYEE,
+            method: "patch",
+            Token: `Token ${Token}`
+        });
     function handleSubmit() {
 
         validate().then((output) => {
 
             if (!output.isOk) return;
-            EmployeePostRequest({
-                body: controls,
-                onSuccess: (res) => {
-                    resetControls()
-                    console.log(res.data, controls)
-                }
-            }).then((res) => {
-                let response = res?.response?.data;
+            console.log(controls.id,Boolean(state?.dataRow))
 
+            if(Boolean(state?.dataRow)){
+                EmployeePatchRequest({
+                    id:controls.id,
+                    body: {email:controls.email,full_name:controls.full_name,phone:controls.phone,job:controls.job},
+                    onSuccess: (res) => {
+                        console.log(res.data, controls.id)
 
-                setInvalid(response);
+                        dispatch({ type: "employee/patchItem", payload: { id: controls.id, item: res.data } })
+                        resetControls()
+                    }
+                })
+                navigate(`/${sub_domain}/dashboard/employee`)
+            }else{
+                EmployeePostRequest({
+                    body: controls,
+                    onSuccess: (res) => {
+                        dispatch({ type: "employee/addItem", payload:  res.data  })
 
-            });
+                        resetControls()
+                        console.log(res.data, controls)
+                    }
+                }).then((res) => {
+                    let response = res?.response?.data;
+    
+    
+                    setInvalid(response);
+    
+                });
+                navigate(`/${sub_domain}/dashboard/employee`)
+            }
+            
         })
 
     }
@@ -125,27 +157,44 @@ function AddNewEmployee({ absolute, light, isMini }) {
             }
         })
     }, [])
+    useEffect(() => {
+        // jobRequest({
+        //     onSuccess: (res) => {
+        //         dispatch({ type: "job/set", payload: res.data })
+        //     }
+        // })
+        if(Boolean(state?.dataRow)){
+            Object.entries(state?.dataRow)?.forEach(([key,value])=>setControl(key,value))
+
+        }
+        // setControl()
+       
+    }, [state])
+    useEffect(()=>{
+        console.log(jobs,controls.job)
+
+    },[jobs,controls.job])
     return (
         <>
             <DashboardLayout>
                 <DashboardNavbar />
                 <Container>
                 <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-                    <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+                    <Breadcrumbs icon="home" title={Boolean(state?.dataRow)?t("EditEmployee"):route[route.length - 1]} route={route} light={light} />
                 </SoftBox>
                 </Container>
                 <Container sx={{ p: 2, display: "flex", justifyContent: "space-between" }}>
                     <Form component="form"
                         childrenProps={{
                             title: t("ContactInfo")
-                        }} sx={{ width: "47%" ,borderRadius:"8px",}} hideFooter={true}>
+                        }} sx={{ width:Boolean(state?.dataRow)?"100%":"47%" ,borderRadius:"8px",}} hideFooter={true}>
                         <Box sx={{ display: "flex", flexDirection: "column" ,boxSizing: "border-box"}}>
                             <Box sx={{ marginY: "6px" }}>
                                 <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("Fullname")}</InputLabel>
                                 <SoftInput
                                     placeholder="Full Name"
                                     icon={{ component: <PersonIcon />, direction: "left" }}
-                                    sx={{ ".MuiInputBase-root": { border: "unset" },color:"#959FA3" }}
+                                    sx={{ ".MuiInputBase-root": { border: "unset", }, }}
                                     value={controls.full_name}
                                     onChange={(e) =>
                                         setControl("full_name", e.target.value)
@@ -161,7 +210,7 @@ function AddNewEmployee({ absolute, light, isMini }) {
 
                                     placeholder="Phone"
                                     icon={{ component: <PhoneInTalkIcon />, direction: "left" }}
-                                    sx={{ ".MuiInputBase-root": { border: "unset" } ,color:"#959FA3"}}
+                                    sx={{ ".MuiInputBase-root": { border: "unset" } }}
                                     value={controls.phone}
                                     onChange={(e) => setControl("phone", e.target.value)}
                                     error={Boolean(invalid?.phone)}
@@ -174,7 +223,7 @@ function AddNewEmployee({ absolute, light, isMini }) {
                                 <SoftInput
                                     placeholder="email"
                                     icon={{ component: <MailOutlineIcon />, direction: "left" }}
-                                    sx={{ ".MuiInputBase-root": { border: "unset" } ,color:"#959FA3"}}
+                                    sx={{ ".MuiInputBase-root": { border: "unset" } }}
                                     value={controls.email}
                                     onChange={(e) =>
                                         setControl("email", e.target.value)
@@ -188,9 +237,9 @@ function AddNewEmployee({ absolute, light, isMini }) {
                                 <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("job")}</InputLabel>
                                 <SoftInput
                                     select
-                                    value={controls.job}
+                                    value={controls?.job}
                                     icon={{ component: <WorkOutlineIcon />, direction: "left" }}
-                                    sx={{ ".MuiInputBase-root": { border: "unset" },color:"#959FA3"}}
+                                    sx={{ ".MuiInputBase-root": { border: "unset" }}}
                                     onChange={(e) => setControl("job", e.target.value)}
                                     required={required.includes("job")}
                                     error={Boolean(invalid?.job)}
@@ -204,13 +253,13 @@ function AddNewEmployee({ absolute, light, isMini }) {
                                         renderValue: (selected) => {
                                             if (!Boolean(selected)) {
                                                 return (
-                                                    <Typography sx={{  opacity: "0.42", fontSize: "14px" ,color:"#959FA3"}} variant="p">
+                                                    <Typography sx={{  opacity: "0.42", fontSize: "14px" }} variant="p">
                                                         {"Vendor"}
                                                     </Typography>
                                                 );
                                             } else {
                                                 console.log(selected)
-                                                return jobs?.results?.find((ele)=>ele.id===selected).title;
+                                                return jobs?.results?.find((ele)=>ele.id===selected)?.title;
                                             }
                                         },
                                         MenuProps: {
@@ -235,7 +284,7 @@ function AddNewEmployee({ absolute, light, isMini }) {
                         </Box>
 
                     </Form>
-                    <Form component="form"
+                    {Boolean(state?.dataRow)===false&& <Form component="form"
                         childrenProps={{
                             title: t("Account")
                         }} sx={{ width: "47%" }} hideFooter={true}>
@@ -251,7 +300,7 @@ function AddNewEmployee({ absolute, light, isMini }) {
                                     onChange={(e) => setControl("password", e.target.value)}
                                     error={Boolean(invalid?.password)}
                                     helperText={invalid?.password}
-                                    sx={{ ".MuiInputBase-root input": { minWidth: "95% !important" }, ".MuiInputBase-root": { border: "unset" }, ".MuiInputBase-root::before": { content: "none" },color:"#959FA3" }}
+                                    sx={{ ".MuiInputBase-root input": { minWidth: "95% !important" }, ".MuiInputBase-root": { border: "unset" }, ".MuiInputBase-root::before": { content: "none" } }}
                                     icon={{ component: <LockOpenIcon />, direction: "left" }}
                                 />
                             </Box>
@@ -265,13 +314,14 @@ function AddNewEmployee({ absolute, light, isMini }) {
                                     onChange={(e) => setControl("confirm", e.target.value)}
                                     error={Boolean(invalid?.confirm)}
                                     helperText={invalid?.confirm}
-                                    sx={{ ".MuiInputBase-root input": { minWidth: "95% !important" }, ".MuiInputBase-root": { border: "unset" }, ".MuiInputBase-root::before": { content: "none" },color:"#959FA3" }}
+                                    sx={{ ".MuiInputBase-root input": { minWidth: "95% !important" }, ".MuiInputBase-root": { border: "unset" }, ".MuiInputBase-root::before": { content: "none" } }}
                                     icon={{ component: <LockOpenIcon />, direction: "left" }}
                                 /></Box>
 
                         </Box>
 
-                    </Form>
+                    </Form>}
+                   
 
                 </Container>
                 <Stack
@@ -297,6 +347,7 @@ function AddNewEmployee({ absolute, light, isMini }) {
                     </SoftButton>
                 </Stack>
                 {PostEmployeerResponce.failAlert}
+                {PatchEmployeerResponce.failAlert}
             </DashboardLayout>
         </>
     )

@@ -44,15 +44,10 @@ function Basket({ absolute, light, isMini }) {
   const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
     useControls([
       {
-        control: "email",
+        control: "title",
         value: "",
         isRequired: true,
-        validations: [
-          {
-            test: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            message: t("notvalidemail")
-          },
-        ]
+        
       }, {
         control: "describution",
         value: "",
@@ -103,11 +98,11 @@ function Basket({ absolute, light, isMini }) {
         position: "relative"
       }}
       >
-        {row.products.map((ele) =>
-          ele.images.map((elem, index) =>
+        {row.products.map((ele,index) =>
+          // ele.images.map((elem, index) =>
             <> <Tooltip arrow title={ele?.name ? ele?.name : ""} className="">
               <Paper key={index} elevation={3} sx={{
-                backgroundImage: `url(${elem?.image})`,
+                backgroundImage: `url(${ele?.main_image})`,
                 backgroundColor: "unset !important", width: "64px", height: "64px",
                 position: "absolute",
                 left: `${index === 0 ? 0 : 20 * (index)}px`,
@@ -117,7 +112,7 @@ function Basket({ absolute, light, isMini }) {
                 {console.log(ele?.name)}
               </Paper>
             </Tooltip>
-            </>)
+            </>
 
         )}
       </Box>
@@ -162,7 +157,7 @@ function Basket({ absolute, light, isMini }) {
       field: 'Products',
       headerName: 'Products',
       type: 'image',
-      width: 200,
+      width: 300,
       align: 'left',
       headerAlign: 'left',
       renderCell: renderImageCell,
@@ -185,7 +180,7 @@ function Basket({ absolute, light, isMini }) {
           backgroundColor: (theme) => params.row.is_notified_before ? theme.palette.success.hover : theme.palette.error.hover,
           marginTop: "10px", borderRadius: "5px", padding: "10px", color: (theme) => params.row.is_notified_before ? theme.palette.success.main : theme.palette.error.main
         }}>
-          {params.row.is_notified_before ? <Typography variant={"p"}>active</Typography> : <Typography variant={"p"}>in active</Typography>}
+          {params.row.is_notified_before ? <Typography variant={"p"}>Notified</Typography> : <Typography variant={"p"}>Not notified</Typography>}
         </Typography>
       </Box>,
       filterable: false,
@@ -193,7 +188,7 @@ function Basket({ absolute, light, isMini }) {
     }
     ,
     {
-      field: 'total_price',
+      field: 'total',
       headerName: 'total price',
       type: 'text',
       width: 100,
@@ -201,7 +196,21 @@ function Basket({ absolute, light, isMini }) {
       headerAlign: 'left',
       editable: true,
       renderCell: (params) => <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <Typography variant={"h6"} sx={{ color: (theme) => theme.palette.primary, marginTop: "10px" }}>{params.row.total_price}EGP</Typography>
+        <Typography variant={"h6"} sx={{ color: (theme) => theme.palette.primary, marginTop: "10px" }}>{params.row.total}EGP</Typography>
+      </Box>,
+      filterable: false,
+      disableColumnMenu: true
+    },
+    {
+      field: 'sub_total',
+      headerName: 'sub total',
+      type: 'text',
+      width: 100,
+      align: 'left',
+      headerAlign: 'left',
+      editable: true,
+      renderCell: (params) => <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Typography variant={"h6"} sx={{ color: (theme) => theme.palette.primary, marginTop: "10px" }}>{params.row.sub_total}EGP</Typography>
       </Box>,
       filterable: false,
       disableColumnMenu: true
@@ -295,7 +304,7 @@ function Basket({ absolute, light, isMini }) {
       // }
       // formDate.append("customers",JSON.stringify([openDialog.row.customer_id]))
       formDate?.append("body", controls?.describution)
-      formDate?.append("title", controls?.email)
+      formDate?.append("title", controls?.title)
 
       SendEmailProductRequest({
         body: formDate
@@ -317,12 +326,12 @@ function Basket({ absolute, light, isMini }) {
 
       }
     })
-    productRequest({
-      onSuccess: (res) => {
-        console.log(res.data)
-        dispatch({ type: "products/set", payload: res.data })
-      }
-    })
+    // productRequest({
+    //   onSuccess: (res) => {
+    //     console.log(res.data)
+    //     dispatch({ type: "products/set", payload: res.data })
+    //   }
+    // })
   }, [])
   useEffect(() => {
     setRows(carts?.results)
@@ -390,12 +399,12 @@ function Basket({ absolute, light, isMini }) {
               <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", marginBottom: "10px", }}
               >{t("emailTitle")}</Typography>
               <SoftInput
-                placeholder='email'
-                value={controls.email}
-                onChange={(e) => setControl("email", e.target.value)}
-                required={required.includes("email")}
-                error={Boolean(invalid.email)}
-                helperText={invalid.email}
+                placeholder='title'
+                value={controls.title}
+                onChange={(e) => setControl("title", e.target.value)}
+                required={required.includes("title")}
+                error={Boolean(invalid.title)}
+                helperText={invalid.title}
                 sx={{ border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", borderRadius: "8px" }}
               // sx={input}
               />

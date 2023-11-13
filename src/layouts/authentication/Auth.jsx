@@ -5,11 +5,12 @@ import PropTypes from "prop-types";
 function Auth({children}) {
     const currentTime = new Date().getTime();
     const tokenTimestamp = localStorage.getItem('tokenTimestamp');
-    console.log(tokenTimestamp)
-        const twentyFourHours = 24 * 60 * 60 * 1000;
+   
     useEffect(()=>{
          // 24 hours in milliseconds
-        if (currentTime - tokenTimestamp > twentyFourHours) {
+
+
+        if (currentTime  > tokenTimestamp) {
             // Token has expired, delete it from localStorage
             localStorage.removeItem('token');
             localStorage.removeItem('tokenTimestamp');
@@ -25,7 +26,7 @@ function Auth({children}) {
     },[
         currentTime
     ])
-    console.log(currentTime - tokenTimestamp > twentyFourHours,Boolean(localStorage.getItem("token")))
+    // console.log(currentTime - tokenTimestamp > twentyFourHours,Boolean(localStorage.getItem("token")))
    if(Boolean(localStorage.getItem("token"))===true) {
     return (
         <> {children}</>

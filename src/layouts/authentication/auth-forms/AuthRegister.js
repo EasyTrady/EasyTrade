@@ -156,24 +156,12 @@ const FirebaseRegister = ({ ...others  }) => {
                   // if(res?.type==='signupUser/fulfilled'){
                   //   toast.success('welcome to EasyTrade')
                     // navigate('/register/creatingshop')
-                
-
-                    
-  
-                  
-                    
-                      
                         localStorage.setItem('shop_url', res?.data?.shop_url)
                         localStorage.setItem('dashboard_url', res?.data?.dashboard_url)
                         localStorage.setItem('shop_id', res?.data?.id)
                         localStorage.setItem('shop_name', res?.data?.shop_name)
                         localStorage.setItem('sub_domain', res?.data?.sub_domain)
                         navigate(`/authentication/sign-in`)
-                   
-  
-                    
-                 
-    
                   // }else{
                   //    console.log(res.data)
                   //   setErrors(res.payload)

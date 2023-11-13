@@ -5,14 +5,14 @@ import inter from '../../assets/fonts/Inter-Bold.ttf';
 export const interFont = createTheme({
   
   typography: {
-    fontFamily: 'inter',
+    fontFamily:  'Inter', 'Cairo' ,
 
   },
   components: {
     MuiCssBaseline: {
       styleOverrides: ` 
         @font-face {
-          font-family: 'inter';
+          font-family: 'Inter, Cairo' ;
           font-style: normal;
           font-display: swap;
           font-weight: 400;

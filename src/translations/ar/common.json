@@ -113,7 +113,7 @@
 
 "emailBasket":"محتوى البريد الإلكتروني",
 "descributionEmail":"اكتب كل ما تحتاجه لإخطار المستخدم به",
-"emailTitle":"عنوان بريد الالكتروني",
+"emailTitle":"عنوان",
 "describe":"وصف",
 "contentType":"نوع محتوي",
 "Banner":"راية",
@@ -156,17 +156,20 @@
 "Remember":"تذكر:",
 "alertaddnewcategory":"للحصول على أفضل النتائج، استخدم صورة بحجم 200 × 200 بكسل على الأقل بتنسيق .jpg أو .png",
 "categoryname":"اسم تصنيف",
+"categorynumber":"عدد تصنيف",
+
 "Type":"نوع",
 "child":"تابع",
 "Childfrom":"تابع من",
 "Categoryparentname":"اسم أصل الفئة",
 "addnewattributemessage":"تم اضافة سمه جديد",
 "deleteattribute":"تم حذف سمة بنجاح",
-"editattribute":"تم تعديل سمة بنجاح",
+"editattributesuccessfull":"تم تعديل سمة بنجاح",
 "postCategoryresult":"تم إضافة فئة بنجاح",
 "OrderId":"رقم الطلب",
 "Subtotal":"المجموع الفرعي",
 "total":"مجموع",
-"Activity":"نشاط"
-
+"Activity":"نشاط",
+"EditEmployee":"تعديل بيانات الموظف",
+"EditJob":"تعديل بيانات وظيفة"
 }

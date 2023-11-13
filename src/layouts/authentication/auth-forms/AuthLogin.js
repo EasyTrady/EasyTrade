@@ -99,14 +99,15 @@ const FirebaseLogin = ({ ...others }) => {
               body:values,
               onSuccess:async(res)=>{
                 localStorage.setItem('token', res.data.token);
+                // console.log(res.data.expiry,new Date(),new Date(res.data.expiry).getHours())
                 localStorage.setItem('tokenTimestamp', new Date(res.data.expiry).getTime());
-                if (Boolean(sub_domain)) {
+                // if (Boolean(sub_domain)) {
                   console.log(Boolean(sub_domain))
 
 
-                  navigate(`/${sub_domain}/dashboard`)
+                  // navigate(`/${sub_domain}/dashboard`)
 
-                } else {
+                // } else {s
                   
                   await ShopInfoRequest({ 
                     token:`Token ${res.data.token}`,onSuccess:(response)=>{
@@ -123,7 +124,7 @@ const FirebaseLogin = ({ ...others }) => {
                     navigate(`/${response?.data?.sub_domain}/dashboard`)
                   } })
 
-                }
+                // }
               }
             })
             // dispatch(UserSignin(values)).then(async (res) => {

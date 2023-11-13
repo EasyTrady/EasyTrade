@@ -43,7 +43,7 @@ export default styled("div")(({ theme, ownerState }) => {
    
     "& .MuiInputBase-input": {
       height: pxToRem(20),
-      color:borderColorValue,
+      color:"#8996a3",
     },
   };
 });

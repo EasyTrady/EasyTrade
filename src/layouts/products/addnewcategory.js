@@ -24,14 +24,16 @@ import {
 } from '@mui/material'
 function Addnewcategory({ absolute, light, isMini }) {
     const route = useLocation().pathname.split("/").slice(1);
+    let navigate=useNavigate()
     const formDate=new FormData()
-
-
+    let dispatch = useDispatch()
     let Token = localStorage.getItem('token');
     let { t } = useTranslation("common");
     let categories = useSelector((state) => state.category.value)
     let refimage = useRef(null)
     let [Avater, setavater] = useState(null)
+  const sub_domain = localStorage.getItem('sub_domain')
+
     const [categoryRequest, getcategoryResponce] =
     useRequest({
         path: CATEGORY,
@@ -98,13 +100,13 @@ function Addnewcategory({ absolute, light, isMini }) {
     useEffect(()=>{
         categoryRequest({
             params:{
-                parent:controls.parentName
+                parent:controls.parent
             },onSuccess:(res)=>{
                 setControl("numberChilds",res.data.length)
                 console.log(res.data)
             }
         })
-    },[controls.parentName])
+    },[controls.parent])
     
     function handleSubmit() {
         // e.preventDefault();
@@ -113,7 +115,8 @@ function Addnewcategory({ absolute, light, isMini }) {
         categoryPostRequest({
             body:formDate,
             onSuccess:(res)=>{
-                console.log(res.data)
+                dispatch({type:"category/addItem",payload: res.data})
+                navigate(`/${sub_domain}/dashboard/products/category`)
             }
         })
     }
@@ -211,7 +214,7 @@ function Addnewcategory({ absolute, light, isMini }) {
                                 row
                                 aria-labelledby="demo-row-radio-buttons-group-label"
                                 name="row-radio-buttons-group"
-                                value={controls.parent}
+                                value={controls.isparent}
 
                                 onChange={(e) =>  {setControl("isparent", e.target.value);}}
                             >
@@ -315,7 +318,7 @@ function Addnewcategory({ absolute, light, isMini }) {
                                             );
                                         } else {
                                             console.log(selected)
-                                            return categories?.find((ele) => ele.id === selected).name;
+                                            return categories?.find((ele) => ele.id === selected)?.name;
                                         }
                                     },
                                     MenuProps: {
@@ -337,7 +340,7 @@ function Addnewcategory({ absolute, light, isMini }) {
                             </SoftInput>
                         </Box>
                         <Box>
-                            <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("categoryname")}</InputLabel>
+                            <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("categorynumber")}</InputLabel>
 
                             <SoftInput
 

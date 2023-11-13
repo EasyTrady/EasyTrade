@@ -36,7 +36,7 @@ function Category({ absolute, light, isMini }) {
             field: 'Category',
             headerName: 'Category',
             type: 'text',
-            flex: 1,
+            width: 300,
             align: 'left',
             headerAlign: 'left',
             renderCell: (params) => {
@@ -55,10 +55,41 @@ function Category({ absolute, light, isMini }) {
             field: 'type',
             headerName: 'type',
             type: 'text',
-            flex: 1,
+            width: 300,
             align: 'left',
             headerAlign: 'left',
-           
+            renderCell: (params) => {
+                const { row } = params;
+                return (<Stack direction={"row"} >
+                   
+                    {row.is_root_node?<Typography component={"p"} sx={{ fontSize: "14px",borderRadius:"130px",marginX:"10px",padding:"5px 16px 5px 16px" ,backgroundColor:(theme)=>theme.palette.blue.hover,color:(theme)=>theme.palette.blue.main}}>parent</Typography>:
+                    <Typography component={"p"} sx={{ fontSize: "14px",borderRadius:"130px",marginX:"10px",padding:"5px 16px 5px 16px" ,backgroundColor:(theme)=>theme.palette.purple.hover,color:(theme)=>theme.palette.purple.middle}}>child</Typography>}
+                   
+                </Stack>
+                );
+            },
+            editable: false,
+            // renderEditCell:renderEditImageCell
+        },{
+            field: 'parent',
+            headerName: 'parent',
+            type: 'text',
+            width: 300,
+            align: 'left',
+            headerAlign: 'left',
+            renderCell: (params) => {
+                const { row } = params;
+                return (<Stack direction={"row"} >
+                   
+                    {!row.is_root_node&&<Stack direction={"row"} >
+                    <SoftBox sx={{width:"64px",height:"64px",borderRadius:"8px"}}><img src={row.parent.image} style={{width:"100%",borderRadius:"8px"}}/></SoftBox>
+                    <Typography component={"p"} sx={{ fontSize: "14px",marginX:"10px" }}>{row.parent.name}</Typography>
+                    {/* <Typography component={"a"} sx={{ color: (theme) => theme.palette.grey[500], fontSize: "0.8rem", cursor: "pointer" }} onClick={() => navigate(`/${shop_name}/dashboard/attribute/${row?.id}`)}>view</Typography> */}
+                </Stack>}
+                   
+                </Stack>
+                );
+            },
             editable: false,
             // renderEditCell:renderEditImageCell
         }
@@ -138,7 +169,7 @@ function Category({ absolute, light, isMini }) {
                     // onDialog={onEdit}
                     columns={columns}
                     checkboxSelection={true}
-                    onRowClick={(e) => { console.log({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
+                    // onRowClick={(e) => { console.log({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
                     // sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
                     // onEdit={onEdit}
                     rowHeight={100}

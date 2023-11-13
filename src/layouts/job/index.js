@@ -68,12 +68,7 @@ function Job({ absolute, light, isMini }) {
             method: "delete",
             Token: `Token ${Token}`
         });
-    const [jobpatchRequest, patchjobrResponce] =
-        useRequest({
-            path: JOBS,
-            method: "patch",
-            Token: `Token ${Token}`
-        });
+    
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -129,7 +124,7 @@ function Job({ absolute, light, isMini }) {
             align: 'left',
             headerAlign: 'left',
             // renderCell: renderImageCell,
-            editable: true,
+            editable: false,
             renderEditCell: (params) => <SoftInput
                 placeholder="Job Name"
                 icon={{ component: <PersonIcon />, direction: "left" }}
@@ -163,16 +158,20 @@ function Job({ absolute, light, isMini }) {
 
     ]
     function onEdit(row, newRow) {
-
-        jobpatchRequest({
-            id: row,
-            body: newRow,
-            onSuccess: (res) => {
-                dispatch({ type: "job/patchItem", payload: { id: row, item: res.data } })
-
-            }
-        })
+        navigate(`/${sub_domain}/dashboard/addNewJob`,{state:{id:row,dataRow:newRow}})
+        
     }
+    // function onEdit(row, newRow) {
+
+    //     jobpatchRequest({
+    //         id: row,
+    //         body: newRow,
+    //         onSuccess: (res) => {
+    //             dispatch({ type: "job/patchItem", payload: { id: row, item: res.data } })
+
+    //         }
+    //     })
+    // }
     const MyCustomNoRowsOverlay = () => (
         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
     );
@@ -259,9 +258,9 @@ function Job({ absolute, light, isMini }) {
                     onDelete={onDelete}
                     columns={columns}
                     checkboxSelection={true}
-                    onRowClick={(e) => { setClick({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
+                    // onRowClick={(e) => { setClick({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
                     sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
-                    onEdit={onEdit}
+                    onDialog={onEdit}
 
                     slots={{
                         noRowsOverlay: MyCustomNoRowsOverlay
