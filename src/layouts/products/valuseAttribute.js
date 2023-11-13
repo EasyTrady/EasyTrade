@@ -251,7 +251,7 @@ function AttributeValue() {
                 onDelete={onDelete}
                 columns={columns}
                 checkboxSelection={true}
-                onRowClick={(e) => { console.log({ ...e?.row });/* navigate(`/${shoptext}/dashboard/employee/${e?.row?.id}`)*/ }}
+                // onRowClick={(e) => { console.log({ ...e?.row });/* navigate(`/${shoptext}/dashboard/employee/${e?.row?.id}`)*/ }}
                 sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
                 // onEdit={onEdit}
 

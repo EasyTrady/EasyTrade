@@ -156,10 +156,10 @@ function Employee({ absolute, light, isMini }) {
             field: 'full_name',
             headerName: 'Employee name',
             type: 'text',
-            width:150,
+            width:170,
             align: 'left',
             headerAlign: 'left',
-            editable: true,
+            editable: false,
             renderCell: (params) => <Box sx={{ display: "flex", flexDirection: "column" }}>
                 <Typography variant={"p"} sx={{fontSize:"14px" }}>{params.row.full_name}</Typography>
             </Box>,
@@ -181,10 +181,10 @@ function Employee({ absolute, light, isMini }) {
             field: 'job',
             headerName: 'job',
             type: 'text',
-            width:100,
+            width:170,
             align: 'left',
             headerAlign: 'left',
-            editable: true,
+            editable: false,
             renderCell: (params) => <Box sx={{ display: "flex", flexDirection: "column" }}>
                 <Typography variant={"p"} sx={{ color: (theme) => theme.palette.primary, fontSize: "14px" }}>{jobs?.results?.find((ele) => ele.id === params.row.job)?.title}</Typography>
             </Box>,
@@ -212,7 +212,7 @@ function Employee({ absolute, light, isMini }) {
                         );
                     } else {
                         console.log(selected)
-                        return jobs?.results?.find((ele)=>ele.id===selected).title;
+                        return jobs?.results?.find((ele)=>ele.id===selected)?.title;
                     }
                 },
                 MenuProps: {
@@ -241,7 +241,7 @@ function Employee({ absolute, light, isMini }) {
             width:200,
             align: 'left',
             headerAlign: 'left',
-            editable: true,
+            editable: false,
             renderEditCell:(params)=><SoftInput
 
             placeholder="Phone"
@@ -264,7 +264,7 @@ function Employee({ absolute, light, isMini }) {
             width:300,
             align: 'left',
             headerAlign: 'left',
-            editable: true,
+            editable: false,
             // renderCell: (params) => <Box sx={{ display: "flex", flexDirection: "column" }}>
             //     <Typography variant={"h6"} sx={{ fontSize:"14px",fontWeight:"400"  }}>{params.row.email}</Typography>
             // </Box>,
@@ -370,15 +370,8 @@ function Employee({ absolute, light, isMini }) {
         })
     }
     function onEdit(row, newRow) {
-
-        EmployeePatchRequest({
-            id: row,
-            body: newRow,
-            onSuccess: (res) => {
-                dispatch({ type: "employee/patchItem", payload: { id: row, item: res.data } })
-
-            }
-        })
+        navigate(`/${sub_domain}/dashboard/addNewEmployee`,{state:{id:row,dataRow:newRow}})
+        
     }
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -462,9 +455,9 @@ function Employee({ absolute, light, isMini }) {
                     onDelete={onDelete}
                     columns={columns}
                     checkboxSelection={true}
-                    onRowClick={(e) => { setClick({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
+                    // onRowClic/k={(e) => { setClick({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
                     sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
-                    onEdit={onEdit}
+                    onDialog={onEdit}
                     style={{
                         ".MuiTablePagination-toolbar .MuiInputBase-root": {
                             width: "15% !important"

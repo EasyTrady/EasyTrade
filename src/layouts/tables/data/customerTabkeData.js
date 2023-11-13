@@ -12,6 +12,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import useRequest from 'hooks/useRequest';
 import { CUSTOMER } from 'data/api';
 import moment from 'moment';
+import imageFemale from "../../../assets/images/female.png"
+import imageMen from "../../../assets/images/men.png"
+
 // const columnsTheme = [
 //     {
 //         field: 'image',
@@ -91,7 +94,7 @@ function onDelete(row,data){
         width:100,
         align: 'left',
         headerAlign: 'left',
-        editable: true,
+        editable: false,
         filterable: false,
         sortable: false,disableColumnMenu: true
       }
@@ -104,14 +107,15 @@ function onDelete(row,data){
               headerAlign: 'left',
               renderCell: (params) =><Box sx={{display:"flex",justifyContent: "space-evenly",
               }}>
-                 <Avatar src={params.row.image} />
+                {console.log(params.row.gender)}
+                 <Avatar src={params.row.gender==="F"?imageFemale:imageMen} />
                  <Box sx={{marginX:"10px"}}>
                  <Typography variant={"h5"} sx={{fontSize:"14px"}}>{params.row.full_name}</Typography>
                  <Typography variant={"h5"} sx={{fontSize:"14px"}}>{params.row.email}</Typography>
 
                  </Box>
               </Box>,
-              editable: true,
+              editable: false,
               filterable: false,
               sortable: false,disableColumnMenu: true,
               // renderHeader:()=>"Customer"
@@ -125,7 +129,7 @@ function onDelete(row,data){
               width:222,
               align: 'left',
               headerAlign: 'left',
-              editable: true,
+              editable: false,
               filterable: false,
               sortable: false,disableColumnMenu: true
 
@@ -137,7 +141,7 @@ function onDelete(row,data){
               width:300,
               align: 'left',
               headerAlign: 'left',
-              editable: true,
+              editable: false,
               filterable: false,
               sortable: false,disableColumnMenu: true,
               renderCell:(params)=>{moment(params.row.created_at).format('MMMM Do YYYY, h:mm:ss ')}
@@ -149,7 +153,7 @@ function onDelete(row,data){
               width:122,
               align: 'left',
               headerAlign: 'left',
-              editable: true,
+              editable: false,
               filterable: false,
               sortable: false,disableColumnMenu: true,
               renderCell:(params)=> <Typography variant={"p"}

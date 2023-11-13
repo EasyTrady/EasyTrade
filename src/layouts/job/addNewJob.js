@@ -30,6 +30,8 @@ function AddNewJob({ absolute, light, isMini }) {
     let dispatch = useDispatch()
     let jobs = useSelector((state) => state.job.value)
 
+    const location = useLocation();
+    const { state } = location;
     let Token = localStorage.getItem('token')
     const [jobRequest, getjobResponce] =
         useRequest({
@@ -41,6 +43,12 @@ function AddNewJob({ absolute, light, isMini }) {
         useRequest({
             path: JOBS,
             method: "post",
+            Token: `Token ${Token}`
+        });
+        const [jobpatchRequest, patchjobrResponce] =
+        useRequest({
+            path: JOBS,
+            method: "patch",
             Token: `Token ${Token}`
         });
         const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
@@ -64,21 +72,33 @@ function AddNewJob({ absolute, light, isMini }) {
         validate().then((output) => {
 
             if (!output.isOk) return;
-            JobPostRequest({
-                body: {
-                    title:controls.title
-                },
-                onSuccess: (res) => {
-                    resetControls()
-                    console.log(res.data, controls)
-                }
-            }).then((res) => {
-                let response = res?.response?.data;
-
-
-                setInvalid(response);
-
-            });
+            if(Boolean(state?.dataRow)){
+                jobpatchRequest({
+                            id: row,
+                            body: newRow,
+                            onSuccess: (res) => {
+                                dispatch({ type: "job/patchItem", payload: { id: row, item: res.data } })
+                
+                            }
+                        })
+            }else{
+                JobPostRequest({
+                    body: {
+                        title:controls.title
+                    },
+                    onSuccess: (res) => {
+                        resetControls()
+                        console.log(res.data, controls)
+                    }
+                }).then((res) => {
+                    let response = res?.response?.data;
+    
+    
+                    setInvalid(response);
+    
+                });
+            }
+           
         })
 
     }
@@ -89,13 +109,26 @@ function AddNewJob({ absolute, light, isMini }) {
             }
         })
     }, [])
+    useEffect(() => {
+        // jobRequest({
+        //     onSuccess: (res) => {
+        //         dispatch({ type: "job/set", payload: res.data })
+        //     }
+        // })
+        if(Boolean(state?.dataRow)){
+            Object.entries(state?.dataRow)?.forEach(([key,value])=>setControl(key,value))
+
+        }
+        // setControl()
+       
+    }, [state])
     return (
         <>
             <DashboardLayout>
                 <DashboardNavbar />
                 <Container>
                     <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-                        <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+                        <Breadcrumbs icon="home" title={Boolean(state?.dataRow)?t("EditJob"):route[route.length - 1]} route={route} light={light} />
                     </SoftBox>
                 </Container>
                 <Container sx={{ p: 2, display: "flex",gap:"6px" }}>
@@ -132,8 +165,8 @@ function AddNewJob({ absolute, light, isMini }) {
 
                     </Form>
                     </SoftBox>
-                    <SoftBox sx={{width:"50%",display:"flex",flexDirection:"column"}}>
-                    <Box sx={{ marginY: "6px",marginBottom:"14px"}}>
+                    <SoftBox sx={{width:"50%",display:"flex",flexDirection:"column", alignSelf: "flex-end"}}>
+                    {/* <Box sx={{ marginY: "6px",marginBottom:"14px"}}>
                                 <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("parent")}</InputLabel>
                                 <SoftInput
                                     select
@@ -179,7 +212,7 @@ function AddNewJob({ absolute, light, isMini }) {
                                 >
                                     {jobs?.results?.map((ele) => <MenuItem value={ele.id} key={ele.id}>{ele.title}</MenuItem>)}
                                 </SoftInput>
-                            </Box>
+                            </Box> */}
                             <Form component="form"
                         childrenProps={{
                             title: t("AdvertisingCookies"),

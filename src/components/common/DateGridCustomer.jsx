@@ -57,7 +57,8 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
   };
   const handleDialogClick = (id,row) => () => {
     // setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-    onDialog(id)
+    console.log(id,row.row)
+    onDialog(id,row?.row)
   };
   const handleSaveClick = (id) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
@@ -105,7 +106,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
     {
       field: 'actions',
       type: 'actions',
-      headerName:"Active",
+      headerName:"Action",
       width: 200,
       cellClassName: 'actions',
       getActions: (row) => {
@@ -191,11 +192,12 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
                 border: "unset", borderRadius: "50%",
                 padding: "0", backgroundColor: Boolean(open) ? "#4A81CA" : "#ECF4FA", minWidth: "40px", height: "40px",
                 "&:hover": {
-                  backgroundColor: "unset !important",
+                  backgroundColor: `${ Boolean(open) ? "#4A81CA" : "#ECF4FA"} !important`,
                   border:"unset"
                 },"&:focus":{
                   backgroundColor: "unset !important",
-                  border:"unset"
+                  border:"unset",
+                  boxShadow:"unset !important"
                 }
               }}>
               <MoreVertIcon sx={{ color: Boolean(open) ? "#ffff" : "#4A81CA" }} />
@@ -260,7 +262,14 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
       },
     },
   ]:[...columns];
-
+  const CustomRow = (props) => {
+    const { className, selected, ...other } = props;
+  console.log(className, selected,props)
+    // Add your custom styles for selected rows
+    const customStyles = selected ? { backgroundColor: 'lightblue', fontWeight: 'bold' } : {};
+  
+    return <div className={className} style={customStyles} {...other} />;
+  };
   return (
     <>
               
@@ -379,6 +388,9 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
                 backgroundColor: "white !important",
               },overflowX: 'scroll', "& .MuiDataGrid-virtualScroller": {
                 overflow: "auto"
+              },"& .MuiDataGrid-row.Mui-selected":{
+              backgroundColor: "#ECF4FA !important",
+
               }
             
           }}
@@ -392,9 +404,12 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
           //   toolbar: { setRows, setRowModesModel },
           // }}
           rowHeight={72}
-          
+          // components={{
+          //   Row: CustomRow,
+          // }}
           rowSpacingType='margin'
           getRowSpacing={(params) => params === 4}
+
         />
       </Box></>
   );
@@ -416,5 +431,7 @@ DataGridCustom.propTypes = {
   notProduct: PropTypes.bool,
   onNotify: PropTypes.func,
   onBlock:PropTypes.func,
-  onDialog:PropTypes.func
+  onDialog:PropTypes.func,
+  className:PropTypes.string,
+  selected:PropTypes.bool
 };

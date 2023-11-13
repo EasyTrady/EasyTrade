@@ -38,10 +38,11 @@ import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import PropTypes from "prop-types";
 function Attribute({ absolute, light, isMini }) {
     const [open, setOpen] = React.useState(false);
+    const [refersh, setRefersh] = React.useState(false);
+
     const [openDialog, setOpenDialog] = React.useState(false);
     const [openDialogEdit, setOpenDialogEdit] = React.useState(false);
     let [addvalue, setaddvalue] = React.useState(false);
-    let [counter,setCounter]=React.useState(0);
     let dispatch = useDispatch()
     let { t } = useTranslation("common")
     const route = useLocation().pathname.split("/").slice(1);
@@ -138,16 +139,27 @@ function Attribute({ absolute, light, isMini }) {
 
             },
             {
-                control: "value_name",
+                control: "values",
                 value: [],
                 isRequired: false,
 
             },
             {
-                control: "color_value",
-                value: [],
+                control: "value_name",
+                value: "",
                 isRequired: false,
 
+            },
+            {
+                control: "color_value",
+                value: "",
+                isRequired: false,
+                validations:[
+                    {
+                        test:/^#[0-9]{6}$/,
+                        message: "not valid color value"
+                    }
+                ]
             },
             {
                 control: "name",
@@ -191,6 +203,8 @@ function Attribute({ absolute, light, isMini }) {
             }
 
         ]);
+    let [counter,setCounter]=React.useState(controls.values.length>0?controls.values.length-1:controls.values.length);
+
     const [attributeDeleteRequest, DeleteattributerResponce] =
         useRequest({
             path: ATTRIBUTES,
@@ -210,15 +224,15 @@ function Attribute({ absolute, light, isMini }) {
             path: ATTRIBUTES,
             method: "post",
             Token: `Token ${Token}`,
-            contentType: "multipart/form-data",
+            // contentType: "multipart/form-data",
         });
     const [attributeEditRequest, editattributeResponce] =
         useRequest({
             path: ATTRIBUTES,
             method: "patch",
             Token: `Token ${Token}`,
-            contentType: "multipart/form-data",
-            successMessage:t("editattribute")
+            // contentType: "multipart/form-data",
+            successMessage:t("editattributesuccessfull")
         });
     const [attributeValueeditRequest, editValueattributeResponce] =
         useRequest({
@@ -226,6 +240,12 @@ function Attribute({ absolute, light, isMini }) {
             method: "patch",
             Token: `Token ${Token}`,
             contentType: "multipart/form-data",
+        });
+        const [attributeValueRequest, getattributeValueResponce] =
+        useRequest({
+            path: ATTRIBUTES,
+            method: "get",
+            Token: `Token ${Token}`
         });
     const handleClickOpen = () => {
         setOpen(true);
@@ -248,52 +268,54 @@ function Attribute({ absolute, light, isMini }) {
                 attributeEditRequest({
                     id: controls.id,
                     body: {
-                        name: controls.name
+                        name: controls.name,
+                        
                     }, onSuccess: (res) => {
                         dispatch({ type: "attribute/patchItem", payload: { id: controls.id, item: res.data } })
 
-                        attributeValuepostRequest({
-                            id: controls.id + "/values",
-                            body: {
-                                value_name: controls?.value_name,
-                                iscolor: controls?.iscolor,
-                                color_value: controls?.color_value
-                            },
-                            onSuccess: (resValue) => {
-                                console.log(resValue.data, res.data)
+                        // attributeValuepostRequest({
+                        //     id: controls.id + "/values",
+                        //     body: {
+                        //         value_name: controls?.value_name,
+                        //         iscolor: controls?.iscolor,
+                        //         color_value: controls?.color_value
+                        //     },
+                        //     onSuccess: (resValue) => {
+                        //         console.log(resValue.data, res.data)
 
-                                dispatch({ type: "attribute/addValue", payload: { idvalue: res.data.id, value: { ...resValue.data } } })
-                                resetControls()
-                                setOpenDialog(false)
-                            }
-                        })
+                        //         dispatch({ type: "attribute/addValue", payload: { idvalue: res.data.id, value: { ...resValue.data } } })
+                        //         resetControls()
+                        //         setOpenDialog(false)
+                        //     }
+                        // })
 
                     }
                 })
             } else {
                 attributepostRequest({
                     body: {
-                        name: controls.name
+                        name: controls.name,
+                        values:controls.values
                     },
                     onSuccess: (res) => {
                         dispatch({ type: "attribute/addItem", payload: res.data })
 
-                        attributeValuepostRequest({
-                            id: res.data.id + "/values",
-                            body: {
-                                value_name: controls?.value_name,
-                                iscolor: controls?.iscolor,
-                                color_value: controls?.color_value
-                            },
-                            onSuccess: (resValue) => {
+                        // attributeValuepostRequest({
+                        //     id: res.data.id + "/values",
+                        //     body: {
+                        //         value_name: controls?.value_name,
+                        //         iscolor: controls?.iscolor,
+                        //         color_value: controls?.color_value
+                        //     },
+                        //     onSuccess: (resValue) => {
 
 
-                                dispatch({ type: "attribute/addValue", payload: { idvalue: res.data.id, value: { ...resValue.data } } })
-                                resetControls()
-                                setOpenDialog(false)
+                        //         dispatch({ type: "attribute/addValue", payload: { idvalue: res.data.id, value: { ...resValue.data } } })
+                        //         resetControls()
+                        //         setOpenDialog(false)
 
-                            }
-                        })
+                        //     }
+                        // })
                         console.log(res.data, controls)
                     }
                 }).then((res) => {
@@ -342,14 +364,14 @@ function Attribute({ absolute, light, isMini }) {
         attributeRequest({
             onSuccess: (res) => {
                 dispatch({ type: "attribute/set", payload: res.data })
-                res.data.map((ele) => attributeValueRequest({
-                    id: ele.id + "/values",
-                    onSuccess: (res) => {
+                // res.data.map((ele) => attributeValueRequest({
+                //     id: ele.id + "/values",
+                //     onSuccess: (res) => {
 
-                        dispatch({ type: "attribute/addValues", payload: { idattribute: ele.id, values: res.data } })
+                //         dispatch({ type: "attribute/addValues", payload: { idattribute: ele.id, values: res.data } })
 
-                    }
-                }))
+                //     }
+                // }))
 
             }
         })
@@ -359,10 +381,44 @@ function Attribute({ absolute, light, isMini }) {
         // setColumns((prevs)=>console.log({...prevs,value:attributes.values}))
         console.log(attributes)
     }, [attributes])
+    function AddValue(){
+        
+        if(controls.isColor){
+        
+            if(Boolean(controls.value_name)&&Boolean(controls.color_value)){
+                setControl("values",[...controls.values,{
+                    value_name:controls.value_name,
+                    color_value:controls.color_value,
+                    is_color:controls.isColor
+                }]).then(()=>{
+                    setControl("value_name","")  
+                    setControl("color_value","") 
+                })
+                      
+                
+            }
+            }     
+            else if(Boolean(controls.value_name)&&!controls.isColor){
+                setControl("values",[...controls.values,{
+                    value_name:controls.value_name,
+                    color_value:controls.color_value,
+                    is_color:controls.isColor
+                }]).then(()=>{
+                    
+                    setControl("value_name","")  
+                    setControl("color_value","") 
+                })
+            }
+           
+     
+        
+        setCounter(++counter);
+        setaddvalue(true);
+            
+    }
     useEffect(() => {
-        console.log(counter)
-
-    }, [controls, controls.values,counter])
+        
+    }, [controls.value_name,controls.color_value])
     return (
         <DashboardLayout >
             <DashboardNavbar />
@@ -482,7 +538,7 @@ function Attribute({ absolute, light, isMini }) {
                     onDialog={onEdit}
                     columns={columns}
                     checkboxSelection={true}
-                    onRowClick={(e) => { console.log({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
+                    // onRowClick={(e) => { console.log({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
                     // sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
                     // onEdit={onEdit}
                     rowHeight={100}
@@ -592,24 +648,24 @@ function Attribute({ absolute, light, isMini }) {
                                     <DeleteIcon sx={{ color: (theme) => theme.palette.error.main }} onClick={() => onDeleteValue(controls.id, ele.id)} />
                                 </TableCell>
                             </Typography>)}
-                            {addvalue && !controls.iscolor ?Array.from({ length: counter }, (_, index) =>  <SoftBox key={index} sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
+                            {addvalue && !controls.iscolor ?  <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
                                 <SoftInput placeholder='value'
                                     sx={{ ".MuiInputBase-root": { border: `unset !important`, borderBottom: "1px solid gray" }, }}
-                                    value={controls.value_name[index]}
-                                    onBlur={(e) => setControl("value_name", [...controls.value_name, e.target.value])}
+                                    value={controls.value_name}
+                                    onChange={(e) =>Boolean(e.target.value)&& setControl("value_name",e.target.value)}
 
                                     required={required.includes("value_name")}
                                     error={Boolean(invalid?.value_name)}
                                     helperText={invalid?.value_name} />
                                    
 
-                            </SoftBox>) : addvalue && controls.iscolor && Array.from({ length: counter }, (_, index) => <SoftBox key={index}>
+                            </SoftBox> : addvalue && controls.iscolor &&  <SoftBox  >
                                 <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
                                     <SoftInput placeholder='value'
                                         sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
-                                        value={controls.value_name[index]}
+                                        value={controls.value_name}
                                         // onChange={(e) => setControl("value_name", e.target.value)}
-                                        onBlur={(e) => setControl("value_name", controls.value_name.push(e.target.value))}
+                                        onChange={(e) =>Boolean(e.target.value)&& setControl("value_name",e.target.value)}
                                         required={required.includes("value_name")}
                                         error={Boolean(invalid?.value_name)}
                                         helperText={invalid?.value_name} />
@@ -620,23 +676,24 @@ function Attribute({ absolute, light, isMini }) {
                                 <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
                                     <SoftInput placeholder='color'
                                         sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
-                                        value={controls.color_value[index]}
-                                        onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
+                                        value={controls.color_value}
+                                        // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
+                                        onChange={(e) =>Boolean(e.target.value)&& setControl("color_value",
+                                           e.target.value)}
                                         required={required.includes("color_value")}
                                         error={Boolean(invalid?.color_value)}
                                         helperText={invalid?.color_value} />
 
 
                                 </SoftBox>
-                            </SoftBox>)
+                            </SoftBox>
                                 
                             }
-                            {console.log(Array(counter).fill(counter),addvalue,controls.value_name)}
+                           
                             <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
                                 <Typography sx={{ fontSize: "14px", padding: "15px", height: "40px", color: (theme) => theme.palette.purple.middle, textDecoration: "underline !important" }}
                                     component="a"
-                                    onClick={() => {setaddvalue(counter>3?!addvalue:true);
-                                        setCounter(counter>3?1:++counter);}}
+                                    onClick={AddValue}
                                 >{t("Addvalue")}
                                 </Typography>
                                 {/* <Typography sx={{ fontSize: "14px", padding: "15px", height: "40px", color: (theme) => theme.palette.purple.middle, textDecoration: "underline !important" }}

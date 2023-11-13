@@ -114,7 +114,7 @@
     
 "emailBasket":"Email content",
 "descributionEmail":"Write all you need to notify the user with",
-"emailTitle":"Email title",
+"emailTitle":"title",
 "describe":"Description",
 "contentType":"Content type",
 "Banner":"Banner",
@@ -140,6 +140,7 @@
 "addnewemployee":"add new employee",
 "addnewattribute":"Add new attribute",
 "addnewcategory":"add new category",
+"categorynumber":" number of category",
 "editattribute":"Edit attribute",
 "descributionAttribute":"Write at least one value to the attribute",
 "Attributename":"Attribute name",
@@ -164,10 +165,12 @@
 "Categoryparentname":"Category parent name",
 "addnewattributemessage":"A new attribute has been added",
 "deleteattribute":"An attribute was deleted successfully",
-"editattribute":"An attribute has been modified successfully",
+"editattributesuccessfull":"An attribute has been modified successfully",
 "postCategoryresult":"done add category successfully",
 "OrderId":"Order Id",
 "Subtotal":"Subtotal",
 "total":"Total",
-"Activity":"Activity"
+"Activity":"Activity",
+"EditEmployee":"Modify employee data",
+"EditJob":"Modify job data"
 }

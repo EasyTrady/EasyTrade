@@ -166,5 +166,7 @@ export default styled(TextField)(({ theme, ownerState }) => {
       padding: `${pxToRem(10)} ${pxToRem(12)}`,
     },
     ".MuiInputBase-root": {border: `1px solid`,borderColor:grey[400],borderRadius:"8px"}, 
+    ".MuiInputBase-root input": {color:"#8996a3"}, 
+
   };
 });
