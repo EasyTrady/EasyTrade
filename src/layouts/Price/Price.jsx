@@ -6,6 +6,8 @@ import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { Container } from '@mui/system';
+import Navbar from 'components/common/navbar/navbar';
+import { Footer } from 'components/common/footer/footer';
 // import TextField from '@mui/material/TextField';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -25,11 +27,14 @@ export default function Price () {
   return (
 
     <>
-        <Container>
- <Typography sx={{ textAlign: 'center', color: '#5D449B', fontSize: '16px', fontWeight: 600,  }}>  الباقات والاسعار</Typography>
+    <Navbar/>
+          <Box sx={{background: ''
+}}>
+ <Typography sx={{ textAlign: 'center', color: '#5D449B', fontSize: '16px', fontWeight: 600, marginTop:'40px' }}>  الباقات والاسعار</Typography>
     <Typography sx={{ fontSize: '36px', fontWeight: 600 , textAlign: 'center', paddingTop: '10px', color: '#2F2F30' }}>خطط تسعير ميسورة التكلفة</Typography>
-    <Typography sx={{ fontSize: '20px', fontWeight: 400 , textAlign: 'center', paddingTop: '10px', color: '#667085' }}>   صممت خصيصًا لتناسب جميع أنواع التجار قارن بين الميزات</Typography>
-
+    <Typography sx={{ fontSize: '20px', fontWeight: 400 , textAlign: 'center', paddingTop: '10px', color: '#667085',marginBottom:'30px' }}>   صممت خصيصًا لتناسب جميع أنواع التجار قارن بين الميزات</Typography>
+    </Box>
+    <Container>
     <Box>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} >
       <TableContainer component={Paper} sx={{ direction: 'rtl',boxShadow: 'none',bgcolor:'#f8f9fa' }}>
@@ -123,7 +128,7 @@ export default function Price () {
             'صفحات هبوط احترافية',
             ' تخطي صفحة السلة ',
             '  عد تنازلي للعروض',
-            // 'خدمات اضافية في صفحة الدفع'
+            'خدمات اضافية في صفحة الدفع'
 
           ].map((text, index) => (
             <TableRow key={index} sx={{ direction: 'rtl' }}>
@@ -142,7 +147,7 @@ export default function Price () {
       </TableContainer>
 
       <Typography sx={{ color: '#272C2E', textAlign: 'right', display: 'bolck' , fontSize: '20px', fontWeight: 700 }}>إدارة المتجر</Typography>
-    <TableContainer component={Paper} sx={{ direction: 'rtl', width: '100%' }}>
+    <TableContainer component={Paper} sx={{ direction: 'rtl', width: '100%',marginBottom:'100px'}}>
       <Table>
         <TableBody >
           {[
@@ -166,6 +171,7 @@ export default function Price () {
       </Table>
       </TableContainer>
       </Container>
+      <Footer/>
     </>
   );
 }
