@@ -17,7 +17,7 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import PhoneField from 'components/common/PhoneField';
-
+import compare from 'utils/compare'
 import PasswordField from 'components/common/PasswordField';
 import { JOBS, EMPLOYEE } from 'data/api';
 import useRequest from 'hooks/useRequest';
@@ -128,7 +128,7 @@ function AddNewEmployee({ absolute, light, isMini }) {
                 console.log(result)
                 EmployeePatchRequest({
                     id:controls.id,
-                    body: {email:controls.email,full_name:controls.full_name,phone:controls.phone,job:controls.job},
+                    body: result.array,
                     onSuccess: (res) => {
                         console.log(res.data, controls.id)
 

@@ -149,10 +149,10 @@ function Addnewcategory({ absolute, light, isMini }) {
 
         
        Object.entries(result.array).map(([key,value])=>formDate.append(key, value))     
-    // if(controls.is_root_node){
-    //     formDate.append("parent", null)
+    if(controls.is_root_node){
+        formDate.append("parent", "")
 
-    //     }
+        }
         categorypatchRequest({
             id:controls.id,
             body:formDate,
