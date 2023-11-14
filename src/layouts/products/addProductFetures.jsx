@@ -13,18 +13,18 @@ import AddIcon from "@mui/icons-material/Add";
 import SoftButton from "components/SoftButton";
 import useRequest from "hooks/useRequest";
 import { PRODUCTS } from "data/api";
+import filter from "utils/ClearNull";
 const AddProductFetures = ({id}) => {
   let Token = localStorage.getItem("token");
   const [AddProductImagesRequest, AddProductImagesResponce] = useRequest({
-    path: PRODUCTS+id+'/images',
+    path: PRODUCTS+8+'/images/',
     method: "post",
     Token: `Token ${Token}`,
+    contentType: "multipart/form-data",
   });
   // add status of fields
   const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
-  
-    { control: "main_image", value: {}, isRequired: true },
-    { control: "product_images", value: [], isRequired: true },
+    { control: "image", value: [], isRequired: false },
   ]);
   function handleSubmit() {
     
@@ -34,9 +34,7 @@ const AddProductFetures = ({id}) => {
       AddProductImagesRequest({
         body: filter({
           obj: {
-           
-            product_images: controls.product_images,
-           
+            image: controls?.image,
           },
           output: "formData",
         }),
@@ -55,11 +53,12 @@ const AddProductFetures = ({id}) => {
         //   output: "object",
         // });
 
-        setInvalid(responseBody);
+        // setInvalid(responseBody);
         resetControls("");
       });
     });
   }
+  
   return (
     <Box sx={{display:'flex',flexDirection:'column',justifyContent:'space-between',gap:2}}>
     <Box sx={{ p: 3, display: "flex", flexDirection: "column", gap: 3 ,bgcolor:'#fff'}}>
@@ -92,7 +91,7 @@ const AddProductFetures = ({id}) => {
           <AddIcon />
         </Box>
       </Box>
-      <ImageBox main_image={controls.main_image} onChange={(e) => setControl("main_image", e)} />
+      <ImageBox main_image={controls.image} onChange={(e) => setControl("image", e)} />
 
       {/* <ImagesAlbums
         value={controls.product_images}

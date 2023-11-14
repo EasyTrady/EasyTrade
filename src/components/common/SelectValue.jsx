@@ -4,7 +4,7 @@ import React from 'react'
 
 import { NumericFormat } from 'react-number-format'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-const SelectValue = ({variant,label,value,handleValueChange,type,onChange,...rest}) => {
+const SelectValue = ({variant,label,handleValueChange,type,onChange,...rest}) => {
   return (
     <Box sx={{display:'flex',flexDirection:'column',alignItems:'start',width:'100%',  }}>
    <Typography sx={{
@@ -19,7 +19,6 @@ textAlign: 'left'
     <NumericFormat
       customInput={TextField}
       variant={Boolean(variant) ? variant : "standard"}
-      value={value}
       onChange={handleValueChange}
       {...rest}
       sx={{ width: "100%",
@@ -55,10 +54,10 @@ textAlign: 'left'
       // } 
       }}
     />
-    <Divider style={{ backgroundColor:'red',width:'100%',height:'100%',alignSelf: "stretch" }} variant="middle" orientation="vertical" flexItem   />
+    {/* <Divider style={{ backgroundColor:'red',width:'100%',height:'100%',alignSelf: "stretch" }} variant="middle" orientation="vertical" flexItem   /> */}
     <Select 
-    value={type}
-    onChange={onChange}
+  value={type}
+  onChange={onChange}
     sx={{
         '&.MuiSelect-outlined':{width:'20% !important'},
         border:"none",

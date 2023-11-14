@@ -23,8 +23,17 @@ const ImageBox = ({ main_image, onChange }) => {
       readers.push(reader);
       readers[i].readAsDataURL(files[i]);
     }
+    onChange(event.target.files)
   };
-  //  console.log(mainImage);
+  const handelDeleteImage = (selectedImageIndex) => {
+    // Delete the selected image from the images array
+    
+    const updatedImages = mainImages.filter((image, index) => index !== selectedImageIndex);
+  
+    // Update the state with the new images array
+    setMainImages(updatedImages);
+    onChange()
+  };
   return (
     <Box
       sx={{
@@ -106,10 +115,10 @@ const ImageBox = ({ main_image, onChange }) => {
                   },
                 }}
                 onClick={() => {
-                  // document.getElementById("profile_image").click();
+                  handelDeleteImage(index)
                 }}
               >
-                Remove Main image
+                Remove image
               </Button>
             </Box>
           </Box>
@@ -179,7 +188,7 @@ const ImageBox = ({ main_image, onChange }) => {
                 // document.getElementById("profile_image").click();
               }}
             >
-              Remove Main image
+              Remove image
             </Button>
           </Box>
         </Box>
