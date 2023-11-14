@@ -83,11 +83,12 @@ function Attribute({ absolute, light, isMini }) {
                 color: (theme) => theme.palette.purple.middle,
                 borderRadius: "10px",
                 fontSize: "12px",
-                width: "14%",
+                padding:"5px 16px 5px 16px",
+                // width: "14%",
                 margin: "10px",
             }}><Typography component={"span"} sx={{
                 width: "10px", height: "10px",
-                backgroundColor: ele.color_value, display: "inline-block", borderRadius: "50%"
+                backgroundColor: ele.color_value, display: "inline-block", borderRadius: "50%",marginX:"10px"
             }}></Typography>{ele.value_name}</Box> : <>
                 <Box key={ele.id} sx={{
                     display: "flex",
@@ -96,9 +97,9 @@ function Attribute({ absolute, light, isMini }) {
                     backgroundColor: (theme) => theme.palette.purple.hover,
                     color: (theme) => theme.palette.purple.middle,
                     fontSize: "12px",
-
+                    padding:"5px 16px 5px 16px",
                     borderRadius: "10px",
-                    width: "14%",
+                    // width: "14%",
                     margin: "10px",
                 }}><Typography component={"span"} sx={{
                     width: "10px", height: "10px",
@@ -278,6 +279,9 @@ function Attribute({ absolute, light, isMini }) {
                             onSuccess:(res)=>{
                                 console.log(res.data)
                                 dispatch({ type: "attribute/addValues", payload: { idattribute:controls.id, values: res.data } })
+                                setControl("values",[...res.data])
+            setOpenDialog(false)
+
                             }
                         })
                         // attributeValuepostRequest({
@@ -307,6 +311,7 @@ function Attribute({ absolute, light, isMini }) {
                     },
                     onSuccess: (res) => {
                         dispatch({ type: "attribute/addItem", payload: res.data })
+            setOpenDialog(false)
 
                         // attributeValuepostRequest({
                         //     id: res.data.id + "/values",
@@ -401,7 +406,7 @@ function Attribute({ absolute, light, isMini }) {
                     setControl("values",[...controls.values,{
                         value_name:controls.value_name,
                         color_value:controls.color_value,
-                        is_color:controls.iscolor
+                        iscolor:controls.iscolor
                     }]).then(()=>{
                         setControl("value_name","")  
                         setControl("color_value","") 
@@ -414,7 +419,7 @@ function Attribute({ absolute, light, isMini }) {
                     setControl("values",[...controls.values,{
                         value_name:controls.value_name,
                         color_value:controls.color_value,
-                        is_color:controls.iscolor
+                        iscolor:controls.iscolor
                     }]).then(()=>{
                         
                         setControl("value_name","")  
@@ -671,7 +676,7 @@ function Attribute({ absolute, light, isMini }) {
                                 <TableCell align="left" sx={{ width: "50%", borderRight: "1px solid #8080807d" }}>{ele.value_name}</TableCell>
                                 <TableCell align="right" sx={{ width: "50%" }}>
                                     
-                                    <DeleteIcon sx={{ color: (theme) => theme.palette.error.main }} onClick={() => onDeleteValue(controls.id, ele.id)} />
+                                    <DeleteIcon sx={{ color: (theme) => theme.palette.error.main,cursor:"pointer" }} onClick={() => onDeleteValue(controls.id, ele.id)} />
                                 </TableCell>
                             </Typography>)}
                             {addvalue && !controls.iscolor ?  <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
