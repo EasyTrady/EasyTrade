@@ -25,7 +25,8 @@ import useRequest from "hooks/useRequest";
 import { ATTRIBUTES } from "data/api";
 import { useDispatch, useSelector } from "react-redux";
 import useControls from "hooks/useControls";
-
+import SoftBox from 'components/SoftBox'
+import SoftInput from 'components/SoftInput'
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
 }
@@ -41,10 +42,16 @@ const ProductAttributes = () => {
   let Token = localStorage.getItem('token')
   let attributes = useSelector((state) => state.attribute.value)
   const dispatch=useDispatch()
+  // let [addvalue, setaddvalue] = React.useState(false);
+
   const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
   
-    { control: "attributes", value: '', isRequired: false },
+    { control: "attribute", value: [], isRequired: false },
     { control: "product_images", value: [], isRequired: false },
+    { control: "values", value: [], isRequired: false },
+    { control: "value_name", value: "", isRequired: false },
+
+
   ]);
   const [attributeRequest, attributeResponse] =
         useRequest({
@@ -70,6 +77,10 @@ const ProductAttributes = () => {
         })
 
         }
+      
+
+              
+      
   return (
     <Container
       maxWidth="xl"
@@ -104,21 +115,21 @@ const ProductAttributes = () => {
           placeholder={"Select..."}
           onOpen={getAttributies}
           renderValue={(selected) => {
-            return attributes.find(
-              (attributes) => attributes.id === selected
+            return attributes?.find(
+              (attribute) => attribute?.id === selected
             )?.name
             }}
           isPending={attributeResponse.isPending}
-          value={controls.attributes}
-          onChange={(e) => setControl("attributes", e.target.value)}
-          required={required.includes("attributes")}
-          error={Boolean(invalid.attributes)}
-          helperText={invalid.attributes}
-          sx={input}
+          value={controls.attribute}
+          onChange={(e) => {setControl("attribute", [...controls.attribute,e.target.value]);}}
+          required={required.includes("attribute")}
+          error={Boolean(invalid.attribute)}
+          helperText={invalid.attribute}
+          sx={{...input,".MuiPaper-root":{backgroundColor:"white !important"}}}
         >
 
           {attributes.map((attribute)=>(
-            <MenuItem key={attribute.id} value={attribute.id}>{attribute.name}</MenuItem>
+            <MenuItem key={attribute.id} value={attribute}>{attribute.name}</MenuItem>
           ))}
         </SelectField>
       </Box>
@@ -150,20 +161,22 @@ color:'#6B7785'
             </TableRow>
           </TableHead>
           <TableBody>
-            {["title", "value"].map((row) => (
-              <TableRow key={row} sx={{
+            {controls.attribute.map((row) => (
+              <TableRow key={row.id} sx={{
                 
                 // "&:last-child td, &:last-child th": { border: 0 }
                }}
                 >
-                <TableCell align="start">{row}</TableCell>
-                <TableCell align="start">{row}</TableCell>
+
+                <TableCell align="start">{row.name}</TableCell>
+                <TableCell align="start">{row.values.length} values</TableCell>
                 <TableCell align="end" gap={1}>
                   <img src={Edit} alt="edit" />
                   <img src={Delete} alt="delete" />
                 </TableCell>
               </TableRow>
             ))}
+           
           </TableBody>
           <TableFooter>
             <TableCell align="end">
@@ -178,6 +191,7 @@ color:'#6B7785'
                   textTransform: "none",
                   color: "#5D449B",
                 }}
+                // onClick={AddValue}
               >
                 Add Attribute
               </Button>

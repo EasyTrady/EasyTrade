@@ -13,7 +13,7 @@ export const ORDERS= `${BaseUrl}shop/dashboard/orders/`
 export const ATTRIBUTES= `${BaseUrl}/products/attributes/`
 export const CARTLEFT= `${BaseUrl}shop/dashboard/cartsleft/`
 export const PRODUCTS= `${BaseUrl}products/`
-
+// /products/attributes/15/values/bulkupdate/
 export const SENDEMAILPRODUCT=`${BaseUrl}/shop/dashboard/notifycart/`
 export const EMPLOYEE= `${BaseUrl}shop/dashboard/employees/`
 // export const JOBS= `${BaseUrl}shop/dashboard/employees/`

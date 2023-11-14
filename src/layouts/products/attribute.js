@@ -156,7 +156,7 @@ function Attribute({ absolute, light, isMini }) {
                 isRequired: false,
                 validations:[
                     {
-                        test:/^#[0-9]{6}$/,
+                        test:/^(?:#[0-9]{6})$/,
                         message: "not valid color value"
                     }
                 ]
@@ -239,12 +239,12 @@ function Attribute({ absolute, light, isMini }) {
             path: ATTRIBUTES,
             method: "patch",
             Token: `Token ${Token}`,
-            contentType: "multipart/form-data",
+            // contentType: "multipart/form-data",
         });
-        const [attributeValueRequest, getattributeValueResponce] =
+        const [attributeValuePatch, PatchattributeValueResponce] =
         useRequest({
             path: ATTRIBUTES,
-            method: "get",
+            method: "patch",
             Token: `Token ${Token}`
         });
     const handleClickOpen = () => {
@@ -272,7 +272,14 @@ function Attribute({ absolute, light, isMini }) {
                         
                     }, onSuccess: (res) => {
                         dispatch({ type: "attribute/patchItem", payload: { id: controls.id, item: res.data } })
-
+                        attributeValueeditRequest({
+                            id:controls.id+"/values/bulkupdate",
+                            body:controls.values.filter((ele)=>Boolean(ele.id)==false),
+                            onSuccess:(res)=>{
+                                console.log(res.data)
+                                dispatch({ type: "attribute/addValues", payload: { idattribute:controls.id, values: res.data } })
+                            }
+                        })
                         // attributeValuepostRequest({
                         //     id: controls.id + "/values",
                         //     body: {
@@ -291,6 +298,7 @@ function Attribute({ absolute, light, isMini }) {
 
                     }
                 })
+
             } else {
                 attributepostRequest({
                     body: {
@@ -344,6 +352,7 @@ function Attribute({ absolute, light, isMini }) {
             id: row + "/values/" + valueId,
             onSuccess: () => {
                 dispatch({ type: "attribute/deleteValueofAttribute", payload: { idattribute: row, idValue: valueId } })
+                setControl("values",controls.values.filter((ele)=>ele.id!==valueId))
             }
         })
     }
@@ -381,35 +390,52 @@ function Attribute({ absolute, light, isMini }) {
         // setColumns((prevs)=>console.log({...prevs,value:attributes.values}))
         console.log(attributes)
     }, [attributes])
+    useEffect(()=>{
+        if(controls.values.length>0){setControl("iscolor",controls.values[0].iscolor)}
+    },[controls.values])
     function AddValue(){
+        // if(!openDialogEdit){
+            if(controls.isColor){
         
-        if(controls.isColor){
-        
-            if(Boolean(controls.value_name)&&Boolean(controls.color_value)){
-                setControl("values",[...controls.values,{
-                    value_name:controls.value_name,
-                    color_value:controls.color_value,
-                    is_color:controls.isColor
-                }]).then(()=>{
-                    setControl("value_name","")  
-                    setControl("color_value","") 
-                })
-                      
-                
-            }
-            }     
-            else if(Boolean(controls.value_name)&&!controls.isColor){
-                setControl("values",[...controls.values,{
-                    value_name:controls.value_name,
-                    color_value:controls.color_value,
-                    is_color:controls.isColor
-                }]).then(()=>{
+                if(Boolean(controls.value_name)&&Boolean(controls.color_value)){
+                    setControl("values",[...controls.values,{
+                        value_name:controls.value_name,
+                        color_value:controls.color_value,
+                        is_color:controls.iscolor
+                    }]).then(()=>{
+                        setControl("value_name","")  
+                        setControl("color_value","") 
+                    })
+                          
                     
-                    setControl("value_name","")  
-                    setControl("color_value","") 
-                })
-            }
-           
+                }
+                }     
+                else if(Boolean(controls.value_name)&&!controls.isColor){
+                    setControl("values",[...controls.values,{
+                        value_name:controls.value_name,
+                        color_value:controls.color_value,
+                        is_color:controls.iscolor
+                    }]).then(()=>{
+                        
+                        setControl("value_name","")  
+                        setControl("color_value","") 
+                    })
+                }
+        // }else{
+            if(openDialogEdit){
+            // attributeValuePatch({
+            //     id:controls.id+"/values/bulkupdate",
+            //     body:{
+
+            //     },
+            //     onSuccess:(res)=>{
+            //         console.log(res.data)
+            //         dispatch({type:"attribute/addValue",payload:{idvalue:controls.id,value:res.data}})
+            //     }
+            // })
+        }
+        
+     
      
         
         setCounter(++counter);
@@ -417,8 +443,8 @@ function Attribute({ absolute, light, isMini }) {
             
     }
     useEffect(() => {
-        
-    }, [controls.value_name,controls.color_value])
+        console.log(controls?.values)
+    }, [controls?.values])
     return (
         <DashboardLayout >
             <DashboardNavbar />
