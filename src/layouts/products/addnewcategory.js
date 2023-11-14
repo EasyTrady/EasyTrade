@@ -22,9 +22,12 @@ import {
     ListItemIcon, ListItemText, MenuItem, Select, Stack, TextField,
     Typography, Box,  Container, Divider, Avatar, Radio, FormControlLabel, RadioGroup, FormLabel
 } from '@mui/material'
+import compare from 'utils/compare'
 function Addnewcategory({ absolute, light, isMini }) {
     const route = useLocation().pathname.split("/").slice(1);
     let navigate=useNavigate()
+    const location = useLocation();
+    const { state } = location;
     const formDate=new FormData()
     let dispatch = useDispatch()
     let Token = localStorage.getItem('token');
@@ -49,7 +52,14 @@ function Addnewcategory({ absolute, light, isMini }) {
         successMessage:t("postCategoryresult"),
         contentType: "multipart/form-data",
     });
-   
+    const [categorypatchRequest, patchcategoryResponce] =
+    useRequest({
+        path: CATEGORY,
+        method: "patch",
+        Token: `Token ${Token}`,
+        successMessage:t("postCategoryresult"),
+        contentType: "multipart/form-data",
+    });
    
     const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
         useControls([
@@ -72,14 +82,14 @@ function Addnewcategory({ absolute, light, isMini }) {
 
             },
             {
-                control: "isparent",
-                value: false,
+                control: "is_root_node",
+                value: true,
                 isRequired: false,
 
             },
             {
                 control: "parent",
-                value: "",
+                value: null,
                 isRequired: false,
 
             },
@@ -107,11 +117,53 @@ function Addnewcategory({ absolute, light, isMini }) {
             }
         })
     },[controls.parent])
-    
+    useEffect(() => {
+        // jobRequest({
+        //     onSuccess: (res) => {
+        //         dispatch({ type: "job/set", payload: res.data })
+        //     }
+        // })
+        if(Boolean(state?.dataRow)){
+            Object.entries(state?.dataRow)?.forEach(([key,value])=>setControl(key,value))
+
+        }
+        setavater(state?.dataRow?.image)
+        setControl("parentName",state?.dataRow?.parent?.id)
+        console.log(state?.dataRow)
+        // setControl()
+       
+    }, [state])
     function handleSubmit() {
         // e.preventDefault();
-    Object.entries(controls).map(([key,value])=>formDate.append(key, value))     
        
+    if(Boolean(state?.dataRow)){
+        console.log(controls.is_root_node,controls?.parent,state?.dataRow?.parent)
+        let  result= compare(
+                [
+                [controls.name,state?.dataRow?.name,"name"],
+                [controls.image,state?.dataRow?.image,"image"],
+                [controls.is_root_node,state?.dataRow?.is_root_node,"is_root_node"],
+               [controls?.parent,state?.dataRow?.parent,"parent"]
+            ],false
+            )
+
+        
+       Object.entries(result.array).map(([key,value])=>formDate.append(key, value))     
+    if(controls.is_root_node){
+        formDate.append("parent", "")
+
+        }
+        categorypatchRequest({
+            id:controls.id,
+            body:formDate,
+            onSuccess:(res)=>{
+                dispatch({type:"category/patchItem",payload: { id: controls.id, item: res.data }})
+                navigate(`/${sub_domain}/dashboard/products/category`)
+            }
+        })
+    }else{
+       Object.entries(controls).map(([key,value])=>formDate.append(key, value))     
+
         categoryPostRequest({
             body:formDate,
             onSuccess:(res)=>{
@@ -119,6 +171,7 @@ function Addnewcategory({ absolute, light, isMini }) {
                 navigate(`/${sub_domain}/dashboard/products/category`)
             }
         })
+    }
     }
     return (
         <DashboardLayout >
@@ -214,9 +267,9 @@ function Addnewcategory({ absolute, light, isMini }) {
                                 row
                                 aria-labelledby="demo-row-radio-buttons-group-label"
                                 name="row-radio-buttons-group"
-                                value={controls.isparent}
+                                value={controls.is_root_node}
 
-                                onChange={(e) =>  {setControl("isparent", e.target.value);}}
+                                onChange={(e) =>  {setControl("is_root_node", e.target.value);}}
                             >
                                 <FormControlLabel value={true} control={<Radio />} label={t("parent")} sx={{ ".MuiFormControlLabel-label": { fontWeight: "400", fontSize: "12px" } }} />
                                 <FormControlLabel value={false} control={<Radio />} label={t("child")} sx={{ ".MuiFormControlLabel-label": { fontWeight: "400", fontSize: "12px" } }} />
@@ -225,7 +278,8 @@ function Addnewcategory({ absolute, light, isMini }) {
                         </Box>
                     </SoftBox>
                 </SoftBox>
-                {controls.isparent=="false" ?  <SoftBox sx={{ position: "relative" }}>
+             
+                {controls.is_root_node=="false"||controls.is_root_node==false ?  <SoftBox sx={{ position: "relative" }}>
                     <SoftBox sx={{
                         width: "48px",
                         height: "102px",
@@ -292,10 +346,10 @@ function Addnewcategory({ absolute, light, isMini }) {
                     }}>
                         <Box >
                             <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("Categoryparentname")}</InputLabel>
-
+                            {console.log(controls.parent,controls?.parentName)}
                             <SoftInput
                                 select
-                                value={controls.parentName}
+                                value={controls?.parent}
                                 icon={{ component: <KeyboardArrowDownIcon />, direction: "right" }}
                                 sx={{ ".MuiInputBase-root": { border: "unset" }, color: "#959FA3" }}
                                 
@@ -317,8 +371,14 @@ function Addnewcategory({ absolute, light, isMini }) {
                                                 </Typography>
                                             );
                                         } else {
-                                            console.log(selected)
+                                           
+                                            if(selected.id){
+                                                return categories?.find((ele) => ele.id === selected.id)?.name;
+
+                                            }else{
                                             return categories?.find((ele) => ele.id === selected)?.name;
+
+                                            }
                                         }
                                     },
                                     MenuProps: {

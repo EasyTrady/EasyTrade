@@ -83,11 +83,12 @@ function Attribute({ absolute, light, isMini }) {
                 color: (theme) => theme.palette.purple.middle,
                 borderRadius: "10px",
                 fontSize: "12px",
-                width: "14%",
+                padding:"5px 16px 5px 16px",
+                // width: "14%",
                 margin: "10px",
             }}><Typography component={"span"} sx={{
                 width: "10px", height: "10px",
-                backgroundColor: ele.color_value, display: "inline-block", borderRadius: "50%"
+                backgroundColor: ele.color_value, display: "inline-block", borderRadius: "50%",marginX:"10px"
             }}></Typography>{ele.value_name}</Box> : <>
                 <Box key={ele.id} sx={{
                     display: "flex",
@@ -96,9 +97,9 @@ function Attribute({ absolute, light, isMini }) {
                     backgroundColor: (theme) => theme.palette.purple.hover,
                     color: (theme) => theme.palette.purple.middle,
                     fontSize: "12px",
-
+                    padding:"5px 16px 5px 16px",
                     borderRadius: "10px",
-                    width: "14%",
+                    // width: "14%",
                     margin: "10px",
                 }}><Typography component={"span"} sx={{
                     width: "10px", height: "10px",
@@ -156,7 +157,7 @@ function Attribute({ absolute, light, isMini }) {
                 isRequired: false,
                 validations:[
                     {
-                        test:/^#[0-9]{6}$/,
+                        test:/^(?:#[0-9]{6})$/,
                         message: "not valid color value"
                     }
                 ]
@@ -239,12 +240,12 @@ function Attribute({ absolute, light, isMini }) {
             path: ATTRIBUTES,
             method: "patch",
             Token: `Token ${Token}`,
-            contentType: "multipart/form-data",
+            // contentType: "multipart/form-data",
         });
-        const [attributeValueRequest, getattributeValueResponce] =
+        const [attributeValuePatch, PatchattributeValueResponce] =
         useRequest({
             path: ATTRIBUTES,
-            method: "get",
+            method: "patch",
             Token: `Token ${Token}`
         });
     const handleClickOpen = () => {
@@ -272,7 +273,17 @@ function Attribute({ absolute, light, isMini }) {
                         
                     }, onSuccess: (res) => {
                         dispatch({ type: "attribute/patchItem", payload: { id: controls.id, item: res.data } })
+                        attributeValueeditRequest({
+                            id:controls.id+"/values/bulkupdate",
+                            body:controls.values.filter((ele)=>Boolean(ele.id)==false),
+                            onSuccess:(res)=>{
+                                console.log(res.data)
+                                dispatch({ type: "attribute/addValues", payload: { idattribute:controls.id, values: res.data } })
+                                setControl("values",[...res.data])
+            setOpenDialog(false)
 
+                            }
+                        })
                         // attributeValuepostRequest({
                         //     id: controls.id + "/values",
                         //     body: {
@@ -291,6 +302,7 @@ function Attribute({ absolute, light, isMini }) {
 
                     }
                 })
+
             } else {
                 attributepostRequest({
                     body: {
@@ -299,6 +311,7 @@ function Attribute({ absolute, light, isMini }) {
                     },
                     onSuccess: (res) => {
                         dispatch({ type: "attribute/addItem", payload: res.data })
+            setOpenDialog(false)
 
                         // attributeValuepostRequest({
                         //     id: res.data.id + "/values",
@@ -344,6 +357,7 @@ function Attribute({ absolute, light, isMini }) {
             id: row + "/values/" + valueId,
             onSuccess: () => {
                 dispatch({ type: "attribute/deleteValueofAttribute", payload: { idattribute: row, idValue: valueId } })
+                setControl("values",controls.values.filter((ele)=>ele.id!==valueId))
             }
         })
     }
@@ -381,35 +395,52 @@ function Attribute({ absolute, light, isMini }) {
         // setColumns((prevs)=>console.log({...prevs,value:attributes.values}))
         console.log(attributes)
     }, [attributes])
+    useEffect(()=>{
+        if(controls.values.length>0){setControl("iscolor",controls.values[0].iscolor)}
+    },[controls.values])
     function AddValue(){
+        // if(!openDialogEdit){
+            if(controls.isColor){
         
-        if(controls.isColor){
-        
-            if(Boolean(controls.value_name)&&Boolean(controls.color_value)){
-                setControl("values",[...controls.values,{
-                    value_name:controls.value_name,
-                    color_value:controls.color_value,
-                    is_color:controls.isColor
-                }]).then(()=>{
-                    setControl("value_name","")  
-                    setControl("color_value","") 
-                })
-                      
-                
-            }
-            }     
-            else if(Boolean(controls.value_name)&&!controls.isColor){
-                setControl("values",[...controls.values,{
-                    value_name:controls.value_name,
-                    color_value:controls.color_value,
-                    is_color:controls.isColor
-                }]).then(()=>{
+                if(Boolean(controls.value_name)&&Boolean(controls.color_value)){
+                    setControl("values",[...controls.values,{
+                        value_name:controls.value_name,
+                        color_value:controls.color_value,
+                        iscolor:controls.iscolor
+                    }]).then(()=>{
+                        setControl("value_name","")  
+                        setControl("color_value","") 
+                    })
+                          
                     
-                    setControl("value_name","")  
-                    setControl("color_value","") 
-                })
-            }
-           
+                }
+                }     
+                else if(Boolean(controls.value_name)&&!controls.isColor){
+                    setControl("values",[...controls.values,{
+                        value_name:controls.value_name,
+                        color_value:controls.color_value,
+                        iscolor:controls.iscolor
+                    }]).then(()=>{
+                        
+                        setControl("value_name","")  
+                        setControl("color_value","") 
+                    })
+                }
+        // }else{
+            if(openDialogEdit){
+            // attributeValuePatch({
+            //     id:controls.id+"/values/bulkupdate",
+            //     body:{
+
+            //     },
+            //     onSuccess:(res)=>{
+            //         console.log(res.data)
+            //         dispatch({type:"attribute/addValue",payload:{idvalue:controls.id,value:res.data}})
+            //     }
+            // })
+        }
+        
+     
      
         
         setCounter(++counter);
@@ -417,8 +448,8 @@ function Attribute({ absolute, light, isMini }) {
             
     }
     useEffect(() => {
-        
-    }, [controls.value_name,controls.color_value])
+        console.log(controls?.values)
+    }, [controls?.values])
     return (
         <DashboardLayout >
             <DashboardNavbar />
@@ -645,7 +676,7 @@ function Attribute({ absolute, light, isMini }) {
                                 <TableCell align="left" sx={{ width: "50%", borderRight: "1px solid #8080807d" }}>{ele.value_name}</TableCell>
                                 <TableCell align="right" sx={{ width: "50%" }}>
                                     
-                                    <DeleteIcon sx={{ color: (theme) => theme.palette.error.main }} onClick={() => onDeleteValue(controls.id, ele.id)} />
+                                    <DeleteIcon sx={{ color: (theme) => theme.palette.error.main,cursor:"pointer" }} onClick={() => onDeleteValue(controls.id, ele.id)} />
                                 </TableCell>
                             </Typography>)}
                             {addvalue && !controls.iscolor ?  <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>

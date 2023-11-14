@@ -62,8 +62,8 @@ function Category({ absolute, light, isMini }) {
                 const { row } = params;
                 return (<Stack direction={"row"} >
                    
-                    {row.is_root_node?<Typography component={"p"} sx={{ fontSize: "14px",borderRadius:"130px",marginX:"10px",padding:"5px 16px 5px 16px" ,backgroundColor:(theme)=>theme.palette.blue.hover,color:(theme)=>theme.palette.blue.main}}>parent</Typography>:
-                    <Typography component={"p"} sx={{ fontSize: "14px",borderRadius:"130px",marginX:"10px",padding:"5px 16px 5px 16px" ,backgroundColor:(theme)=>theme.palette.purple.hover,color:(theme)=>theme.palette.purple.middle}}>child</Typography>}
+                    {row.is_root_node?<Typography component={"p"} sx={{ fontSize: "14px",borderRadius:"130px",marginX:"10px",padding:"5px 16px 5px 16px" ,backgroundColor:(theme)=>theme.palette.purple.hover,color:(theme)=>theme.palette.purple.middle}}>parent</Typography>:
+                    <Typography component={"p"} sx={{ fontSize: "14px",borderRadius:"130px",marginX:"10px",padding:"5px 16px 5px 16px" ,backgroundColor:(theme)=>theme.palette.blue.hover,color:(theme)=>theme.palette.blue.main}}>Sub-category</Typography>}
                    
                 </Stack>
                 );
@@ -116,6 +116,10 @@ function Category({ absolute, light, isMini }) {
                 }
             })
         }
+        function onEdit(row, newRow) {
+            navigate(`/${sub_domain}/dashboard/products/addnewCategory`,{state:{id:row,dataRow:newRow}})
+            
+        }
         useEffect(() => {
             categoryRequest({
                 onSuccess: (res) => {
@@ -166,7 +170,7 @@ function Category({ absolute, light, isMini }) {
                 <DataGridCustom
                     rows={rows}
                     onDelete={onDelete}
-                    // onDialog={onEdit}
+                    onDialog={onEdit}
                     columns={columns}
                     checkboxSelection={true}
                     // onRowClick={(e) => { console.log({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}

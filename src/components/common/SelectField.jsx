@@ -96,7 +96,6 @@ textAlign: 'left'
         fontFamily:'Cairo',
                 boxShadow: "none",
                 height:'40px !important',
-                background:'#F7F8FA',
                borderColor:'#C9CDD4',
                fontSize:'14px',
                 ".MuiOutlinedInput-notchedOutline": { border: 0 },
@@ -107,10 +106,13 @@ textAlign: 'left'
                 "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
                   {
                     border: 0,
-                  },
+                  },"&.MuiPaper-root":{
+                    background:'#F7F8FA !important',
+
+                  }
               }} 
               
-              
+              {...rest}
              
               >
                  {Boolean(isPending) ? (
@@ -122,7 +124,7 @@ textAlign: 'left'
       ) : (
         <MenuItem disabled>فارغ</MenuItem>
       )}
-              </Select>
+            </Select>
     {/* <Select
       variant={Boolean(variant) ? variant : "standard"}
       SelectProps={{

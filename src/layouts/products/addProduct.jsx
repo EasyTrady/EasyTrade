@@ -6,6 +6,7 @@ import {
   Container,
   FormControlLabel,
   Grid,
+  InputAdornment,
   MenuItem,
   Switch,
   Typography,
@@ -94,7 +95,6 @@ const AddProduct = ({ light, isMini }) => {
       control: "quantity",
       value: "",
       isRequired: false,
-      
     },
     {
       control: "price",
@@ -141,7 +141,7 @@ const AddProduct = ({ light, isMini }) => {
       value: "",
       isRequired: false,
     },
-    { control: "require_shipping", value: "", isRequired: false },
+    { control: "require_shipping", value: false, isRequired: false },
     { control: "require_shipping", value: "", isRequired: false },
     { control: "maximum_order_quantity", value: "", isRequired: false },
     { control: "description", value: "", isRequired: false },
@@ -149,8 +149,8 @@ const AddProduct = ({ light, isMini }) => {
     { control: "custom_shipping_price", value: "", isRequired: false },
     { control: "dimensions", value: "", isRequired: false },
     { control: "weight", value: "", isRequired: false },
-    { control: "in_taxes", value: "", isRequired: false },
-    { control: "is_piblished", value: "", isRequired: false },
+    { control: "in_taxes", value: false, isRequired: false },
+    { control: "is_piblished", value: false ,isRequired: false },
     { control: "weight", value: "", isRequired: false },
   ]);
   const [categoryRequest, getcategoryResponce] = useRequest({
@@ -172,17 +172,16 @@ const AddProduct = ({ light, isMini }) => {
     path: PRODUCTS,
     method: "post",
     Token: `Token ${Token}`,
-    contentType:'multipart/form-data'
+    contentType: "multipart/form-data",
   });
   function handleSubmit() {
-    
     validate()?.then((output) => {
       console.log(output);
       if (!output.isOk) return;
       AddProductRequest({
         body: filter({
           obj: {
-            product_categories: controls.product_categories||"12",
+            product_categories: controls.product_categories || "12",
             sku: controls.sku,
             mpn: controls.mpn,
             gtin: controls.gtin,
@@ -214,7 +213,7 @@ const AddProduct = ({ light, isMini }) => {
         console.log(res);
         const responseBody = filter({
           obj: {
-             product_categories: response?.product_categories,
+            product_categories: response?.product_categories,
             sku: response?.sku,
             mpn: response?.mpn,
             gtin: response?.gtin,
@@ -244,17 +243,17 @@ const AddProduct = ({ light, isMini }) => {
       });
     });
   }
-console.log(controls.in_taxes);
+  console.log(controls.in_taxes);
   return (
     <>
       <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
         <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
       </SoftBox>
-      <Box  sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", pb: 4 }}>
+      <Box sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", pb: 4 }}>
         <AddProductTitle title={"Basic info"} />
         <Container>
           <SoftBox
-            py={'20px'}
+            py={"20px"}
             display="flex"
             flexDirection="column"
             gap={"20px"}
@@ -296,25 +295,23 @@ console.log(controls.in_taxes);
               variant="outlined"
               placeholder="category"
               label="Category"
-              
               isPending={getcategoryResponce.isPending}
               onOpen={getCategory}
               renderValue={(selected) => {
-												return category?.find(
-												  (category) => category.id === selected
-												)?.name
-											  }}
+                return category?.find((category) => category.id === selected)?.name;
+              }}
               value={controls.product_categories}
               onChange={(e) => setControl("product_categories", e.target.value)}
               required={required.includes("product_categories")}
               textHelper={controls.product_categories}
               error={Boolean(invalid.product_categories)}
               helperText={invalid.product_categories}
-              sx={{ width: "100%", fontSize: "14px",background:'#fff' }}
+              sx={{ width: "100%", fontSize: "14px", background: "#fff" }}
             >
-              {category?.map((category,index) => (
+              {category?.map((category, index) => (
                 <MenuItem key={`${category.id} ${index}`} value={category.id}>
                   {category?.name}
+                  {console.log(category.id)}
                 </MenuItem>
               ))}
             </SelectField>
@@ -334,11 +331,11 @@ console.log(controls.in_taxes);
               <ReactQuill
                 theme="snow"
                 value={controls.description}
-                onChange={(e)=>setControl('description',e)}
+                onChange={(e) => setControl("description", e)}
                 placeholder="Typing the description of product."
                 onBlur={(e) => validate({ content: e.index })}
                 modules={modules}
-                style={{ height: "118px"}}
+                style={{ height: "118px" }}
               />
             </Box>
             <Box my={4}>
@@ -349,7 +346,7 @@ console.log(controls.in_taxes);
                 placeholder="Typing the description of product."
                 onBlur={(e) => validate({ content: e.index })}
                 modules={modules}
-                style={{ height: "118px",  }}
+                style={{ height: "118px" }}
               />
             </Box>
 
@@ -419,7 +416,7 @@ console.log(controls.in_taxes);
               gap: "20px",
             }}
           >
-            <SelectValue
+            <NumberField
               variant="outlined"
               label={"Weight*"}
               placeholder={"Weight"}
@@ -428,7 +425,10 @@ console.log(controls.in_taxes);
               required={required.includes("weight")}
               error={Boolean(invalid.weight)}
               helperText={invalid.weight}
-              sx={input}
+               sx={input}
+               InputProps={{
+                endAdornment: <InputAdornment position="end">g</InputAdornment>,
+              }}
             />
             <NumberField
               variant="outlined"
@@ -476,10 +476,7 @@ console.log(controls.in_taxes);
           </Box>
         </Container>
       </Box>
-      <Box
-        
-        sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", pb: 4, mt: 2.5 }}
-      >
+      <Box sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", pb: 4, mt: 2.5 }}>
         <AddProductTitle title={"Additional info"} />
         <Container sx={{ display: "flex", flexDirection: "column", gap: "20px", mt: "20px" }}>
           <NumberField
@@ -507,39 +504,35 @@ console.log(controls.in_taxes);
             sx={input}
           />
           <NumberField
-        variant='outlined'
-        label={"shipping price"}
-        placeholder={"99 EGP"}
-        value={controls.custom_shipping_price}
-        onChange={(e) => setControl("custom_shipping_price", e.target.value)}
-        required={required?.includes("custom_shipping_price")}
-        error={Boolean(invalid?.custom_shipping_price)}
-        helperText={invalid?.custom_shipping_price}
-        // icon={{ component: <DnsOutlinedIcon />, direction: "left" }}
-        sx={input}
-        borderBottom='none'
-        />
+            variant="outlined"
+            label={"shipping price"}
+            placeholder={"99 EGP"}
+            value={controls.custom_shipping_price}
+            onChange={(e) => setControl("custom_shipping_price", e.target.value)}
+            required={required?.includes("custom_shipping_price")}
+            error={Boolean(invalid?.custom_shipping_price)}
+            helperText={invalid?.custom_shipping_price}
+            // icon={{ component: <DnsOutlinedIcon />, direction: "left" }}
+            sx={input}
+            borderBottom="none"
+          />
         </Container>
       </Box>
-      <Box
-       
-        sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", pb: 4, mt: 2.5 }}
-      >
+      <Box sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", pb: 4, mt: 2.5 }}>
         <AddProductTitle title={"Discount details (Optional)"} />
         <Container sx={{ display: "flex", flexDirection: "column", gap: "20px", mt: "20px" }}>
           <SelectValue
             variant="outlined"
             label={"Discount"}
+            handleValueChange={(e) => setControl("discount", e.target.value)}
+            onChange={(e) => setControl("is_percentage_discount", e.target.value)}
             value={controls.discount}
             type={controls.is_percentage_discount}
-            onChange={(e) => setControl("is_percentage_discount", e.target.value)}
-            handleValueChange={(e) => setControl("discount", e.target.value)}
             required={required.includes("discount")}
             error={Boolean(invalid.discount)}
             helperText={invalid.discount}
-            
             sx={input}
-            borderBottom="none"
+            
           />
           <Box>
             <Typography
@@ -553,7 +546,10 @@ console.log(controls.in_taxes);
             >
               Start date*
             </Typography>
-            <DatePickerField value={controls.discount_start_date} onChange={(e)=>setControl('discount_start_date',e)}/>
+            <DatePickerField
+              value={controls.discount_start_date}
+              onChange={(e) => setControl("discount_start_date", e)}
+            />
           </Box>
           <Box>
             <Typography
@@ -567,80 +563,79 @@ console.log(controls.in_taxes);
             >
               End date*
             </Typography>
-            <DatePickerField value={controls.discount_end_date} onChange={(e)=>setControl('discount_end_date',e)}/>
+            <DatePickerField
+              value={controls.discount_end_date}
+              onChange={(e) => setControl("discount_end_date", e)}
+            />
           </Box>
         </Container>
       </Box>
-      <Box
-        
-        sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", pb: 4, mt: 2.5 }}
-      >
+      <Box sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", pb: 4, mt: 2.5 }}>
         <AddProductTitle title={"Toggles"} />
-        <Container >
+        <Container>
           <Box sx={{ display: "flex", flexDirection: "column", gap: "20px", mt: "20px" }}>
-            <Box  sx={{ display: "flex", flexDirection: "row", justifyContent:'space-between',  }}>
-          <FormControlLabel
-            sx={{
-              fontFamily: "Inter",
-              fontSize: "14px",
-              fontWeight: 500,
-              lineHeight: "24px",
-              letterSpacing: "-0.02em",
-            }}
-            label={"No tax"}
-            control={
-              <Switch
-                defaultChecked
-                value={controls.in_taxes}
-                onChange={(e) => setControl("in_taxes", e.target.checked)}
-                color="secondary"
+            <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+              <FormControlLabel
+                sx={{
+                  fontFamily: "Inter",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  lineHeight: "24px",
+                  letterSpacing: "-0.02em",
+                }}
+                label={"No tax"}
+                control={
+                  <Switch
+                    defaultChecked
+                    value={controls.in_taxes}
+                    onChange={(e) => setControl("in_taxes", e.target.checked)}
+                    color="secondary"
+                  />
+                }
               />
-            }
-          />
-          <FormControlLabel
-            sx={{
-              fontFamily: "Inter",
-              fontSize: "14px",
-              fontWeight: 500,
-              lineHeight: "24px",
-              letterSpacing: "-0.02em",
-            }}
-            label={"Publish on website"}
-            control={
-              <Switch
-                value={controls.is_piblished}
-                onChange={(e) => setControl("is_piblished", e.target.checked)}
-                defaultChecked
-                color="secondary"
+              <FormControlLabel
+                sx={{
+                  fontFamily: "Inter",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  lineHeight: "24px",
+                  letterSpacing: "-0.02em",
+                }}
+                label={"Publish on website"}
+                control={
+                  <Switch
+                    value={controls.is_piblished}
+                    onChange={(e) => setControl("is_piblished", e.target.checked)}
+                    defaultChecked
+                    color="secondary"
+                  />
+                }
               />
-            }
-          />
 
-          <FormControlLabel
-            sx={{
-              fontFamily: "Inter",
-              fontSize: "14px",
-              fontWeight: 500,
-              lineHeight: "24px",
-              letterSpacing: "-0.02em",
-            }}
-            label={"Must pay shipping"}
-            control={
-              <Switch
-                value={controls.require_shipping}
-                onChange={(e) => setControl("require_shipping", e.target.checked)}
-                defaultChecked
-                color="secondary"
+              <FormControlLabel
+                sx={{
+                  fontFamily: "Inter",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  lineHeight: "24px",
+                  letterSpacing: "-0.02em",
+                }}
+                label={"Must pay shipping"}
+                control={
+                  <Switch
+                    value={controls.require_shipping}
+                    onChange={(e) => setControl("require_shipping", e.target.checked)}
+                    defaultChecked
+                    color="secondary"
+                  />
+                }
               />
-            }
-          />
+            </Box>
+            <PictureField
+              value={controls.main_image}
+              onChange={(e) => setControl("main_image", e)}
+            />
           </Box>
-          <PictureField
-          value={controls.main_image}
-          onChange={(e)=>setControl('main_image',e)}
-          />
-          </Box>
-
         </Container>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: "24px" }}>

@@ -17,7 +17,7 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import PhoneField from 'components/common/PhoneField';
-
+import compare from 'utils/compare'
 import PasswordField from 'components/common/PasswordField';
 import { JOBS, EMPLOYEE } from 'data/api';
 import useRequest from 'hooks/useRequest';
@@ -117,9 +117,18 @@ function AddNewEmployee({ absolute, light, isMini }) {
             console.log(controls.id,Boolean(state?.dataRow))
 
             if(Boolean(state?.dataRow)){
+                let  result= compare(
+                    [
+                    [controls.email,state?.dataRow?.email,"email"],
+                    [controls.full_name,state?.dataRow?.full_name,"full_name"],
+                    [controls.phone,state?.dataRow?.phone,"phone"],
+                   [controls.job,state?.dataRow?.job,"job"]
+                ],false
+                )
+                console.log(result)
                 EmployeePatchRequest({
                     id:controls.id,
-                    body: {email:controls.email,full_name:controls.full_name,phone:controls.phone,job:controls.job},
+                    body: result.array,
                     onSuccess: (res) => {
                         console.log(res.data, controls.id)
 
