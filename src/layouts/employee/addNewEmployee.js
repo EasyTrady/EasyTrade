@@ -117,6 +117,15 @@ function AddNewEmployee({ absolute, light, isMini }) {
             console.log(controls.id,Boolean(state?.dataRow))
 
             if(Boolean(state?.dataRow)){
+                let  result= compare(
+                    [
+                    [controls.email,state?.dataRow?.email,"email"],
+                    [controls.full_name,state?.dataRow?.full_name,"full_name"],
+                    [controls.phone,state?.dataRow?.phone,"phone"],
+                   [controls.job,state?.dataRow?.job,"job"]
+                ],false
+                )
+                console.log(result)
                 EmployeePatchRequest({
                     id:controls.id,
                     body: {email:controls.email,full_name:controls.full_name,phone:controls.phone,job:controls.job},
