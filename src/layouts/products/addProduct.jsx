@@ -51,7 +51,7 @@ import filter from "utils/ClearNull";
 import PictureField from "components/common/PictureField";
 const ReactQuill = require("react-quill");
 
-const AddProduct = ({ light, isMini }) => {
+const AddProduct = ({ light, isMini,handleChange }) => {
   const category = useSelector((state) => state.category.value);
   const dispatch = useDispatch();
   const route = useLocation().pathname.split("/").slice(1);
@@ -206,6 +206,7 @@ const AddProduct = ({ light, isMini }) => {
           output: "formData",
         }),
         onSuccess: (res) => {
+          handleChange(undefined,1,res.data.id)
           console.log(res.data, controls);
         },
       }).then((res) => {
@@ -243,6 +244,8 @@ const AddProduct = ({ light, isMini }) => {
       });
     });
   }
+ 
+
   console.log(controls.in_taxes);
   return (
     <>

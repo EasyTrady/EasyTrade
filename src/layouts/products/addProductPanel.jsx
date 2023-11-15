@@ -14,10 +14,11 @@ import ProductAttributes from './productAttributes';
 export default function AddProductPanel() {
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (e,newValue,id) => {
+  console.log(newValue,id)
+
     setValue(newValue);
   };
-
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -46,12 +47,12 @@ color:'#5D449B',
       </Container>
       <CustomTabPanel value={value} index={0}>
       
-       <AddProduct/>
+       <AddProduct  handleChange={handleChange}/>
        
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
      
-        <AddProductFetures/>
+        <AddProductFetures handleChange={handleChange}/>
        
       </CustomTabPanel>
 
@@ -67,7 +68,7 @@ color:'#5D449B',
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
-
+  console.log(index,value)
   return (
     <div
       role="tabpanel"

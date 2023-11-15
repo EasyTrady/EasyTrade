@@ -35,6 +35,8 @@ import SyncIcon from '@mui/icons-material/Sync';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import { useTranslation } from 'react-i18next';
 
+import { PRODUCTS } from "data/api";
+import filter from "utils/ClearNull";
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
 }
@@ -56,9 +58,13 @@ const ProductAttributes = () => {
   const [openDialogEdit, setOpenDialogEdit] = React.useState(false);
 
   const [{ controls, invalid, required }, { setControl, resetControls, validate,setInvalid }] = useControls([
-  
+    {
+      control: "id",
+      value: "",
+      isRequired: false,
+
+  },
     { control: "attribute", value: [], isRequired: false },
-    { control: "product_images", value: [], isRequired: false },
     { control: "values", value: [], isRequired: false },
     { control: "value_name", value: "", isRequired: false },
     {
@@ -71,11 +77,21 @@ const ProductAttributes = () => {
     isRequired: false,
     validations:[
         {
-            test:/^(?:#[0-9]{6})$/,
+            test:/^(?:#[0-9A-Za-z]{6})$/,
             message: "not valid color value"
         }
     ]
-},
+}, {
+  control: "name",
+  value: "",
+  isRequired: openDialogEdit ? false : true,
+  validations: [
+      {
+          test: /^(?:[A-Za-z\u0600-\u06ff\s]*)$/,
+          message: "not valid name"
+      }
+  ]
+}
 
   ]);
   let [counter,setCounter]=React.useState(controls.values.length>0?controls.values.length-1:controls.values.length);
@@ -98,6 +114,13 @@ const [attributeEditRequest, editattributeResponce] =
             // contentType: "multipart/form-data",
             successMessage:t("editattributesuccessfull")
         });
+const [attributeValueeditRequest, editValueattributeResponce] =
+        useRequest({
+            path: ATTRIBUTES,
+            method: "patch",
+            Token: `Token ${Token}`,
+            // contentType: "multipart/form-data",
+        });
 function handleSubmit() {
   console.log("submit")
   validate().then((output) => {
@@ -118,7 +141,7 @@ function handleSubmit() {
                           console.log(res.data)
                           dispatch({ type: "attribute/addValues", payload: { idattribute:controls.id, values: res.data } })
                           setControl("values",[...res.data])
-      setOpenDialog(false)
+                          setOpenDialog(false)
 
                       }
                   })
@@ -135,7 +158,7 @@ function handleSubmit() {
               },
               onSuccess: (res) => {
                   dispatch({ type: "attribute/addItem", payload: res.data })
-      setOpenDialog(false)
+                  setOpenDialog(false)
 
                 
                   console.log(res.data, controls)
@@ -153,10 +176,12 @@ function handleSubmit() {
 
 }
 function AddValue(){
-
-      if(controls.isColor){
-  
+ 
+      if(controls.iscolor){
           if(Boolean(controls.value_name)&&Boolean(controls.color_value)){
+              let test=/^(?:#[0-9A-Za-z]{6})$/
+             let match= test.test(controls.color_value)
+             if(match){
               setControl("values",[...controls.values,{
                   value_name:controls.value_name,
                   color_value:controls.color_value,
@@ -165,30 +190,26 @@ function AddValue(){
                   setControl("value_name","")  
                   setControl("color_value","") 
               })
-                    
-              
+              setInvalid({color_value:""})
+
+             }else{
+              setInvalid({color_value:"not valid color value #000000"})
+             }
           }
           }     
-          else if(Boolean(controls.value_name)&&!controls.isColor){
+          else if(Boolean(controls.value_name)&&!controls.iscolor){
+            console.log(Boolean(controls.iscolor))
               setControl("values",[...controls.values,{
                   value_name:controls.value_name,
                   color_value:controls.color_value,
-                  iscolor:controls.iscolor
+                  iscolor:Boolean(controls.iscolor)
               }]).then(()=>{
-                  
                   setControl("value_name","")  
                   setControl("color_value","") 
               })
           }
-
-
-  
-
-
-  
-  setCounter(++counter);
-  setaddvalue(true);
-      
+           setCounter(++counter);
+           setaddvalue(true);   
 }
   const [attributeRequest, attributeResponse] =
         useRequest({
@@ -196,7 +217,19 @@ function AddValue(){
             method: "get",
             Token: `Token ${Token}`
         });
-
+  const [GenerationAttributesRequest, GenerationAttributeResponse] =
+        useRequest({
+            path: PRODUCTS+8+'/variants/',
+            method: "POST",
+            Token: `Token ${Token}`
+        });
+ const [attributeDeleteRequest, DeleteattributerResponce] =
+        useRequest({
+            path: ATTRIBUTES,
+            method: "delete",
+            Token: `Token ${Token}`,
+            successMessage:t("deleteattribute")
+        });
         const getAttributies=()=>{
           attributeRequest({
             onSuccess: (res) => {
@@ -216,8 +249,55 @@ function AddValue(){
         }
       
 
-              
+        const postGenerationAttributes=()=>{
+          validate().then((output) => {
+            console.log(controls?.attribute);
+            if (!output.isOk) return;
+            GenerationAttributesRequest({
+              body: filter({
+                obj: {
+                  attribute: [...controls?.attribute],
+                },
+                output: "object",
+              }),
+              onSuccess: (res) => {
+                console.log(res.data, controls);
+              },
+            }).then((res) => {
+              let response = res?.response?.data;
+              console.log(res);
+              // const responseBody = filter({
+              //   obj: {
+              //     name: response?.name?.join(""),
+              //     quantity: response?.quantity?.join(" "),
+              //    
+              //   },
+              //   output: "object",
+              // });
       
+              // setInvalid(responseBody);
+              resetControls("");
+            });
+          });
+        }
+              
+        function onDeleteValue(row, valueId) {
+          attributeDeleteRequest({
+              id: row + "/values/" + valueId,
+              onSuccess: () => {
+                  dispatch({ type: "attribute/deleteValueofAttribute", payload: { idattribute: row, idValue: valueId } })
+                  setControl("values",controls.values.filter((ele)=>ele.id!==valueId))
+              }
+          })
+      }
+      function onEdit(id) {
+        setOpenDialog(!openDialog);
+        setOpenDialogEdit(true);
+        const rowfind = attributes.find((row) => row.id === id)
+        Object.keys(controls)?.map((ele) => rowfind[ele] ? setControl(ele, rowfind[ele]) : null)
+        console.log(rowfind, controls)
+
+    }
   return (
     <Container
       maxWidth="xl"
@@ -257,12 +337,12 @@ function AddValue(){
             )?.name
             }}
           isPending={attributeResponse.isPending}
-          value={controls.attribute}
-          onChange={(e) => {setControl("attribute", [...controls.attribute,e.target.value]);}}
+          value={controls?.attribute}
+          onChange={(e) => {setControl("attribute", [...controls?.attribute,e.target.value]);}}
           required={required.includes("attribute")}
-          error={Boolean(invalid.attribute)}
-          helperText={invalid.attribute}
-          sx={{...input,".MuiPaper-root":{backgroundColor:"white !important"}}}
+          error={Boolean(invalid?.attribute)}
+          helperText={invalid?.attribute}
+          sx={{...input,".MuiPaper-root":{backgroundColor:"white !important",zIndex:1}}}
         >
 
           {attributes.map((attribute)=>(
@@ -308,7 +388,7 @@ color:'#6B7785'
                 <TableCell align="start">{row.name}</TableCell>
                 <TableCell align="start">{row.values.length} values</TableCell>
                 <TableCell align="end" gap={1}>
-                  <img src={Edit} alt="edit" />
+                  <img src={Edit} alt="edit" onClick={()=>{onEdit(row.id)}}/>
                   <img src={Delete} alt="delete" />
                 </TableCell>
               </TableRow>
@@ -355,7 +435,9 @@ color:'#6B7785'
       </TableContainer>
      <Box sx={{display:'flex',justifyContent:'center'}}>
         
-          <Button sx={{width: '354.67px',
+          <Button 
+          onClick={postGenerationAttributes}
+          sx={{width: '354.67px',
 height: '48px',
 borderRadius: '12px',
 textTransform:'none',
@@ -399,7 +481,7 @@ boxShadow: '0px 1px 2px 0px #1018280D',
                                 },
                                 // disabled: postjobResponce.isPending,
                             },
-                            title: t("addnewattribute")
+                            title: openDialogEdit ? t("editattribute") : t("addnewattribute")
                         }} sx={{
                             borderRadius: "8px", display: "flex",
                             flexDirection: "column"
@@ -480,7 +562,7 @@ boxShadow: '0px 1px 2px 0px #1018280D',
                                 <SoftInput placeholder='value'
                                     sx={{ ".MuiInputBase-root": { border: `unset !important`, borderBottom: "1px solid gray" }, }}
                                     value={controls.value_name}
-                                    onChange={(e) =>Boolean(e.target.value)&& setControl("value_name",e.target.value)}
+                                    onChange={(e) => setControl("value_name",e.target.value)}
 
                                     required={required.includes("value_name")}
                                     error={Boolean(invalid?.value_name)}
@@ -493,7 +575,7 @@ boxShadow: '0px 1px 2px 0px #1018280D',
                                         sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
                                         value={controls.value_name}
                                         // onChange={(e) => setControl("value_name", e.target.value)}
-                                        onChange={(e) =>Boolean(e.target.value)&& setControl("value_name",e.target.value)}
+                                        onChange={(e) => setControl("value_name",e.target.value)}
                                         required={required.includes("value_name")}
                                         error={Boolean(invalid?.value_name)}
                                         helperText={invalid?.value_name} />
@@ -506,7 +588,7 @@ boxShadow: '0px 1px 2px 0px #1018280D',
                                         sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
                                         value={controls.color_value}
                                         // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
-                                        onChange={(e) =>Boolean(e.target.value)&& setControl("color_value",
+                                        onChange={(e) => setControl("color_value",
                                            e.target.value)}
                                         required={required.includes("color_value")}
                                         error={Boolean(invalid?.color_value)}

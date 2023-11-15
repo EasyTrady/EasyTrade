@@ -102,9 +102,7 @@ export default function RowAndColumnSpacing() {
           </Grid>
         </Grid>
       </Box>
-      {/* <Typography sx={{fontSize:'50px',fontWeight:300,textAlign:'center',marginTop:'60px',marginBottom:'20px'}}>تجربة مطور سهلة</Typography> */}
-      {/* <Typography sx={{fontSize:'30px',fontWeight:200,textAlign:'center',marginTop:'20px',marginBottom:'20px'}}>لقت جعلت EASYTRADE من السهل على المطورين من اي مستوى مهارة استخدام منتجاتهم</Typography> */}
-
+    
     </Container>
   );
 }

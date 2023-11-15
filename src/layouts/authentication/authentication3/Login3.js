@@ -10,7 +10,7 @@ import AuthCardWrapper from '../AuthCardWrapper';
  import AuthLogin from '../auth-forms/AuthLogin';
 // import Logo from 'ui-component/Logo';
 // import AuthFooter from 'ui-component/cards/AuthFooter';
-import login from '../../../assets/images/icons/Social Media Icon Square/login.png';
+// import login from '../../../assets/images/icons/Social Media Icon Square/login.png';
 import PageLayout from "examples/LayoutContainers/PageLayout"
 
 // assets
@@ -23,7 +23,7 @@ const Login = () => {
   
   return (
     <PageLayout>
-    <AuthWrapper1>
+    <AuthWrapper1 >
       <Box
         sx={{
           display: 'flex',
@@ -37,17 +37,17 @@ const Login = () => {
           gap: 2,
           justifyContent: 'space-between',
           overflow: 'auto',
-          bgcolor:'#FFFFFF'
+          bgcolor:'#FFFFFF',
           // paddingTop: '70px'
         }}
       >
-        <Box component="img" sx={{  width: { xl: '60%', lg: '60%', md: '50%', sm: '100%', sx: '100%' }, height:{ xl:'100vh', lg: '100vh', md:'100vh', sm: '30vh', sx: '30vh'}}} src={login}></Box>
-      <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh',bgcolor:'#FFFFFF' }}>
-        <Grid item xs={12}>
-          <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: 'calc(100vh - 68px)' }}>
+        {/* <Box component="img" sx={{  width: { xl: '100%', lg: '100%', md: '100%', sm: '10%', sx: '10%' }, height:{ xl:'100vh', lg: '100vh', md:'100vh', sm: '30vh', sx: '30vh'}}} src={login}></Box> */}
+      <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh',bgcolor:'#FFFFFF',boxShadow:'none' }}>
+        <Grid item xs={12} >
+          <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: 'calc(100vh - 68px)'}}>
             <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
-              <AuthCardWrapper>
-                <Grid container spacing={2} alignItems="center" justifyContent="center">
+              <AuthCardWrapper >
+                <Grid container spacing={2} alignItems="center" justifyContent="center" >
                   <Grid item sx={{ mb: 3 }}>
                     <Link to="#">
                       {/* <Logo /> */}

@@ -170,6 +170,7 @@ function AddNewJob({ absolute, light, isMini }) {
                                     required={required.includes("title")}
                                     error={Boolean(invalid?.title)}
                                     helperText={invalid?.title}
+                                    // error
                                 />
                             </Box>
                     <Form component="form"

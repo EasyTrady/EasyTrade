@@ -6,18 +6,11 @@ import SubscribeSection from 'components/common/homeSection/subscribeSection';
 import Navbar from 'components/common/navbar/navbar';
 import Achievements from '../../components/common/homeSection/Achievements'
 import CompanySection from '../../components/common/homeSection/companySection'
-// import ContactUs from 'ContactUs/ContactUs.jsx';
 import PageLayout from "examples/LayoutContainers/PageLayout"
 
 import React from 'react';
-// import Price from 'layouts/Price/Price';
+import CarouselComponent from 'components/common/homeSection/Carousel';
 
-// import Price from 'layouts/Price/Price';
-// import ContactUs from 'layouts/ContactUs/ContactUs';
-// import Price from 'layouts/Price/Price';
-// import ContactUs from 'layouts/ContactUs/ContactUs';
-import Price from 'layouts/Price/Price';
-// import ContactUs from 'layouts/ContactUs/ContactUs';
 
 const HomeSections = () => {
   return (
@@ -25,10 +18,8 @@ const HomeSections = () => {
     <Box>
       <Navbar />
       <LandingSection />
-      
-        <Price/> 
-      {/* <ContactUs/>   */}
       <Achievements/>
+      <CarouselComponent/>
       <SubscribeSection />
       <CompanySection />
       <ResponsiveGrid/>

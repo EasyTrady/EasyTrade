@@ -74,6 +74,8 @@ const FirebaseLogin = ({ ...others }) => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  
  
   return (
     <>
@@ -176,7 +178,8 @@ const FirebaseLogin = ({ ...others }) => {
            <FormControl
               fullWidth
               error={Boolean(touched.email && errors.email)}
-              sx={{ ...theme.typography.customInput, marginY: '15px' }}
+              sx={{ ...theme.typography.customInput, marginY: '15px', 
+            }}
             >
               <TextField
               variant='outlined'
@@ -238,14 +241,15 @@ const FirebaseLogin = ({ ...others }) => {
               /> */}
               <Box
                 sx={{
-                  position: 'relative'
+                  position: 'relative',
+
                 }}
               >
                 <TextField
                 variant='outlined'
                   sx={{
                     direction: 'rtl',
-                    width:'100%'
+                    width:'100%',
                   }}
                   name="password"
                   value={values.password}
@@ -308,13 +312,21 @@ const FirebaseLogin = ({ ...others }) => {
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
                 <Button
-                  sx={{ borderRadius: '12PX', padding: '10px, 18px, 10px, 18px' ,backgroundColor:'#5D449B',color:'white'}}
+                  sx={{ borderRadius: '12PX', padding: '10px, 18px, 10px, 18px' ,
+                  backgroundColor:'#5D449B',color:'#FFFFFF',
+                  '&:hover': {
+                    backgroundColor: '#5D449B',
+                  },
+                
+                
+                }}
                   disableElevation
                   disabled={isSubmitting}
-                  fullWidth
+                  fullWidth 
                   size="large"
                   type="submit"
                   variant="contained"
+                
                 
                 >
                   تسجيل الدخول
@@ -333,23 +345,6 @@ const FirebaseLogin = ({ ...others }) => {
         >
           <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
 
-          {/* <Button
-            variant="outlined"
-            sx={{
-              cursor: 'unset',
-              m: 2,
-              py: 0.5,
-              px: 7,
-              borderColor: `${theme.palette.grey[100]} !important`,
-              color: `${theme.palette.grey[900]}!important`,
-              fontWeight: 500,
-              borderRadius: `${customization.borderRadius}px`
-            }}
-            disableRipple
-            disabled
-          >
-            OR
-          </Button> */}
 
           <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
         </Box>
@@ -365,10 +360,15 @@ const FirebaseLogin = ({ ...others }) => {
             sx={{
               color: 'grey.700',
               backgroundColor: theme.palette.grey[50],
-              borderColor: theme.palette.grey[100],
+              borderColor: '#D0D5DD',
               padding: '10px 16px 10px 16px',
               marginTop: '20px',
-              borderRadius: '8px'
+              borderRadius: '12px',
+              '&:hover': {
+                backgroundColor: theme.palette.grey[50] ,
+                borderColor: '#D0D5DD',
+              },
+              
             }}
           >
             <Box sx={{ mr: { xs: 1, sm: 2, width: 20 } }}>
