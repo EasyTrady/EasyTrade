@@ -95,7 +95,6 @@ function SignUp({ ...others }) {
                   backgroundImage: `URL(${signup})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center center",
-                  // width: { xl: "50%", lg: "50%", md: "100%", sm: "100%", sx: "100%" },
                   height: { md: "30vh", sm: "30vh", xs: "30vh", lg:'100%' },
                   width: "100%",
                 }}
