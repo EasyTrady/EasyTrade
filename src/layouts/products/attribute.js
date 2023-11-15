@@ -157,7 +157,7 @@ function Attribute({ absolute, light, isMini }) {
                 isRequired: false,
                 validations:[
                     {
-                        test:/^(?:#[0-9]{6})$/,
+                        test:/^(?:#[0-9]{6})*$/,
                         message: "not valid color value"
                     }
                 ]
@@ -280,7 +280,7 @@ function Attribute({ absolute, light, isMini }) {
                                 console.log(res.data)
                                 dispatch({ type: "attribute/addValues", payload: { idattribute:controls.id, values: res.data } })
                                 setControl("values",[...res.data])
-            setOpenDialog(false)
+                                 setOpenDialog(false)
 
                             }
                         })
@@ -400,9 +400,13 @@ function Attribute({ absolute, light, isMini }) {
     },[controls.values])
     function AddValue(){
         // if(!openDialogEdit){
-            if(controls.isColor){
+            if(controls.iscolor){
         
                 if(Boolean(controls.value_name)&&Boolean(controls.color_value)){
+                    let test=/^(?:#[0-9]{6})$/
+                   let match= test.test(controls.color_value)
+                   console.log(match)
+                   if(match){
                     setControl("values",[...controls.values,{
                         value_name:controls.value_name,
                         color_value:controls.color_value,
@@ -411,11 +415,17 @@ function Attribute({ absolute, light, isMini }) {
                         setControl("value_name","")  
                         setControl("color_value","") 
                     })
+                    setInvalid({color_value:""})
+
+                   }else{
+                    setInvalid({color_value:"not valid color value"})
+                   }
+                    
                           
                     
                 }
                 }     
-                else if(Boolean(controls.value_name)&&!controls.isColor){
+                else if(Boolean(controls.value_name)&&!controls.iscolor){
                     setControl("values",[...controls.values,{
                         value_name:controls.value_name,
                         color_value:controls.color_value,

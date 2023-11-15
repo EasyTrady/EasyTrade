@@ -17,7 +17,7 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import PhoneField from 'components/common/PhoneField';
-
+import compare from 'utils/compare'
 import PasswordField from 'components/common/PasswordField';
 import { JOBS } from 'data/api';
 import useRequest from 'hooks/useRequest';
@@ -27,9 +27,11 @@ import SoftButton from 'components/SoftButton';
 function AddNewJob({ absolute, light, isMini }) {
     const route = useLocation().pathname.split("/").slice(1);
     let { t } = useTranslation('common')
+    const sub_domain = localStorage.getItem('sub_domain')
+
     let dispatch = useDispatch()
     let jobs = useSelector((state) => state.job.value)
-
+    let navigate=useNavigate()
     const location = useLocation();
     const { state } = location;
     let Token = localStorage.getItem('token')
@@ -53,8 +55,18 @@ function AddNewJob({ absolute, light, isMini }) {
         });
         const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
         useControls([
-
             {
+                control: "id",
+                value: "",
+                isRequired: false,
+                // validations: [
+                //     {
+                //         test: /^(?:[A-Za-z\u0600-\u06ff\s]*)$/,
+                //         message: "not valid name"
+                //     }
+                // ]
+            }
+            ,{
                 control: "title",
                 value: "",
                 isRequired: true,
@@ -73,12 +85,21 @@ function AddNewJob({ absolute, light, isMini }) {
 
             if (!output.isOk) return;
             if(Boolean(state?.dataRow)){
+                let  result= compare(
+                    [
+                    [controls.title,state?.dataRow?.title,"title"],
+                //     [controls.full_name,state?.dataRow?.full_name,"full_name"],
+                //     [controls.phone,state?.dataRow?.phone,"phone"],
+                //    [controls.job,state?.dataRow?.job,"job"]
+                ],false
+                )
+                console.log(result)
                 jobpatchRequest({
-                            id: row,
-                            body: newRow,
+                            id: controls.id,
+                            body: result.array,
                             onSuccess: (res) => {
                                 dispatch({ type: "job/patchItem", payload: { id: row, item: res.data } })
-                
+                                navigate(`/${sub_domain}/dashboard/jobs`)
                             }
                         })
             }else{
@@ -87,7 +108,10 @@ function AddNewJob({ absolute, light, isMini }) {
                         title:controls.title
                     },
                     onSuccess: (res) => {
+                        dispatch({ type: "job/addItem", payload: res.data })
+
                         resetControls()
+                        navigate(`/${sub_domain}/dashboard/jobs`)
                         console.log(res.data, controls)
                     }
                 }).then((res) => {
