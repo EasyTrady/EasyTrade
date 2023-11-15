@@ -254,12 +254,24 @@ function AddValue(){
             console.log(controls?.attribute);
             if (!output.isOk) return;
             GenerationAttributesRequest({
-              body: filter({
-                obj: {
-                  attribute: [...controls?.attribute],
-                },
-                output: "object",
-              }),
+              body: [{
+                "attributes":[86],        
+                "title":"ss",
+                "sku":"1SR",
+                "mpn":"sss",
+                "gtin":"13",
+                "price":"33",
+                "currency":"SAR",
+                "quantity":"6",
+                'weight_unit':'kg'
+            }],
+              // filter({
+              //   obj: {
+              //     // attribute: [...controls?.attribute],
+                  
+              //   },
+              //   output: "object",
+              // }),
               onSuccess: (res) => {
                 console.log(res.data, controls);
               },

@@ -13,10 +13,11 @@ import ProductAttributes from './productAttributes';
 
 export default function AddProductPanel() {
   const [value, setValue] = React.useState(0);
+  const [IdProduct, setIdProduct] = React.useState(0);
 
   const handleChange = (e,newValue,id) => {
   console.log(newValue,id)
-
+  setIdProduct(id)
     setValue(newValue);
   };
   return (
@@ -47,18 +48,20 @@ color:'#5D449B',
       </Container>
       <CustomTabPanel value={value} index={0}>
       
+
        <AddProduct  handleChange={handleChange}/>
+
        
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
      
-        <AddProductFetures handleChange={handleChange}/>
+        <AddProductFetures handleChange={handleChange} idProduct={IdProduct}/>
        
       </CustomTabPanel>
 
       <CustomTabPanel value={value} index={2}>
      
-       <ProductAttributes/>
+       <ProductAttributes idProduct={IdProduct}/>
        
       </CustomTabPanel>
       </DashboardLayout>

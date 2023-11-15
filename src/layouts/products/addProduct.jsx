@@ -49,14 +49,19 @@ import { CATEGORY } from "data/api";
 import { useDispatch, useSelector } from "react-redux";
 import filter from "utils/ClearNull";
 import PictureField from "components/common/PictureField";
+import SelectValueWeight from "components/common/SelectValueWeight";
 const ReactQuill = require("react-quill");
 
+
 const AddProduct = ({ light, isMini,handleChange }) => {
+
+
+
   const category = useSelector((state) => state.category.value);
   const dispatch = useDispatch();
   const route = useLocation().pathname.split("/").slice(1);
   const { borderWidth, borderColor } = borders;
-  const [value, setValue] = useState("");
+  const [Value, setValue] = useState("");
   let Token = localStorage.getItem("token");
 
   const modules = {
@@ -152,6 +157,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
     { control: "in_taxes", value: false, isRequired: false },
     { control: "is_piblished", value: false ,isRequired: false },
     { control: "weight", value: "", isRequired: false },
+    { control: "weight_unit", value: "", isRequired: false },
   ]);
   const [categoryRequest, getcategoryResponce] = useRequest({
     path: CATEGORY,
@@ -201,6 +207,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             require_shipping: controls.require_shipping,
             quantity: controls.quantity,
             weight: controls.weight,
+            weight_unit: controls.weight_unit,
             dimensions: controls.dimensions,
           },
           output: "formData",
@@ -208,6 +215,9 @@ const AddProduct = ({ light, isMini,handleChange }) => {
         onSuccess: (res) => {
           handleChange(undefined,1,res.data.id)
           console.log(res.data, controls);
+          if(index===1){
+            return value===index
+          }
         },
       }).then((res) => {
         let response = res?.response?.data;
@@ -244,9 +254,13 @@ const AddProduct = ({ light, isMini,handleChange }) => {
       });
     });
   }
+
  
 
   console.log(controls.in_taxes);
+
+  // console.log(index,value);
+
   return (
     <>
       <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
@@ -344,7 +358,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             <Box my={4}>
               <ReactQuill
                 theme="snow"
-                value={value}
+                value={Value}
                 onChange={setValue}
                 placeholder="Typing the description of product."
                 onBlur={(e) => validate({ content: e.index })}
@@ -419,12 +433,14 @@ const AddProduct = ({ light, isMini,handleChange }) => {
               gap: "20px",
             }}
           >
-            <NumberField
+            <SelectValueWeight
               variant="outlined"
               label={"Weight*"}
               placeholder={"Weight"}
+              type={controls.weight_unit}
               value={controls.weight}
-              onChange={(e) => setControl("weight", e.target.value)}
+              onChange={(e) => setControl("weight_unit", e.target.value)}
+              handleValueChange={(e) => setControl("weight", e.target.value)}
               required={required.includes("weight")}
               error={Boolean(invalid.weight)}
               helperText={invalid.weight}
