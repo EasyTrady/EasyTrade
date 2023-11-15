@@ -57,6 +57,7 @@ import {
 // Images
 import team2 from "assets/images/team-2.jpg";
 import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
+import input from "assets/theme/components/form/input";
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -152,6 +153,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               <SoftInput
                 placeholder="Type here..."
                 icon={{ component: "search", direction: "left" }}
+                sx={{'& .css-1d3z3hw-MuiOutlinedInput-':{border:'none'},}}
               />
             </SoftBox>
             <SoftBox color={light ? "white" : "inherit"}>

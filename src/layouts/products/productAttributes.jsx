@@ -27,6 +27,8 @@ import { useDispatch, useSelector } from "react-redux";
 import useControls from "hooks/useControls";
 import SoftBox from 'components/SoftBox'
 import SoftInput from 'components/SoftInput'
+import { PRODUCTS } from "data/api";
+import filter from "utils/ClearNull";
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
 }
@@ -47,7 +49,6 @@ const ProductAttributes = () => {
   const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
   
     { control: "attribute", value: [], isRequired: false },
-    { control: "product_images", value: [], isRequired: false },
     { control: "values", value: [], isRequired: false },
     { control: "value_name", value: "", isRequired: false },
 
@@ -57,6 +58,12 @@ const ProductAttributes = () => {
         useRequest({
             path: ATTRIBUTES,
             method: "get",
+            Token: `Token ${Token}`
+        });
+  const [GenerationAttributesRequest, GenerationAttributeResponse] =
+        useRequest({
+            path: PRODUCTS+8+'/variants/',
+            method: "POST",
             Token: `Token ${Token}`
         });
 
@@ -79,6 +86,37 @@ const ProductAttributes = () => {
         }
       
 
+        const postGenerationAttributes=()=>{
+          validate().then((output) => {
+            console.log(output);
+            if (!output.isOk) return;
+            GenerationAttributesRequest({
+              body: filter({
+                obj: {
+                  attribute: [...controls?.attribute],
+                },
+                output: "object",
+              }),
+              onSuccess: (res) => {
+                console.log(res.data, controls);
+              },
+            }).then((res) => {
+              let response = res?.response?.data;
+              console.log(res);
+              // const responseBody = filter({
+              //   obj: {
+              //     name: response?.name?.join(""),
+              //     quantity: response?.quantity?.join(" "),
+              //    
+              //   },
+              //   output: "object",
+              // });
+      
+              // setInvalid(responseBody);
+              resetControls("");
+            });
+          });
+        }
               
       
   return (
@@ -125,7 +163,7 @@ const ProductAttributes = () => {
           required={required.includes("attribute")}
           error={Boolean(invalid.attribute)}
           helperText={invalid.attribute}
-          sx={{...input,".MuiPaper-root":{backgroundColor:"white !important"}}}
+          sx={{...input,".MuiPaper-root":{backgroundColor:"white !important",zIndex:1}}}
         >
 
           {attributes.map((attribute)=>(
@@ -218,7 +256,9 @@ color:'#6B7785'
       </TableContainer>
      <Box sx={{display:'flex',justifyContent:'center'}}>
         
-          <Button sx={{width: '354.67px',
+          <Button 
+          onClick={postGenerationAttributes}
+          sx={{width: '354.67px',
 height: '48px',
 borderRadius: '12px',
 textTransform:'none',

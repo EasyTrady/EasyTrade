@@ -34,7 +34,7 @@ const AddProductFetures = ({id}) => {
       AddProductImagesRequest({
         body: filter({
           obj: {
-            image: controls?.image,
+            image: [...controls?.image],
           },
           output: "formData",
         }),
