@@ -153,7 +153,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               <SoftInput
                 placeholder="Type here..."
                 icon={{ component: "search", direction: "left" }}
-                sx={{'& .css-1d3z3hw-MuiOutlinedInput-':{border:'none'},}}
+                sx={{'.MuiFormControl-root .MuiTextField-root .MuiInputBase-root':{border:'none !important'},}}
               />
             </SoftBox>
             <SoftBox color={light ? "white" : "inherit"}>

@@ -61,7 +61,7 @@ color:'#5D449B',
 
       <CustomTabPanel value={value} index={2}>
      
-       <ProductAttributes idProduct={IdProduct}/>
+       <ProductAttributes  idProduct={IdProduct}/>
        
       </CustomTabPanel>
       </DashboardLayout>

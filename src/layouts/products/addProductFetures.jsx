@@ -14,10 +14,10 @@ import SoftButton from "components/SoftButton";
 import useRequest from "hooks/useRequest";
 import { PRODUCTS } from "data/api";
 import filter from "utils/ClearNull";
-const AddProductFetures = ({idProduct}) => {
+const AddProductFetures = ({idProduct,handleChange}) => {
   let Token = localStorage.getItem("token");
   const [AddProductImagesRequest, AddProductImagesResponce] = useRequest({
-    path: PRODUCTS+8+'/images/',
+    path: PRODUCTS,
     method: "post",
     Token: `Token ${Token}`,
     contentType: "multipart/form-data",
@@ -33,6 +33,7 @@ const AddProductFetures = ({idProduct}) => {
       console.log(output);
       if (!output.isOk) return;
       AddProductImagesRequest({
+        id:idProduct+'/images',
         body: filter({
           obj: {
             image: [...controls?.image],
@@ -40,8 +41,12 @@ const AddProductFetures = ({idProduct}) => {
           output: "formData",
         }),
         onSuccess: (res) => {
+          handleChange(undefined,2,res.data.id)
           console.log(res.data, controls);
-        },
+          if(index===2){
+            return value===index
+          }
+        }
       }).then((res) => {
         let response = res?.response?.data;
         console.log(res);
