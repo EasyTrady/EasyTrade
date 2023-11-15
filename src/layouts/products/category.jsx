@@ -117,7 +117,7 @@ function Category({ absolute, light, isMini }) {
             })
         }
         function onEdit(row, newRow) {
-            navigate(`/${sub_domain}/dashboard/products/addnewCategory`,{state:{id:row,dataRow:newRow}})
+            navigate(`/${sub_domain}/dashboard/products/category/addnewCategory`,{state:{id:row,dataRow:newRow}})
             
         }
         useEffect(() => {
@@ -161,7 +161,7 @@ function Category({ absolute, light, isMini }) {
                                 backgroundColor: (theme) => theme.palette.purple.middle
                             }, padding: "7px 16px 7px 16px"
                         }}
-                        onClick={() => navigate(`/${sub_domain}/dashboard/products/addnewCategory`)}
+                        onClick={() => navigate(`/${sub_domain}/dashboard/products/category/addnewCategory`)}
                     >
                         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                         &nbsp;{t("addnewcategory")}

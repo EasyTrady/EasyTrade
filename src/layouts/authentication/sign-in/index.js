@@ -74,9 +74,9 @@ function SignIn() {
     event.preventDefault();
   };
   return (
-    <>
+    <PageLayout>
+
         <Card>
-      <PageLayout>
         <AuthWrapper1>
           <Box
             sx={{
@@ -191,10 +191,9 @@ function SignIn() {
             </Grid>
           </Box>
         </AuthWrapper1>
-      </PageLayout>
           </Card>
+      </PageLayout>
 
-    </>
   );
 }
 

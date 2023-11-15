@@ -167,6 +167,10 @@ export default styled(TextField)(({ theme, ownerState }) => {
     },
     ".MuiInputBase-root": {border: `1px solid`,borderColor:grey[400],borderRadius:"8px"}, 
     ".MuiInputBase-root input": {color:"#8996a3"}, 
-
+    ".MuiFormHelperText-root":{
+      position:"absolute",
+      bottom:"-50%",
+      color:inputColors.error
+  }
   };
 });

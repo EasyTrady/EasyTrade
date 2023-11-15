@@ -134,15 +134,16 @@ function AddNewEmployee({ absolute, light, isMini }) {
 
                         dispatch({ type: "employee/patchItem", payload: { id: controls.id, item: res.data } })
                         resetControls()
+                navigate(`/${sub_domain}/dashboard/employee`)
+
                     }
                 })
-                navigate(`/${sub_domain}/dashboard/employee`)
             }else{
                 EmployeePostRequest({
                     body: controls,
                     onSuccess: (res) => {
                         dispatch({ type: "employee/addItem", payload:  res.data  })
-
+                        navigate(`/${sub_domain}/dashboard/employee`)
                         resetControls()
                         console.log(res.data, controls)
                     }
@@ -153,7 +154,7 @@ function AddNewEmployee({ absolute, light, isMini }) {
                     setInvalid(response);
     
                 });
-                navigate(`/${sub_domain}/dashboard/employee`)
+             
             }
             
         })

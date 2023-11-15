@@ -370,7 +370,7 @@ function Employee({ absolute, light, isMini }) {
         })
     }
     function onEdit(row, newRow) {
-        navigate(`/${sub_domain}/dashboard/addNewEmployee`,{state:{id:row,dataRow:newRow}})
+        navigate(`/${sub_domain}/dashboard/employee/addNewEmployee`,{state:{id:row,dataRow:newRow}})
         
     }
     const handleImageChange = (event) => {
@@ -444,7 +444,7 @@ function Employee({ absolute, light, isMini }) {
                                 backgroundColor: (theme) => theme.palette.purple.middle
                             }
                         }}
-                        onClick={() => navigate(`/${sub_domain}/dashboard/addNewEmployee`)}
+                        onClick={() => navigate(`/${sub_domain}/dashboard/employee/addNewEmployee`)}
                     >
                         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                         &nbsp;{t("addnewemployee")}

@@ -14,7 +14,7 @@ import SoftButton from "components/SoftButton";
 import useRequest from "hooks/useRequest";
 import { PRODUCTS } from "data/api";
 import filter from "utils/ClearNull";
-const AddProductFetures = ({id}) => {
+const AddProductFetures = ({idProduct}) => {
   let Token = localStorage.getItem("token");
   const [AddProductImagesRequest, AddProductImagesResponce] = useRequest({
     path: PRODUCTS+8+'/images/',
@@ -23,6 +23,7 @@ const AddProductFetures = ({id}) => {
     contentType: "multipart/form-data",
   });
   // add status of fields
+  console.log(idProduct)
   const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
     { control: "image", value: [], isRequired: false },
   ]);

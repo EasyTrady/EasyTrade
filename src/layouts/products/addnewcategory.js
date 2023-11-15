@@ -118,26 +118,21 @@ function Addnewcategory({ absolute, light, isMini }) {
         })
     },[controls.parent])
     useEffect(() => {
-        // jobRequest({
-        //     onSuccess: (res) => {
-        //         dispatch({ type: "job/set", payload: res.data })
-        //     }
-        // })
+      
         if(Boolean(state?.dataRow)){
             Object.entries(state?.dataRow)?.forEach(([key,value])=>setControl(key,value))
 
         }
         setavater(state?.dataRow?.image)
         setControl("parentName",state?.dataRow?.parent?.id)
-        console.log(state?.dataRow)
-        // setControl()
+      
+   
        
     }, [state])
     function handleSubmit() {
         // e.preventDefault();
-       
     if(Boolean(state?.dataRow)){
-        console.log(controls.is_root_node,controls?.parent,state?.dataRow?.parent)
+     
         let  result= compare(
                 [
                 [controls.name,state?.dataRow?.name,"name"],
@@ -148,8 +143,9 @@ function Addnewcategory({ absolute, light, isMini }) {
             )
 
         
-       Object.entries(result.array).map(([key,value])=>formDate.append(key, value))     
-    if(controls.is_root_node){
+       Object.entries(result.array).map(([key,value])=>formDate.append(key, value))   
+        
+    if(controls.is_root_node=="true"||controls.is_root_node==true){
         formDate.append("parent", "")
 
         }
@@ -163,7 +159,6 @@ function Addnewcategory({ absolute, light, isMini }) {
         })
     }else{
        Object.entries(controls).map(([key,value])=>formDate.append(key, value))     
-
         categoryPostRequest({
             body:formDate,
             onSuccess:(res)=>{
@@ -440,11 +435,13 @@ function Addnewcategory({ absolute, light, isMini }) {
                     >
                         {"save"}
                     </SoftButton>
-                </Stack>
-            </Container>
-            {postcategoryResponce.failAlert}
+                    {postcategoryResponce.failAlert}
             {postcategoryResponce.successAlert}
-
+            {patchcategoryResponce.failAlert}
+                </Stack>
+               
+            </Container>
+          
         </DashboardLayout>
     )
 }
