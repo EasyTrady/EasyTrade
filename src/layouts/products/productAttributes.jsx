@@ -34,6 +34,8 @@ import SoftButton from 'components/SoftButton'
 import SyncIcon from '@mui/icons-material/Sync';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import { useTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
+import { useEffect } from 'react'
 
 import { PRODUCTS } from "data/api";
 import filter from "utils/ClearNull";
@@ -48,7 +50,7 @@ const rows = [
   createData("Cupcake", 305, 3.7, 67, 4.3),
   createData("Gingerbread", 356, 16.0, 49, 3.9),
 ];
-const ProductAttributes = () => {
+const ProductAttributes = ({idProduct}) => {
   let Token = localStorage.getItem('token')
   let attributes = useSelector((state) => state.attribute.value)
   const dispatch=useDispatch()
@@ -56,7 +58,10 @@ const ProductAttributes = () => {
   let [addvalue, setaddvalue] = React.useState(false);
   const [openDialog, setOpenDialog] = React.useState(false);
   const [openDialogEdit, setOpenDialogEdit] = React.useState(false);
+  const [product, setproduct] = React.useState();
 
+  let idproduct=localStorage.getItem('productId');
+let products=useSelector((state)=>state.products.value)
   const [{ controls, invalid, required }, { setControl, resetControls, validate,setInvalid }] = useControls([
     {
       control: "id",
@@ -96,7 +101,6 @@ const ProductAttributes = () => {
   ]);
   let [counter,setCounter]=React.useState(controls.values.length>0?controls.values.length-1:controls.values.length);
   const handleCloseDialog = () => {
-  
     setOpenDialog(false);
 };
 const [attributepostRequest, postattributeResponce] =
@@ -250,20 +254,25 @@ function AddValue(){
       
 
         const postGenerationAttributes=()=>{
-          validate().then((output) => {
-            console.log(controls?.attribute);
-            if (!output.isOk) return;
+          // validate().then((output) => {
+            let newArray=[]
+            controls?.attribute.map((ele)=>ele.values.map((elem)=>newArray.push(elem.id)))
+            console.log(newArray);
+            // console.log(output);
+            console.log(openDialogEdit)
+            // if (!output.isOk) return;
+
             GenerationAttributesRequest({
               body: [{
-                "attributes":[86],        
-                "title":"ss",
-                "sku":"1SR",
-                "mpn":"sss",
-                "gtin":"13",
-                "price":"33",
+                "attributes":newArray,        
+                "title":product.name,
+                "sku":product.sku,
+                "mpn":product.mpn,
+                "gtin":product.gtin,
+                "price":product.price,
                 "currency":"SAR",
-                "quantity":"6",
-                'weight_unit':'kg'
+                "quantity":product.quantity,
+                'weight_unit':product.weight.unit
             }],
               // filter({
               //   obj: {
@@ -290,7 +299,7 @@ function AddValue(){
               // setInvalid(responseBody);
               resetControls("");
             });
-          });
+          // });
         }
               
         function onDeleteValue(row, valueId) {
@@ -310,6 +319,12 @@ function AddValue(){
         console.log(rowfind, controls)
 
     }
+    useEffect(()=>{
+      console.log(idproduct)
+      setproduct(products.results.find((ele)=>ele.id==idproduct))
+    },[idproduct])
+
+
   return (
     <Container
       maxWidth="xl"
@@ -639,3 +654,6 @@ boxShadow: '0px 1px 2px 0px #1018280D',
 };
 
 export default ProductAttributes;
+ProductAttributes.propTypes = {
+  idProduct:PropTypes.number
+};
