@@ -39,7 +39,6 @@ import PropTypes from "prop-types";
 function Attribute({ absolute, light, isMini }) {
     const [open, setOpen] = React.useState(false);
     const [refersh, setRefersh] = React.useState(false);
-
     const [openDialog, setOpenDialog] = React.useState(false);
     const [openDialogEdit, setOpenDialogEdit] = React.useState(false);
     let [addvalue, setaddvalue] = React.useState(false);
@@ -157,7 +156,7 @@ function Attribute({ absolute, light, isMini }) {
                 isRequired: false,
                 validations:[
                     {
-                        test:/^(?:#[0-9]{6})$/,
+                        test:/^(?:#[0-9]{6})*$/,
                         message: "not valid color value"
                     }
                 ]
@@ -270,7 +269,6 @@ function Attribute({ absolute, light, isMini }) {
                     id: controls.id,
                     body: {
                         name: controls.name,
-                        
                     }, onSuccess: (res) => {
                         dispatch({ type: "attribute/patchItem", payload: { id: controls.id, item: res.data } })
                         attributeValueeditRequest({
@@ -280,7 +278,7 @@ function Attribute({ absolute, light, isMini }) {
                                 console.log(res.data)
                                 dispatch({ type: "attribute/addValues", payload: { idattribute:controls.id, values: res.data } })
                                 setControl("values",[...res.data])
-            setOpenDialog(false)
+                                 setOpenDialog(false)
 
                             }
                         })
@@ -334,7 +332,6 @@ function Attribute({ absolute, light, isMini }) {
                 }).then((res) => {
                     let response = res?.response?.data;
                     console.log(res)
-
                     setInvalid(response);
 
                 });
@@ -400,9 +397,13 @@ function Attribute({ absolute, light, isMini }) {
     },[controls.values])
     function AddValue(){
         // if(!openDialogEdit){
-            if(controls.isColor){
+            if(controls.iscolor){
         
                 if(Boolean(controls.value_name)&&Boolean(controls.color_value)){
+                    let test=/^(?:#[0-9A-Za-z]{6})$/
+                   let match= test.test(controls.color_value)
+                   console.log(match)
+                   if(match){
                     setControl("values",[...controls.values,{
                         value_name:controls.value_name,
                         color_value:controls.color_value,
@@ -411,11 +412,17 @@ function Attribute({ absolute, light, isMini }) {
                         setControl("value_name","")  
                         setControl("color_value","") 
                     })
+                    setInvalid({color_value:""})
+
+                   }else{
+                    setInvalid({color_value:"not valid color value #000000"})
+                   }
+                    
                           
                     
                 }
                 }     
-                else if(Boolean(controls.value_name)&&!controls.isColor){
+                else if(Boolean(controls.value_name)&&!controls.iscolor){
                     setControl("values",[...controls.values,{
                         value_name:controls.value_name,
                         color_value:controls.color_value,
@@ -591,8 +598,6 @@ function Attribute({ absolute, light, isMini }) {
                             saveBtn: {
                                 onClick: handleSubmit,
                                 // disabled: postjobResponce.isPending,
-
-
                             },
                             closeBtn: {
                                 onClick: () => {
@@ -683,8 +688,7 @@ function Attribute({ absolute, light, isMini }) {
                                 <SoftInput placeholder='value'
                                     sx={{ ".MuiInputBase-root": { border: `unset !important`, borderBottom: "1px solid gray" }, }}
                                     value={controls.value_name}
-                                    onChange={(e) =>Boolean(e.target.value)&& setControl("value_name",e.target.value)}
-
+                                    onChange={(e) => setControl("value_name",e.target.value)}
                                     required={required.includes("value_name")}
                                     error={Boolean(invalid?.value_name)}
                                     helperText={invalid?.value_name} />
@@ -696,7 +700,7 @@ function Attribute({ absolute, light, isMini }) {
                                         sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
                                         value={controls.value_name}
                                         // onChange={(e) => setControl("value_name", e.target.value)}
-                                        onChange={(e) =>Boolean(e.target.value)&& setControl("value_name",e.target.value)}
+                                        onChange={(e) => setControl("value_name",e.target.value)}
                                         required={required.includes("value_name")}
                                         error={Boolean(invalid?.value_name)}
                                         helperText={invalid?.value_name} />
@@ -709,7 +713,7 @@ function Attribute({ absolute, light, isMini }) {
                                         sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
                                         value={controls.color_value}
                                         // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
-                                        onChange={(e) =>Boolean(e.target.value)&& setControl("color_value",
+                                        onChange={(e) => setControl("color_value",
                                            e.target.value)}
                                         required={required.includes("color_value")}
                                         error={Boolean(invalid?.color_value)}
@@ -748,9 +752,8 @@ function Attribute({ absolute, light, isMini }) {
                 {postattributeResponce.successAlert}
                 {DeleteattributerResponce.failAlert}
                 {DeleteattributerResponce.successAlert}
-                            {editattributeResponce.failAlert}
-                            {editattributeResponce.successAlert}
-
+                {editattributeResponce.failAlert}
+                {editattributeResponce.successAlert}
             </Container>
         </DashboardLayout>
     )

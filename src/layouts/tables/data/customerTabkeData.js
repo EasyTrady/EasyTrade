@@ -12,8 +12,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import useRequest from 'hooks/useRequest';
 import { CUSTOMER } from 'data/api';
 import moment from 'moment';
-import imageFemale from "../../../assets/images/female.png"
-import imageMen from "../../../assets/images/men.png"
+import imageFemale from "../../../assets/images/woman.png"
+import imageMen from "../../../assets/images/mens.png"
 
 // const columnsTheme = [
 //     {

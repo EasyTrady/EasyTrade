@@ -158,7 +158,7 @@ function Job({ absolute, light, isMini }) {
 
     ]
     function onEdit(row, newRow) {
-        navigate(`/${sub_domain}/dashboard/addNewJob`,{state:{id:row,dataRow:newRow}})
+        navigate(`/${sub_domain}/dashboard/jobs/addNewJob`,{state:{id:row,dataRow:newRow}})
         
     }
     // function onEdit(row, newRow) {
@@ -207,7 +207,7 @@ function Job({ absolute, light, isMini }) {
                                 backgroundColor: (theme) => theme.palette.purple.middle
                             }
                         }}
-                        onClick={() => navigate(`/${sub_domain}/dashboard/addNewJob`)}
+                        onClick={() => navigate(`/${sub_domain}/dashboard/jobs/addNewJob`)}
                     >
                         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                         &nbsp;{t("addnewjob")}

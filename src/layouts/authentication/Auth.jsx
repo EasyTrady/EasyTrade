@@ -27,14 +27,13 @@ function Auth({children}) {
         currentTime
     ])
     // console.log(currentTime - tokenTimestamp > twentyFourHours,Boolean(localStorage.getItem("token")))
+    console.log(Boolean(localStorage.getItem("token"))===true)
    if(Boolean(localStorage.getItem("token"))===true) {
     return (
         <> {children}</>
         )
    }else{
-    return (
-        <> <Navigate to={"/login"}/></>
-        )
+    return <Navigate to={"/authentication/sign-in"}/>
    }
   
 }

@@ -13,11 +13,13 @@ import ProductAttributes from './productAttributes';
 
 export default function AddProductPanel() {
   const [value, setValue] = React.useState(0);
+  const [IdProduct, setIdProduct] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (e,newValue,id) => {
+  console.log(newValue,id)
+  setIdProduct(id)
     setValue(newValue);
   };
-
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -46,18 +48,20 @@ color:'#5D449B',
       </Container>
       <CustomTabPanel value={value} index={0}>
       
-       <AddProduct  value={value} index={1}/>
+
+       <AddProduct  handleChange={handleChange}/>
+
        
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
      
-        <AddProductFetures/>
+        <AddProductFetures handleChange={handleChange} idProduct={IdProduct}/>
        
       </CustomTabPanel>
 
       <CustomTabPanel value={value} index={2}>
      
-       <ProductAttributes/>
+       <ProductAttributes idProduct={IdProduct}/>
        
       </CustomTabPanel>
       </DashboardLayout>
@@ -67,7 +71,7 @@ color:'#5D449B',
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
-
+  console.log(index,value)
   return (
     <div
       role="tabpanel"

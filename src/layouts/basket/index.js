@@ -317,7 +317,7 @@ function Basket({ absolute, light, isMini }) {
     })
 
   }
-
+  
   useEffect(() => {
     cartRequest({
       onSuccess: (res) => {
@@ -326,12 +326,13 @@ function Basket({ absolute, light, isMini }) {
 
       }
     })
-    // productRequest({
-    //   onSuccess: (res) => {
-    //     console.log(res.data)
-    //     dispatch({ type: "products/set", payload: res.data })
-    //   }
-    // })
+    productRequest({
+      onSuccess: (res) => {
+        console.log(res.data)
+        dispatch({ type: "products/set", payload: res.data })
+      }
+    })
+    
   }, [])
   useEffect(() => {
     setRows(carts?.results)
@@ -518,7 +519,7 @@ function Basket({ absolute, light, isMini }) {
                     required={required.includes("Products")}
                     error={Boolean(invalid?.Products)}
                     helperText={invalid?.Products}
-                    onOpen={() => { }}
+                    // onOpen={()=>requestProduct()}
                     SelectProps={{
                       defaultValue: "",
                       displayEmpty: true,
