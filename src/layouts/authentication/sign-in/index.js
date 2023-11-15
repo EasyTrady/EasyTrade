@@ -56,6 +56,8 @@ import AuthWrapper1 from "../AuthWrapper1";
 import AuthCardWrapper from "../AuthCardWrapper";
 import { useTheme } from "@emotion/react";
 import AuthLogin from "../../authentication/auth-forms/AuthLogin";
+import Card from "@mui/material/Card";
+
 function SignIn() {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
@@ -73,6 +75,7 @@ function SignIn() {
   };
   return (
     <>
+        <Card>
       <PageLayout>
         <AuthWrapper1>
           <Box
@@ -104,7 +107,6 @@ function SignIn() {
                   backgroundImage: `URL(${login})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center center",
-                  // width: { xl: "50%", lg: "50%", md: "100%", sm: "100%", sx: "100%" },
                   height: { md: "30vh", sm: "30vh", xs: "30vh", lg: "100%" },
                   width: "100%",
                 }}
@@ -135,7 +137,7 @@ function SignIn() {
                   >
                     <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
                       <AuthCardWrapper sx={{ border: "none" }}>
-                        <Grid container spacing={2} alignItems="center" justifyContent="center">
+                        <Grid container spacing={2} alignItems="end" justifyContent="end">
                           <Grid item sx={{ mb: 3 }}>
                             <Link to="#">{/* <Logo /> */}</Link>
                           </Grid>
@@ -143,11 +145,11 @@ function SignIn() {
                             <Grid
                               container
                               direction={matchDownSM ? "column-reverse" : "row"}
-                              alignItems="center"
-                              justifyContent="center"
+                              alignItems="end"
+                              justifyContent="end"
                             >
                               <Grid item>
-                                <Stack alignItems="center" justifyContent="center" spacing={1}>
+                                <Stack alignItems="end" justifyContent="end" spacing={1}>
                                   <Typography
                                     color={theme.palette.secondary.main}
                                     gutterBottom
@@ -190,58 +192,8 @@ function SignIn() {
           </Box>
         </AuthWrapper1>
       </PageLayout>
+          </Card>
 
-      {/* )}
-      </Formik> */}
-      {/* <SoftBox component="form" role="form">
-        <SoftBox mb={2}>
-          <SoftBox mb={1} ml={0.5}>
-            <SoftTypography component="label" variant="caption" fontWeight="bold">
-              Email
-            </SoftTypography>
-          </SoftBox>
-          <SoftInput type="email" placeholder="Email" />
-        </SoftBox>
-        <SoftBox mb={2}>
-          <SoftBox mb={1} ml={0.5}>
-            <SoftTypography component="label" variant="caption" fontWeight="bold">
-              Password
-            </SoftTypography>
-          </SoftBox>
-          <SoftInput type="password" placeholder="Password" />
-        </SoftBox>
-        <SoftBox display="flex" alignItems="center">
-          <Switch checked={rememberMe} onChange={handleSetRememberMe} />
-          <SoftTypography
-            variant="button"
-            fontWeight="regular"
-            onClick={handleSetRememberMe}
-            sx={{ cursor: "pointer", userSelect: "none" }}
-          >
-            &nbsp;&nbsp;Remember me
-          </SoftTypography>
-        </SoftBox>
-        <SoftBox mt={4} mb={1}>
-          <SoftButton variant="gradient" color="info" fullWidth>
-            sign in
-          </SoftButton>
-        </SoftBox>
-        <SoftBox mt={3} textAlign="center">
-          <SoftTypography variant="button" color="text" fontWeight="regular">
-            Don&apos;t have an account?{" "}
-            <SoftTypography
-              component={Link}
-              to="/authentication/sign-up"
-              variant="button"
-              color="info"
-              fontWeight="medium"
-              textGradient
-            >
-              Sign up
-            </SoftTypography>
-          </SoftTypography>
-        </SoftBox>
-      </SoftBox> */}
     </>
   );
 }

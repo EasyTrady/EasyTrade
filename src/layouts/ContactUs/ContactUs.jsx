@@ -60,7 +60,7 @@ export default function ContactUs() {
       >
         نود أن نسمع منك. من فضلك قم بملء هذا النموذج أو أرسل لنا رسالة بالبريد الإلكتروني
       </Typography>
-      <Box sx={{ flexGrow: 1, paddingTop: "40px", bgcolor: "#f8f9fa" }}>
+      <Box sx={{ flexGrow: 1, paddingTop: "40px", bgcolor: "#f8f9fa",marginBottom:'100px' }}>
         <Grid container spacing={2} columns={16}>
           <Grid item xs={6}>
             <Item sx={{ bgcolor: "#f8f9fa", boxShadow: "none" }}>
@@ -124,12 +124,12 @@ export default function ContactUs() {
               </Container>
             </Item>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={6} sx={{justifyContent:"flex-start"}}>
             <Item sx={{ bgcolor: "#f8f9fa", boxShadow: 'none' }}>
               <div>
-                <Grid container spacing={2} sx={{ bgcolor: "#f8f9fa" }}>
-                  <Grid item xs={6} sx={{ bgcolor: "#f8f9fa", boxShadow: "none" }}>
-                    <Typography variant="body1" sx={{ boxShadow: "none" }}>
+                <Grid container spacing={2} >
+                  <Grid item xs={6} sx={{ bgcolor: "#f8f9fa", boxShadow: "none",textAlign:'right'}}>
+                    <Typography variant="body1" sx={{ boxShadow: "none",fontFamily:'Cairo',fontWeight:600,fontSize:'20px' }}>
                       <Box
                         component="img"
                         sx={{ bgcolor: "#80B7FF", borderRadius: "50%", width: "10%" }}
@@ -140,8 +140,8 @@ export default function ContactUs() {
                       <p style={{ color: "#5D449B" }}>+20 120020322</p>
                     </Typography>
                   </Grid>
-                  <Grid item xs={6} sx={{ bgcolor: "#f8f9fa", boxShadow: "none" }}>
-                    <Typography variant="body1">
+                  <Grid item xs={6} sx={{ bgcolor: "#f8f9fa", boxShadow: "none",textAlign:'right'}}>
+                    <Typography variant="body1" sx={{ boxShadow: "none",fontFamily:'Cairo',fontWeight:600,fontSize:'20px' }}>
                       <Box
                         component="img"
                         sx={{ bgcolor: "#80B7FF", borderRadius: "50%", width: "10%" }}
@@ -152,8 +152,8 @@ export default function ContactUs() {
                       <p style={{ color: "#5D449B" }}>+20 122239834</p>
                     </Typography>
                   </Grid>
-                  <Grid item xs={6} sx={{ bgcolor: "#f8f9fa" }}>
-                    <Typography variant="body1">
+                  <Grid item xs={6} sx={{ bgcolor: "#f8f9fa",textAlign:'right' }}>
+                    <Typography variant="body1" sx={{ boxShadow: "none",fontFamily:'Cairo',fontWeight:600,fontSize:'20px' }}>
                       <Box
                         component="img"
                         sx={{ bgcolor: "#80B7FF", borderRadius: "50%", width: "10%" }}
@@ -164,8 +164,8 @@ export default function ContactUs() {
                       <p style={{ color: "#5D449B" }}>support@easytrade.com</p>
                     </Typography>
                   </Grid>
-                  <Grid item xs={6} sx={{ bgcolor: "#f8f9fa", boxShadow: "none" }}>
-                    <Typography variant="body1">
+                  <Grid item xs={6} sx={{ bgcolor: "#f8f9fa", boxShadow: "none",textAlign:'right' }}>
+                    <Typography variant="body1" sx={{ boxShadow: "none",fontFamily:'Cairo',fontWeight:600,fontSize:'20px' }}>
                       <Box
                         component="img"
                         sx={{ bgcolor: "#80B7FF", borderRadius: "50%", width: "10%" }}
@@ -182,6 +182,7 @@ export default function ContactUs() {
           </Grid>
         </Grid>
       </Box>
+  
       <Footer />
     </>
   );
