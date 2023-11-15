@@ -214,6 +214,8 @@ const AddProduct = ({ light, isMini,handleChange }) => {
         }),
         onSuccess: (res) => {
           handleChange(undefined,1,res.data.id)
+          dispatch({ type: "products/addItem", payload: res?.data });
+          localStorage.setItem('productId', res.data.id);
           console.log(res.data, controls);
           if(index===1){
             return value===index
