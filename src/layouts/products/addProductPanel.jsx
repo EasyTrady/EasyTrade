@@ -46,7 +46,7 @@ color:'#5D449B',
       </Container>
       <CustomTabPanel value={value} index={0}>
       
-       <AddProduct/>
+       <AddProduct  value={value} index={1}/>
        
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
