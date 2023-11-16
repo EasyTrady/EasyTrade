@@ -13,9 +13,12 @@ import AddIcon from "@mui/icons-material/Add";
 import SoftButton from "components/SoftButton";
 import useRequest from "hooks/useRequest";
 import { PRODUCTS } from "data/api";
+import { useDispatch, useSelector } from "react-redux";
 import filter from "utils/ClearNull";
-const AddProductFetures = ({idProduct,handleChange}) => {
+const AddProductFetures = ({handleChange}) => {
   let Token = localStorage.getItem("token");
+ let idProduct= localStorage.getItem('productId');
+ let products=useSelector((state)=>state.products.value)
   const [AddProductImagesRequest, AddProductImagesResponce] = useRequest({
     path: PRODUCTS,
     method: "post",
@@ -23,7 +26,7 @@ const AddProductFetures = ({idProduct,handleChange}) => {
     contentType: "multipart/form-data",
   });
   // add status of fields
-  console.log(idProduct)
+  console.log(products.map((ele)=>ele.id==idProduct))
   const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
     { control: "image", value: [], isRequired: false },
   ]);
