@@ -16,7 +16,8 @@ fontSize: '14px',
 fontWeight: 400,
 lineHeight:' 20px',
 letterSpacing: '0em',
-textAlign: 'left'
+textAlign: 'left',
+mb:'6px'
 }}>{label}</Typography>
    
     <NumericFormat

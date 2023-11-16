@@ -447,9 +447,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
               error={Boolean(invalid.weight)}
               helperText={invalid.weight}
                sx={input}
-               InputProps={{
-                endAdornment: <InputAdornment position="end">g</InputAdornment>,
-              }}
+              
             />
             <NumberField
               variant="outlined"
