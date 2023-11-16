@@ -83,7 +83,9 @@ import Order from "layouts/order"
 import DetailOrder from "layouts/order/detailOrder"
 import ContactUs from "layouts/ContactUs/ContactUs";
 import Price from "layouts/Price/Price";
-
+import Offers from "layouts/offers/offers";
+import offers from './assets/images/offers.svg'
+import AddNewOffers from "layouts/offers/addNewOffers";
 
 const sub_domain = localStorage.getItem('sub_domain')
 
@@ -296,6 +298,33 @@ const routes = [
     noCollapse: false,
   },
   {
+    type: "collapse",
+    name: "Offers",
+    key: "Offers",
+    route: `/${sub_domain}/dashboard/offers`,
+    icon: <img src={offers} size="12px" />,
+    noCollapse: true,
+    component: <Auth><Offers /></Auth>,
+    children: [{
+
+      id: "Offers",
+      path: `/${sub_domain}/dashboard/offers`,
+      title: "offers",
+      element: <Auth><Offers /></Auth>,
+      type: "item"
+
+    }, {
+      type: "title",
+      name: "Add new offer",
+      key: "Add new offer",
+      route: `/${sub_domain}/dashboard/offers/addnewoffer`,
+      icon: <Office size="12px" />,
+      component:<Auth><AddNewOffers /></Auth> ,
+       noCollapse: false,
+    },
+    ]
+  },
+  {
     type: "title",
     name: "abandonedbasket",
     key: "abandonedbasket",
@@ -400,6 +429,15 @@ const routes = [
     component:<Auth><AddProductPanel /></Auth> ,
      noCollapse: false,
   },
+  {
+    type: "title",
+    name: "Add new offer",
+    key: "Add new offer",
+    route: `/${sub_domain}/dashboard/offers/addnewoffer`,
+    icon: <Office size="12px" />,
+    component:<Auth><AddNewOffers /></Auth> ,
+     noCollapse: false,
+  },
   // {
   //   type: "collapse",
   //   name: "Billing",
@@ -457,7 +495,7 @@ const routes = [
   },
   {
     type: "title",
-    name: "Sign Up",
+   
     key: "sign-up",
     route: "/authentication/sign-up",
     icon: <SpaceShip size="12px" />,
@@ -466,7 +504,7 @@ const routes = [
   },
   {
     type: "title",
-    name: "Sign In",
+    
     key: "sign-in",
     route: "/authentication/sign-in",
     icon: <Document size="12px" />,

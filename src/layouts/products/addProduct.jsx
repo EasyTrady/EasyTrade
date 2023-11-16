@@ -605,7 +605,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
                 label={"No tax"}
                 control={
                   <Switch
-                    defaultChecked
+                    
                     value={controls.in_taxes}
                     onChange={(e) => setControl("in_taxes", e.target.checked)}
                     color="secondary"
@@ -625,7 +625,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
                   <Switch
                     value={controls.is_piblished}
                     onChange={(e) => setControl("is_piblished", e.target.checked)}
-                    defaultChecked
+                    
                     color="secondary"
                   />
                 }
@@ -644,7 +644,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
                   <Switch
                     value={controls.require_shipping}
                     onChange={(e) => setControl("require_shipping", e.target.checked)}
-                    defaultChecked
+                    
                     color="secondary"
                   />
                 }
