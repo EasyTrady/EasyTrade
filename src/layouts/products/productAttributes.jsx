@@ -282,6 +282,7 @@ function AddValue(){
               //   output: "object",
               // }),
               onSuccess: (res) => {
+                localStorage.removeItem('productId');
                 console.log(res.data, controls);
               },
             }).then((res) => {

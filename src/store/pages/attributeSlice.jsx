@@ -44,6 +44,9 @@ export const attributeSlice = createSlice({
       state.value.find((ele)=>ele.id==action.payload.idattribute)["values"]=state.value.find((ele)=>ele.id==action.payload.idattribute)["values"]?.filter((elem)=>elem.id!=action.payload.idValue)
     },addValue:(state,action)=>{
       state.value.find((ele)=>ele.id==action.payload.idvalue)["values"]?state.value.find((ele)=>ele.id==action.payload.idvalue)["values"].push(action.payload.value):state.value.find((ele)=>ele.id==action.payload.idvalue)["values"]=[action.payload.value]
+    },editValue:(state,action)=>{
+      console.log(action.payload)
+      state.value=state.value.map((ele)=>ele.id==action.payload.id?{...ele,values:ele.values.map((elem)=>elem.id==action.payload.idvalue?action.payload.item:elem)}:ele)
     }
   },
 });
