@@ -210,7 +210,7 @@ const SubscribeCard = ({ type }) => {
     <Box sx={boxStyle}>
       {isLoading
         ? [1, 2, 3, 4].map((item, indx) => (
-            <Skeleton key={item + indx} variant="rectangle" sx={{}} />
+            <Skeleton key={item + indx} variant="rectangle" sx={{height:'480px', color:'#8BB3E8'}} />
           ))
         : subscribtion?.map((card, i) => {
             return (

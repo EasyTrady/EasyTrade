@@ -67,6 +67,21 @@ const SubscribePanel = () => {
             width: "fit-content",
           }}
         >
+           <Tab
+            sx={{
+              margin: "0 20px",
+              padding: "10px 30px",
+              // border: "none !important",
+              "&.Mui-selected, &.Mui-selected:hover": {
+                color: "white !important",
+                backgroundColor: "#5D449B",
+                borderRadius: "12px",
+                // border: "none !important",
+              },
+            }}
+            label={t("كل 3 شهور")}
+          
+          />
           <Tab
             sx={{
               margin: "0 20px",
@@ -87,17 +102,18 @@ const SubscribePanel = () => {
             sx={{
               margin: "0 20px",
               padding: "10px 30px",
-              border: "none !important",
+              // border: "none !important",
               "&.Mui-selected, &.Mui-selected:hover": {
                 color: "white !important",
                 backgroundColor: "#5D449B",
                 borderRadius: "12px",
-                border: "none !important",
+                // border: "none !important",
               },
             }}
             label={t("monthly.title", { framwork: "react" })}
             {...a11yProps(1)}
           />
+          
         </Tabs>
       </Box>
       <Box sx={{}}>

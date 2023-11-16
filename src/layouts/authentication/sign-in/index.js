@@ -31,7 +31,8 @@ import SoftButton from "components/SoftButton";
 
 // Authentication layout components
 import CoverLayout from "layouts/authentication/components/CoverLayout";
-import login from "../../../assets/images/icons/Social Media Icon Square/login.png";
+import dots from "../../../assets/images/icons/Social Media Icon Square/dots.png";
+import vector from "../../../assets/images/icons/Social Media Icon Square/authvector.svg";
 
 // Images
 import curved9 from "assets/images/curved-images/curved-6.jpg";
@@ -75,8 +76,7 @@ function SignIn() {
   };
   return (
     <PageLayout>
-
-        <Card>
+      <Card>
         <AuthWrapper1>
           <Box
             sx={{
@@ -104,13 +104,31 @@ function SignIn() {
             >
               <Box
                 sx={{
-                  backgroundImage: `URL(${login})`,
-                  backgroundSize: "cover",
+                  backgroundImage: `URL(${dots})`,
+                  backgroundSize: "30px",
+                  backgroundRepeat: "repeat",
                   backgroundPosition: "center center",
                   height: { md: "30vh", sm: "30vh", xs: "30vh", lg: "100%" },
                   width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
-              />
+              >
+                <Box
+                  sx={{
+                    backgroundImage: `URL(${vector})`,
+                    backgroundSize: "contain",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center center",
+                    height: { md: "30vh", sm: "30vh", xs: "30vh", lg: "100%" },
+                    width: "50%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                ></Box>
+              </Box>
             </Box>
             <Grid
               container
@@ -191,9 +209,8 @@ function SignIn() {
             </Grid>
           </Box>
         </AuthWrapper1>
-          </Card>
-      </PageLayout>
-
+      </Card>
+    </PageLayout>
   );
 }
 

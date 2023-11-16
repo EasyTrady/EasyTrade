@@ -1,4 +1,4 @@
-import { Grid, Hidden, Typography } from "@mui/material";
+import { Box, Grid, Hidden, Typography } from "@mui/material";
 import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -39,13 +39,16 @@ export default function CarouselComponent() {
   };
   return (
     <div>
+      <Box sx={{marginBottom:'100px',marginTop:'60px'}}>
       <Typography
         sx={{
           fontSize: "50px",
-          fontWeight: 300,
+          fontWeight: 500,
           textAlign: "center",
           marginTop: "60px",
           marginBottom: "20px",
+          fontFamily:'Cairo',
+          color:'#3D2D66'
         }}
       >
         تجربة مطور سهلة
@@ -53,10 +56,12 @@ export default function CarouselComponent() {
       <Typography
         sx={{
           fontSize: "30px",
-          fontWeight: 200,
+          fontWeight: 400,
           textAlign: "center",
-          marginTop: "20px",
+          marginTop: "18px",
           marginBottom: "20px",
+          fontFamily:'Cairo',
+          color:'#505050'
         }}
       >
         لقت جعلت EASYTRADE من السهل على المطورين من اي مستوى مهارة استخدام منتجاتهم
@@ -78,6 +83,7 @@ export default function CarouselComponent() {
           <img src={sc1} height="100%" alt="" />
         </Grid>
       </Slider>
+      </Box>
     </div>
   );
 }

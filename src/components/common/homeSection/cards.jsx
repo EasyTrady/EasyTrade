@@ -12,6 +12,9 @@ import ui from '../../../assets/images/icons/ui-design.png';
 
 export function Card ({ title, desc, img, bgcolor, className }) {
   return (
+
+    
+
     <Grid
       className={className}
       sx={{
@@ -23,8 +26,9 @@ export function Card ({ title, desc, img, bgcolor, className }) {
         margin: { xs: '30px 0', md: '30px 20px', lg: '30px 20px' }
       }}
     >
-          <Container>
 
+
+          <Container>
       <Box
         sx={{
           position: 'absolute',
@@ -32,6 +36,7 @@ export function Card ({ title, desc, img, bgcolor, className }) {
           width: '100%'
         }}
       >
+        
         <Box
           sx={{
             position: 'absolute',
@@ -87,6 +92,8 @@ export function Card ({ title, desc, img, bgcolor, className }) {
       </Container>
 
     </Grid>
+
+
   );
 }
 

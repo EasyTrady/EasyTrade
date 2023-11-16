@@ -28,6 +28,13 @@ export default function Price () {
 
     <>
     <Navbar/>
+    <Box
+        sx={{
+          background:
+            "linear-gradient(180deg, #cde3f3 -0%, rgba(74, 153, 211, 0.00) 54.91%),#d4d2e300",
+          paddingTop: "60px",
+        }}
+      >
  <Typography sx={{ textAlign: 'center', color: '#5D449B', fontSize: '16px', fontWeight: 600, marginTop:'40px' }}>  الباقات والاسعار</Typography>
     <Typography sx={{ fontSize: '36px', fontWeight: 600 , textAlign: 'center', paddingTop: '10px', color: '#2F2F30' }}>خطط تسعير ميسورة التكلفة</Typography>
     <Typography sx={{ fontSize: '20px', fontWeight: 400 , textAlign: 'center', paddingTop: '10px', color: '#667085',marginBottom:'30px' }}>   صممت خصيصًا لتناسب جميع أنواع التجار قارن بين الميزات</Typography>
@@ -72,7 +79,9 @@ export default function Price () {
             <Item sx={{ fontSize: '25px', fontWeight: 800, boxShadow: 'none',bgcolor:'#f8f9fa' }}>$500</Item>
             <Item sx={{ fontSize: '14px', fontWeight: 400, boxShadow: 'none', textAlign: 'left',fontFamily:'Inter',bgcolor:'#f8f9fa' }}>شهريًا/</Item>
               <ButtonBase sx={{ bgcolor: '#5D449B', borderRadius: '12px', boxShadow: 'none', width: '195px', color: '#faf8f9',padding:'10px' }}>ابدأ تجربتك</ButtonBase>
-           </Grid>,
+           </Grid>
+
+
           
       
       ].map((text) => (
@@ -170,7 +179,8 @@ export default function Price () {
       </Box>
 
       </Container>
-      
+      </Box>
+
       <Footer/>
     </>
   );
