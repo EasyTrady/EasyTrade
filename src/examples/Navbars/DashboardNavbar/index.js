@@ -58,7 +58,9 @@ import {
 import team2 from "assets/images/team-2.jpg";
 import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
 import input from "assets/theme/components/form/input";
-
+import { InputAdornment } from "@mui/material";
+import InputField from "components/common/TextField";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useSoftUIController();
@@ -150,11 +152,23 @@ function DashboardNavbar({ absolute, light, isMini }) {
         {isMini ? null : (
           <SoftBox sx={(theme) => navbarRow(theme, { isMini })}>
             <SoftBox pr={1}>
-              <SoftInput
-                placeholder="Type here..."
-                icon={{ component: "search", direction: "left" }}
-                sx={{'.MuiFormControl-root .MuiTextField-root .MuiInputBase-root':{border:'none !important'},}}
-              />
+            <InputField
+          variant="outlined"
+          placeholder={"Type here…"}
+          //   value={controls.name}
+          //   onChange={(e) => setControl("name", e.target.value)}
+          //   required={required.includes("name")}
+          //   error={Boolean(invalid.name)}
+          //   helperText={invalid.name}
+          sx={{ width: "100%" }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchOutlinedIcon sx={{height:'16px',width:'16px'}}/>
+              </InputAdornment>
+            ),
+          }}
+        />
             </SoftBox>
             <SoftBox color={light ? "white" : "inherit"}>
               <Link to="/authentication/sign-in">

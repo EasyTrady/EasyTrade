@@ -19,9 +19,9 @@ export default function RowAndColumnSpacing() {
     <Container sx={{
       width: '100%'
     }}>
-      <Typography sx={{ fontSize: '50px', fontWeight: 300, textAlign: 'center', marginTop: '60px', marginBottom: '60px' }}>انجازاتنا</Typography>
-      <Box  >
-        <Grid container sx={{textAlign:'center',justifyContent:'center', display: 'flex', width: '100%', alignItems: 'start'}}>
+      <Typography sx={{ fontSize: '50px', fontWeight: 600, textAlign: 'center', marginTop: '30px',color:'#3D2D66',fontFamily:'Cairo' }}>انجازاتنا</Typography>
+      <Box>
+        <Grid container sx={{textAlign:'center',justifyContent:'center', display: 'flex', width: '100%', alignItems: 'start',marginBottom:'100px'}}>
           <Grid item xs={4} md={3} lg={2} sx={{
             borderRight: '2px solid #C4C4C4',
             padding: '16px',

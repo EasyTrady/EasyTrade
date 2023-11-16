@@ -374,8 +374,8 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
           setPagination={false}
           // autoHeight={true}
           hideFooter
-          // initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
-          // pageSizeOptions={[5, 10, 15]}
+          initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
+          pageSizeOptions={[5, 10, 15]}
           sx={{
             ...sx, "& .css-1ui3wbn-MuiInputBase-root-MuiTablePagination-select": {
               width: "15% !important"

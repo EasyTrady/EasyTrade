@@ -16,9 +16,10 @@ export default function landingSection () {
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: '48px',
-        background: 'linear-gradient(1.02deg, rgba(74, 153, 211, 0) -17.33%,#cde3f3 100%),linear-gradient(#4A99D3, #FFFFFF, #FFFFFF)'
+        background: "linear-gradient(180deg, #cde3f3 -0%, rgba(74, 153, 211, 0.00) 54.91%),#d4d2e300",
       }}
     >
+      <container>
       <Grid container spacing={0}>
         <Grid xs={12} md={6}>
           <Box
@@ -39,7 +40,7 @@ export default function landingSection () {
           </Box>
         </Grid>
         <Grid xs={12} md={6}>
-          <Stack sx={{ pt: '2%', width: '100%', textAlign: 'center', mt: '10%' }}>
+          <Stack sx={{ pt: '2%', width: '100%', textAlign: 'right', mt: '10%' }}>
             <Typography
               sx={{
                 fontSize: '25px',
@@ -77,15 +78,15 @@ export default function landingSection () {
                 },
                 flexWrap: 'wrap',
                 width: '100%',
-                justifyContent: 'center',
-                alignItems: 'center'
+                justifyContent: 'right',
+                alignItems: 'right'
               }}
             >
               <ButtonBase
                 sx={{
                   bgcolor: '#5D449B',
                   color: '#FFFFFF',
-                  height: '9vh',
+                  height: '7vh',
                   borderRadius: '12px',
                   // textAlign: "right",
                   // float:'right',
@@ -104,8 +105,8 @@ export default function landingSection () {
                   color: '#8a2296',
                   width: { xl: '100%', md: '100%', xs: '100%' },
                   fontSize: '20px',
-                  fontFamily: 'Cairo'
-                  // textAlign:'right'
+                  fontFamily: 'Cairo',
+                  textAlign:'right'
                 }}
               >
                 تجربة مجانية مدتها 14 يومًا
@@ -114,6 +115,7 @@ export default function landingSection () {
           </Stack>
         </Grid>
       </Grid>
+      </container>
     </Box>
   );
 }

@@ -13,7 +13,7 @@ const InputField = ({
 }) => {
 
   return (
-    <Box sx={{display:'flex',flexDirection:'column',alignItems:'start',width:'100%',}}>
+    <Box sx={{display:'flex',flexDirection:'column',alignItems:'start',width:'100%',gap:'6px'}}>
     <Typography sx={{
 fontSize: '14px',
 fontWeight: 400,
