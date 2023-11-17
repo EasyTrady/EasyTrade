@@ -149,7 +149,7 @@ function PictureField({ accept, label, placeholder, onChange, value,productName,
                   alignItems:'center',
                   justifyContent:'center'
                   
-                  }}>{cat}</Box>
+                  }}>{cat||"category"}</Box>
               ))}
               </Box>
                 <Typography
@@ -162,7 +162,7 @@ function PictureField({ accept, label, placeholder, onChange, value,productName,
                     color:'#191B1C'
                   }}
                 >
-                  {productName}
+                  {productName||"Product name"}
                 </Typography>
 
                 <Typography
@@ -175,7 +175,7 @@ function PictureField({ accept, label, placeholder, onChange, value,productName,
                     color:'#191B1C',
                     opacity:0.3
                   }}
-                  dangerouslySetInnerHTML={{__html:description}}
+                  dangerouslySetInnerHTML={{__html:description||"description"}}
                 >
                  
                 </Typography>
