@@ -47,6 +47,7 @@ const SubscribePanel = () => {
     <Box>
       <Box
         sx={{
+          
           mx: "auto",
           justifyContent: "center",
           display: "flex",
@@ -65,29 +66,20 @@ const SubscribePanel = () => {
             padding: "5px 40px",
             my: "30px",
             width: "fit-content",
+            '.css-1aquho2-MuiTabs-indicator': {
+              position:'unset !important',
+              width:'0px !important'
+              
+            },
           }}
         >
-           <Tab
-            sx={{
-              margin: "0 20px",
-              padding: "10px 30px",
-              // border: "none !important",
-              "&.Mui-selected, &.Mui-selected:hover": {
-                color: "white !important",
-                backgroundColor: "#5D449B",
-                borderRadius: "12px",
-                // border: "none !important",
-              },
-            }}
-            label={t("كل 3 شهور")}
-          
-          />
+         
           <Tab
             sx={{
               margin: "0 20px",
               padding: "10px 30px",
               border: "none !important",
-
+                 
               "&.Mui-selected, &.Mui-selected:hover": {
                 color: "white !important",
                 backgroundColor: "#5D449B",
@@ -112,6 +104,21 @@ const SubscribePanel = () => {
             }}
             label={t("monthly.title", { framwork: "react" })}
             {...a11yProps(1)}
+          />
+            <Tab
+            sx={{
+              margin: "0 20px",
+              padding: "10px 30px",
+              // border: "none !important",
+              "&.Mui-selected, &.Mui-selected:hover": {
+                color: "white !important",
+                backgroundColor: "#5D449B",
+                borderRadius: "12px",
+                // border: "none !important",
+              },
+            }}
+            label={t("كل 3 شهور")}
+          
           />
           
         </Tabs>

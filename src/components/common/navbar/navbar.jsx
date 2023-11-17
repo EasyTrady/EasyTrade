@@ -139,11 +139,17 @@ const Navbar = () => {
                   }}
                   sx={{
                     my: 2,
-                    color: '#272C2E',
+                    color: '#7F7F7F',
                     display: 'block',
                     fontSize: '15px',
                     fontWeight: 500,
-                    textTransform: 'none'
+                    fontFamily:'Cairo',
+                    textTransform: 'none',
+                    ':hover': {
+                      color: '#272C2E',
+                    
+                    },
+
                   }}
                 >
                   {page}
@@ -161,6 +167,7 @@ const Navbar = () => {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
+              // sx={{bgcolor:'#f5f5f5'}}
             >
               <MenuIcon />
             </IconButton>

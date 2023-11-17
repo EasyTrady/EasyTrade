@@ -88,8 +88,8 @@ export default function landingSection () {
                   color: '#FFFFFF',
                   height: '7vh',
                   borderRadius: '12px',
-                  // textAlign: "right",
-                  // float:'right',
+                  textAlign: "right",
+                  float:'right',
 
                   fontSize: '14px',
                   lineHeight: '22.4px',

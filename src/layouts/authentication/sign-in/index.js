@@ -122,7 +122,7 @@ function SignIn() {
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center center",
                     height: { md: "30vh", sm: "30vh", xs: "30vh", lg: "100%" },
-                    width: "50%",
+                    width: "60%",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
@@ -169,6 +169,7 @@ function SignIn() {
                               <Grid item>
                                 <Stack alignItems="end" justifyContent="end" spacing={1}>
                                   <Typography
+                                  sx={{fontFamily:'Cairo',fontWeight:600,fontSize:'36px',color:'#3D2D66'}}
                                     color={theme.palette.secondary.main}
                                     gutterBottom
                                     variant={matchDownSM ? "h3" : "h2"}
@@ -176,6 +177,7 @@ function SignIn() {
                                     تسجيل الدخول
                                   </Typography>
                                   <Typography
+                                   sx={{fontFamily:'Cairo',fontWeight:400,fontSize:'16px',color:'#667085'}}
                                     variant="caption"
                                     fontSize="16px"
                                     textAlign={matchDownSM ? "center" : "inherit"}

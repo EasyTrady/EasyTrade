@@ -35,9 +35,9 @@ export default function Price () {
           paddingTop: "60px",
         }}
       >
- <Typography sx={{ textAlign: 'center', color: '#5D449B', fontSize: '16px', fontWeight: 600, marginTop:'40px' }}>  الباقات والاسعار</Typography>
-    <Typography sx={{ fontSize: '36px', fontWeight: 600 , textAlign: 'center', paddingTop: '10px', color: '#2F2F30' }}>خطط تسعير ميسورة التكلفة</Typography>
-    <Typography sx={{ fontSize: '20px', fontWeight: 400 , textAlign: 'center', paddingTop: '10px', color: '#667085',marginBottom:'30px' }}>   صممت خصيصًا لتناسب جميع أنواع التجار قارن بين الميزات</Typography>
+ <Typography sx={{ textAlign: 'center', color: '#5D449B', fontSize: '16px', fontWeight: 600, marginTop:'40px',fontFamily:'Cairo' }}>  الباقات والاسعار</Typography>
+    <Typography sx={{ fontSize: '36px', fontWeight: 600 , textAlign: 'center', paddingTop: '10px', color: '#2F2F30',fontFamily:'Cairo' }}>خطط تسعير ميسورة التكلفة</Typography>
+    <Typography sx={{ fontSize: '20px', fontWeight: 400 , textAlign: 'center', paddingTop: '10px', color: '#667085',marginBottom:'30px',fontFamily:'Cairo' }}>   صممت خصيصًا لتناسب جميع أنواع التجار قارن بين الميزات</Typography>
     
     <Container>
     <Box sx={{justifyContent:'center'}}>
@@ -47,12 +47,12 @@ export default function Price () {
         <TableBody >
           {[
            <Box item xs={2} sx={{ padding: '16px', borderColor: '#5D449B', display: 'block',width:{xl:'90%',lg:'100%',md:'100%',xs:'100%',sm:'100%'} }}>
-           <Item sx={{  boxShadow: 'none', fontSize: '16px', fontWeight: 600, color: '#272C2E',bgcolor:'#f8f9fa' }}>قارن بين الخطط</Item>
+           <Item sx={{  boxShadow: 'none', fontSize: '16px', fontWeight: 600, color: '#272C2E',bgcolor:'#f8f9fa',fontFamily:'Cairo' }}>قارن بين الخطط</Item>
            <Box sx={{ display: 'flex', gap: '7px', border: '2px solid #5D449B', borderRadius: '12px', padding: '5px',bgcolor:'#f8f9fa' }}>
-           <ButtonBase sx={{ bgcolor: '#5D449B', borderRadius: '8px', boxShadow: 'none', color: '#faf8f9',padding: '4px 10px 4px 10px'}}>شهري </ButtonBase>
-            <Typography sx={{ fontSize: '12px', fontWeight: 200, color: '#7F7F7F' , paddingTop:'5px'}}>كل 3 شهور</Typography>
-            <Typography sx={{ fontSize: '12px', fontWeight: 200, color: '#7F7F7F' , paddingTop:'5px'}}>سنوي </Typography>
-            <Typography sx={{ fontSize: '12px', fontWeight: 200, color: '#C02431', paddingTop:'5px' }}>%وفر 14 </Typography>
+           <ButtonBase sx={{ bgcolor: '#5D449B', borderRadius: '8px', boxShadow: 'none', color: '#faf8f9',padding: '4px 10px 4px 10px',fontFamily:'Cairo'}}>شهري </ButtonBase>
+            <Typography sx={{ fontSize: '12px', fontWeight: 200, color: '#7F7F7F' , paddingTop:'5px',fontFamily:'Cairo'}}>كل 3 شهور</Typography>
+            <Typography sx={{ fontSize: '12px', fontWeight: 200, color: '#7F7F7F' , paddingTop:'5px',fontFamily:'Cairo'}}>سنوي </Typography>
+            <Typography sx={{ fontSize: '12px', fontWeight: 200, color: '#C02431', paddingTop:'5px',fontFamily:'Cairo' }}>%وفر 14 </Typography>
               </Box>
            </Box>
 
@@ -62,23 +62,23 @@ export default function Price () {
                 {text}
               </TableCell>
               {[ <Grid item xs={2} sx={{ padding: '16px',bgcolor:'#f8f9fa' }}>
-          <Item sx={{ fontSize: '16px', fontWeight: 600, color: '#272C2E', boxShadow: 'none',bgcolor:'#f8f9fa' }}>vip</Item>
-         <Item sx={{ fontSize: '25px', fontWeight: 800, boxShadow: 'none',bgcolor:'#f8f9fa' }}>$1000</Item>
+          <Item sx={{ fontSize: '16px', fontWeight: 600, color: '#272C2E', boxShadow: 'none',bgcolor:'#f8f9fa' ,fontFamily:'Cairo'}}>vip</Item>
+         <Item sx={{ fontSize: '25px', fontWeight: 800, boxShadow: 'none',bgcolor:'#f8f9fa',fontFamily:'Cairo' }}>$1000</Item>
          
-         <Item sx={{ fontSize: '14px', fontWeight: 400, boxShadow: 'none',fontFamily:'Inter',bgcolor:'#f8f9fa'}}>شهريًا/</Item>
-           <ButtonBase sx={{ bgcolor: '#5D449B', borderRadius: '12px', width: '195px', boxShadow: 'none', color: '#faf8f9',padding:'10px' }}>ابدأ تجربتك</ButtonBase>
+         <Item sx={{ fontSize: '14px', fontWeight: 400, boxShadow: 'none',fontFamily:'Inter',bgcolor:'#f8f9fa',fontFamily:'Cairo'}}>شهريًا/</Item>
+           <ButtonBase sx={{ bgcolor: '#5D449B', borderRadius: '12px', width: '195px', boxShadow: 'none', color: '#faf8f9',padding:'10px',fontFamily:'Cairo' }}>ابدأ تجربتك</ButtonBase>
         </Grid>,
           <Grid item xs={2} sx={{ padding: '16px',bgcolor:'#f8f9fa' }}>
-          <Item sx={{ fontSize: '16px', fontWeight: 600, color: '#272C2E', boxShadow: 'none',bgcolor:'#f8f9fa' }}>vip</Item>
-           <Item sx={{ fontSize: '25px', fontWeight: 800, boxShadow: 'none',bgcolor:'#f8f9fa' }}>$800</Item>
-           <Item sx={{ fontSize: '14px', fontWeight: 400, textAlign: 'left', boxShadow: 'none',fontFamily:'Inter',bgcolor:'#f8f9fa'}}>شهريًا/</Item>
-             <ButtonBase sx={{ bgcolor: '#5D449B', borderRadius: '12px', boxShadow: 'none', width: '195px', color: '#faf8f9',padding:'10px'  }}>ابدأ تجربتك</ButtonBase>
+          <Item sx={{ fontSize: '16px', fontWeight: 600, color: '#272C2E', boxShadow: 'none',bgcolor:'#f8f9fa' ,fontFamily:'Cairo'}}>vip</Item>
+           <Item sx={{ fontSize: '25px', fontWeight: 800, boxShadow: 'none',bgcolor:'#f8f9fa',fontFamily:'Cairo' }}>$800</Item>
+           <Item sx={{ fontSize: '14px', fontWeight: 400, textAlign: 'left', boxShadow: 'none',fontFamily:'Inter',bgcolor:'#f8f9fa',fontFamily:'Cairo'}}>شهريًا/</Item>
+             <ButtonBase sx={{ bgcolor: '#5D449B', borderRadius: '12px', boxShadow: 'none', width: '195px', color: '#faf8f9',padding:'10px' ,fontFamily:'Cairo' }}>ابدأ تجربتك</ButtonBase>
           </Grid>,
            <Grid item xs={2} sx={{ padding: '16px',bgcolor:'#f8f9fa'}}>
-           <Item sx={{ fontSize: '16px', boxShadow: 'none', fontWeight: 600, color: '#272C2E',bgcolor:'#f8f9fa' }}>vip</Item>
-            <Item sx={{ fontSize: '25px', fontWeight: 800, boxShadow: 'none',bgcolor:'#f8f9fa' }}>$500</Item>
-            <Item sx={{ fontSize: '14px', fontWeight: 400, boxShadow: 'none', textAlign: 'left',fontFamily:'Inter',bgcolor:'#f8f9fa' }}>شهريًا/</Item>
-              <ButtonBase sx={{ bgcolor: '#5D449B', borderRadius: '12px', boxShadow: 'none', width: '195px', color: '#faf8f9',padding:'10px' }}>ابدأ تجربتك</ButtonBase>
+           <Item sx={{ fontSize: '16px', boxShadow: 'none', fontWeight: 600, color: '#272C2E',bgcolor:'#f8f9fa' ,fontFamily:'Cairo'}}>vip</Item>
+            <Item sx={{ fontSize: '25px', fontWeight: 800, boxShadow: 'none',bgcolor:'#f8f9fa',fontFamily:'Cairo' }}>$500</Item>
+            <Item sx={{ fontSize: '14px', fontWeight: 400, boxShadow: 'none', textAlign: 'left',fontFamily:'Inter',bgcolor:'#f8f9fa',fontFamily:'Cairo' }}>شهريًا/</Item>
+              <ButtonBase sx={{ bgcolor: '#5D449B', borderRadius: '12px', boxShadow: 'none', width: '195px', color: '#faf8f9',padding:'10px' ,fontFamily:'Cairo'}}>ابدأ تجربتك</ButtonBase>
            </Grid>
 
 
@@ -99,7 +99,7 @@ export default function Price () {
      
       
       </Grid>
-    <Typography sx={{ color: '#272C2E', textAlign: 'right', display: 'bolck', fontSize: '20px', fontWeight: 700 }}>المميزات الأساسية</Typography>
+    <Typography sx={{ color: '#272C2E', textAlign: 'right', display: 'bolck', fontSize: '20px', fontWeight: 700,fontFamily:'Cairo' }}>المميزات الأساسية</Typography>
     <TableContainer component={Paper} sx={{ direction: 'rtl', width: '100%' }}>
       <Table>
         <TableBody>
@@ -126,7 +126,7 @@ export default function Price () {
       </Table>
       </TableContainer>
 
-       <Typography sx={{ color: '#272C2E', textAlign: 'right', display: 'bolck', fontSize: '20px', fontWeight: 700 }}>زيادة المبيعات</Typography>
+       <Typography sx={{ color: '#272C2E', textAlign: 'right', display: 'bolck', fontSize: '20px', fontWeight: 700,fontFamily:'Cairo' }}>زيادة المبيعات</Typography>
     <TableContainer component={Paper} sx={{ direction: 'rtl', width: '100%' }}>
       <Table>
         <TableBody >
@@ -152,7 +152,7 @@ export default function Price () {
       </Table>
       </TableContainer>
 
-      <Typography sx={{ color: '#272C2E', textAlign: 'right', display: 'bolck' , fontSize: '20px', fontWeight: 700 }}>إدارة المتجر</Typography>
+      <Typography sx={{ color: '#272C2E', textAlign: 'right', display: 'bolck' , fontSize: '20px', fontWeight: 700,fontFamily:'Cairo' }}>إدارة المتجر</Typography>
     <TableContainer component={Paper} sx={{ direction: 'rtl', width: '100%',marginBottom:'100px'}}>
       <Table>
         <TableBody >

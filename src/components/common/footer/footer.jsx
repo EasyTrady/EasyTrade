@@ -50,7 +50,7 @@ export function Footer() {
           container
         >
           <Grid item xs={12} md={6} lg={3}>
-            <Item sx={{ fontSize: "30px", fontWeight: 700, boxShadow: "none", bgcolor: "#f8f9fa" }}>
+            <Item sx={{ fontSize: "30px", fontWeight: 700, boxShadow: "none", bgcolor: "#f8f9fa", fontFamily:'Cairo' }}>
               اشترك ليصلك كل جديد
             </Item>
             <Box
@@ -66,7 +66,7 @@ export function Footer() {
               }}
             >
               <ButtonBase
-                sx={{ bgcolor: "#5D449B", color: "#faf8f9", padding: "10px", borderRadius: "12px" }}
+                sx={{ bgcolor: "#5D449B", color: "#faf8f9", padding: "10px", borderRadius: "12px", fontFamily:'Cairo' }}
               >
                 ارسال
               </ButtonBase>
@@ -82,16 +82,16 @@ export function Footer() {
             </Box>
           </Grid>
           <Grid item  xs={12} md={6} lg={3}>
-            <Item sx={{ fontSize: "30px", fontWeight: 700, boxShadow: "none", bgcolor: "#f8f9fa" }}>
+            <Item sx={{ fontSize: "30px", fontWeight: 700, boxShadow: "none", bgcolor: "#f8f9fa", fontFamily:'Cairo' }}>
               الرقم الضريبي
             </Item>
-            <Item sx={{ boxShadow: "none", bgcolor: "#f8f9fa" }}> 1123453456678</Item>
+            <Item sx={{ boxShadow: "none", bgcolor: "#f8f9fa", fontFamily:'Cairo' }}> 1123453456678</Item>
           </Grid>
           <Grid item  xs={12} md={6} lg={3}>
-            <Item sx={{ fontSize: "30px", fontWeight: 700, boxShadow: "none", bgcolor: "#f8f9fa" }}>
+            <Item sx={{ fontSize: "30px", fontWeight: 700, boxShadow: "none", bgcolor: "#f8f9fa", fontFamily:'Cairo' }}>
               السجل التجاري
             </Item>
-            <Item sx={{ boxShadow: "none", bgcolor: "#f8f9fa" }}>112345678</Item>
+            <Item sx={{ boxShadow: "none", bgcolor: "#f8f9fa", fontFamily:'Cairo' }}>112345678</Item>
           </Grid>
           <Grid item  xs={12} md={6} lg={3}>
             <Item sx={{ boxShadow: "none", bgcolor: "#f8f9fa" }}>
@@ -134,6 +134,7 @@ export function Footer() {
             sx={{
               color: "#9795B5",
               textAlign: "center",
+              fontFamily:'Cairo'
             }}
           >
             Copyright © 2023 Easytrade | All Rights Reserved
