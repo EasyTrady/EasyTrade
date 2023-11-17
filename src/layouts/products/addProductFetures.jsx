@@ -26,7 +26,7 @@ const AddProductFetures = ({handleChange}) => {
     contentType: "multipart/form-data",
   });
   // add status of fields
-  console.log(products?.results?.map((ele)=>ele.id==idProduct))
+
   const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
     { control: "image", value: [], isRequired: false },
   ]);
