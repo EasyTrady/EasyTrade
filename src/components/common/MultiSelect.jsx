@@ -99,6 +99,7 @@ mb:'6px'
                 boxShadow: "none",
                 height:'40px !important',
                borderColor:'#C9CDD4',
+               backgroundColor:"white !important",
                fontSize:'14px',
                 ".MuiOutlinedInput-notchedOutline": { border: 0 },
                 "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":

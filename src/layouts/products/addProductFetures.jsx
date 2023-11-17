@@ -35,6 +35,8 @@ const AddProductFetures = ({handleChange}) => {
     validate().then((output) => {
       console.log(output);
       if (!output.isOk) return;
+      console.log(controls?.image);
+
       AddProductImagesRequest({
         id:idProduct+'/images',
         body: filter({

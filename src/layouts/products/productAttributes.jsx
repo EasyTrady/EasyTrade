@@ -261,7 +261,12 @@ const ProductAttributes = ({ idProduct }) => {
       method: "POST",
       Token: `Token ${Token}`
     });
-    
+    const [variantAttributesRequest, variantAttributeResponse] =
+    useRequest({
+      path: PRODUCTS,
+      method: "POST",
+      Token: `Token ${Token}`
+    });
   const [attributeDeleteRequest, DeleteattributerResponce] =
     useRequest({
       path: ATTRIBUTES,
@@ -273,14 +278,7 @@ const ProductAttributes = ({ idProduct }) => {
     attributeRequest({
       onSuccess: (res) => {
         dispatch({ type: "attribute/set", payload: res.data })
-        // res.data.map((ele) => attributeValueRequest({
-        //     id: ele.id + "/values",
-        //     onSuccess: (res) => {
-
-        //         dispatch({ type: "attribute/addValues", payload: { idattribute: ele.id, values: res.data } })
-
-        //     }
-        // }))
+      
 
       }
     })
@@ -300,7 +298,7 @@ const ProductAttributes = ({ idProduct }) => {
         "attributes": controls?.attribute.map((ele) =>({attribute:ele.name ,values:ele.values.map((elem) => elem.value_name)})),
       },
       onSuccess: (res) => {
-        localStorage.removeItem('productId');
+        // localStorage.removeItem('productId');
         // dispatch({ type: "products/addNewProperty", payload: { id: idproduct, item: res?.data[0]?.variant_attributes } })
         setgenerate(!generate)
         setgenerateresult(res.data)
@@ -322,10 +320,10 @@ const ProductAttributes = ({ idProduct }) => {
   }
 
   const postGenerationAttributes = () => {
-
-    GenerationAttributesRequest({
+      console.log(controls.variants)
+      variantAttributesRequest({
       id: idproduct + '/variants/',
-      body:controls.variant,
+      body:controls.variants.filter((ele)=>Boolean(ele.title)),
       // filter({
       //   obj: {
       //     // attribute: [...controls?.attribute],
@@ -556,7 +554,7 @@ const ProductAttributes = ({ idProduct }) => {
             }}>Generate (4 combinations)</Button>
 
         </Box>
-        {generate&&controls.variants.length>0?<Box>
+        {generate||controls.variants.length>0?<Box>
           <Typography sx={{ color: (theme) => theme.palette.grey[600], marginY: "20px" }}>{t("note")}</Typography>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650, color: (theme) => theme.palette.grey[300] }} aria-label="caption table">

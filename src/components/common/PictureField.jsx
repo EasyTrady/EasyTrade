@@ -27,7 +27,7 @@ function PictureField({ accept, label, placeholder, onChange, value,productName,
       setAvatarUrl(reader?.result);
     };
     reader.readAsDataURL(file);
-    onChange(e.target.files[0]);
+    onChange(event.target.files[0]);
   };
   const handelDeleteImage = (selectedImageIndex) => {
     // Delete the selected image from the images object
