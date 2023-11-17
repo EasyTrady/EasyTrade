@@ -26,7 +26,7 @@ const AddProductFetures = ({handleChange}) => {
     contentType: "multipart/form-data",
   });
   // add status of fields
-  
+
   const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
     { control: "image", value: [], isRequired: false },
   ]);
@@ -35,6 +35,8 @@ const AddProductFetures = ({handleChange}) => {
     validate().then((output) => {
       console.log(output);
       if (!output.isOk) return;
+      console.log(controls?.image);
+
       AddProductImagesRequest({
         id:idProduct+'/images',
         body: filter({

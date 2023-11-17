@@ -45,8 +45,11 @@ export const ProductsSlice = createSlice({
         ...state.value.results[index],
         ...action.payload.item,
       });
+    },addNewProperty: (state, action) => {
+      console.log("hiohuguiguu",action?.payload?.item?.map((elem)=>elem),state.value.results.find((ele)=>ele.id==action.payload.id))
+      state.value.results.find((ele)=>ele.id==action.payload.id)["variant_attributes"]=action?.payload?.item?.map((elem)=>elem)
     },
-  },
+  }
 });
 
 export default ProductsSlice.reducer;

@@ -432,7 +432,7 @@ function Basket({ absolute, light, isMini }) {
                 name="row-radio-buttons-group"
                 value={controls.content_type}
                 sx={{ marginX: "20px" }}
-                onChange={(e) => { setControl("content_type", e.target.value); setImageData("") }}
+                onChange={(e) => { setControl("content_type", e.target.value); }}
               >
                 <FormControlLabel value={t("Banner")} control={<Radio />} label={t("Banner")} sx={{ ".MuiFormControlLabel-label": { fontWeight: "400", fontSize: "12px" } }} />
                 <FormControlLabel value={t("Multipleproducts")} control={<Radio />} label={t("Multipleproducts")} sx={{ ".MuiFormControlLabel-label": { fontWeight: "400", fontSize: "12px" } }} />

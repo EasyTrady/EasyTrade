@@ -214,6 +214,8 @@ const AddProduct = ({ light, isMini,handleChange }) => {
           output: "formData",
         }),
         onSuccess: (res) => {
+          localStorage.setItem('productId', res.data.id);
+
           handleChange(undefined,1,res.data.id)
           dispatch({ type: "products/addItem", payload: res?.data });
           localStorage.setItem('productId', res.data.id);
@@ -319,7 +321,9 @@ const AddProduct = ({ light, isMini,handleChange }) => {
               isPending={getcategoryResponce.isPending}
               onOpen={getCategory}
               renderValue={(selected) => {
-                return category?.find((category) => category.id === selected)?.name.join(',')
+                // selected.map((ele)=>category.map((elem)=>elem.id).includes(ele))
+                let resultcategory=category?.filter((category) => selected.includes(category.id))
+                return resultcategory.map((ele)=>ele.name).join(" , ")
               }}
               value={controls.product_categories}
               onChange={(e) => setControl("product_categories", e.target.value)}
@@ -327,7 +331,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
               textHelper={controls.product_categories}
               error={Boolean(invalid.product_categories)}
               helperText={invalid.product_categories}
-              sx={{ width: "100%", fontSize: "14px", background: "#fff" }}
+              sx={{ width: "100%", fontSize: "14px", }}
             >
               {category?.map((category, index) => (
                 <MenuItem key={`${category.id} ${index}`} value={category.id}>
@@ -663,7 +667,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
       <Box mt={"20px"}>
       <PictureField
               value={controls.main_image}
-              onChange={(e) => setControl("main_image", e)}
+              onChange={(e) => setControl("main_image",e)}
               productName={controls?.name}
               categories={controls?.product_categories}
               description={controls.description}

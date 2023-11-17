@@ -265,7 +265,7 @@ function AddNewJob({ absolute, light, isMini }) {
                     className="container"
                 >
 
-                    <SoftButton variant="contained" color="white" onClick={() => resetControls()}>
+                    <SoftButton variant="contained" color="white" onClick={() =>{resetControls(); navigate(`/${sub_domain}/dashboard/jobs`)}}>
                         {"cancel"}
                     </SoftButton>
                     <SoftButton
