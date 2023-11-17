@@ -18,7 +18,26 @@ import AddProductTitle from "./AddProductTitle";
 import Image from "../../assets/images/Image.png";
 function PictureField({ accept, label, placeholder, onChange, value,productName,categories,description, ...rest }) {
   const ref = useRef(null);
-  useEffect(() => {}, [value]);
+  const [avatarUrl, setAvatarUrl] = React.useState(null);
+  const handleAvatarChange = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    //   setImageFile(file);
+    reader.onload = () => {
+      setAvatarUrl(reader?.result);
+    };
+    reader.readAsDataURL(file);
+    onChange(e.target.files[0]);
+  };
+  const handelDeleteImage = (selectedImageIndex) => {
+    // Delete the selected image from the images object
+    const updatedImages = { ...avatarUrl }; // Create a copy of the object
+    delete updatedImages[selectedImageIndex]; // Delete the image using its index/key
+    
+    // Update the state with the new images object
+    setAvatarUrl(null);
+    onChange();
+  };
   return (
     <Box sx={{ display: "flex", flexDirection: "column", background: "#fff", borderRadius: "8px" }}>
       <AddProductTitle title={"Product main image*"} />
@@ -26,10 +45,41 @@ function PictureField({ accept, label, placeholder, onChange, value,productName,
         <Grid item>
           <Grid container >
             <Grid item md={4}>
-              {value > 0? (
-                <Box style={{ width: "286px", height: "186px" }} onClick={() => ref.current.click()}>
-                  <img src={value} style={{ width: "100%" }} />
-                </Box>
+              {avatarUrl ? (
+                <Box sx={{position:'relative'}}>
+                <img src={avatarUrl} alt="image" style={{ width: "286px", height: "186px" }} />
+                <Button
+              sx={{
+                width: "180px",
+                position:'absolute',
+                bottom:'8px',
+                left:"15%",
+                padding: "0px 24px 0px 24px",
+                borderRadius: "12px",
+                gap: "8px",
+                background: "#FDEDED",
+                textTransform: "none",
+                my: "5px",
+                fontSize: "14px",
+                fontWeight: 500,
+                lineHeight: "40px",
+                letterSpacing: "0em",
+                color: "#E84646",
+                opacity:0.5,
+                ":hover": {
+                  color: "#E84646 !important",
+                  background: "#FDEDED",
+                  opacity:0.9
+                },
+              }}
+              onClick={(e,index) => {
+                handelDeleteImage(index)
+              }}
+            >
+              Remove Main image
+            </Button>
+              
+              </Box>
               ) : (
                 <Box sx={{position:'relative'}}>
                   <img src={Image} alt="image" style={{ width: "286px", height: "186px" }} />
@@ -59,17 +109,14 @@ function PictureField({ accept, label, placeholder, onChange, value,productName,
                 }}
                 onClick={() => ref.current.click()}
               >
-                Remove Main image
+                Choose Main image
               </Button>
                   <input
                     type="file"
                     accept={accept}
                     multiple={true}
                     ref={ref}
-                    onChange={(e) => {
-                      //   setValue(e.target.files);
-                      onChange(e.target.files[0]);
-                    }}
+                    onChange={handleAvatarChange}
                     style={{ display: "none" }}
                   />
                 </Box>
