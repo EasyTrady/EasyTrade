@@ -50,6 +50,7 @@ import { useDispatch, useSelector } from "react-redux";
 import filter from "utils/ClearNull";
 import PictureField from "components/common/PictureField";
 import SelectValueWeight from "components/common/SelectValueWeight";
+import MultiSelect from "components/common/MultiSelect";
 const ReactQuill = require("react-quill");
 
 
@@ -150,7 +151,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
     { control: "require_shipping", value: "", isRequired: false },
     { control: "maximum_order_quantity", value: "", isRequired: false },
     { control: "description", value: "", isRequired: false },
-    { control: "product_categories", value: "", isRequired: false },
+    { control: "product_categories", value: [], isRequired: false },
     { control: "custom_shipping_price", value: "", isRequired: false },
     { control: "dimensions", value: "", isRequired: false },
     { control: "weight", value: "", isRequired: false },
@@ -187,7 +188,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
       AddProductRequest({
         body: filter({
           obj: {
-            product_categories: controls.product_categories || "12",
+            product_categories: [...controls.product_categories] || "12",
             sku: controls.sku,
             mpn: controls.mpn,
             gtin: controls.gtin,
@@ -220,6 +221,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
           if(index===1){
             return value===index
           }
+          resetControls("");
         },
       }).then((res) => {
         let response = res?.response?.data;
@@ -252,7 +254,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
         });
 
         // setInvalid(responseBody);
-        resetControls("");
+       
       });
     });
   }
@@ -310,14 +312,14 @@ const AddProduct = ({ light, isMini,handleChange }) => {
               helperText={invalid.quantity}
               sx={input}
             />
-            <SelectField
+            <MultiSelect
               variant="outlined"
               placeholder="category"
               label="Category"
               isPending={getcategoryResponce.isPending}
               onOpen={getCategory}
               renderValue={(selected) => {
-                return category?.find((category) => category.id === selected)?.name;
+                return category?.find((category) => category.id === selected)?.name.join(',')
               }}
               value={controls.product_categories}
               onChange={(e) => setControl("product_categories", e.target.value)}
@@ -333,7 +335,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
                   {console.log(category.id)}
                 </MenuItem>
               ))}
-            </SelectField>
+            </MultiSelect>
 
             <Box sx={{ mb: "20px" }}>
               <Typography
@@ -495,7 +497,8 @@ const AddProduct = ({ light, isMini,handleChange }) => {
           </Box>
         </Container>
       </Box>
-      <Box sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", pb: 4, mt: 2.5 }}>
+      <Box sx={{display:'flex',flexDirecton:'row',gap:'20px',width:'100%'}}>
+      <Box sx={{ background: "#FFFFFF", borderRadius: "8px", height: "338px",width:'100%', pb: 4, mt: 2.5, }}>
         <AddProductTitle title={"Additional info"} />
         <Container sx={{ display: "flex", flexDirection: "column", gap: "20px", mt: "20px" }}>
           <NumberField
@@ -537,7 +540,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
           />
         </Container>
       </Box>
-      <Box sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", pb: 4, mt: 2.5 }}>
+      <Box sx={{ background: "#FFFFFF", borderRadius: "8px", height: "338px",width:'100%', pb: 4, mt: 2.5 }}>
         <AddProductTitle title={"Discount details (Optional)"} />
         <Container sx={{ display: "flex", flexDirection: "column", gap: "20px", mt: "20px" }}>
           <SelectValue
@@ -561,6 +564,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
                 lineHeight: "20px",
                 letterSpacing: "0em",
                 textAlign: "left",
+                mb:'6px'
               }}
             >
               Start date*
@@ -578,6 +582,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
                 lineHeight: "20px",
                 letterSpacing: "0em",
                 textAlign: "left",
+                mb:'6px'
               }}
             >
               End date*
@@ -589,11 +594,11 @@ const AddProduct = ({ light, isMini,handleChange }) => {
           </Box>
         </Container>
       </Box>
-      <Box sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", pb: 4, mt: 2.5 }}>
+      <Box sx={{ background: "#FFFFFF", borderRadius: "8px", height: "338px",width:'100%', pb: 4, mt: 2.5 }}>
         <AddProductTitle title={"Toggles"} />
         <Container>
           <Box sx={{ display: "flex", flexDirection: "column", gap: "20px", mt: "20px" }}>
-            <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+            <Box >
               <FormControlLabel
                 sx={{
                   fontFamily: "Inter",
@@ -650,12 +655,19 @@ const AddProduct = ({ light, isMini,handleChange }) => {
                 }
               />
             </Box>
-            <PictureField
-              value={controls.main_image}
-              onChange={(e) => setControl("main_image", e)}
-            />
+           
           </Box>
         </Container>
+      </Box>
+      </Box>
+      <Box mt={"20px"}>
+      <PictureField
+              value={controls.main_image}
+              onChange={(e) => setControl("main_image", e)}
+              productName={controls?.name}
+              categories={controls?.product_categories}
+              description={controls.description}
+            />
       </Box>
       <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: "24px" }}>
         <SoftButton
