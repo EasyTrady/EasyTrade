@@ -23,6 +23,8 @@ import {
     Typography, Box,  Container, Divider, Avatar, Radio, FormControlLabel, RadioGroup, FormLabel
 } from '@mui/material'
 import compare from 'utils/compare'
+import Download from 'examples/Icons/Download'
+
 function Addnewcategory({ absolute, light, isMini }) {
     const route = useLocation().pathname.split("/").slice(1);
     let navigate=useNavigate()
@@ -182,17 +184,29 @@ function Addnewcategory({ absolute, light, isMini }) {
                         alignItems: "center",
                         
                         padding: "40px",
-                        gap: "14px",
+                        gap: {
+                            lg:"14px",
+                            md:"14px",
+                            sm:"14px",
+                            xs:"14px"
+                        },
                         width: {
                             lg:"47%",
                             md:"47%",
                             sm:"100%",
                             xs:"100%"
                         },
-                        borderRadius: "8px"
+                        borderRadius: "8px",
+                      
+                        justifyContent: "center"
                     }}>
-                        <SoftBox sx={{ width: {lg:"70%",md:"100%",sm:"100%",xs:"100%"}, height: "152px" }}>
-                            <Avatar src={Avater} sx={{ width: "100%", height: "100%" }} />
+                        <SoftBox sx={{  marginBottom:{
+                            lg:"14px",
+                            md:"14px",
+                            sm:"14px",
+                            xs:"14px"
+                        },}}>
+                            <Avatar src={Avater} sx={{ width:"152px", height: "152px" }}/>
                         </SoftBox>
                         <SoftBox sx={{ display: "flex", flexDirection: "column" }}>
                             <input
@@ -210,11 +224,16 @@ function Addnewcategory({ absolute, light, isMini }) {
                                 borderColor: (theme) => theme.palette.purple.middle,
                                 // width:"300px",
                                 display: "flex",
-                                justifyContent: "space-evenly"
+                                justifyContent: "center",
+                                "&:hover":{
+
+                                borderColor: (theme) => theme.palette.purple.middle,
+                                }
 
                             }} onClick={() => refimage.current.click()}>
-                                <UploadIcon sx={{ color: (theme) => theme.palette.purple.middle }} />
-                                <Typography variant={"p"} sx={{ color: (theme) => theme.palette.purple.middle }}>{t("UploadcategoryPhoto")}</Typography>
+                                <Download color={"#5D449B"} size={"20px"}/>
+                                {/* <UploadIcon sx={{ color: (theme) => theme.palette.purple.middle }} /> */}
+                                <Typography variant={"p"} sx={{ color: (theme) => theme.palette.purple.middle,marginX:"8px" }}>{t("UploadcategoryPhoto")}</Typography>
                             </SoftButton>
                             <SoftBox>
                                 <Typography variant={"span"} sx={{ fontWeight: "700", fontSize: "14px" }}>{t("Remember")}</Typography>
@@ -276,14 +295,14 @@ function Addnewcategory({ absolute, light, isMini }) {
              
                 {controls.is_root_node=="false"||controls.is_root_node==false ?  <SoftBox sx={{ position: "relative" }}>
                     <SoftBox sx={{
-                        width: "48px",
+                        width: "94px",
                         height: "102px",
                         borderTop: "2px solid #4A81CA",
                         borderLeft: "2px solid #4A81CA",
                         borderBottom: "2px solid #4A81CA",
                         position: "absolute",
                         right: "81%",
-                        top: "2.5rem",
+                        top: "1.5rem",
                         display:{
                             lg:"block",
                             md:"block",
@@ -295,8 +314,8 @@ function Addnewcategory({ absolute, light, isMini }) {
                             backgroundColor: (theme) => theme.palette.white.main, color: "#4A81CA",
                             padding: "10px", borderRadius: "8px", fontSize: "14px", right: "50%",
                             position: "relative",
-                            top: "17%",
-                          
+                            top: "26%",
+                        
                             display:{
                                 lg:"block",
                                 md:"block",
@@ -331,7 +350,7 @@ function Addnewcategory({ absolute, light, isMini }) {
                             sm:"block",
                             xs:"block"
                         },
-                        justifyContent: "space-evenly", p: 2, alignItems: "center",  position: "relative",
+                         p: 2, alignItems: "center",  position: "relative",
                         left:{ lg:"17%",md:"17%",sm:"17%",xs:"0"},  width: {
                             lg:"80%",
                             md:"80%",
@@ -341,7 +360,7 @@ function Addnewcategory({ absolute, light, isMini }) {
                     }}>
                         <Box >
                             <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("Categoryparentname")}</InputLabel>
-                            {console.log(controls.parent,controls?.parentName)}
+                            
                             <SoftInput
                                 select
                                 value={controls?.parent}
@@ -394,7 +413,7 @@ function Addnewcategory({ absolute, light, isMini }) {
                                 {categories?.map((ele) => <MenuItem value={ele.id} key={ele.id}>{ele.name}</MenuItem>)}
                             </SoftInput>
                         </Box>
-                        <Box>
+                        <Box sx={{marginX:"14px"}}>
                             <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("categorynumber")}</InputLabel>
 
                             <SoftInput

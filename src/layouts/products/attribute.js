@@ -677,37 +677,38 @@ function Attribute({ absolute, light, isMini }) {
                                 display: "flex",
                                 borderBottom: "1px solid #8080807d"
                             }}>
+                                
 
                                 {/* <Divider orientation="vertical" sx={{width:'1px',height:"50px",color:"#8080807d"}}/> */}
 
 
-                                {Boolean(edit)&&edit?.id==ele?.id?<SoftInput placeholder='value'
-                                    sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
+                                {Boolean(edit)&&edit?.id==ele?.id?<TableCell ><SoftInput placeholder='value'
+                                    sx={{ ".MuiInputBase-root": { border: `unset`}, }}
                                     value={controls.value_name?controls.value_name:edit?.value_name}
                                     onChange={(e) => setControl("value_name",e.target.value)}
                                     required={required.includes("value_name")}
                                     error={Boolean(invalid?.value_name)}
-                                    helperText={invalid?.value_name} />:<TableCell align="left" sx={{ width: "50%", borderRight: "1px solid #8080807d" }}>{ele.value_name}</TableCell>}
+                                    helperText={invalid?.value_name} /></TableCell>:<TableCell align="left" sx={{ width: "50%", borderRight: "1px solid #8080807d" }}>{ele.value_name}</TableCell>}
                                
-                                {ele.color_value?Boolean(edit)&&edit?.id==ele?.id?<SoftInput placeholder='color'
-                                        sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
+                                {ele.color_value?Boolean(edit)&&edit?.id==ele?.id?<TableCell ><SoftInput placeholder='color'
+                                        sx={{ ".MuiInputBase-root": { border: `unset`}, }}
                                         value={controls.color_value?controls.color_value:edit?.color_value}
                                         // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
                                         onChange={(e) => setControl("color_value",
                                            e.target.value)}
                                         required={required.includes("color_value")}
                                         error={Boolean(invalid?.color_value)}
-                                        helperText={invalid?.color_value} />:<TableCell align="left" sx={{ width: "50%", borderRight: "1px solid #8080807d" }}>{ele.color_value}</TableCell>:<></>}
-                                <TableCell align="right" sx={{ width: "50%" }}>
+                                        helperText={invalid?.color_value} /></TableCell >:<TableCell align="left" sx={{ width: "50%", borderRight: "1px solid #8080807d" }}>{ele.color_value}</TableCell>:<></>}
+                              {attributes?.find((ele)=>ele.id==controls.id)?.values.map((ele)=>ele.value_name).includes(ele.value_name)?  <TableCell align="right" sx={{ width: "50%", borderLeft: "1px solid #8080807d" }}>
                                   
                                   {Boolean(edit)&&edit?.id==ele?.id?<SaveAsIcon onClick={()=>editValue(ele)}/>:<EditIcon onClick={()=> setEdit(ele)}/>}
                                    {Boolean(edit)&&edit?.id==ele?.id? <CloseIcon  onClick={()=> setEdit(null)}/>:<DeleteIcon sx={{ color: (theme) => theme.palette.error.main,cursor:"pointer" }} onClick={() => onDeleteValue(controls.id, ele.id)} />}
                                   
-                                </TableCell>
+                                </TableCell>:<></>}
                             </Typography>)}
-                            {addvalue && !controls.iscolor ?  <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
+                            {addvalue && !controls.iscolor ?  <TableCell sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
                                 <SoftInput placeholder='value'
-                                    sx={{ ".MuiInputBase-root": { border: `unset !important`, borderBottom: "1px solid gray" }, }}
+                                    sx={{ ".MuiInputBase-root": { border: `unset !important`, padding:"0px !important",borderBottom: "1px solid gray" }, }}
                                     value={controls.value_name}
                                     onChange={(e) => setControl("value_name",e.target.value)}
                                     required={required.includes("value_name")}
@@ -715,10 +716,10 @@ function Attribute({ absolute, light, isMini }) {
                                     helperText={invalid?.value_name} />
                                    
 
-                            </SoftBox> : addvalue && controls.iscolor &&  <SoftBox  >
-                                <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
+                            </TableCell> : addvalue && controls.iscolor &&  <TableRow  >
+                                <TableCell sx={{ display: "flex", justifyContent: "space-between", alignItem: "center"  }}>
                                     <SoftInput placeholder='value'
-                                        sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
+                                        sx={{ ".MuiInputBase-root": { border: `unset`, padding:"0px !important" }, }}
                                         value={controls.value_name}
                                         // onChange={(e) => setControl("value_name", e.target.value)}
                                         onChange={(e) => setControl("value_name",e.target.value)}
@@ -727,11 +728,11 @@ function Attribute({ absolute, light, isMini }) {
                                         helperText={invalid?.value_name} />
 
 
-                                </SoftBox>
+                                </TableCell>
                                
-                                <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
+                                <TableCell sx={{ display: "flex", justifyContent: "space-between", alignItem: "center"  }}>
                                     <SoftInput placeholder='color'
-                                        sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
+                                        sx={{ ".MuiInputBase-root": { border: `unset`, padding:"0px !important" }, }}
                                         value={controls.color_value}
                                         // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
                                         onChange={(e) => setControl("color_value",
@@ -739,10 +740,8 @@ function Attribute({ absolute, light, isMini }) {
                                         required={required.includes("color_value")}
                                         error={Boolean(invalid?.color_value)}
                                         helperText={invalid?.color_value} />
-
-
-                                </SoftBox>
-                            </SoftBox>
+                                </TableCell>
+                            </TableRow>
                                 
                             }
                            
