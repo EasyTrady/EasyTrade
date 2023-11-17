@@ -196,12 +196,12 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             description: controls.description,
             price: controls.price,
             main_image: controls.main_image,
-            discount: controls.discount,
-            discount_start_date: controls.discount_start_date.toISOString(),
-            discount_end_date: controls.discount_end_date.toISOString(),
+            discount: controls?.discount,
+            discount_start_date: controls?.discount_start_date?.toISOString(),
+            discount_end_date: controls?.discount_end_date?.toISOString(),
             is_percentage_discount: controls.is_percentage_discount,
             purchase_price: controls.purchase_price,
-            custom_shipping_price: controls.custom_shipping_price,
+            // custom_shipping_price: controls.custom_shipping_price,
             maximum_order_quantity: controls.maximum_order_quantity,
             is_piblished: controls.is_piblished,
             in_taxes: controls.in_taxes,
@@ -243,7 +243,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             discount_end_date: response?.discount_end_date,
             is_percentage_discount: response?.is_percentage_discount,
             purchase_price: response?.purchase_price,
-            custom_shipping_price: response?.custom_shipping_price,
+            // custom_shipping_price: response?.custom_shipping_price,
             maximum_order_quantity: response?.maximum_order_quantity,
             is_piblished: response?.is_piblished,
             in_taxes: response?.in_taxes,
@@ -396,7 +396,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
       >
         <AddProductTitle title={"Product details"} />
         <Container sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-          <NumberField
+          <InputField
             variant="outlined"
             label={"barcode"}
             placeholder={"barcode"}
@@ -409,7 +409,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             sx={input}
             borderBottom="none"
           />
-          <NumberField
+          <InputField
             variant="outlined"
             label={"Gtin"}
             placeholder={"Gtin"}
@@ -422,7 +422,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             sx={input}
             borderBottom="none"
           />
-          <NumberField
+          <InputField
             variant="outlined"
             label={"SKU"}
             placeholder={"SKU-123456"}
@@ -455,7 +455,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
                sx={input}
               
             />
-            <NumberField
+            <InputField
               variant="outlined"
               label={"Dimensions (L*W*H)"}
               placeholder={"l*W..."}
@@ -529,7 +529,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             helperText={invalid?.price}
             sx={input}
           />
-          <NumberField
+          {/* <NumberField
             variant="outlined"
             label={"shipping price"}
             placeholder={"99 EGP"}
@@ -541,7 +541,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             // icon={{ component: <DnsOutlinedIcon />, direction: "left" }}
             sx={input}
             borderBottom="none"
-          />
+          /> */}
         </Container>
       </Box>
       <Box sx={{ background: "#FFFFFF", borderRadius: "8px", height: "338px",width:'100%', pb: 4, mt: 2.5 }}>

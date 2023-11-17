@@ -176,7 +176,7 @@ function Products({ absolute, light, isMini }) {
         <DataGridCustom
           rows={products?.results}
           columns={columns}
-          onEdit={()=>{}}
+          // onEdit={()=>{}}
           onDelete={()=>{}}
           onCopy={()=>{}}
           checkboxSelection={true}
