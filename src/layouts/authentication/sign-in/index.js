@@ -154,7 +154,7 @@ function SignIn() {
                     sx={{ minHeight: "calc(100vh - 68px)" }}
                   >
                     <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
-                      <AuthCardWrapper sx={{ border: "none" }}>
+                      <AuthCardWrapper sx={{ border: "none" ,boxShadow:'none' }}>
                         <Grid container spacing={2} alignItems="end" justifyContent="end">
                           <Grid item sx={{ mb: 3 }}>
                             <Link to="#">{/* <Logo /> */}</Link>

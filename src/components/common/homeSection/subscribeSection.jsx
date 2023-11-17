@@ -14,7 +14,7 @@ const SubscribeSection = () => {
   const descStyle = { fontSize: '18px', fontWeight: 400, liheHeight: '25.2px', letterSpacing: '-0.5px', color: '#616161' };
   return (
     <ThemeProvider theme={fTheme}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', my: '40px' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', my: '40px' }}>
         <Box sx={{ textAlign: 'Center' }}>
           <Typography sx={titleStyle}>{t('pickplan.title', { framework: 'react' })}</Typography>
           <Typography sx={descStyle}>{t('priceplan.title', { framework: 'raect' })}</Typography>
