@@ -319,7 +319,9 @@ const AddProduct = ({ light, isMini,handleChange }) => {
               isPending={getcategoryResponce.isPending}
               onOpen={getCategory}
               renderValue={(selected) => {
-                return category?.find((category) => category.id === selected)?.name.join(',')
+                // selected.map((ele)=>category.map((elem)=>elem.id).includes(ele))
+                let resultcategory=category?.filter((category) => selected.includes(category.id))
+                return resultcategory.map((ele)=>ele.name).join(" , ")
               }}
               value={controls.product_categories}
               onChange={(e) => setControl("product_categories", e.target.value)}

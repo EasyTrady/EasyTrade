@@ -120,6 +120,11 @@ const ProductAttributes = ({ idProduct }) => {
       value: "",
       isRequired: false,
      
+    },{
+      control: "variants",
+      value: [],
+      isRequired: false,
+     
     },
 
   ]);
@@ -299,34 +304,28 @@ const ProductAttributes = ({ idProduct }) => {
         // dispatch({ type: "products/addNewProperty", payload: { id: idproduct, item: res?.data[0]?.variant_attributes } })
         setgenerate(!generate)
         setgenerateresult(res.data)
-        console.log(res.data, controls);
+        let result=res.data.map((ele)=>({
+          attributes:[ele],
+          title:"",
+        sku:"",
+        mpn: product?.mpn,
+        gtin:"",
+        price:"",
+        currency:"SAR",
+        quantity:""
+        }))
+        console.log(res.data, controls,result);
+        setControl("variants",[...result])
       },
     })
    
   }
 
   const postGenerationAttributes = () => {
-    // validate().then((output) => {
-    let newArray = []
-    controls?.attribute.map((ele) => ele.values.map((elem) => newArray.push(elem.id)))
-    console.log(newArray);
-    // console.log(output);
-
-    // if (!output.isOk) return;
 
     GenerationAttributesRequest({
       id: idproduct + '/variants/',
-      body: [{
-        "attributes": newArray,
-        "title": product?.name,
-        "sku": product?.sku,
-        "mpn": product?.mpn,
-        "gtin": product?.gtin,
-        "price": product?.price,
-        "currency": "SAR",
-        "quantity": product?.quantity,
-        'weight_unit': product?.weight?.unit
-      }],
+      body:controls.variant,
       // filter({
       //   obj: {
       //     // attribute: [...controls?.attribute],
@@ -337,7 +336,7 @@ const ProductAttributes = ({ idProduct }) => {
       onSuccess: (res) => {
         // localStorage.removeItem('productId');
         dispatch({ type: "products/addNewProperty", payload: { id: idproduct, item: res?.data[0]?.variant_attributes } })
-        setgenerate(!generate)
+        // setgenerate(!generate)
         console.log(res.data, controls);
       },
     }).then((res) => {
@@ -374,6 +373,13 @@ const ProductAttributes = ({ idProduct }) => {
     Object.keys(controls)?.map((ele) => rowfind[ele] ? setControl(ele, rowfind[ele]) : null)
     console.log(rowfind, controls)
 
+  }
+  function getblurrow(ele,index,e){
+    // console.log(controls.variants,e.target.value,ele)
+
+    console.log(controls.variants,e.target,ele)
+
+   
   }
   useEffect(() => {
     if (!Boolean(products.results.length > 0)) {
@@ -550,57 +556,66 @@ const ProductAttributes = ({ idProduct }) => {
             }}>Generate (4 combinations)</Button>
 
         </Box>
-        {generate?<Box>
+        {generate&&controls.variants.length>0?<Box>
           <Typography sx={{ color: (theme) => theme.palette.grey[600], marginY: "20px" }}>{t("note")}</Typography>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650, color: (theme) => theme.palette.grey[300] }} aria-label="caption table">
               <TableBody>
                 {/* {rows.map((row) => ( */}
-                {generateresult.map((ele,index)=><TableRow key={index}sx={{
+                {controls.variants.map((ele,index)=><TableRow key={index}sx={{
                   display: "flex",
                   alignItems: "center"
-                }}>
+                }} >
                   
                   <Checkbox defaultChecked color="secondary" />
-                  <TableCell align="right">{`${ele}`}</TableCell>
+                  <TableCell align="right">{`${ele?.attributes?.join("")}`}</TableCell>
                   <TableCell align="right"> <SoftInput
                     placeholder='quantity'
-                    sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
-                    value={controls.quantity}
-                    onChange={(e) => setControl("quantity", e.target.value)}
-                    required={required.includes("quantity")}
-                    error={Boolean(invalid?.quantity)}
-                    helperText={invalid?.quantity}
-                  // sx={input}
+                    sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "100px !important" }, }}
+                    value={ele?.quantity}
+
+                    onChange={(e) =>  setControl("variants",controls.variants.map((elem,ind)=>ind==index?{
+                      ...ele,quantity:e.target.value
+                       }:elem))}
+                   
+                  /></TableCell>
+                   <TableCell align="right"> <SoftInput
+                    placeholder='title'
+                    sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "100px !important" }, }}
+                    value={ele?.title}
+
+                    onChange={(e) =>  setControl("variants",controls.variants.map((elem,ind)=>ind==index?{
+                      ...ele,title:e.target.value
+                       }:elem))}
+                
                   /></TableCell>
                   <TableCell align="right"> <SoftInput
                     placeholder='sku'
-                    sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
-                    value={controls.sku}
-                    onChange={(e) => setControl("sku", e.target.value)}
-                    required={required.includes("sku")}
-                    error={Boolean(invalid?.sku)}
-                    helperText={invalid?.sku}
-                  // sx={input}
+                    sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "100px !important" }, }}
+                    value={ele?.sku}
+                    onChange={(e) =>  setControl("variants",controls.variants.map((elem,ind)=>ind==index?{
+                      ...ele,sku:e.target.value
+                       }:elem))}
+                   
                   /></TableCell>
                   <TableCell align="right"> <SoftInput
                     placeholder='price'
-                    sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
-                    value={controls.price}
-                    onChange={(e) => setControl("price", e.target.value)}
-                    required={required.includes("price")}
-                    error={Boolean(invalid?.price)}
-                    helperText={invalid?.price}
+                    sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "100px !important" }, }}
+                    value={ele?.price}
+                    onChange={(e) =>  setControl("variants",controls.variants.map((elem,ind)=>ind==index?{
+                      ...ele,price:e.target.value
+                       }:elem))}
+                   
                   // sx={input}
                   /></TableCell>
                   <TableCell align="right"> <SoftInput
                     placeholder='gtin'
-                    sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
-                    value={controls.gtin}
-                    onChange={(e) => setControl("gtin", e.target.value)}
-                    required={required.includes("gtin")}
-                    error={Boolean(invalid?.gtin)}
-                    helperText={invalid?.gtin}
+                    sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "100px !important" }, }}
+                    value={ele?.gtin}
+                    onChange={(e) =>  setControl("variants",controls.variants.map((elem,ind)=>ind==index?{
+                      ...ele,gtin:e.target.value
+                       }:elem))}
+                  
                   // sx={input}
                   /></TableCell>
                   <TableCell align="right"><PhotoIcon /></TableCell>
@@ -623,7 +638,7 @@ const ProductAttributes = ({ idProduct }) => {
                                 backgroundColor: (theme) => theme.palette.purple.middle
                             },width: '260px'
                         }}
-                        // onClick={handleSubmit}
+                        onClick={postGenerationAttributes}
                     >
                         Next
                     </SoftButton>
