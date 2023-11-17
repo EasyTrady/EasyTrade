@@ -156,7 +156,6 @@ const SubscribeCard = ({ type }) => {
     alignItems: { xs: "center", md: "stretch" }
   };
   const cardStyle = {
-    marginTop: "50px",
     position: "relative",
     fontFamilly:'Cairo',
     fontSize:'25px',

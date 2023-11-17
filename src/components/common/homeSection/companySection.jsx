@@ -11,7 +11,7 @@ import { Box, Container, Typography } from '@mui/material';
 
 const CompanySection = () => {
   return ( 
-    <Box sx={{ paddingBottom:'120px'}}>
+    <Box sx={{ paddingBottom:'60px'}}>
     <Container sx={{
       minHeight: '40vh',
       display: 'flex',
