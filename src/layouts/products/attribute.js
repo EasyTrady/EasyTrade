@@ -286,6 +286,7 @@ function Attribute({ absolute, light, isMini }) {
                 })
 
             } else {
+                console.log(controls.values)
                 attributepostRequest({
                     body: {
                         name: controls.name,
@@ -293,7 +294,7 @@ function Attribute({ absolute, light, isMini }) {
                     },
                     onSuccess: (res) => {
                         dispatch({ type: "attribute/addItem", payload: res.data })
-            setOpenDialog(false)
+                         setOpenDialog(false)
 
                      
                         console.log(res.data, controls)

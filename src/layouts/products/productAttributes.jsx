@@ -36,7 +36,7 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { useEffect } from 'react'
-
+import PhotoIcon from '@mui/icons-material/Photo';
 import { PRODUCTS } from "data/api";
 import filter from "utils/ClearNull";
 function createData(name, calories, fat, carbs, protein) {
@@ -221,9 +221,14 @@ function AddValue(){
             method: "get",
             Token: `Token ${Token}`
         });
+        const [getProductRequest, getProductResponce] = useRequest({
+          path: PRODUCTS,
+          method: "get",
+          Token: `Token ${Token}`,
+        });
   const [GenerationAttributesRequest, GenerationAttributeResponse] =
         useRequest({
-            path: PRODUCTS+8+'/variants/',
+            path: PRODUCTS,
             method: "POST",
             Token: `Token ${Token}`
         });
@@ -263,16 +268,17 @@ function AddValue(){
             // if (!output.isOk) return;
 
             GenerationAttributesRequest({
+              id:idproduct+'/variants/',
               body: [{
                 "attributes":newArray,        
-                "title":product.name,
-                "sku":product.sku,
-                "mpn":product.mpn,
-                "gtin":product.gtin,
-                "price":product.price,
+                "title":product?.name,
+                "sku":product?.sku,
+                "mpn":product?.mpn,
+                "gtin":product?.gtin,
+                "price":product?.price,
                 "currency":"SAR",
-                "quantity":product.quantity,
-                'weight_unit':product.weight.unit
+                "quantity":product?.quantity,
+                'weight_unit':product?.weight?.unit
             }],
               // filter({
               //   obj: {
@@ -282,7 +288,7 @@ function AddValue(){
               //   output: "object",
               // }),
               onSuccess: (res) => {
-                localStorage.removeItem('productId');
+                // localStorage.removeItem('productId');
                 console.log(res.data, controls);
               },
             }).then((res) => {
@@ -325,7 +331,17 @@ function AddValue(){
       setproduct(products.results.find((ele)=>ele.id==idproduct))
     },[idproduct])
 
-
+    useEffect(()=>{
+      if(!Boolean(products)){
+        getProductRequest({
+          onSuccess:(res)=>{
+            dispatch({ type: "products/set", payload: res?.data });
+  
+          }
+        })
+      }
+      
+    },[products])
   return (
     <Container
       maxWidth="xl"
@@ -484,6 +500,65 @@ boxShadow: '0px 1px 2px 0px #1018280D',
 }
 }}>Generate (4 combinations)</Button>
        
+       </Box>
+       <Box>
+        <Typography sx={{color:(theme)=>theme.palette.grey[600],marginY:"20px"}}>{t("note")}</Typography>
+        <TableContainer component={Paper}>
+         <Table sx={{ minWidth: 650,color:(theme)=>theme.palette.grey[300] }} aria-label="caption table"> 
+        <TableBody>
+          {/* {rows.map((row) => ( */}
+            <TableRow sx={{    display: "flex",
+    alignItems: "center"}}>
+              <Checkbox defaultChecked color="secondary" />
+              <TableCell align="right">{"kk"}</TableCell>
+              <TableCell align="right"> <SoftInput
+                            placeholder='Attribute name'
+                            sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
+                            value={controls.name}
+                            onChange={(e) => setControl("name", e.target.value)}
+                            required={required.includes("name")}
+                            error={Boolean(invalid?.name)}
+                            helperText={invalid?.name}
+                        // sx={input}
+                        /></TableCell>
+              <TableCell align="right"> <SoftInput
+                            placeholder='Attribute name'
+                            sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
+                            value={controls.name}
+                            onChange={(e) => setControl("name", e.target.value)}
+                            required={required.includes("name")}
+                            error={Boolean(invalid?.name)}
+                            helperText={invalid?.name}
+                        // sx={input}
+                        /></TableCell>
+              <TableCell align="right"> <SoftInput
+                            placeholder='Attribute name'
+                            sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
+                            value={controls.name}
+                            onChange={(e) => setControl("name", e.target.value)}
+                            required={required.includes("name")}
+                            error={Boolean(invalid?.name)}
+                            helperText={invalid?.name}
+                        // sx={input}
+                        /></TableCell>
+                         <TableCell align="right"> <SoftInput
+                            placeholder='Attribute name'
+                            sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
+                            value={controls.name}
+                            onChange={(e) => setControl("name", e.target.value)}
+                            required={required.includes("name")}
+                            error={Boolean(invalid?.name)}
+                            helperText={invalid?.name}
+                        // sx={input}
+                        /></TableCell>
+                         <TableCell align="right"><PhotoIcon/></TableCell>
+                         <TableCell align="right"><DeleteIcon/></TableCell>
+
+            </TableRow>
+          {/* ))} */}
+        </TableBody>
+        </Table>
+        </TableContainer>
        </Box>
        </Box>
        <Dialog
