@@ -66,7 +66,7 @@ const SubscribePanel = () => {
             padding: "5px 40px",
             my: "30px",
             width: "fit-content",
-            '.css-1aquho2-MuiTabs-indicator': {
+            '.MuiTabs-indicator': {
               position:'unset !important',
               width:'0px !important'
               
