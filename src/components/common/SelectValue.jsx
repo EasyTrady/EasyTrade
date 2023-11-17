@@ -12,7 +12,8 @@ fontSize: '14px',
 fontWeight: 400,
 lineHeight:' 20px',
 letterSpacing: '0em',
-textAlign: 'left'
+textAlign: 'left',
+mb:'6px'
 }}>{label}</Typography>
     <Box 
     sx={{display:'flex',flexDirection:'row',alignItems:'center',width:'100%', border: '1px solid #C9CDD4 !important', borderRadius:'4px', }}>
