@@ -4,7 +4,7 @@ import React from 'react'
 
 import { NumericFormat } from 'react-number-format'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-const SelectValue = ({variant,label,handleValueChange,type,onChange,...rest}) => {
+const SelectValuePrecentage = ({variant,label,handleValueChange,type,onChange,...rest}) => {
   return (
     <Box sx={{display:'flex',flexDirection:'column',alignItems:'start',width:'100%',  }}>
    <Typography sx={{
@@ -12,8 +12,7 @@ fontSize: '14px',
 fontWeight: 400,
 lineHeight:' 20px',
 letterSpacing: '0em',
-textAlign: 'left',
-mb:'6px'
+textAlign: 'left'
 }}>{label}</Typography>
     <Box 
     sx={{display:'flex',flexDirection:'row',alignItems:'center',width:'100%', border: '1px solid #C9CDD4 !important', borderRadius:'4px', }}>
@@ -80,11 +79,11 @@ mb:'6px'
               }} 
               size="small"
               IconComponent={() => <KeyboardArrowDownIcon />}
-              defaultValue={'true'}
+              
               displayEmpty
               >
-                <MenuItem value='true'>Precentage</MenuItem>
-                <MenuItem value='false'>g</MenuItem>
+                <MenuItem value='5%'>5%</MenuItem>
+                <MenuItem value='10%'>10%</MenuItem>
                 
               </Select>
     </Box>
@@ -92,4 +91,4 @@ mb:'6px'
   )
 }
 
-export default SelectValue
+export default SelectValuePrecentage

@@ -13,6 +13,7 @@ import  OrdersSlice  from './pages/orderSlice';
 
 import CartSlice  from './pages/cartSlice';
 import ProductsSlice  from './pages/productSlice';
+import OffersSlice  from './pages/offersSlice';
 
 const store = configureStore({
   reducer: {
@@ -29,7 +30,7 @@ const store = configureStore({
      profile:ProfileSlice ,
      cart:CartSlice,
      products:ProductsSlice,
-    //  category:CategorySlice
+     offers:OffersSlice
   }
 });
 export default store

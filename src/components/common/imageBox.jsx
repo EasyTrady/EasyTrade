@@ -131,7 +131,16 @@ const ImageBox = ({ main_image, onChange }) => {
           overflowX: "auto",
           gap: "20px",
         }}>
-        <Box
+          <input
+            multiple
+            id="profile_image"
+            name="profile_image"
+            type="file"
+            accept="image/*"
+            onChange={handleAvatarChange}
+            style={{ display: "none" }}
+          />
+        {/* <Box
           sx={{
             width: "251px",
             height: " 222px",
@@ -140,7 +149,7 @@ const ImageBox = ({ main_image, onChange }) => {
           }}
           
         >
-          {/* view image selected */}
+         
           <Box sx={{ width: "251px", height: "167.03px" }}>
             <img
               src={productImage}
@@ -153,15 +162,7 @@ const ImageBox = ({ main_image, onChange }) => {
               }}
             />
           </Box>
-          <input
-            multiple
-            id="profile_image"
-            name="profile_image"
-            type="file"
-            accept="image/*"
-            onChange={handleAvatarChange}
-            style={{ display: "none" }}
-          />
+          
           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
             <Button
               sx={{
@@ -191,7 +192,7 @@ const ImageBox = ({ main_image, onChange }) => {
               Remove image
             </Button>
           </Box>
-        </Box>
+        </Box> */}
         {Array.from({length:3},(_,index)=>(
            <Box 
            key={index}

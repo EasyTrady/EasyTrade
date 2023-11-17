@@ -343,7 +343,7 @@ function AddNewEmployee({ absolute, light, isMini }) {
                     className="container"
                 >
 
-                    <SoftButton variant="contained" color="white" onClick={() => resetControls()}>
+                    <SoftButton variant="contained" color="white" onClick={() =>{resetControls(); navigate(`/${sub_domain}/dashboard/employee`)}}>
                         {"cancel"}
                     </SoftButton>
                     <SoftButton

@@ -32,20 +32,23 @@ import input from "assets/theme/components/form/input";
 import SoftInput from 'components/SoftInput'
 import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 // import SoftInput from "components/SoftInput";
+import EditIcon from '@mui/icons-material/Edit';
 import SoftBox from 'components/SoftBox'
 import Breadcrumbs from 'examples/Breadcrumbs'
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import PropTypes from "prop-types";
+import SaveAsIcon from '@mui/icons-material/SaveAs';
+import CloseIcon from '@mui/icons-material/Close';
 function Attribute({ absolute, light, isMini }) {
     const [open, setOpen] = React.useState(false);
-    const [refersh, setRefersh] = React.useState(false);
+    const [edit, setEdit] = React.useState(null);
     const [openDialog, setOpenDialog] = React.useState(false);
     const [openDialogEdit, setOpenDialogEdit] = React.useState(false);
     let [addvalue, setaddvalue] = React.useState(false);
     let dispatch = useDispatch()
     let { t } = useTranslation("common")
     const route = useLocation().pathname.split("/").slice(1);
-    let attributes = useSelector((state) => state.attribute.value)
+    let attributes = useSelector((state) => state?.attribute?.value)
     let [rows, setRows] = useState([])
     const [openValue, setOpenValue] = React.useState(true);
     const [columns, setColumns] = React.useState([
@@ -192,11 +195,6 @@ function Attribute({ absolute, light, isMini }) {
                     }
                 ]
             }, {
-                control: "values",
-                value: [],
-                isRequired: false,
-
-            }, {
                 control: "iscolor",
                 value: false,
                 isRequired: false,
@@ -219,10 +217,10 @@ function Attribute({ absolute, light, isMini }) {
             Token: `Token ${Token}`
         });
     
-    const [attributeValuepostRequest, postValueattributeResponce] =
+    const [editattributeValueRequest, ValueattributeeditResponce] =
         useRequest({
             path: ATTRIBUTES,
-            method: "post",
+            method: "patch",
             Token: `Token ${Token}`,
             // contentType: "multipart/form-data",
         });
@@ -282,26 +280,13 @@ function Attribute({ absolute, light, isMini }) {
 
                             }
                         })
-                        // attributeValuepostRequest({
-                        //     id: controls.id + "/values",
-                        //     body: {
-                        //         value_name: controls?.value_name,
-                        //         iscolor: controls?.iscolor,
-                        //         color_value: controls?.color_value
-                        //     },
-                        //     onSuccess: (resValue) => {
-                        //         console.log(resValue.data, res.data)
-
-                        //         dispatch({ type: "attribute/addValue", payload: { idvalue: res.data.id, value: { ...resValue.data } } })
-                        //         resetControls()
-                        //         setOpenDialog(false)
-                        //     }
-                        // })
+                    
 
                     }
                 })
 
             } else {
+                console.log(controls.values)
                 attributepostRequest({
                     body: {
                         name: controls.name,
@@ -309,24 +294,9 @@ function Attribute({ absolute, light, isMini }) {
                     },
                     onSuccess: (res) => {
                         dispatch({ type: "attribute/addItem", payload: res.data })
-            setOpenDialog(false)
+                         setOpenDialog(false)
 
-                        // attributeValuepostRequest({
-                        //     id: res.data.id + "/values",
-                        //     body: {
-                        //         value_name: controls?.value_name,
-                        //         iscolor: controls?.iscolor,
-                        //         color_value: controls?.color_value
-                        //     },
-                        //     onSuccess: (resValue) => {
-
-
-                        //         dispatch({ type: "attribute/addValue", payload: { idvalue: res.data.id, value: { ...resValue.data } } })
-                        //         resetControls()
-                        //         setOpenDialog(false)
-
-                        //     }
-                        // })
+                     
                         console.log(res.data, controls)
                     }
                 }).then((res) => {
@@ -367,6 +337,7 @@ function Attribute({ absolute, light, isMini }) {
         setOpenDialog(!openDialog);
         setOpenDialogEdit(true);
         const rowfind = rows.find((row) => row.id === id)
+       
         Object.keys(controls)?.map((ele) => rowfind[ele] ? setControl(ele, rowfind[ele]) : null)
         console.log(rowfind, controls)
 
@@ -389,6 +360,9 @@ function Attribute({ absolute, light, isMini }) {
     }, [])
     useEffect(() => {
         setRows(attributes)
+        if(controls.id){
+            setControl('values',attributes?.find((ele)=>ele.id==controls.id)?.values)
+        }
         // setColumns((prevs)=>console.log({...prevs,value:attributes.values}))
         console.log(attributes)
     }, [attributes])
@@ -433,30 +407,59 @@ function Attribute({ absolute, light, isMini }) {
                         setControl("color_value","") 
                     })
                 }
-        // }else{
-            if(openDialogEdit){
-            // attributeValuePatch({
-            //     id:controls.id+"/values/bulkupdate",
-            //     body:{
-
-            //     },
-            //     onSuccess:(res)=>{
-            //         console.log(res.data)
-            //         dispatch({type:"attribute/addValue",payload:{idvalue:controls.id,value:res.data}})
-            //     }
-            // })
-        }
-        
-     
-     
-        
         setCounter(++counter);
         setaddvalue(true);
             
     }
+    function editValue(ele){
+        // let newValue=controls.values
+        // newValue.value_name=controls.value_name
+        // newValue.color_value=controls.color_value
+        // newValue.find((elem)=>{
+        //     if(elem.id==ele.id){
+        //         elem.value_name=controls.value_name
+        //         elem.color_value=controls.color_value
+
+        //     }
+        // })
+        // console.log(controls.values,ele)
+        // setControl("values",[...controls.newValue.find((elem)=>{
+        //     if(elem.id==ele.id){
+        //         elem.value_name=controls.value_name
+        //         elem.color_value=controls.color_value
+
+        //     }
+        // }),...controls.values])
+        if(!Boolean(controls.value_name)){
+            setControl("value_name",ele.value_name)
+        }
+        if(!Boolean(controls.color_value)){
+            setControl("color_value",ele.color_value)
+        }
+        editattributeValueRequest({
+            id:controls.id+"/values/"+ele.id,
+            body:{
+                value_name:controls.value_name,
+                color_value:controls.color_value
+            },
+            onSuccess:(res)=>{
+                dispatch({type:"attribute/editValue",payload:{id:controls.id,idvalue:ele.id,item:res.data}})
+                setControl("value_name","")  
+                setControl("color_value","") 
+                setEdit(null)
+
+                console.log(attributes.find((ele)=>ele.id==controls.id))
+            }
+        })
+    }
     useEffect(() => {
         console.log(controls?.values)
     }, [controls?.values])
+  
+    useEffect(() => {
+        console.log(edit)
+    }, [edit])
+    
     return (
         <DashboardLayout >
             <DashboardNavbar />
@@ -674,19 +677,38 @@ function Attribute({ absolute, light, isMini }) {
                                 display: "flex",
                                 borderBottom: "1px solid #8080807d"
                             }}>
+                                
 
                                 {/* <Divider orientation="vertical" sx={{width:'1px',height:"50px",color:"#8080807d"}}/> */}
 
 
-                                <TableCell align="left" sx={{ width: "50%", borderRight: "1px solid #8080807d" }}>{ele.value_name}</TableCell>
-                                <TableCell align="right" sx={{ width: "50%" }}>
-                                    
-                                    <DeleteIcon sx={{ color: (theme) => theme.palette.error.main,cursor:"pointer" }} onClick={() => onDeleteValue(controls.id, ele.id)} />
-                                </TableCell>
+                                {Boolean(edit)&&edit?.id==ele?.id?<TableCell ><SoftInput placeholder='value'
+                                    sx={{ ".MuiInputBase-root": { border: `unset`}, }}
+                                    value={controls.value_name?controls.value_name:edit?.value_name}
+                                    onChange={(e) => setControl("value_name",e.target.value)}
+                                    required={required.includes("value_name")}
+                                    error={Boolean(invalid?.value_name)}
+                                    helperText={invalid?.value_name} /></TableCell>:<TableCell align="left" sx={{ width: "50%", borderRight: "1px solid #8080807d" }}>{ele.value_name}</TableCell>}
+                               
+                                {ele.color_value?Boolean(edit)&&edit?.id==ele?.id?<TableCell ><SoftInput placeholder='color'
+                                        sx={{ ".MuiInputBase-root": { border: `unset`}, }}
+                                        value={controls.color_value?controls.color_value:edit?.color_value}
+                                        // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
+                                        onChange={(e) => setControl("color_value",
+                                           e.target.value)}
+                                        required={required.includes("color_value")}
+                                        error={Boolean(invalid?.color_value)}
+                                        helperText={invalid?.color_value} /></TableCell >:<TableCell align="left" sx={{ width: "50%", borderRight: "1px solid #8080807d" }}>{ele.color_value}</TableCell>:<></>}
+                              {attributes?.find((ele)=>ele.id==controls.id)?.values.map((ele)=>ele.value_name).includes(ele.value_name)?  <TableCell align="right" sx={{ width: "50%", borderLeft: "1px solid #8080807d" }}>
+                                  
+                                  {Boolean(edit)&&edit?.id==ele?.id?<SaveAsIcon onClick={()=>editValue(ele)}/>:<EditIcon onClick={()=> setEdit(ele)}/>}
+                                   {Boolean(edit)&&edit?.id==ele?.id? <CloseIcon  onClick={()=> setEdit(null)}/>:<DeleteIcon sx={{ color: (theme) => theme.palette.error.main,cursor:"pointer" }} onClick={() => onDeleteValue(controls.id, ele.id)} />}
+                                  
+                                </TableCell>:<></>}
                             </Typography>)}
-                            {addvalue && !controls.iscolor ?  <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
+                            {addvalue && !controls.iscolor ?  <TableCell sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
                                 <SoftInput placeholder='value'
-                                    sx={{ ".MuiInputBase-root": { border: `unset !important`, borderBottom: "1px solid gray" }, }}
+                                    sx={{ ".MuiInputBase-root": { border: `unset !important`, padding:"0px !important",borderBottom: "1px solid gray" }, }}
                                     value={controls.value_name}
                                     onChange={(e) => setControl("value_name",e.target.value)}
                                     required={required.includes("value_name")}
@@ -694,10 +716,10 @@ function Attribute({ absolute, light, isMini }) {
                                     helperText={invalid?.value_name} />
                                    
 
-                            </SoftBox> : addvalue && controls.iscolor &&  <SoftBox  >
-                                <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
+                            </TableCell> : addvalue && controls.iscolor &&  <TableRow  >
+                                <TableCell sx={{ display: "flex", justifyContent: "space-between", alignItem: "center"  }}>
                                     <SoftInput placeholder='value'
-                                        sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
+                                        sx={{ ".MuiInputBase-root": { border: `unset`, padding:"0px !important" }, }}
                                         value={controls.value_name}
                                         // onChange={(e) => setControl("value_name", e.target.value)}
                                         onChange={(e) => setControl("value_name",e.target.value)}
@@ -706,11 +728,11 @@ function Attribute({ absolute, light, isMini }) {
                                         helperText={invalid?.value_name} />
 
 
-                                </SoftBox>
+                                </TableCell>
                                
-                                <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
+                                <TableCell sx={{ display: "flex", justifyContent: "space-between", alignItem: "center"  }}>
                                     <SoftInput placeholder='color'
-                                        sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
+                                        sx={{ ".MuiInputBase-root": { border: `unset`, padding:"0px !important" }, }}
                                         value={controls.color_value}
                                         // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
                                         onChange={(e) => setControl("color_value",
@@ -718,10 +740,8 @@ function Attribute({ absolute, light, isMini }) {
                                         required={required.includes("color_value")}
                                         error={Boolean(invalid?.color_value)}
                                         helperText={invalid?.color_value} />
-
-
-                                </SoftBox>
-                            </SoftBox>
+                                </TableCell>
+                            </TableRow>
                                 
                             }
                            

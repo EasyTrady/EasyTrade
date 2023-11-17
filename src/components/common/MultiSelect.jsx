@@ -24,7 +24,7 @@ const CustomTextField = styled(TextField)({
     color: "red", // Change the color of the dropdown arrow icon
   },
 });
-const SelectField = ({
+const MultiSelect = ({
   variant = null,
   isPending = false,
   label,
@@ -74,6 +74,7 @@ textAlign: 'left',
 mb:'6px'
 }}>{label}</Typography>
  <Select 
+ multiple
     defaultValue= ""
     displayEmpty= {true}
     onOpen={onOpen}
@@ -98,6 +99,7 @@ mb:'6px'
                 boxShadow: "none",
                 height:'40px !important',
                borderColor:'#C9CDD4',
+               backgroundColor:"white !important",
                fontSize:'14px',
                 ".MuiOutlinedInput-notchedOutline": { border: 0 },
                 "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
@@ -174,4 +176,4 @@ mb:'6px'
   );
 };
 
-export default SelectField;
+export default MultiSelect;
