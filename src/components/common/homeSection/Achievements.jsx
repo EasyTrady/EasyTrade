@@ -19,7 +19,7 @@ export default function RowAndColumnSpacing() {
     <Container sx={{
       width: '100%'
     }}>
-      <Typography sx={{ fontSize: '50px', fontWeight: 600, textAlign: 'center', marginTop: '30px',color:'#3D2D66',fontFamily:'Cairo' }}>انجازاتنا</Typography>
+      <Typography sx={{ fontSize: '50px', fontWeight: 600, textAlign: 'center', marginTop: '30px',color:'#3D2D66',fontFamily:'Cairo',my:'30px' }}>انجازاتنا</Typography>
       <Box>
         <Grid container sx={{textAlign:'center',justifyContent:'center', display: 'flex', width: '100%', alignItems: 'start',marginBottom:'100px'}}>
           <Grid item xs={4} md={3} lg={2} sx={{
@@ -28,76 +28,86 @@ export default function RowAndColumnSpacing() {
             
           }}>
             <Item sx={{
-              fontSize: '35px',
-              fontWeight: 900,
+              fontSize: '48px',
+              fontWeight: 700,
               boxShadow: 'none',
-             bgcolor: '#f8f9fa'
+             bgcolor: '#f8f9fa',
+             fontFamily:'Cairo'
             }}>+150</Item>
             <Item sx={{
-              fontSize: '25px',
-              fontWeight: 300,
+              fontSize: '24px',
+              fontWeight: 500,
               boxShadow: 'none',
               borderRightWidth: '8PX',
-              bgcolor: '#f8f9fa'
+              bgcolor: '#f8f9fa',
+              fontFamily:'Cairo'
             }}>عملاء</Item>
           </Grid>
           <Grid item xs={4} md={3} lg={2} sx={{ borderRight: '2px solid #C4C4C4', padding: '16px' }}>
             <Item sx={{
-              fontSize: '35px',
+              fontSize: '48px',
               boxShadow: 'none',
-              fontWeight: 900,
-              bgcolor: '#f8f9fa'
+              fontWeight: 700,
+              bgcolor: '#f8f9fa',
+              fontFamily:'Cairo'
             }}>+8</Item>
             <Item sx={{
-              fontSize: '25px',
-              fontWeight: 300,
+              fontSize: '24px',
+              fontWeight: 500,
               boxShadow: 'none',
-              bgcolor: '#f8f9fa'
+              bgcolor: '#f8f9fa',
+              fontFamily:'Cairo'
 
             }}>تطبيق</Item>
           </Grid>
           <Grid item xs={4} md={3} lg={2} sx={{ borderRight: '2px solid #C4C4C4', padding: '16px' }}>
             <Item sx={{
-              fontSize: '35px',
-              fontWeight: 900,
+              fontSize: '48px',
+              fontWeight: 700,
               boxShadow: 'none',
-              bgcolor: '#f8f9fa'
+              bgcolor: '#f8f9fa',
+              fontFamily:'Cairo'
             }}>+100</Item>
             <Item sx={{
-              fontSize: '25px',
-              fontWeight: 300,
+              fontSize: '24px',
+              fontWeight: 500,
               boxShadow: 'none',
               borderRightWidth: '8PX',
-              bgcolor: '#f8f9fa'
+              bgcolor: '#f8f9fa',
+              fontFamily:'Cairo'
             }}>صفحات</Item>
           </Grid>
           <Grid item xs={4} md={3} lg={2} sx={{ borderRight: '2px solid #C4C4C4', padding: '16px' }}>
             <Item sx={{
-              fontSize: '35px',
+              fontSize: '48px',
               boxShadow: 'none',
-              fontWeight: 900,
-              bgcolor: '#f8f9fa'
+              fontWeight: 700,
+              bgcolor: '#f8f9fa',
+              fontFamily:'Cairo'
             }}>+5</Item>
             <Item sx={{
-              fontSize: '25px',
-              fontWeight: 300,
+              fontSize: '24px',
+              fontWeight: 500,
               borderRightWidth: '8PX',
               boxShadow: 'none',
-              bgcolor: '#f8f9fa'
+              bgcolor: '#f8f9fa',
+              fontFamily:'Cairo'
             }}>شركات النجاح</Item>
           </Grid>
           <Grid item xs={4} md={3} lg={2} sx={{ padding: '16px' }}>
             <Item sx={{
-              fontSize: '35px',
-              fontWeight: 900,
+              fontSize: '48px',
+              fontWeight: 700,
               boxShadow: 'none',
-              bgcolor: '#f8f9fa'
+              bgcolor: '#f8f9fa',
+              fontFamily:'Cairo'
             }}>+70</Item>
             <Item sx={{
-              fontSize: '25px',
-              fontWeight: 300,
+              fontSize: '24px',
+              fontWeight: 500,
               boxShadow: 'none',
-              bgcolor: '#f8f9fa'
+              bgcolor: '#f8f9fa',
+              fontFamily:'Cairo'
             }}>مبيعات</Item>
           </Grid>
         </Grid>

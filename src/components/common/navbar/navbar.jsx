@@ -120,6 +120,7 @@ const Navbar = () => {
                   fontSize: '16px',
                   textAlign: 'center',
                   fontWeight: 600,
+                  fontFamily:'Cairo',
                   // lineHeight: "29.98px",
                   color: '#FFFFFF',
                   width:{sm:'20%',lg:'80%',xl:'80%',md:'100%'}
@@ -130,20 +131,32 @@ const Navbar = () => {
             </Box>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'end' }}>
-              {pages.map((page) => (
+              {pages.map((page,index) => (
                 <Button
-                  key={page}
-                  onClick={() => {
-                    page[0] && navigate('/')|| page[4] && navigate('/contactus')||page[2] && navigate('/price')
+                  key={index}
+                  onClick={(e) => {
+                    if (index===4) {
+                      navigate('/')
+                    } else if (index===0) {
+                      navigate('/contactus')
+                    } else if (index===2) {
+                      navigate('/price');
+                    }
                    
                   }}
                   sx={{
                     my: 2,
-                    color: '#272C2E',
+                    color: '#7F7F7F',
                     display: 'block',
                     fontSize: '15px',
                     fontWeight: 500,
-                    textTransform: 'none'
+                    fontFamily:'Cairo',
+                    textTransform: 'none',
+                    ':hover': {
+                      color: '#272C2E',
+                    
+                    },
+
                   }}
                 >
                   {page}
@@ -161,6 +174,7 @@ const Navbar = () => {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
+              // sx={{bgcolor:'#f5f5f5'}}
             >
               <MenuIcon />
             </IconButton>

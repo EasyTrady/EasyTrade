@@ -94,14 +94,20 @@ export const ProductTableData =() =>{
         
             },
              {
-              field: 'category',
+              field: 'categories',
               headerName: 'Category',
               type: 'text',
               width: 186,
               align: 'center',
               headerAlign: 'center',
-              editable: true,
-        
+              // editable: true,
+              renderCell:(params)=>{
+                const { row } = params;
+                row?.categories?.map((cat)=>(
+                  <span key={cat?.id}>{cat?.name}</span>
+                  
+                ))
+              }
             },
             {
               field: 'type',

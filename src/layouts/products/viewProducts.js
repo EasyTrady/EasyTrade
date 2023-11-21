@@ -181,9 +181,11 @@ function Products({ absolute, light, isMini }) {
         <DataGridCustom
           rows={products?.results}
           columns={columns}
+
           onDialog={onEdit}
-          onDelete={()=>{}}
-          onCopy={()=>{}}
+
+          // onEdit={()=>{}}
+
           checkboxSelection={true}
           onRowClick={(e,row) => {
             console.log(e,row);

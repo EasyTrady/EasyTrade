@@ -10,10 +10,11 @@ import performance from '../../../assets/images/icons/performance4.png';
 import folder from '../../../assets/images/icons/folder.png';
 import ui from '../../../assets/images/icons/ui-design.png';
 
-export function Card ({ title, desc, img, bgcolor, className }) {
+export function Card ({ title, desc, img, bgcolor, className}) {
   return (
 
-    
+
+      
 
     <Grid
       className={className}
@@ -48,7 +49,8 @@ export function Card ({ title, desc, img, bgcolor, className }) {
             borderRadius: '50%',
             top: '0',
             right: '0',
-            transform: 'translate(-30px,-50%)'
+            transform: 'translate(-30px,-50%)',
+            
           }}
         >
           <Box
@@ -70,7 +72,8 @@ export function Card ({ title, desc, img, bgcolor, className }) {
             fontWeight: 900,
             fontFamily: 'Cairo',
             padding: '5px 10px',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            fontFamily:'Cairo'
           }}
         >
           {title}
@@ -83,7 +86,9 @@ export function Card ({ title, desc, img, bgcolor, className }) {
             fontWeight: 50,
             fontFamily: 'Cairo',
             padding: '10px',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            fontFamily:'Cairo'
+        
           }}
         >
           {desc}

@@ -156,8 +156,9 @@ const SubscribeCard = ({ type }) => {
     alignItems: { xs: "center", md: "stretch" }
   };
   const cardStyle = {
-    marginTop: "50px",
     position: "relative",
+    fontFamilly:'Cairo',
+    fontSize:'25px',
     width: {sm: '100%', xs: "80%", md: "60%", lg: "20%", xl: "20%" },
     margin: "0 5px 10px",
     padding: "10px",
@@ -245,7 +246,7 @@ const SubscribeCard = ({ type }) => {
                 >
                   {t("chooseplan.title")}
                 </ButtonSubScribtion>
-                <Typography sx={{ textAlign: "start", margin: "20px 0" }} variant="h5">
+                <Typography sx={{ textAlign: "start", margin: "20px 0" }}>
                   {Parser().parse(card.description)}
                 </Typography>
               </Box>

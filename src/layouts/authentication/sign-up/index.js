@@ -54,7 +54,10 @@ import { Divider, Grid, Stack, Typography, useMediaQuery } from "@mui/material";
 import AuthCardWrapper from "../AuthCardWrapper";
 import AuthRegister from "../../authentication/auth-forms/AuthRegister";
 // import AuthFooter from 'ui-component/cards/AuthFooter';
-import signup from "../../../assets/images/icons/Social Media Icon Square/login.png";
+// import signup from "../../../assets/images/icons/Social Media Icon Square/login.png";
+import dots from "../../../assets/images/icons/Social Media Icon Square/dots.png";
+import vector from "../../../assets/images/icons/Social Media Icon Square/authvector.svg";
+
 
 function SignUp({ ...others }) {
   const theme = useTheme();
@@ -92,13 +95,31 @@ function SignUp({ ...others }) {
             }}>
               <Box
                 sx={{
-                  backgroundImage: `URL(${signup})`,
-                  backgroundSize: "cover",
+                  backgroundImage: `URL(${dots})`,
+                  backgroundSize: "30px",
+                  backgroundRepeat: "repeat",
                   backgroundPosition: "center center",
-                  height: { md: "30vh", sm: "30vh", xs: "30vh", lg:'100%' },
+                  height: { md: "30vh", sm: "30vh", xs: "30vh", lg: "100%" },
                   width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
-              />
+              >
+               <Box
+                  sx={{
+                    backgroundImage: `URL(${vector})`,
+                    backgroundSize: "contain",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center center",
+                    height: { md: "30vh", sm: "30vh", xs: "30vh", lg: "100%" },
+                    width: "60%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                ></Box>
+            </Box>
             </Box>
 
             <Grid
@@ -125,7 +146,7 @@ function SignUp({ ...others }) {
                     sx={{ minHeight: "calc(100vh - 68px)" }}
                   >
                     <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
-                      <AuthCardWrapper sx={{ border: "none" }}>
+                      <AuthCardWrapper sx={{ border: "none",boxShadow:'none ' }}>
                         <Grid container spacing={2} alignItems="end" justifyContent="end">
                           <Grid item xs={12}>
                             <Grid
@@ -137,13 +158,15 @@ function SignUp({ ...others }) {
                               <Grid item alignItems="end" justifyContent="end">
                                 <Stack alignItems="end" justifyContent="end" spacing={1}>
                                   <Typography
+                                  sx={{fontFamily:'Cairo',fontWeight:600,fontSize:'36px',color:'#3D2D66'}}
                                     color={theme.palette.secondary.main}
                                     gutterBottom
                                     variant={matchDownSM ? "h3" : "h2"}
                                   >
-                                    تسجيل حساب
+                                    انشاء حساب
                                   </Typography>
                                   <Typography
+                                    sx={{fontFamily:'Cairo',fontWeight:400,fontSize:'16px',color:'#667085'}}
                                     variant="caption"
                                     fontSize="16px"
                                     textAlign={matchDownSM ? "center" : "inherit"}
@@ -163,10 +186,10 @@ function SignUp({ ...others }) {
                           <Grid item xs={12}>
                             <Grid item container direction="column" alignItems="center" xs={12}>
                               <Typography
+                                sx={{fontFamily:'Cairo',fontWeight:400,fontSize:'18px',color:'#344054', textDecoration: "none"}}
                                 component={Link}
                                 to="/login"
                                 variant="subtitle1"
-                                sx={{ textDecoration: "none", color: "#5D449B" }}
                               >
                                 لديك حساب بالفعل؟ تسجيل الدخول
                               </Typography>
