@@ -109,12 +109,12 @@ mb:'6px'
                 "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
                   {
                     border: 0,
-                  },"&.MuiPaper-root":{
+                  },".MuiPaper-root":{
                     background:'#F7F8FA !important',
 
                   }
               }} 
-              
+            
               {...rest}
              
               >
