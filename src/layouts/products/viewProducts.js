@@ -61,6 +61,11 @@ function Products({ absolute, light, isMini }) {
       },
     });
   }
+  function onEdit(row,newRow) {
+    console.log(row,newRow);
+    navigate(`/${sub_domain}/dashboard/products/addnewproduct`,{state:{id:row,dataRow:newRow}})
+   
+  }
   // let [rows, setRows] = useState([])
 
   // const columns = [
@@ -176,15 +181,17 @@ function Products({ absolute, light, isMini }) {
         <DataGridCustom
           rows={products?.results}
           columns={columns}
+
+          onDialog={onEdit}
+
           // onEdit={()=>{}}
-          onDelete={()=>{}}
-          onCopy={()=>{}}
+
           checkboxSelection={true}
           onRowClick={(e,row) => {
             console.log(e,row);
             // setClick({ ...e.id });
           }}
-          notProduct={false}
+          // notProduct={false}
           // rowsPerPageOptions={[5, 10, 15, 20]}
           // onPaginationModelChange={setPaginationModel}
           rowHeight={72}

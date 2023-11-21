@@ -175,5 +175,11 @@
 "total":"Total",
 "Activity":"Activity",
 "EditEmployee":"Modify employee data",
-"EditJob":"Modify job data"
+"EditJob":"Modify job data",
+"newValue":"new Value",
+"discount":"discount",
+"Shoppingcost":"Shopping cost",
+"Customerdetails":"Customer details",
+"Name":"name",
+"Address":"Address"
 }

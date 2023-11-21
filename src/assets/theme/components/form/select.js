@@ -27,14 +27,15 @@ const select = {
       display: "grid",
       alignItems: "center",
       padding: `0 ${pxToRem(12)} !important`,
-
+      // backgroundColor:"white",
+    
       "& .Mui-selected": {
         backgroundColor: transparent.main,
       },
     },
 
     selectMenu: {
-      background: "none",
+      backgroundColor:"white",
       height: "none",
       minHeight: "none",
       overflow: "unset",

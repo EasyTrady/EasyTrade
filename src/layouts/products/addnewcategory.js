@@ -177,7 +177,7 @@ function Addnewcategory({ absolute, light, isMini }) {
                 <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
                     <Breadcrumbs icon="home" title={route[route?.length - 1]} route={route} light={light} />
                 </SoftBox>
-                <SoftBox sx={{ display: "flex", justifyContent: "space-between",flexWrap:"wrap",gap:{sm:"20px",xs:"20px"},marginY:"20px" }}>
+                <SoftBox sx={{ display: "flex", justifyContent: "center",flexWrap:"wrap",gap:"24px",marginY:"20px" }}>
                     <SoftBox sx={{
                         backgroundColor: (theme) => theme.palette.white.main,
                         display: {lg:"flex",md:"block",sm:"block",xs:"block"},
@@ -413,13 +413,12 @@ function Addnewcategory({ absolute, light, isMini }) {
                                 {categories?.map((ele) => <MenuItem value={ele.id} key={ele.id}>{ele.name}</MenuItem>)}
                             </SoftInput>
                         </Box>
-                        <Box sx={{marginX:"14px"}}>
+                        {/* <Box sx={{marginX:"14px"}}>
                             <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("categorynumber")}</InputLabel>
 
                             <SoftInput
 
                                 value={controls.numberChilds}
-                                // icon={{ component: <KeyboardArrowDownIcon />, direction: "right" }}
                                 sx={{ color: "#959FA3" }}
                                 onChange={(e) => setControl("numberChilds", e.target.value)}
                                 required={required.includes("numberChilds")}
@@ -428,9 +427,8 @@ function Addnewcategory({ absolute, light, isMini }) {
                                 onOpen={() => { }}
 
                             >
-                                {/* {jobs?.results?.map((ele) => <MenuItem value={ele.id} key={ele.id}>{ele.title}</MenuItem>)} */}
                             </SoftInput>
-                        </Box>
+                        </Box> */}
                     </SoftBox>
                 </SoftBox>:<></>}
                 <Stack
@@ -442,7 +440,7 @@ function Addnewcategory({ absolute, light, isMini }) {
                     className="container"
                 >
 
-                    <SoftButton variant="contained" color="white" onClick={() => resetControls()}>
+                    <SoftButton variant="contained" color="white" onClick={() =>{ resetControls(); navigate(`/${sub_domain}/dashboard/products/category`)}}>
                         {"cancel"}
                     </SoftButton>
                     <SoftButton
@@ -455,6 +453,8 @@ function Addnewcategory({ absolute, light, isMini }) {
                         {"save"}
                     </SoftButton>
                     {postcategoryResponce.failAlert}
+                    {postcategoryResponce.successAlert}
+
             {postcategoryResponce.successAlert}
             {patchcategoryResponce.failAlert}
                 </Stack>
