@@ -30,6 +30,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import filter from "utils/ClearNull";
 
 const AddNewOffers = ({ absolute, light, isMini }) => {
   const route = useLocation().pathname.split("/").slice(1);
@@ -41,26 +42,72 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
-  const offers=useSelector((state)=>state.offers.value)
-  const [OffersGetRequest,OffersGetResponce] = useRequest({
+ 
+  const [AddOfferRequest, AddOfferResponce] = useRequest({
     path: OFFERS,
-    method: "get",
+    method: "POST",
     Token: `Token ${Token}`,
+    contentType: "multipart/form-data",
   });
 
-  const getOffers = () => {
-    OffersGetRequest({
-      onSuccess: (res) => {
-        console.log(res.data);
-        dispatch({ type: "offers/set", payload: res?.data });
-      },
-    });
-  };
+  const offer_type=[
+    {id:1,title:'Buy X get Y Free'},
+    {id:2,title:'Buy X get Discount on Y'},
+    {id:3,title:'Percentage discount on total amount'},
+    {id:4,title:'Discount on quantity'},
+    {id:5,title:'Combined Products Dscount'},
+]
   const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
-    { control: "offers", value: '', isRequired: false },
+    { control: "offer_type", value: '', isRequired: false },
+    { control: "offer_title", value: '', isRequired: false },
+    { control: "offer_start_date", value: '', isRequired: false },
+    { control: "offer_end_date", value: '', isRequired: false },
+    { control: "productX", value: '', isRequired: false },
+    { control: "productY", value: '', isRequired: false },
+    { control: "banner", value: '', isRequired: false },
   ])
 
-console.log(controls.offers);
+  function handleSubmit() {
+    
+    validate().then((output) => {
+      console.log(output);
+      if (!output.isOk) return;
+      console.log(controls?.image);
+
+      AddOfferRequest({
+        body: filter({
+          obj: {
+            offer_type: controls.offer_type,
+            offer_title: controls.offer_title,
+            offer_start_date: controls.offer_start_date?.toISOString(),
+            offer_end_date: controls.offer_end_date?.toISOString(),
+            productX: controls.productX||"31",
+            productY: controls.productY||"23",
+            banner: controls.banner,
+          },
+          output: "formData",
+        }),
+        onSuccess: (res) => {
+          resetControls("");
+        }
+      }).then((res) => {
+        let response = res?.response?.data;
+        console.log(res);
+        // const responseBody = filter({
+        //   obj: {
+        //     name: response?.name?.join(""),
+        //     quantity: response?.quantity?.join(" "),
+        //    
+        //   },
+        //   output: "object",
+        // });
+
+        // setInvalid(responseBody);
+        resetControls("");
+      });
+    });
+  }
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -80,23 +127,23 @@ console.log(controls.offers);
             >
               <InputField
                 variant="outlined"
-                label={"Product name"}
-                placeholder={"Arabic Product"}
-                //   value={controls.name}
-                //   onChange={(e) => setControl("name", e.target.value)}
-                //   required={required.includes("name")}
-                //   error={Boolean(invalid.name)}
-                //   helperText={invalid.name}
+                label={"Offer title*"}
+                placeholder={"Arabic name..."}
+                  value={controls.offer_title}
+                  onChange={(e) => setControl("offer_title", e.target.value)}
+                  required={required.includes("offer_title")}
+                  error={Boolean(invalid.offer_title)}
+                  helperText={invalid.offer_title}
                 sx={{ width: "100%" }}
               />
               <InputField
                 variant="outlined"
-                placeholder={"English Product"}
-                //   value={controls.name}
-                //   onChange={(e) => setControl("name", e.target.value)}
-                //   required={required.includes("name")}
-                //   error={Boolean(invalid.name)}
-                //   helperText={invalid.name}
+                placeholder={"English name"}
+                  value={controls.offer_title}
+                  onChange={(e) => setControl("offer_title", e.target.value)}
+                  required={required.includes("offer_title")}
+                  error={Boolean(invalid.offer_title)}
+                  helperText={invalid.offer_title}
                 sx={{ width: "100%" }}
               />
               <FormControl>
@@ -195,8 +242,8 @@ console.log(controls.offers);
                   Start date*
                 </Typography>
                 <DatePickerField
-                //   value={controls.discount_start_date}
-                //   onChange={(e) => setControl("discount_start_date", e)}
+                  value={controls.offer_start_date}
+                  onChange={(e) => setControl("offer_start_date", e)}
                 />
               </Box>
               <Box>
@@ -213,8 +260,8 @@ console.log(controls.offers);
                   End date*
                 </Typography>
                 <DatePickerField
-                //   value={controls.discount_start_date}
-                //   onChange={(e) => setControl("discount_start_date", e)}
+                  value={controls.offer_end_date}
+                  onChange={(e) => setControl("offer_end_date", e)}
                 />
               </Box>
               <FormControlLabel
@@ -239,22 +286,21 @@ console.log(controls.offers);
                 variant="outlined"
                 placeholder="Buy X get Y free"
                 label="Choose offer type*"
-                isPending={OffersGetResponce.isPending}
-                onOpen={getOffers}
+        
                 renderValue={(selected) => {
-                  return offers?.results?.find((offer) => offer.id === selected)?.offer_title;
+                  return offer_type?.find((offer) => offer.id === selected)?.title
                 }}
-                value={controls.offers}
-                onChange={(e) => setControl("offers", e.target.value)}
-                required={required.includes("offers")}
-                textHelper={controls.offers}
-                error={Boolean(invalid.offers)}
-                helperText={invalid.offers}
+                value={controls.offer_type}
+                onChange={(e) => setControl("offer_type", e.target.value)}
+                required={required.includes("offer_type")}
+                textHelper={controls.offer_type}
+                error={Boolean(invalid.offer_type)}
+                helperText={invalid.offer_type}
                 sx={{ width: "100%", fontSize: "14px", background: "#fff" }}
               >
-                {offers?.results?.map((offer, index) => (
+                {offer_type?.map((offer, index) => (
                 <MenuItem key={`${offer.id} ${index}`} value={offer.id}>
-                  {offer?.offer_title}
+                  {offer?.title}
                   
                 </MenuItem>
               ))}
@@ -263,24 +309,48 @@ console.log(controls.offers);
             </SoftBox>
           </Container>
         </SoftBox>
-        {controls.offers===1&&
+        {controls.offer_type===1&&
         <>
         <Box sx={{display:'flex',flexDirection:{md:'row',xs:'column'},gap:'20px',mt:'20px',width:'100%'}}>
-        <OfferBox title='Product X'/>
-        <OfferBox title='Product Y'/>
+        <OfferBox 
+        title='Product X'
+        value={controls.productX}
+        onChange={(e)=>setControl('productX',e.target.value)}
+        />
+        <OfferBox 
+        title='Product Y'
+        value={controls.productY}
+        onChange={(e)=>setControl('productY',e.target.value)}
+        />
         </Box>
         <Box sx={{mt:'20px'}}>
-         <ImageOffer title='Offer image*'/> 
+         <ImageOffer 
+         title='Offer image*'
+         value={controls.banner}
+         onChange={(e)=>setControl('banner',e)}
+         /> 
         </Box>
         </>
         }
+         {controls.offer_type===2&&
+         <>
          <Box sx={{display:'flex',flexDirection:{md:'row',xs:'column'},gap:'20px',mt:'20px',width:'100%'}}>
-        <OfferBox title='Product X'/>
+        <OfferBox
+         title='Product X'
+         value={controls.productX}
+         onChange={(e)=>setControl('productX',e.target.value)}
+         />
         <OfferBox title='Product Y' discount/>
         </Box>
         <Box sx={{mt:'20px'}}>
-         <ImageOffer title='Offer image*'/> 
+         <ImageOffer 
+         title='Offer image*'
+         value={controls.banner}
+         onChange={(e)=>setControl('banner',e)}
+         /> 
         </Box>
+        </>
+}
         <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: "24px" }}>
           <SoftButton
             type="submit"
@@ -293,12 +363,14 @@ console.log(controls.offers);
               },
               width: "260px",
             }}
-            // onClick={handleSubmit}
+             onClick={handleSubmit}
           >
             Add
           </SoftButton>
         </Box>
       </Container>
+      {AddOfferResponce.failAlert}
+      {AddOfferResponce.successlAlert}
     </DashboardLayout>
   );
 };

@@ -9,7 +9,7 @@ import SelectValue from "./SelectValue";
 import SelectValuePrecentage from "./SelectValuePrecentage";
 
 // eslint-disable-next-line react/prop-types
-const OfferBox = ({ title,discount }) => {
+const OfferBox = ({ title,discount,value,onChange }) => {
   return (
     <Box sx={{ borderRadius: "8px", background: "#fff",width:'100%',pb:'12px' }}>
       <AddProductTitle title={title} />
@@ -18,17 +18,16 @@ const OfferBox = ({ title,discount }) => {
         <SelectValuePrecentage
         variant={'outlined'}
         label={'Discount'}
+        
         />
         }
         <InputField
           variant="outlined"
           placeholder={"Type here…"}
           label="Choose product under the offer"
-          //   value={controls.name}
-          //   onChange={(e) => setControl("name", e.target.value)}
-          //   required={required.includes("name")}
-          //   error={Boolean(invalid.name)}
-          //   helperText={invalid.name}
+          value={value}
+          onChange={onChange}
+          
           sx={{ width: "100%" }}
           InputProps={{
             startAdornment: (
