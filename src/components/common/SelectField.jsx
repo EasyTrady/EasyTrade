@@ -95,6 +95,7 @@ mb:'6px'
     sx={{
         pl:1,
         fontFamily:'Cairo',
+     
                 boxShadow: "none",
                 height:'40px !important',
                borderColor:'#C9CDD4',
@@ -107,14 +108,11 @@ mb:'6px'
                 "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
                   {
                     border: 0,
-                  },"&.MuiPaper-root":{
-                    background:'#F7F8FA !important',
-
-                  }
+                  },
               }} 
               
               {...rest}
-             
+              
               >
                  {Boolean(isPending) ? (
         <Stack justifyContent="center" alignItems="center" sx={{ p: 1 }}>

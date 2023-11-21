@@ -35,8 +35,11 @@ const menuItem = {
       fontSize: size.sm,
       color: text.main,
       transition: "background-color 300ms ease, color 300ms ease",
+      // "&.Mui-selected":{
+      //   backgroundColor:"white !important",
 
-      "&:hover, &:focus, &.Mui-selected, &.Mui-selected:hover, &.Mui-selected:focus": {
+      // },
+      "&:hover, &:focus, &.Mui-selected:hover, &.Mui-selected:focus": {
         backgroundColor: light.main,
         color: dark.main,
       },
