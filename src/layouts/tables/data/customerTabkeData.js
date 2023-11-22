@@ -14,7 +14,7 @@ import { CUSTOMER } from 'data/api';
 import moment from 'moment';
 import imageFemale from "../../../assets/images/woman.png"
 import imageMen from "../../../assets/images/mens.png"
-
+import Switch from '@mui/material/Switch';
 // const columnsTheme = [
 //     {
 //         field: 'image',
@@ -156,14 +156,19 @@ function onDelete(row,data){
               editable: false,
               filterable: false,
               sortable: false,disableColumnMenu: true,
-              renderCell:(params)=> <Typography variant={"p"}
-              sx={{
-                backgroundColor:params?.row?.is_active?(theme)=>theme.palette.success.hover:(theme)=>theme.palette.error.hover,"p.MuiTypography-root":{color:"#fff"}
-                ,borderRadius:"10px",cursor:"pointer",padding:"5px",
-                color:params?.row?.is_active?(theme)=>theme.palette.success.main:(theme)=>theme.palette.error.main,
-                fontSize:"14px",
-              }} onClick={()=>onDelete(params?.row?.id,params?.row)}
-              >{params?.row?.is_active?"active":"in active"} </Typography>
+              renderCell:(params)=><Switch
+              checked={params?.row?.is_active}
+              onClick={()=>onDelete(params?.row?.id,params?.row)}
+              inputProps={{ 'aria-label': 'controlled' }}
+            />
+            //  <Typography variant={"p"}
+            //   sx={{
+            //     backgroundColor:params?.row?.is_active?(theme)=>theme.palette.success.hover:(theme)=>theme.palette.error.hover,"p.MuiTypography-root":{color:"#fff"}
+            //     ,borderRadius:"10px",cursor:"pointer",padding:"5px",
+            //     color:params?.row?.is_active?(theme)=>theme.palette.success.main:(theme)=>theme.palette.error.main,
+            //     fontSize:"14px",
+            //   }} 
+            //   >{params?.row?.is_active?"active":"in active"} </Typography>
 
             },
             

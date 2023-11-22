@@ -40,7 +40,7 @@ const menu = {
       fontSize: size.sm,
       color: text.main,
       textAlign: "left",
-      backgroundColor: `${white.main} !important`,
+      // backgroundColor: `${white.main} !important`,
       borderRadius: borderRadius.md,
     },
   },

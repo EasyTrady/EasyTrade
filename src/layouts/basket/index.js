@@ -369,7 +369,7 @@ function Basket({ absolute, light, isMini }) {
           onClose={handleCloseDialog}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
-          sx={{ "div.MuiPaper-root": { minWidth: "50%" } }}
+          sx={{ "div.MuiPaper-root": { minWidth:  "37%"} }}
         >
           <Form component="form"
             childrenProps={{

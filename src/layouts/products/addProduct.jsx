@@ -17,7 +17,7 @@ import SoftInput from "components/SoftInput";
 import SoftTypography from "components/SoftTypography";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import "./description.css";
 import "react-quill/dist/quill.snow.css";
 import { validate } from "uuid";
@@ -56,7 +56,8 @@ const ReactQuill = require("react-quill");
 
 const AddProduct = ({ light, isMini,handleChange }) => {
 
-
+  const location = useLocation();
+  const { state } = location;
 
   const category = useSelector((state) => state.category.value);
   const dispatch = useDispatch();
@@ -196,12 +197,12 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             description: controls.description,
             price: controls.price,
             main_image: controls.main_image,
-            discount: controls.discount,
-            discount_start_date: controls.discount_start_date.toISOString(),
-            discount_end_date: controls.discount_end_date.toISOString(),
+            discount: controls?.discount,
+            discount_start_date: controls?.discount_start_date?.toISOString(),
+            discount_end_date: controls?.discount_end_date?.toISOString(),
             is_percentage_discount: controls.is_percentage_discount,
             purchase_price: controls.purchase_price,
-            custom_shipping_price: controls.custom_shipping_price,
+            // custom_shipping_price: controls.custom_shipping_price,
             maximum_order_quantity: controls.maximum_order_quantity,
             is_piblished: controls.is_piblished,
             in_taxes: controls.in_taxes,
@@ -243,7 +244,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             discount_end_date: response?.discount_end_date,
             is_percentage_discount: response?.is_percentage_discount,
             purchase_price: response?.purchase_price,
-            custom_shipping_price: response?.custom_shipping_price,
+            // custom_shipping_price: response?.custom_shipping_price,
             maximum_order_quantity: response?.maximum_order_quantity,
             is_piblished: response?.is_piblished,
             in_taxes: response?.in_taxes,
@@ -266,7 +267,19 @@ const AddProduct = ({ light, isMini,handleChange }) => {
   console.log(controls.in_taxes);
 
   // console.log(index,value);
+  useEffect(() => {
+    // jobRequest({
+    //     onSuccess: (res) => {
+    //         dispatch({ type: "job/set", payload: res.data })
+    //     }
+    // })
+    if(Boolean(state?.dataRow)){
+        Object.entries(state?.dataRow)?.forEach(([key,value])=>setControl(key,value))
 
+    }
+    // setControl()
+   
+}, [state])
   return (
     <>
       <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
@@ -314,10 +327,11 @@ const AddProduct = ({ light, isMini,handleChange }) => {
               helperText={invalid.quantity}
               sx={input}
             />
-            <MultiSelect
+            <SoftInput
+            select
               variant="outlined"
               placeholder="category"
-              label="Category"
+              // label="Category"
               isPending={getcategoryResponce.isPending}
               onOpen={getCategory}
               renderValue={(selected) => {
@@ -331,7 +345,32 @@ const AddProduct = ({ light, isMini,handleChange }) => {
               textHelper={controls.product_categories}
               error={Boolean(invalid.product_categories)}
               helperText={invalid.product_categories}
-              sx={{ width: "100%", fontSize: "14px", }}
+              sx={{ width: "100%", fontSize: "14px","& .MuiMenu-paper":{
+                backgroundColor:"white !important"
+              } }}
+              SelectProps={{
+                defaultValue: "",
+                displayEmpty: true,
+                // onOpen: onOpen,
+                // onClose: onClose,
+                renderValue: (selected) => {
+
+                     let resultcategory=category?.filter((category) => selected.includes(category.id))
+                return resultcategory.map((ele)=>ele.name).join(" , ")
+                },
+                MenuProps: {
+                    PaperProps: {
+                        sx: {
+                            maxHeight: "200px",
+                            overflowY: "auto",
+                            backgroundColor: "white !important"
+                        },
+                    },
+                },
+
+                // IconComponent: <KeyboardArrowDownIcon></KeyboardArrowDownIcon>,
+
+            }}
             >
               {category?.map((category, index) => (
                 <MenuItem key={`${category.id} ${index}`} value={category.id}>
@@ -339,7 +378,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
                   {console.log(category.id)}
                 </MenuItem>
               ))}
-            </MultiSelect>
+            </SoftInput>
 
             <Box sx={{ mb: "20px" }}>
               <Typography
@@ -396,7 +435,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
       >
         <AddProductTitle title={"Product details"} />
         <Container sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-          <NumberField
+          <InputField
             variant="outlined"
             label={"barcode"}
             placeholder={"barcode"}
@@ -409,7 +448,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             sx={input}
             borderBottom="none"
           />
-          <NumberField
+          <InputField
             variant="outlined"
             label={"Gtin"}
             placeholder={"Gtin"}
@@ -422,7 +461,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             sx={input}
             borderBottom="none"
           />
-          <NumberField
+          <InputField
             variant="outlined"
             label={"SKU"}
             placeholder={"SKU-123456"}
@@ -455,7 +494,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
                sx={input}
               
             />
-            <NumberField
+            <InputField
               variant="outlined"
               label={"Dimensions (L*W*H)"}
               placeholder={"l*W..."}
@@ -529,7 +568,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             helperText={invalid?.price}
             sx={input}
           />
-          <NumberField
+          {/* <NumberField
             variant="outlined"
             label={"shipping price"}
             placeholder={"99 EGP"}
@@ -541,7 +580,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             // icon={{ component: <DnsOutlinedIcon />, direction: "left" }}
             sx={input}
             borderBottom="none"
-          />
+          /> */}
         </Container>
       </Box>
       <Box sx={{ background: "#FFFFFF", borderRadius: "8px", height: "338px",width:'100%', pb: 4, mt: 2.5 }}>

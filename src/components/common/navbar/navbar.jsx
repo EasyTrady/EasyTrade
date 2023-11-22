@@ -120,6 +120,7 @@ const Navbar = () => {
                   fontSize: '16px',
                   textAlign: 'center',
                   fontWeight: 600,
+                  fontFamily:'Cairo',
                   // lineHeight: "29.98px",
                   color: '#FFFFFF',
                   width:{sm:'20%',lg:'80%',xl:'80%',md:'100%'}
@@ -130,11 +131,17 @@ const Navbar = () => {
             </Box>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'end' }}>
-              {pages.map((page) => (
+              {pages.map((page,index) => (
                 <Button
-                  key={page}
-                  onClick={() => {
-                    page[0] && navigate('/')|| page[4] && navigate('/contactus')||page[2] && navigate('/price')
+                  key={index}
+                  onClick={(e) => {
+                    if (index===4) {
+                      navigate('/')
+                    } else if (index===0) {
+                      navigate('/contactus')
+                    } else if (index===2) {
+                      navigate('/price');
+                    }
                    
                   }}
                   sx={{

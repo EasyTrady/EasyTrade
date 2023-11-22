@@ -371,10 +371,10 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
           checkboxSelection={checkboxSelection}
           onRowClick={onRowClick}
           isRowSelectable={isRowSelectable}
-          setPagination={false}
+          setPagination={true}
           // autoHeight={true}
-          hideFooter
-          initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
+        
+          // initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
           pageSizeOptions={[5, 10, 15]}
           sx={{
             ...sx, "& .css-1ui3wbn-MuiInputBase-root-MuiTablePagination-select": {
@@ -394,8 +394,11 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
               }
             
           }}
+         
+  onPaginationModelChange={onPaginationModelChange}
           // onPaginationModelChange={onPaginationModelChange}
           {...rest}
+          
           onProcessRowUpdateError={(error) => console.log(error)}
           // slots={{
           //   toolbar: EditToolbar,

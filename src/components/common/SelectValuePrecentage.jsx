@@ -82,8 +82,8 @@ textAlign: 'left'
               
               displayEmpty
               >
-                <MenuItem value='5%'>5%</MenuItem>
-                <MenuItem value='10%'>10%</MenuItem>
+                <MenuItem value='true'>Precentage</MenuItem>
+                <MenuItem value='false'>Money</MenuItem>
                 
               </Select>
     </Box>

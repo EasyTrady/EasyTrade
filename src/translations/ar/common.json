@@ -172,5 +172,11 @@
 "total":"مجموع",
 "Activity":"نشاط",
 "EditEmployee":"تعديل بيانات الموظف",
-"EditJob":"تعديل بيانات وظيفة"
+"EditJob":"تعديل بيانات وظيفة",
+"newValue":"قيمة جديدة",
+"discount":"خصم",
+"Shoppingcost":"تكلفة التسوق",
+"Customerdetails":"تفاصيل العميل",
+"Name":"اسم",
+"Address":"عنوان"
 }

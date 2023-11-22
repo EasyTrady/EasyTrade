@@ -14,6 +14,7 @@ import  OrdersSlice  from './pages/orderSlice';
 import CartSlice  from './pages/cartSlice';
 import ProductsSlice  from './pages/productSlice';
 import OffersSlice  from './pages/offersSlice';
+import  OffersTypesSlice  from './pages/offerTypesSlice';
 
 const store = configureStore({
   reducer: {
@@ -30,7 +31,8 @@ const store = configureStore({
      profile:ProfileSlice ,
      cart:CartSlice,
      products:ProductsSlice,
-     offers:OffersSlice
+     offers:OffersSlice,
+     offerstypes:OffersTypesSlice
   }
 });
 export default store

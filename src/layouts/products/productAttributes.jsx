@@ -569,7 +569,7 @@ const ProductAttributes = ({ idProduct }) => {
                   <TableCell align="right">{`${ele?.attributes?.join("")}`}</TableCell>
                   <TableCell align="right"> <SoftInput
                     placeholder='quantity'
-                    sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "100px !important" }, }}
+                    sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "150px !important" }, }}
                     value={ele?.quantity}
 
                     onChange={(e) =>  setControl("variants",controls.variants.map((elem,ind)=>ind==index?{
@@ -579,7 +579,7 @@ const ProductAttributes = ({ idProduct }) => {
                   /></TableCell>
                    <TableCell align="right"> <SoftInput
                     placeholder='title'
-                    sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "100px !important" }, }}
+                    sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "150px !important" }, }}
                     value={ele?.title}
 
                     onChange={(e) =>  setControl("variants",controls.variants.map((elem,ind)=>ind==index?{
@@ -589,7 +589,7 @@ const ProductAttributes = ({ idProduct }) => {
                   /></TableCell>
                   <TableCell align="right"> <SoftInput
                     placeholder='sku'
-                    sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "100px !important" }, }}
+                    sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "150px !important" }, }}
                     value={ele?.sku}
                     onChange={(e) =>  setControl("variants",controls.variants.map((elem,ind)=>ind==index?{
                       ...ele,sku:e.target.value
@@ -598,7 +598,7 @@ const ProductAttributes = ({ idProduct }) => {
                   /></TableCell>
                   <TableCell align="right"> <SoftInput
                     placeholder='price'
-                    sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "100px !important" }, }}
+                    sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "150px !important" }, }}
                     value={ele?.price}
                     onChange={(e) =>  setControl("variants",controls.variants.map((elem,ind)=>ind==index?{
                       ...ele,price:e.target.value
@@ -608,7 +608,7 @@ const ProductAttributes = ({ idProduct }) => {
                   /></TableCell>
                   <TableCell align="right"> <SoftInput
                     placeholder='gtin'
-                    sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "100px !important" }, }}
+                    sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "150px !important" }, }}
                     value={ele?.gtin}
                     onChange={(e) =>  setControl("variants",controls.variants.map((elem,ind)=>ind==index?{
                       ...ele,gtin:e.target.value

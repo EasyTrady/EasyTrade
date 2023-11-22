@@ -149,7 +149,7 @@ function Customer({ absolute, light, isMini }) {
             // onDelete={onDelete}
             rowsPerPageOptions={[5, 10, 15, 20]}
 
-
+            // paginationModel={paginationModel}
             onPaginationModelChange={setPaginationModel}
           />
           {DeleteCustomerrResponce.failAlert}
