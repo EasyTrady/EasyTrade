@@ -197,11 +197,13 @@ const FirebaseRegister = ({ ...others }) => {
         }}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+            <Box sx={{justifyContent:'center',alignItems:'center',textAlign:'center'}}>
           <form noValidate {...others}>
             {console.log(errors)}
-            <Box sx={{ display: "flex", justifyContent: "end" }}>
+            <Box sx={{display: "flex",justifyContent:'flex-end'}}>
+              
               <FormControl error={Boolean(touched?.logo && errors?.logo)}>
-                <Box sx={{ width: "100px", marginLeft: "auto", marginLeft: "auto" }}>
+                <Box sx={{ width: "360px",display: "flex"}}>
                   <label htmlFor="profile_image" style={{ position: "relative" }}>
                     <IconButton
                       onClick={() => {
@@ -256,8 +258,9 @@ const FirebaseRegister = ({ ...others }) => {
                 )}
               </FormControl>
             </Box>
+            
             <FormControl
-              fullWidth
+            
               error={Boolean(touched?.full_name && errors?.full_name)}
               sx={{ ...theme.typography.customInput }}
             >
@@ -265,6 +268,9 @@ const FirebaseRegister = ({ ...others }) => {
                 variant="outlined"
                 sx={{
                   direction: "rtl",
+                  width:'360px',
+                  marginRight: 'auto',
+
                 }}
                 name="email"
                 value={values.email}
@@ -279,7 +285,7 @@ const FirebaseRegister = ({ ...others }) => {
               )}
             </FormControl>
             <FormControl
-              fullWidth
+             
               error={Boolean(touched?.email && errors?.email)}
               sx={{ ...theme.typography.customInput }}
             >
@@ -288,6 +294,8 @@ const FirebaseRegister = ({ ...others }) => {
                 sx={{
                   direction: "rtl",
                   marginTop: "10px",
+                  width:'360px',
+                  marginRight: 'auto',
                 }}
                 name="email"
                 value={values.email}
@@ -303,17 +311,19 @@ const FirebaseRegister = ({ ...others }) => {
             </FormControl>
 
             <FormControl
-              fullWidth
+            
+            
               error={Boolean(touched?.password && errors?.password)}
-              sx={{ ...theme.typography.customInput }}
+              sx={{ ...theme.typography.customInput , marginRight: 'auto',}}
             >
               {/* <InputLabel htmlFor="outlined-adornment-password-register">كلمة المرور</InputLabel> */}
               <TextField
                 variant="outlined"
                 sx={{
                   direction: "rtl",
-                  width: "100%",
                   paddingTop: "10px",
+                  width:'360px',
+                  marginRight: 'auto',
                 }}
                 name="password"
                 value={values.password}
@@ -348,13 +358,14 @@ const FirebaseRegister = ({ ...others }) => {
               </FormControl>
             )}
             <FormControl
-              fullWidth
               error={Boolean(touched?.phone && errors?.phone)}
               sx={{ ...theme.typography.customInput }}
             >
               <MuiPhoneNumber
                 sx={{
                   paddingTop: "10px",
+                  marginRight: 'auto',
+                  width:'360px'
                 }}
                 defaultCountry={"eg"}
                 id="outlined-adornment-phone-register"
@@ -378,9 +389,10 @@ const FirebaseRegister = ({ ...others }) => {
               )}
             </FormControl>
             <FormControl
-              fullWidth
+              
               error={Boolean(touched?.shop_name && errors?.shop_name)}
-              sx={{ ...theme.typography.customInput }}
+              sx={{ ...theme.typography.customInput ,  marginRight: 'auto',
+              width:'360px'}}
             >
               {/* <InputLabel htmlFor="outlined-adornment-storename-register">اسم المتجر</InputLabel> */}
               <SoftInput
@@ -392,7 +404,7 @@ const FirebaseRegister = ({ ...others }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 inputProps={{}}
-                sx={{ ".MuiInputBase-root": { marginY: "10px" }, direction: "rtl" }}
+                sx={{ ".MuiInputBase-root": { marginY: "10px" }, direction: "rtl" ,  }}
               />
               {touched?.shop_name && errors?.shop_name && (
                 <FormHelperText error id="standard-weight-helper-text--register">
@@ -400,12 +412,13 @@ const FirebaseRegister = ({ ...others }) => {
                 </FormHelperText>
               )}
             </FormControl>
-            <FormControl
+
+            
+            {/* <FormControl
               fullWidth
               error={Boolean(touched?.sub_domain && errors?.sub_domain)}
               sx={{ ...theme.typography.customInput }}
             >
-              {/* <InputLabel htmlFor="outlined-adornment-email-register">Online Store Domain</InputLabel> */}
               <OutlinedInput
                 placeholder="store domain"
                 id="outlined-adornment-email-register"
@@ -425,88 +438,9 @@ const FirebaseRegister = ({ ...others }) => {
                   {errors.storedomain}
                 </FormHelperText>
               )}
-            </FormControl>
-            {/* <FormControl fullWidth error={Boolean(touched.is_company && errors.is_company)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-register">Account Type</InputLabel>
-              <Select
-                id="outlined-adornment-subdomain-register"
-                type="text"
-                value={values.is_company}
-                name="is_company"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                aria-describedby="filled-company-helper-text"
-                inputProps={{
-                  'aria-label': 'company',
-                }}
-                displayEmpty
-              >
-                <MenuItem value={""}>Select account type</MenuItem>
-                <MenuItem value={'true'}>Company</MenuItem>
-                <MenuItem value={'false'}>Individual</MenuItem>
-              </Select>
-              {touched.is_company && errors.is_company && (
-                <FormHelperText error id="standard-weight-helper-text--register">
-                  {errors.is_company}
-                </FormHelperText>
-              )}
             </FormControl> */}
 
-            {/* <Box sx={{width:"90px"}}>
-                      <label htmlFor="profile_image" style={{ position: 'relative'}}>
-                        <IconButton
-                          onClick={() => {
-                            document.getElementById('profile_image').click();
-                          }}
-                          sx={{ position: 'absolute', zIndex: 1, right: 0, bottom: 0, boxShadow: 3, alignItems: 'center', bgcolor: '#fff' }}
-                        >
-                          <CameraAltIcon sx={{ zIndex: 1 }} />
-                        </IconButton>
-                        {avatarUrl ? (
-                          <img
-                            src={avatarUrl}
-                            alt="profile_image"
-                            style={{
-                              width: '80px',
-                              height: '80px',
-                              borderRadius: '50%'
-                            }}
-                          />
-                        ) : (
-                          <Box
-                            src={avatarUrl}
-                            alt="image"
-                            sx={{ width: '80px', height: '80px' ,bgcolor:'#5D449B',borderRadius:'8px',margin:'8px'}}
-                            // sx={{ height: "50%", width: "60%" }}
-                          />
-                        )}
-                      </label>
-                      <input
-                        id="profile_image"
-                        name="profile_image"
-                        type="file"
-                        accept="image/*"
-                        onChange={handleAvatarChange}
-                        style={{ display: 'none' }}
-                      />
-                    </Box>
-            {/* <Grid container alignItems="center" justifyContent="space-between">
-              <Grid item>
-                <FormControlLabel
-                  control={
-                    <Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} name="checked" color="primary" />
-                  }
-                  label={
-                    <Typography variant="subtitle1">
-                      Agree with &nbsp;
-                      <Typography variant="subtitle1" component={Link} to="#">
-                        Terms & Condition.
-                      </Typography>
-                    </Typography>
-                  }
-                />
-              </Grid>
-            </Grid> */}
+
             {errors?.submit && (
               <Box sx={{ mt: 3 }}>
                 <FormHelperText error>{errors.submit}</FormHelperText>
@@ -516,13 +450,14 @@ const FirebaseRegister = ({ ...others }) => {
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
                 <SoftButton
-                  fullWidth
                   onClick={(e) => handleSubmit(e)}
                   size="large"
                   type="submit"
                   variant="contained"
                   sx={{
                     borderRadius: "12PX",
+                    marginRight: 'auto',
+                    width:'360px',
                     padding: "10px, 18px, 10px, 18px",
                     backgroundColor: "#5D449B",
                     color: "#FFFFFF",
@@ -556,7 +491,6 @@ const FirebaseRegister = ({ ...others }) => {
                 >
                   OR
                 </Button> */}
-                <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
               </Box>
             </Grid>
             <Grid item xs={12}>
@@ -568,6 +502,8 @@ const FirebaseRegister = ({ ...others }) => {
                   size="large"
                   sx={{
                     color: "grey.700",
+                    marginRight: 'auto',
+                    width:'360px',
                     backgroundColor: theme.palette.grey[50],
                     borderColor: theme.palette.grey[100],
                     marginTop: "20px",
@@ -592,6 +528,7 @@ const FirebaseRegister = ({ ...others }) => {
               </AnimateButton>
             </Grid>
           </form>
+          </Box>
         )}
       </Formik>
 
