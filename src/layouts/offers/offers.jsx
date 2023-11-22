@@ -88,7 +88,7 @@ const Offers = ({ absolute, light, isMini }) => {
       field: 'offer_type',
       headerName: 'Type',
       type: 'text',
-      width: 76,
+      width: 139,
       align: 'center',
       headerAlign: 'center',
       editable: true,

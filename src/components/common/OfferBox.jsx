@@ -1,4 +1,4 @@
-import { Box, Container, Grid, InputAdornment, Typography } from "@mui/material";
+import { Box, Container, Grid, InputAdornment, MenuItem, Typography } from "@mui/material";
 import React from "react";
 import AddProductTitle from "./AddProductTitle";
 import InputField from "./TextField";
@@ -7,42 +7,76 @@ import DeleteOffer from "../../assets/images/DeleteOffer.svg";
 import image from "../../assets/images/Avatar.png";
 import SelectValue from "./SelectValue";
 import SelectValuePrecentage from "./SelectValuePrecentage";
+import useRequest from "hooks/useRequest";
+import { PRODUCTS } from "data/api";
+import SelectField from "./SelectField";
+import { useDispatch, useSelector } from "react-redux";
 
 // eslint-disable-next-line react/prop-types
-const OfferBox = ({ title,discount,value,onChange }) => {
+const OfferBox = ({ title,discount,value,onChange,type,typeChange,handleValueChange }) => {
+  const products=useSelector((state)=>state.products.value)
+  let Token = localStorage.getItem("token");
+  const dispatch=useDispatch()
+  const [RequestGetProducts, ResponseGetProducts] = useRequest({
+    path: PRODUCTS,
+    method: "get",
+    Token: `Token ${Token}`,
+  });
+ const getProducts=()=>{
+  RequestGetProducts({
+    onSuccess: (res) => {
+      // console.log(res.data)
+      dispatch({ type: "products/set", payload: { ...res.data } });
+    },
+  });
+ }
   return (
     <Box sx={{ borderRadius: "8px", background: "#fff",width:'100%',pb:'12px' }}>
+      {Boolean(title)&&
       <AddProductTitle title={title} />
+}
       <Container sx={{display:'flex',gap:'20px',flexDirection:'column',mt:'20px'}}>
         {Boolean(discount)&&
         <SelectValuePrecentage
         variant={'outlined'}
         label={'Discount'}
-        
+        type={type}
+        onChange={typeChange}
+        handleValueChange={handleValueChange}
         />
         }
-        <InputField
+        <SelectField
           variant="outlined"
           placeholder={"Type here…"}
           label="Choose product under the offer"
+          onOpen={getProducts}
           value={value}
           onChange={onChange}
-          
-          sx={{ width: "100%" }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchOutlinedIcon sx={{height:'16px',width:'16px'}}/>
-              </InputAdornment>
-            ),
+          renderValue={(selected)=>{
+            return products.results.find((product)=>product.id===selected).name
           }}
-        />
+          sx={{ width: "100%" }}
+          // InputProps={{
+          //   startAdornment: (
+          //     <InputAdornment position="start">
+          //       <SearchOutlinedIcon sx={{height:'16px',width:'16px'}}/>
+          //     </InputAdornment>
+          //   ),
+          // }}
+        >
+          {
+            products?.results?.map((product)=>(
+              <MenuItem key={product.id} value={product.id}>{product.name}</MenuItem>
+            ))
+          }
+        </SelectField>
         <Box>
           <Grid item>
-            <Grid container>
+            {products?.results?.map((product)=>(
+            <Grid key={product.id} container>
               
               <Grid md={1.5}>
-                <img src={image} alt="product" style={{ width: "44px", height: "44px" }} />
+                <img src={product.main_image} alt="product" style={{ width: "44px", height: "44px" }} />
               </Grid>
               <Grid md={9.5}>
                 <Typography
@@ -54,7 +88,7 @@ const OfferBox = ({ title,discount,value,onChange }) => {
                     lineHeight: "20px",
                   }}
                 >
-                  HollyHOME Teddy Bear Plush Giant Teddy Bears Stuf
+                  {product.name}
                 </Typography>
               </Grid>
               <Grid md={1}>
@@ -63,6 +97,7 @@ const OfferBox = ({ title,discount,value,onChange }) => {
                 </Box>
               </Grid>
             </Grid>
+            ))}
           </Grid>
         </Box>
       </Container>

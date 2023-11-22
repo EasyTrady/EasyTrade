@@ -19,7 +19,9 @@ import ImageOffer from "components/common/ImageOffer";
 import OfferBox from "components/common/OfferBox";
 import RadioButton from "components/common/RadioButton";
 import SelectField from "components/common/SelectField";
+import SelectValuePrecentage from "components/common/SelectValuePrecentage";
 import InputField from "components/common/TextField";
+import { OFFERTYPES } from "data/api";
 import { OFFERS } from "data/api";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
@@ -42,7 +44,20 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
- 
+  const offerstypes = useSelector((state) => state.offerstypes.value);
+  const [OffersTypesGetRequest, OffersTypesGetResponce] = useRequest({
+    path: OFFERTYPES,
+    method: "get",
+    Token: `Token ${Token}`,
+  });
+  const getOfferTypes=()=>{
+    OffersTypesGetRequest({
+      onSuccess: (res) => {
+        console.log(res.data);
+        dispatch({ type: "offerstypes/set", payload: res?.data });
+      },
+    });
+  }
   const [AddOfferRequest, AddOfferResponce] = useRequest({
     path: OFFERS,
     method: "POST",
@@ -50,13 +65,7 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
     contentType: "multipart/form-data",
   });
 
-  const offer_type=[
-    {id:1,title:'Buy X get Y Free'},
-    {id:2,title:'Buy X get Discount on Y'},
-    {id:3,title:'Percentage discount on total amount'},
-    {id:4,title:'Discount on quantity'},
-    {id:5,title:'Combined Products Dscount'},
-]
+  
   const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
     { control: "offer_type", value: '', isRequired: false },
     { control: "offer_title", value: '', isRequired: false },
@@ -65,6 +74,9 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
     { control: "productX", value: '', isRequired: false },
     { control: "productY", value: '', isRequired: false },
     { control: "banner", value: '', isRequired: false },
+    { control: "is_precentage", value: '', isRequired: false },
+    { control: "discount", value: '', isRequired: false },
+    { control: "copon", value: '', isRequired: false },
   ])
 
   function handleSubmit() {
@@ -107,7 +119,7 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
       });
     });
   }
-
+console.log(offerstypes);
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -286,9 +298,9 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
                 variant="outlined"
                 placeholder="Buy X get Y free"
                 label="Choose offer type*"
-        
+                onOpen={getOfferTypes}
                 renderValue={(selected) => {
-                  return offer_type?.find((offer) => offer.id === selected)?.title
+                  return offerstypes?.find((offer) => offer.id === selected)?.name
                 }}
                 value={controls.offer_type}
                 onChange={(e) => setControl("offer_type", e.target.value)}
@@ -298,9 +310,9 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
                 helperText={invalid.offer_type}
                 sx={{ width: "100%", fontSize: "14px", background: "#fff" }}
               >
-                {offer_type?.map((offer, index) => (
+                {offerstypes?.map((offer, index) => (
                 <MenuItem key={`${offer.id} ${index}`} value={offer.id}>
-                  {offer?.title}
+                  {offer?.name}
                   
                 </MenuItem>
               ))}
@@ -340,7 +352,15 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
          value={controls.productX}
          onChange={(e)=>setControl('productX',e.target.value)}
          />
-        <OfferBox title='Product Y' discount/>
+        <OfferBox 
+        title='Product Y'
+        value={controls.productY}
+         onChange={(e)=>setControl('productY',e.target.value)}
+         type={controls.is_precentage}
+         typeChange={(e)=>setControl('is_precentage',e.target.value)}
+         handleValueChange={(e)=>setControl('discount',e.target.value)} 
+        discount
+        />
         </Box>
         <Box sx={{mt:'20px'}}>
          <ImageOffer 
@@ -351,6 +371,137 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
         </Box>
         </>
 }
+{controls.offer_type===3&&
+<>
+<SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5 }}>
+          <AddProductTitle title={"Get discount from your cart"} />
+          <Container sx={{display:'flex',flexDirection:"column",gap:'20px',py:'20px'}}>
+          <SelectValuePrecentage
+        variant={'outlined'}
+        label={'Discount'}
+        type={controls.type}
+        onChange={(e)=>setControl("is_precentage",e.target.vale)}
+        handleValueChange={(e)=>setControl('discount',e.target.value)}
+        />
+         <InputField
+                variant="outlined"
+                label={"Minimum Price*"}
+                placeholder={"99 EGP"}
+                  value={controls.offer_title}
+                  onChange={(e) => setControl("offer_title", e.target.value)}
+                  required={required.includes("offer_title")}
+                  error={Boolean(invalid.offer_title)}
+                  helperText={invalid.offer_title}
+                sx={{ width: "100%" }}
+              />
+              <FormControlLabel
+                sx={{
+                  fontFamily: "Inter",
+                  fontSize: "14px",
+                  fontWeight: 300,
+                  lineHeight: "20px",
+                  color: " #626C70",
+                }}
+                label={"Create Coupon"}
+                control={
+                  <Switch
+                    value={controls.in_taxes}
+                    onChange={(e) => setControl("copon", e.target.checked)}
+                    color="secondary"
+                  />
+                }
+              />
+            </Container>
+            </SoftBox>
+
+<Box sx={{mt:'20px'}}>
+         <ImageOffer 
+         title='Offer image*'
+         value={controls.banner}
+         onChange={(e)=>setControl('banner',e)}
+         /> 
+        </Box>
+</>
+}
+{controls.offer_type===4&&
+  <>
+<SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5 }}>
+          <AddProductTitle title={"Get discount on product Quntity"} />
+         
+          <OfferBox 
+        
+        value={controls.productY}
+         onChange={(e)=>setControl('productY',e.target.value)}
+         type={controls.is_precentage}
+         typeChange={(e)=>setControl('is_precentage',e.target.value)}
+         handleValueChange={(e)=>setControl('discount',e.target.value)} 
+        discount
+        />
+        <Container sx={{pb:"24px"}}>
+         <InputField
+                variant="outlined"
+                label={"Minimum Quantity*"}
+                placeholder={"2 Pieces"}
+                  value={controls.quantity}
+                  onChange={(e) => setControl("quantity", e.target.value)}
+                  required={required.includes("quantity")}
+                  error={Boolean(invalid.quantity)}
+                  helperText={invalid.quantity}
+                sx={{ width: "100%" ,}}
+              />
+              </Container>
+           
+            </SoftBox>
+
+<Box sx={{mt:'20px'}}>
+         <ImageOffer 
+         title='Offer image*'
+         value={controls.banner}
+         onChange={(e)=>setControl('banner',e)}
+         /> 
+        </Box>
+</>
+}
+{controls.offer_type===5&&
+  <>
+<SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5 }}>
+          <AddProductTitle title={"Get discount on products"} />
+         
+          <OfferBox 
+        
+        value={controls.productY}
+         onChange={(e)=>setControl('productY',e.target.value)}
+         type={controls.is_precentage}
+         typeChange={(e)=>setControl('is_precentage',e.target.value)}
+         handleValueChange={(e)=>setControl('discount',e.target.value)} 
+        discount
+        />
+        <Container sx={{pb:"24px"}}>
+         <InputField
+                variant="outlined"
+                label={"Minimum Quantity*"}
+                placeholder={"2 Pieces"}
+                  value={controls.quantity}
+                  onChange={(e) => setControl("quantity", e.target.value)}
+                  required={required.includes("quantity")}
+                  error={Boolean(invalid.quantity)}
+                  helperText={invalid.quantity}
+                sx={{ width: "100%" ,}}
+              />
+              </Container>
+           
+            </SoftBox>
+
+<Box sx={{mt:'20px'}}>
+         <ImageOffer 
+         title='Offer image*'
+         value={controls.banner}
+         onChange={(e)=>setControl('banner',e)}
+         /> 
+        </Box>
+</>
+}
+
         <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: "24px" }}>
           <SoftButton
             type="submit"
