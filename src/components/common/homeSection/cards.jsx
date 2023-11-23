@@ -15,12 +15,13 @@ export function Card ({ title, desc, img, bgcolor, className}) {
 
 
       
-
+    
     <Grid
       className={className}
       sx={{
         padding: '18px',
         borderRadius: '8px',
+        bgcolor:'#ffffff',
         border: '1px solid rgb(227, 232, 239)',
         position: 'relative',
         width: { xs: '100%', md: 'calc(50% - 40px)', lg: 'calc(100% / 3 - 40px)' },
@@ -34,7 +35,8 @@ export function Card ({ title, desc, img, bgcolor, className}) {
         sx={{
           position: 'absolute',
           top: 0,
-          width: '100%'
+          width: '100%',
+
         }}
       >
         
@@ -97,7 +99,7 @@ export function Card ({ title, desc, img, bgcolor, className}) {
       </Container>
 
     </Grid>
-
+    
 
   );
 }
