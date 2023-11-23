@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import { Box, Divider, IconButton, InputAdornment, MenuItem, Select, TextField, Typography } from '@mui/material'
 import React from 'react'
-
+import NumberField from "components/common/NumberFeild";
+import SoftInput from 'components/SoftInput'
 import { NumericFormat } from 'react-number-format'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 const SelectValue = ({variant,label,handleValueChange,type,onChange,...rest}) => {
@@ -15,9 +16,65 @@ letterSpacing: '0em',
 textAlign: 'left',
 mb:'6px'
 }}>{label}</Typography>
-    <Box 
+    <NumberField
+        customInput={TextField}
+        // id="outlined-adornment-password"
+        type={'text'}
+       
+        // sx={{"& .MuiInputBase-root.MuiOutlinedInput-root":{ overflow: "hidden !important",minWidth:"40vw !important"},".MuiOutlinedInput-root":{width:"40vw !important"}}}
+        onChange={handleValueChange}
+        {...rest}
+        InputProps={{
+          endAdornment:
+            (<InputAdornment sx={{ position: "absolute", right: "0" }}>
+              <SoftInput
+              sx={{".MuiOutlinedInput-root":{width:"100%!important"}}}
+      select
+      onChange={onChange}
+      value={type}
+      IconComponent={KeyboardArrowDownIcon}
+      SelectProps={{
+        defaultValue: "",
+        displayEmpty: true,
+        // onOpen: onOpen,
+        // onClose: onClose,
+        renderValue: (selected) => {
+          if (!Boolean(selected)) {
+            return (
+              <Typography sx={{ color: "currentColor", opacity: "0.42",fontSize:"14px" }}>
+                {"unit"}
+              </Typography>
+            );
+          } else {
+            return  selected
+          }
+        },
+        MenuProps: {
+          PaperProps: {
+            sx: {
+              maxHeight: "200px",
+              overflowY: "auto",
+             backgroundColor:"white !important"
+            },
+          },
+        },
+       
+        IconComponent:  ()=><KeyboardArrowDownIcon></KeyboardArrowDownIcon>
+        
+      }}
+    
+    >
+        <MenuItem value='true'>Precentage</MenuItem>
+                <MenuItem value='false'>g</MenuItem>
+              
+             </SoftInput>
+            </InputAdornment>)
+        }}
+
+      />
+    {/* <Box 
     sx={{display:'flex',flexDirection:'row',alignItems:'center',width:'100%', border: '1px solid #C9CDD4 !important', borderRadius:'4px', }}>
-    <NumericFormat
+    <NumberField
       customInput={TextField}
       variant={Boolean(variant) ? variant : "standard"}
       onChange={handleValueChange}
@@ -42,20 +99,9 @@ mb:'6px'
       '& .MuiOutlinedInput-notchedOutline': {
          border: 'none'
       },
-      // "& .MuiOutlinedInput-root": {
-      //   "&.Mui-focused fieldset": {
-      //     color:'#272E3B',
-      //     background:'#fff'
-      //   },
-        
-      // },
-      
-      // '.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input':{
-      //   height:'32px !important',p:'0 8px !important',background:'#F7F8FA',borderColor:'#C9CDD4',
-      // } 
+   
       }}
     />
-    {/* <Divider style={{ backgroundColor:'red',width:'100%',height:'100%',alignSelf: "stretch" }} variant="middle" orientation="vertical" flexItem   /> */}
     <Select 
   value={type}
   onChange={onChange}
@@ -79,7 +125,7 @@ mb:'6px'
                   },
               }} 
               size="small"
-              IconComponent={() => <KeyboardArrowDownIcon />}
+              IconComponent={KeyboardArrowDownIcon}
               defaultValue={'true'}
               displayEmpty
               >
@@ -87,7 +133,7 @@ mb:'6px'
                 <MenuItem value='false'>g</MenuItem>
                 
               </Select>
-    </Box>
+    </Box> */}
     </Box>
   )
 }

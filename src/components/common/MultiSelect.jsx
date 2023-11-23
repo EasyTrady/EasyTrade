@@ -36,6 +36,15 @@ const MultiSelect = ({
   SelectProps = {},
   ...rest
 }) => {
+  const MenuProps = {
+    PaperProps: {
+      sx: {
+        maxHeight: "200px",
+        overflowY: "auto",
+       backgroundColor:"white !important"
+      },
+    }
+  };
   return (
     <Box 
     // sx={{ width: "100%",
@@ -92,6 +101,7 @@ mb:'6px'
           : selected;
       }
     }}
+    MenuProps={MenuProps}
     IconComponent={() => <KeyboardArrowDownIcon fontSize="32px" />}
     sx={{
         pl:1,

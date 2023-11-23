@@ -18,7 +18,7 @@ import AddProductTitle from "./AddProductTitle";
 import Image from "../../assets/images/Image.png";
 function PictureField({ accept, label, placeholder, onChange, value,productName,categories,description, ...rest }) {
   const ref = useRef(null);
-  const [avatarUrl, setAvatarUrl] = React.useState(null);
+  const [avatarUrl, setAvatarUrl] = React.useState(Boolean(value)==false?null:value);
   const handleAvatarChange = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -38,12 +38,16 @@ function PictureField({ accept, label, placeholder, onChange, value,productName,
     setAvatarUrl(null);
     onChange();
   };
+  useEffect(()=>{
+    if(Boolean(value)){setAvatarUrl(value)}
+    
+  },[value])
   return (
     <Box sx={{ display: "flex", flexDirection: "column", background: "#fff", borderRadius: "8px" }}>
       <AddProductTitle title={"Product main image*"} />
       <Container sx={{ mt: "24px", mb: "18px" }}>
         <Grid item>
-          <Grid container >
+          <Grid container gap="20px">
             <Grid item md={4}>
               {avatarUrl ? (
                 <Box sx={{position:'relative'}}>
@@ -122,7 +126,7 @@ function PictureField({ accept, label, placeholder, onChange, value,productName,
                 </Box>
               )}
             </Grid>
-            <Grid item md={8}>
+            <Grid item md={6}>
               <Box
                 sx={{
                   display: "flex",
@@ -137,7 +141,7 @@ function PictureField({ accept, label, placeholder, onChange, value,productName,
                   alignItems: "flex-start",
                   flexDirection: "row",gap:'10px'}}>
                 {categories.map((cat)=>(
-                <Box key={cat}  sx={{width: 'fit-content',p:1,
+                <Box key={cat?.id}  sx={{width: 'fit-content',p:1,
                 borderRadius:'8px',
                   height: '24px',background:'#FFE5D3',fontFamily: 'Inter',
                   fontSize: '10px',
@@ -149,7 +153,7 @@ function PictureField({ accept, label, placeholder, onChange, value,productName,
                   alignItems:'center',
                   justifyContent:'center'
                   
-                  }}>{cat||"category"}</Box>
+                  }}>{cat?.name||"category"}</Box>
               ))}
               </Box>
                 <Typography
