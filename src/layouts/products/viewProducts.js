@@ -63,8 +63,9 @@ function Products({ absolute, light, isMini }) {
   }
   function onEdit(row,newRow) {
     console.log(row,newRow);
-    navigate(`/${sub_domain}/dashboard/products/addnewproduct`,{state:{id:row,dataRow:newRow}})
-   
+    localStorage.setItem('productId', row);
+
+    navigate(`/${sub_domain}/dashboard/products/addnewproduct`,{state:{id:row}})
   }
   // let [rows, setRows] = useState([])
 
@@ -156,7 +157,7 @@ function Products({ absolute, light, isMini }) {
                                 backgroundColor: (theme) => theme.palette.purple.middle
                             }, padding: "7px 16px 7px 16px"
                         }}
-                        onClick={() => navigate(`/${sub_domain}/dashboard/products/addnewproduct`)}
+                        onClick={() => {navigate(`/${sub_domain}/dashboard/products/addnewproduct`); localStorage.removeItem('productId');}}
                     >
                         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                         &nbsp;Add new product
@@ -184,7 +185,7 @@ function Products({ absolute, light, isMini }) {
 
           onDialog={onEdit}
 
-          // onEdit={()=>{}}
+          onDelete={()=>{}}
 
           checkboxSelection={true}
           onRowClick={(e,row) => {

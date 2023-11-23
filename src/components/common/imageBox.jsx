@@ -1,7 +1,8 @@
 import { Box, Button, Typography } from "@mui/material";
 import SoftAvatar from "components/SoftAvatar";
 import SoftButton from "components/SoftButton";
-import React from "react";
+import React,{useEffect} from "react";
+import PropTypes from "prop-types";
 import productImage from "../../assets/images/ivana-square.jpg";
 import image from '../../assets/images/icons/image.svg'
 // eslint-disable-next-line react/prop-types
@@ -28,12 +29,21 @@ const ImageBox = ({ main_image, onChange }) => {
   const handelDeleteImage = (selectedImageIndex) => {
     // Delete the selected image from the images array
     
-    const updatedImages = mainImages.filter((image, index) => index !== selectedImageIndex);
+    const updatedImages = mainImages.filter((image, index) => index != selectedImageIndex);
   
     // Update the state with the new images array
     setMainImages(updatedImages);
-    onChange()
+    onChange(updatedImages)
   };
+  useEffect(()=>{
+    
+    if(Array.isArray(main_image)){
+      setMainImages(main_image?.map((ele)=>ele.image))
+
+    }
+  },[
+    main_image
+  ])
   return (
     <Box
       sx={{
@@ -245,3 +255,7 @@ const ImageBox = ({ main_image, onChange }) => {
 };
 
 export default ImageBox;
+ImageBox.propTypes={
+  main_image:PropTypes.any,
+    onChange: PropTypes.func
+}

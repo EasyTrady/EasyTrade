@@ -181,5 +181,7 @@
 "Shoppingcost":"Shopping cost",
 "Customerdetails":"Customer details",
 "Name":"name",
-"Address":"Address"
+"Address":"Address",
+"country":"country",
+"PaymentMethod":"Payment Method"
 }

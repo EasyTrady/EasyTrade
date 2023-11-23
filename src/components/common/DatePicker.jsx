@@ -6,15 +6,19 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TextField } from '@mui/material';
+import {useEffect} from 'react';
 
 export default function DatePickerField({value,onChange}) {
-  const [date, setDate] = React.useState(dayjs('2022-04-17'));
-
+  const [date, setDate] = React.useState(dayjs(value));
+useEffect(()=>{
+  setDate(dayjs(value))
+  // console.log(dayjs(value))
+},[value])
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
   inputFormat="YYYY-MM-DDThh:mm[:ss[.uuuuuu]][+HH:MM|-HH:MM|Z]"
-  value={value}
+  value={date}
   onChange={onChange}
   renderInput={(params) => <TextField {...params} fullWidth  sx={{idth:'100%'}}/>}  
   sx={{width:'100%'}}

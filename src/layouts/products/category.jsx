@@ -41,7 +41,7 @@ function Category({ absolute, light, isMini }) {
             headerAlign: 'left',
             renderCell: (params) => {
                 const { row } = params;
-                return (<Stack direction={"row"} >
+                return (<Stack direction={"row"} alignItems={"center"}>
                     <SoftBox sx={{width:"64px",height:"64px",borderRadius:"8px"}}><img src={row.image} style={{width:"100%",borderRadius:"8px"}}/></SoftBox>
                     <Typography component={"p"} sx={{ fontSize: "14px",marginX:"10px" }}>{row.name}</Typography>
                     {/* <Typography component={"a"} sx={{ color: (theme) => theme.palette.grey[500], fontSize: "0.8rem", cursor: "pointer" }} onClick={() => navigate(`/${shop_name}/dashboard/attribute/${row?.id}`)}>view</Typography> */}
@@ -81,7 +81,7 @@ function Category({ absolute, light, isMini }) {
                 const { row } = params;
                 return (<Stack direction={"row"} >
                    
-                    {!row.is_root_node&&<Stack direction={"row"} >
+                    {!row.is_root_node&&<Stack direction={"row"} alignItems={"center"}>
                     <SoftBox sx={{width:"64px",height:"64px",borderRadius:"8px"}}><img src={row.parent.image} style={{width:"100%",borderRadius:"8px"}}/></SoftBox>
                     <Typography component={"p"} sx={{ fontSize: "14px",marginX:"10px" }}>{row.parent.name}</Typography>
                     {/* <Typography component={"a"} sx={{ color: (theme) => theme.palette.grey[500], fontSize: "0.8rem", cursor: "pointer" }} onClick={() => navigate(`/${shop_name}/dashboard/attribute/${row?.id}`)}>view</Typography> */}

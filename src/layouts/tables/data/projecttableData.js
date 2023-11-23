@@ -103,10 +103,10 @@ export const ProductTableData =() =>{
               // editable: true,
               renderCell:(params)=>{
                 const { row } = params;
-                row?.categories?.map((cat)=>(
-                  <span key={cat?.id}>{cat?.name}</span>
-                  
-                ))
+                let list=row?.categories?.map((cat)=>(cat?.name)).join(",")
+                 
+                 return <span >{list}</span>
+                
               }
             },
             {
