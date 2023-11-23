@@ -173,10 +173,12 @@ const FirebaseLogin = ({ ...others }) => {
           }}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-          <form noValidate onSubmit={handleSubmit} {...others}>
+           <Box sx={{justifyContent:'center',alignItems:'center',textAlign:'center'}}>
+
+          <form noValidate onSubmit={handleSubmit} {...others} >
             {console.log(values)}
            <FormControl
-              fullWidth
+              
               error={Boolean(touched.email && errors.email)}
               sx={{ ...theme.typography.customInput, marginY: '15px', 
             }}
@@ -184,7 +186,10 @@ const FirebaseLogin = ({ ...others }) => {
               <TextField
               variant='outlined'
                 sx={{
-                  direction: 'rtl'
+                  direction: 'rtl',
+                  width:'360px',
+                  marginRight: 'auto',
+                  
                 }}
                 name="email"
                 value={values.email}
@@ -211,7 +216,6 @@ const FirebaseLogin = ({ ...others }) => {
             </FormControl>
 
             <FormControl
-              fullWidth
               error={Boolean(touched.password && errors.password)}
               sx={{ ...theme.typography.customInput, marginY: '15px' }}
             >
@@ -249,12 +253,15 @@ const FirebaseLogin = ({ ...others }) => {
                 variant='outlined'
                   sx={{
                     direction: 'rtl',
-                    width:'100%',
+                    width:'360px',
+                    marginRight: 'auto',
+                    
                   }}
                   name="password"
                   value={values.password}
                   type={showPassword ? 'text' : 'password'}
                   placeholder="كلمة المرور"
+                  
                   onBlur={handleBlur}
                 onChange={handleChange}
                 ></TextField>
@@ -270,7 +277,7 @@ const FirebaseLogin = ({ ...others }) => {
                     onClick={handleClickShowPassword}
                     onMouseDown={handleMouseDownPassword}
                     edge="end"
-                    size="large"
+                    sx={{color:'#344054'}}
                   >
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
@@ -285,6 +292,7 @@ const FirebaseLogin = ({ ...others }) => {
             </FormControl>
             <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
               <FormControlLabel
+              sx={{width:'360px', marginRight: 'auto',}}
                 control={
                   <Checkbox
                     checked={checked}
@@ -292,13 +300,14 @@ const FirebaseLogin = ({ ...others }) => {
                     name="checked"
                     color="primary"
                   />
+              
                 }
                 label="تذكرني"
               />
               <Typography
                 variant="subtitle1"
                 color="secondary"
-                sx={{ textDecoration: 'none', cursor: 'pointer' }}
+                sx={{  cursor: 'pointer',color:'#5D449B',fontFamily:'Cairo',fontSize:'14px',fontWeight:500,paddingRight:'100px' }}
               >
                 هل نسيت كلمة المرور ؟
               </Typography>
@@ -313,7 +322,7 @@ const FirebaseLogin = ({ ...others }) => {
               <AnimateButton>
                 <Button
                   sx={{ borderRadius: '12PX', padding: '10px, 18px, 10px, 18px' ,
-                  backgroundColor:'#5D449B',color:'#FFFFFF',
+                  backgroundColor:'#5D449B',color:'#FFFFFF', width:'360px',
                   '&:hover': {
                     backgroundColor: '#5D449B',
                   },
@@ -334,6 +343,9 @@ const FirebaseLogin = ({ ...others }) => {
               </AnimateButton>
             </Box>
           </form>
+                      </Box>
+
+
         )}
       </Formik>
       <Grid item xs={12}>
@@ -349,6 +361,7 @@ const FirebaseLogin = ({ ...others }) => {
           <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
         </Box>
       </Grid>
+      <Box sx={{justifyContent:'center',alignItems:'center',textAlign:'center'}}>
       <Grid item xs={12}>
         <AnimateButton>
           <Button
@@ -363,6 +376,7 @@ const FirebaseLogin = ({ ...others }) => {
               borderColor: '#D0D5DD',
               padding: '10px 16px 10px 16px',
               marginTop: '20px',
+              width:'360px',
               borderRadius: '12px',
               '&:hover': {
                 backgroundColor: theme.palette.grey[50] ,
@@ -384,6 +398,7 @@ const FirebaseLogin = ({ ...others }) => {
           </Button>
         </AnimateButton>
       </Grid>
+      </Box>
       <ToastContainer />
       {signInResponse.failAlert}
       {ShopInfoResponse.failAlert}
