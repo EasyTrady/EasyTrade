@@ -12,18 +12,7 @@ import {
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 import styled from "@emotion/styled";
-const CustomTextField = styled(TextField)({
-  "& .MuiSelect-root": {
-    padding: "0 !important",
-    height: "40px", // Adjust the height as needed
-  },
-  "& .MuiSelect-root:focus": {
-    backgroundColor: "yellow", // Change the background color when focused
-  },
-  "& .MuiSelect-icon": {
-    color: "red", // Change the color of the dropdown arrow icon
-  },
-});
+
 const MultiSelect = ({
   variant = null,
   isPending = false,

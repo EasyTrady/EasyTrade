@@ -63,7 +63,7 @@ const AddProductFetures = ({handleChange}) => {
         //   },
         //   output: "object",
         // });
-
+0
         // setInvalid(responseBody);
         resetControls("");
       });

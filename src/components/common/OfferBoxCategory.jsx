@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Box, Container, Grid, InputAdornment, MenuItem, Typography } from "@mui/material";
 import React, { useState } from "react";
 import AddProductTitle from "./AddProductTitle";
@@ -12,33 +11,33 @@ import useRequest from "hooks/useRequest";
 import { PRODUCTS } from "data/api";
 import SelectField from "./SelectField";
 import { useDispatch, useSelector } from "react-redux";
-import MultiSelect from "./MultiSelect";
+import { CATEGORY } from "data/api";
 
 // eslint-disable-next-line react/prop-types
-const OfferBox = ({ title,discount,value,onChange,type,typeChange,handleValueChange,select,muliple }) => {
+const OfferBoxCategory = ({ title,discount,value,onChange,type,typeChange,handleValueChange }) => {
   
-  const products=useSelector((state)=>state.products.value)
+  const category=useSelector((state)=>state.category.value)
   const [viewProduct,setViewProduct]=useState()
   let Token = localStorage.getItem("token");
   const dispatch=useDispatch()
-  const [RequestGetProducts, ResponseGetProducts] = useRequest({
-    path: PRODUCTS,
+  const [RequestGetCategories, ResponseGetCategories] = useRequest({
+    path: CATEGORY,
     method: "get",
     Token: `Token ${Token}`,
   });
- const getProducts=()=>{
-  RequestGetProducts({
+ const getCategories=()=>{
+    RequestGetCategories({
     onSuccess: (res) => {
-      // console.log(res.data)
-      dispatch({ type: "products/set", payload: { ...res.data } });
+       console.log(res.data)
+      dispatch({ type: "category/set", payload: res?.data  });
     },
   });
  }
 function handleDeleteProduct(selected){
   
-  viewProduct.filter((product)=>product.id !==selected)
+//   viewProduct.filter((product)=>product.id !==selected)
 }
-// console.log(products.results?.filter((product) => value.includes(product.id)))
+
   return (
     <Box sx={{ borderRadius: "8px", background: "#fff",width:'100%',pb:'12px' }}>
       {Boolean(title)&&
@@ -54,57 +53,33 @@ function handleDeleteProduct(selected){
         handleValueChange={handleValueChange}
         />
         }
-        {Boolean(select)&&
         <SelectField
           variant="outlined"
           placeholder={"Type here…"}
-          label="Choose product under the offer"
-          onOpen={getProducts}
+          label="Choose category under the offer"
+          onOpen={getCategories}
           value={value}
           onChange={onChange}
           renderValue={(selected)=>{
-            return products.results.find((product)=>product.id===selected).name
+            return category.find((category)=>category.id===selected)?.name
           }}
           sx={{ width: "100%" }}
         >
           {
-            products?.results?.map((product)=>(
-              <MenuItem key={product.id} value={product.id}>{product.name}</MenuItem>
+            category?.map((category)=>(
+              <MenuItem key={category?.id} value={category?.id}>{category?.name}</MenuItem>
             ))
           }
         </SelectField>
-        }
-        {Boolean(muliple)&&
-         <MultiSelect
-         variant="outlined"
-         placeholder={"Type here…"}
-         label="Choose product under the offer"
-         onOpen={getProducts}
-         value={value}
-         onChange={onChange}
-         renderValue={(selected)=>{
-          let resultproduct=products.results?.filter((product) => selected.includes(product.id))
-                return resultproduct.map((ele)=>ele.name).join(" , ")
-         }}
-         sx={{ width: "100%" }}
-       >
-         {
-           products?.results?.map((product)=>(
-             <MenuItem key={product.id} value={product.id}>{product.name}</MenuItem>
-           ))
-         }
-       </MultiSelect>
-        }
-
         <Box>
           <Grid item>
             {
             
-            products?.results?.filter((product)=>product.id===value?value:Array.isArray(value)&&value.includes(product.id)).map((product)=>(
-            <Grid key={product.id} container >
+            category?.filter((category)=>category?.id===value).map((category)=>(
+            <Grid key={category?.id} container >
               
               <Grid md={1.5} pl={1}>
-                <img src={product.main_image} alt="product" style={{ width: "44px", height: "44px",borderRadius:'8px' }} />
+                <img src={category?.image} alt="product" style={{ width: "44px", height: "44px",borderRadius:'8px' }} />
               </Grid>
               <Grid md={9.5}>
                 <Typography
@@ -117,7 +92,7 @@ function handleDeleteProduct(selected){
                     pt:1
                   }}
                 >
-                  {product.name}
+                  {category?.name}
                 </Typography>
               </Grid>
               <Grid md={1}>
@@ -134,4 +109,4 @@ function handleDeleteProduct(selected){
   );
 };
 
-export default OfferBox;
+export default OfferBoxCategory;
