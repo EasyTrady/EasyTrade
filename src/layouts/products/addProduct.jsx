@@ -23,6 +23,8 @@ import "react-quill/dist/quill.snow.css";
 import { validate } from "uuid";
 import useControls from "hooks/useControls";
 import input from "assets/theme/components/form/input";
+import TwoArrow from 'examples/Icons/TwoArrow';
+
 import inputBase from "assets/theme/components/form/inputBase";
 import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
 import CategoryIcon from "@mui/icons-material/Category";
@@ -51,6 +53,7 @@ import filter from "utils/ClearNull";
 import PictureField from "components/common/PictureField";
 import SelectValueWeight from "components/common/SelectValueWeight";
 import MultiSelect from "components/common/MultiSelect";
+import compare from "utils/compare";
 const ReactQuill = require("react-quill");
 
 
@@ -58,12 +61,14 @@ const AddProduct = ({ light, isMini,handleChange }) => {
 
   const location = useLocation();
   const { state } = location;
-
+  let productId=localStorage.getItem('productId');
   const category = useSelector((state) => state.category.value);
   const dispatch = useDispatch();
   const route = useLocation().pathname.split("/").slice(1);
   const { borderWidth, borderColor } = borders;
   const [Value, setValue] = useState("");
+  const [product, setProduct] = useState(null);
+
   let Token = localStorage.getItem("token");
 
   const modules = {
@@ -80,8 +85,8 @@ const AddProduct = ({ light, isMini,handleChange }) => {
     ],
   };
   //   form status control
-  const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
-    { control: "main_image", value: {}, isRequired: false },
+  const [{ controls, invalid, required }, { setControl, resetControls, validate ,setInvalid}] = useControls([
+    { control: "main_image", value: "", isRequired: false },
     {
       control: "name",
       value: "",
@@ -149,15 +154,17 @@ const AddProduct = ({ light, isMini,handleChange }) => {
       isRequired: false,
     },
     { control: "require_shipping", value: false, isRequired: false },
-    { control: "require_shipping", value: "", isRequired: false },
-    { control: "maximum_order_quantity", value: "", isRequired: false },
+    // { control: "require_shipping", value: "", isRequired: false },
+    { control: "maximum_order_quanitity", value: "", isRequired: false },
+    // { control: "minimum_stock_quantity", value: "", isRequired: false },
+
     { control: "description", value: "", isRequired: false },
-    { control: "product_categories", value: [], isRequired: false },
-    { control: "custom_shipping_price", value: "", isRequired: false },
+    { control: "categories", value: [], isRequired: false },
+    // { control: "custom_shipping_price", value: "", isRequired: false },
     { control: "dimensions", value: "", isRequired: false },
-    { control: "weight", value: "", isRequired: false },
+    // { control: "weight", value: "", isRequired: false },
     { control: "in_taxes", value: false, isRequired: false },
-    { control: "is_piblished", value: false ,isRequired: false },
+    { control: "is_published", value: false ,isRequired: false },
     { control: "weight", value: "", isRequired: false },
     { control: "weight_unit", value: "", isRequired: false },
   ]);
@@ -168,6 +175,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
   });
 
   const getCategory = () => {
+    
     categoryRequest({
       onSuccess: (res) => {
         console.log(res.data);
@@ -182,83 +190,135 @@ const AddProduct = ({ light, isMini,handleChange }) => {
     Token: `Token ${Token}`,
     contentType: "multipart/form-data",
   });
+  const [patchProductRequest, patchProductResponce] = useRequest({
+    path: PRODUCTS,
+    method: "patch",
+    Token: `Token ${Token}`,
+    contentType: "multipart/form-data",
+  });
+  const [getProductRequest, getProductResponce] = useRequest({
+    path: PRODUCTS,
+    method: "get",
+    Token: `Token ${Token}`,
+    // contentType: "multipart/form-data",
+  });
   function handleSubmit() {
     validate()?.then((output) => {
       console.log(output);
       if (!output.isOk) return;
-      AddProductRequest({
-        body: filter({
-          obj: {
-            product_categories: [...controls.product_categories] || "12",
-            sku: controls.sku,
-            mpn: controls.mpn,
-            gtin: controls.gtin,
-            name: controls.name,
-            description: controls.description,
-            price: controls.price,
-            main_image: controls.main_image,
-            discount: controls?.discount,
-            discount_start_date: controls?.discount_start_date?.toISOString(),
-            discount_end_date: controls?.discount_end_date?.toISOString(),
-            is_percentage_discount: controls.is_percentage_discount,
-            purchase_price: controls.purchase_price,
-            // custom_shipping_price: controls.custom_shipping_price,
-            maximum_order_quantity: controls.maximum_order_quantity,
-            is_piblished: controls.is_piblished,
-            in_taxes: controls.in_taxes,
-            require_shipping: controls.require_shipping,
-            quantity: controls.quantity,
-            weight: controls.weight,
-            weight_unit: controls.weight_unit,
-            dimensions: controls.dimensions,
-          },
-          output: "formData",
-        }),
-        onSuccess: (res) => {
-          localStorage.setItem('productId', res.data.id);
-
+      if(Boolean(productId)){
+        let  result= compare(
+          [
+          [controls.name,product.name,"name"],
+          [controls.main_image,product.main_image,"main_image"],
+          [controls.require_shipping,product.require_shipping,"require_shipping"],
+         [controls.quantity,product.quantity,"quantity"],
+         [controls.price,product.price,"price"],
+         [controls.sku,product.sku,"sku"],
+         [controls.mpn,product.mpn,"mpn"],
+         [controls.gtin,product.gtin,"gtin"],
+         [controls.purchase_price,product.purchase_price,"purchase_price"],
+         [controls.is_percentage_discount,product.is_percentage_discount,"is_percentage_discount"],
+         [controls.discount,product.discount,"discount"],
+         [controls.discount_start_date,product.discount_start_date,"discount_start_date"],
+         [controls.discount_end_date,product.discount_end_date,"discount_end_date"],
+         [controls.require_shipping,product.require_shipping,"require_shipping"],
+         [controls.maximum_order_quanitity,product.maximum_order_quanitity,"maximum_order_quanitity"],
+        // // //  [controls.minimum_stock_quantity,product.minimum_stock_quantity,"minimum_stock_quantity"],
+         [controls.description,product.description,"description"],
+         [String(controls.categories),String(product.categories),"categories"],
+        //  [controls.custom_shipping_price,product.custom_shipping_price,"custom_shipping_price"],
+         [controls.dimensions,product.dimensions,"dimensions"],
+         [controls.weight,product.weight,"weight"],
+         [controls.in_taxes,product.in_taxes,"in_taxes"],
+         [controls.is_published,product.is_published,"is_published"],
+         [controls.weight_unit,product.weight_unit,"weight_unit"],
+        ],false
+      )
+      patchProductRequest({
+        id:productId,
+        body:result.array,
+        onSuccess:(res)=>{
           handleChange(undefined,1,res.data.id)
-          dispatch({ type: "products/addItem", payload: res?.data });
-          localStorage.setItem('productId', res.data.id);
-          console.log(res.data, controls);
-          if(index===1){
-            return value===index
-          }
-          resetControls("");
-        },
-      }).then((res) => {
-        let response = res?.response?.data;
-        console.log(res);
-        const responseBody = filter({
-          obj: {
-            product_categories: response?.product_categories,
-            sku: response?.sku,
-            mpn: response?.mpn,
-            gtin: response?.gtin,
-            name: response?.name,
-            description: response?.description,
-            price: response?.price,
-            main_image: response?.main_image,
-            discount: response?.discount,
-            discount_start_date: response?.discount_start_date,
-            discount_end_date: response?.discount_end_date,
-            is_percentage_discount: response?.is_percentage_discount,
-            purchase_price: response?.purchase_price,
-            // custom_shipping_price: response?.custom_shipping_price,
-            maximum_order_quantity: response?.maximum_order_quantity,
-            is_piblished: response?.is_piblished,
-            in_taxes: response?.in_taxes,
-            require_shipping: response?.require_shipping,
-            quantity: response?.quantity,
-            weight: response?.weight,
-            dimensions: response?.dimensions,
+        }
+      })
+      }else{
+        AddProductRequest({
+          body: filter({
+            obj: {
+              product_categories: [...controls.categories] || "12",
+              sku: controls.sku,
+              mpn: controls.mpn,
+              gtin: controls.gtin,
+              name: controls.name,
+              description: controls.description,
+              price: controls.price,
+              main_image: controls.main_image,
+              discount: controls?.discount,
+              discount_start_date: controls?.discount_start_date.toISOString(),
+              discount_end_date: controls?.discount_end_date.toISOString(),
+              is_percentage_discount: controls.is_percentage_discount,
+              purchase_price: controls.purchase_price,
+              //  custom_shipping_price: controls.custom_shipping_price,
+              maximum_order_quanitity: controls.maximum_order_quanitity,
+              is_published: controls.is_published,
+              in_taxes: controls.in_taxes,
+              require_shipping: controls.require_shipping,
+              quantity: controls.quantity,
+              weight: controls.weight,
+              weight_unit: controls.weight_unit,
+              dimensions: controls.dimensions
+            },
+            output: "formData",
+          }),
+          onSuccess: (res) => {
+            localStorage.setItem('productId', res.data.id);
+            dispatch({ type: "products/addItem", payload: res?.data });
+ 
+            handleChange(undefined,1,res.data.id)
+            localStorage.setItem('productId', res.data.id);
+            console.log(res.data, controls);
+            if(index===1){
+              return value===index
+            }
+            resetControls("");
           },
-          output: "object",
+        }).then((res) => {
+          let response = res?.response?.data;
+          console.log(res);
+          const responseBody = filter({
+            obj: {
+              categories: response?.categories,
+              sku: response?.sku,
+              mpn: response?.mpn,
+              gtin: response?.gtin,
+              name: response?.name,
+              description: response?.description,
+              price: response?.price,
+              main_image: response?.main_image,
+              discount: response?.discount,
+              discount_start_date: response?.discount_start_date,
+              discount_end_date: response?.discount_end_date,
+              is_percentage_discount: response?.is_percentage_discount,
+              purchase_price: response?.purchase_price,
+              //  custom_shipping_price: response?.custom_shipping_price,
+              maximum_order_quanitity: response?.maximum_order_quanitity,
+              is_published: response?.is_published,
+              in_taxes: response?.in_taxes,
+              require_shipping: response?.require_shipping,
+              quantity: response?.quantity,
+              weight: response?.weight,
+              dimensions: response?.dimensions,
+            },
+            output: "object",
+          });
+ 
+           setInvalid(responseBody);
+        
         });
-
-        // setInvalid(responseBody);
-       
-      });
+      }
+      
+      
     });
   }
 
@@ -273,13 +333,26 @@ const AddProduct = ({ light, isMini,handleChange }) => {
     //         dispatch({ type: "job/set", payload: res.data })
     //     }
     // })
-    if(Boolean(state?.dataRow)){
-        Object.entries(state?.dataRow)?.forEach(([key,value])=>setControl(key,value))
+    if(Boolean(productId)){
+      getProductRequest({
+        id:productId,
+        onSuccess:(res)=>{
+          setProduct(res.data)
+          Object.entries(res.data)?.forEach(([key,value])=> Object.keys(controls).includes(key)? setControl(key,value):null)
+          console.log(controls)
+        }
+      })
+        // Object.entries(state?.dataRow)?.forEach(([key,value])=>setControl(key,value))
 
     }
     // setControl()
    
 }, [state])
+useEffect(()=>{
+  if(category.length==0){
+    getCategory()
+  }
+},[category])
   return (
     <>
       <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
@@ -293,7 +366,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             display="flex"
             flexDirection="column"
             gap={"20px"}
-            sx={{ width: "100%", height: "100%" }}
+            sx={{ width: "100%", height: "100%",position:"relative" }}
           >
             <InputField
               variant="outlined"
@@ -306,6 +379,24 @@ const AddProduct = ({ light, isMini,handleChange }) => {
               helperText={invalid.name}
               sx={input}
             />
+              {/* <SoftButton sx={{
+                            width: "max-content",
+                            padding: "5px",
+                            borderRadius: "50%",
+                            minWidth: "max-content",
+                            minHeight: "max-content",
+                            position: "absolute",
+                            left: "70%",
+                            top: "5rem",
+                            zIndex: 1
+                        }} onClick={() => {
+                            let copyName = controls.english_name;
+                            setControl("english_name", controls.name)
+                            setControl("name", copyName)
+                        }}>
+                            <TwoArrow color={"#959FA3"} size={"16"}/>
+                           
+                        </SoftButton> */}
             <InputField
               variant="outlined"
               placeholder={"English Product"}
@@ -327,24 +418,25 @@ const AddProduct = ({ light, isMini,handleChange }) => {
               helperText={invalid.quantity}
               sx={input}
             />
-            <SoftInput
+            <MultiSelect
             select
               variant="outlined"
               placeholder="category"
-              // label="Category"
+              label="Category"
               isPending={getcategoryResponce.isPending}
               onOpen={getCategory}
               renderValue={(selected) => {
                 // selected.map((ele)=>category.map((elem)=>elem.id).includes(ele))
+                
                 let resultcategory=category?.filter((category) => selected.includes(category.id))
                 return resultcategory.map((ele)=>ele.name).join(" , ")
               }}
-              value={controls.product_categories}
-              onChange={(e) => setControl("product_categories", e.target.value)}
-              required={required.includes("product_categories")}
-              textHelper={controls.product_categories}
-              error={Boolean(invalid.product_categories)}
-              helperText={invalid.product_categories}
+              value={controls.categories.map((ele)=>ele.id?ele.id:ele)}
+              onChange={(e) => setControl("categories", e.target.value)}
+              required={required.includes("categories")}
+              textHelper={controls.categories}
+              error={Boolean(invalid.categories)}
+              helperText={invalid.categories}
               sx={{ width: "100%", fontSize: "14px","& .MuiMenu-paper":{
                 backgroundColor:"white !important"
               } }}
@@ -375,10 +467,10 @@ const AddProduct = ({ light, isMini,handleChange }) => {
               {category?.map((category, index) => (
                 <MenuItem key={`${category.id} ${index}`} value={category.id}>
                   {category?.name}
-                  {console.log(category.id)}
+                  
                 </MenuItem>
               ))}
-            </SoftInput>
+            </MultiSelect>
 
             <Box sx={{ mb: "20px" }}>
               <Typography
@@ -476,6 +568,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             sx={{
               display: "flex",
               justifyContent: "space-between",
+              flexDirection:{lg:'row',md:"column",sm:"column",xs:"column"},
               alignItems: "center",
               gap: "20px",
             }}
@@ -484,16 +577,16 @@ const AddProduct = ({ light, isMini,handleChange }) => {
               variant="outlined"
               label={"Weight*"}
               placeholder={"Weight"}
-              type={controls.weight_unit}
-              value={controls.weight}
+              type={typeof controls.weight === 'object'?String(controls.weight.unit):controls.weight_unit}
+              value={typeof controls.weight === 'object'?String(controls.weight.value):String(controls.weight)}
               onChange={(e) => setControl("weight_unit", e.target.value)}
               handleValueChange={(e) => setControl("weight", e.target.value)}
               required={required.includes("weight")}
               error={Boolean(invalid.weight)}
               helperText={invalid.weight}
-               sx={input}
+               sx={{...input,".MuiOutlinedInput-root":{width:"40vw !important"}}}
               
-            />
+            /> 
             <InputField
               variant="outlined"
               label={"Dimensions (L*W*H)"}
@@ -518,29 +611,29 @@ const AddProduct = ({ light, isMini,handleChange }) => {
               variant="outlined"
               label={"Maximum order quantity*"}
               placeholder={"Maximum order quantity"}
-              value={controls.maximum_quantity}
-              onChange={(e) => setControl("maximum_quantity", e.target.value)}
-              required={required.includes("maximum_quantity")}
-              error={Boolean(invalid.maximum_quantity)}
-              helperText={invalid.maximum_quantity}
+              value={String(controls.maximum_order_quanitity)}
+              onChange={(e) => setControl("maximum_order_quanitity", e.target.value)}
+              required={required.includes("maximum_order_quanitity")}
+              error={Boolean(invalid.maximum_order_quanitity)}
+              helperText={invalid.maximum_order_quanitity}
               sx={input}
             />
 
-            <NumberField
+            {/* <NumberField
               variant="outlined"
               label={"Minimum stock quantity*"}
-              placeholder={"Minimum stock quantity"}
-              value={controls.minimum_quantity}
-              onChange={(e) => setControl("minimum_quantity", e.target.value)}
-              required={required.includes("minimum_quantity")}
-              error={Boolean(invalid.minimum_quantity)}
-              helperText={invalid.minimum_quantity}
+              placeholder={"Minimum stock quantity"} 
+              // value={String(controls.minimum_stock_quantity)}
+              // onChange={(e) => setControl("minimum_stock_quantity", e.target.value)}
+              // required={required.includes("minimum_stock_quantity")}
+              // error={Boolean(invalid.minimum_stock_quantity)}
+              // helperText={invalid.minimum_stock_quantity}
               sx={input}
-            />
+           /> */}
           </Box>
         </Container>
       </Box>
-      <Box sx={{display:'flex',flexDirecton:'row',gap:'20px',width:'100%'}}>
+      <Box sx={{display:'flex',flexDirection:{lg:'row',md:"column",sm:"column",xs:"column"},gap:'20px',width:'100%'}}>
       <Box sx={{ background: "#FFFFFF", borderRadius: "8px", height: "338px",width:'100%', pb: 4, mt: 2.5, }}>
         <AddProductTitle title={"Additional info"} />
         <Container sx={{ display: "flex", flexDirection: "column", gap: "20px", mt: "20px" }}>
@@ -548,7 +641,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             variant="outlined"
             label={"Purchase price"}
             placeholder={"Purchase price"}
-            value={controls?.purchase_price}
+            value={String(controls?.purchase_price)}
             onChange={(e) => setControl("purchase_price", e.target.value)}
             required={required?.includes("purchase_price")}
             error={Boolean(invalid?.purchase_price)}
@@ -561,18 +654,18 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             variant="outlined"
             label={"Product price"}
             placeholder={"99 EGP"}
-            value={controls.price}
+            value={String(controls.price)}
             onChange={(e) => setControl("price", e.target.value)}
             required={required?.includes("price")}
             error={Boolean(invalid?.price)}
             helperText={invalid?.price}
             sx={input}
           />
-          {/* <NumberField
+           {/* <NumberField
             variant="outlined"
             label={"shipping price"}
             placeholder={"99 EGP"}
-            value={controls.custom_shipping_price}
+            value={String(controls.custom_shipping_price)}
             onChange={(e) => setControl("custom_shipping_price", e.target.value)}
             required={required?.includes("custom_shipping_price")}
             error={Boolean(invalid?.custom_shipping_price)}
@@ -580,25 +673,25 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             // icon={{ component: <DnsOutlinedIcon />, direction: "left" }}
             sx={input}
             borderBottom="none"
-          /> */}
+          />  */}
         </Container>
       </Box>
       <Box sx={{ background: "#FFFFFF", borderRadius: "8px", height: "338px",width:'100%', pb: 4, mt: 2.5 }}>
         <AddProductTitle title={"Discount details (Optional)"} />
         <Container sx={{ display: "flex", flexDirection: "column", gap: "20px", mt: "20px" }}>
-          <SelectValue
+           <SelectValue
             variant="outlined"
             label={"Discount"}
             handleValueChange={(e) => setControl("discount", e.target.value)}
             onChange={(e) => setControl("is_percentage_discount", e.target.value)}
-            value={controls.discount}
+            value={String(controls.discount)}
             type={controls.is_percentage_discount}
             required={required.includes("discount")}
             error={Boolean(invalid.discount)}
             helperText={invalid.discount}
             sx={input}
             
-          />
+          /> 
           <Box>
             <Typography
               sx={{
@@ -612,10 +705,10 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             >
               Start date*
             </Typography>
-            <DatePickerField
+             <DatePickerField
               value={controls.discount_start_date}
-              onChange={(e) => setControl("discount_start_date", e)}
-            />
+              onChange={(newvalue) => {setControl("discount_start_date", newvalue);console.log(newvalue)}}
+            /> 
           </Box>
           <Box>
             <Typography
@@ -630,10 +723,10 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             >
               End date*
             </Typography>
-            <DatePickerField
+           <DatePickerField
               value={controls.discount_end_date}
               onChange={(e) => setControl("discount_end_date", e)}
-            />
+            /> 
           </Box>
         </Container>
       </Box>
@@ -671,8 +764,8 @@ const AddProduct = ({ light, isMini,handleChange }) => {
                 label={"Publish on website"}
                 control={
                   <Switch
-                    value={controls.is_piblished}
-                    onChange={(e) => setControl("is_piblished", e.target.checked)}
+                    value={controls.is_published}
+                    onChange={(e) => setControl("is_published", e.target.checked)}
                     
                     color="secondary"
                   />
@@ -708,7 +801,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
               value={controls.main_image}
               onChange={(e) => setControl("main_image",e)}
               productName={controls?.name}
-              categories={controls?.product_categories}
+              categories={controls?.categories}
               description={controls.description}
             />
       </Box>
@@ -716,6 +809,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
         <SoftButton
           type="submit"
           variant="gradient"
+          disabled={Boolean(productId)?patchProductResponce.isPending:AddProductResponce.isPending}
           sx={{
             backgroundColor: (theme) => theme.palette.purple.middle,
             color: "white !important",

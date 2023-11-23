@@ -178,5 +178,7 @@
 "Shoppingcost":"تكلفة التسوق",
 "Customerdetails":"تفاصيل العميل",
 "Name":"اسم",
-"Address":"عنوان"
+"Address":"عنوان",
+"country":"دولة",
+"PaymentMethod":"طريقة دفع"
 }

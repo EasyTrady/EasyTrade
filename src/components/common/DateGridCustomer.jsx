@@ -6,10 +6,10 @@ import * as React from 'react';
 // import AddIcon from '@mui/icons-material/Add';
 import Checkbox from '@mui/material/Checkbox';
 import { useTranslation } from 'react-i18next';
-import EditIcon from '@mui/icons-material/Edit';
+
 import input from "assets/theme/components/form/input";
 import PropTypes from "prop-types";
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -32,6 +32,8 @@ import Select from '@mui/material/Select';
 import SoftButton from "components/SoftButton";
 import MenuCustom from "assets/theme/components/menu";
 import SoftInput from "components/SoftInput";
+import DeleteIcon from "examples/Icons/DeleteIcon";
+import EditIcon from "examples/Icons/EditIcon";
 function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
   checkboxSelection, onEdit,onDialog, onDelete, onBlock,sx, rowsPerPageOptions, notProduct = true, onState,
   onNotify,
@@ -218,7 +220,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
               {onDialog && notProduct && <MenuItem onClick={() => setOpen(null)}>
                 <GridActionsCellItem
                   key={row.id}
-                  icon={<Box><EditIcon /> <span>edit</span></Box>}
+                  icon={<Box sx={{display:"flex",alignItems:"center" }}><EditIcon /> <span>edit</span></Box>}
                   label="Edit"
                   className="textPrimary"
                   onClick={handleDialogClick(row?.id, row)}
@@ -245,10 +247,11 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
                   color="inherit"
                 />
               </MenuItem>}
-              {onDelete && notProduct && <MenuItem onClick={() => setOpen(null)}>
+              {onDelete && notProduct && <MenuItem onClick={() => setOpen(null)} >
                 <GridActionsCellItem
+              
                   key={row.id}
-                  icon={<Box sx={{ color: (theme) => theme.palette.error.main }}><DeleteIcon sx={{ color: (theme) => theme.palette.error.main }} /><span>Delete</span></Box>}
+                  icon={<Box sx={{ color: (theme) => theme.palette.error.main,display:"flex",alignItems:"center" }}><DeleteIcon sx={{ color: (theme) => theme.palette.error.main }} /><span>Delete</span></Box>}
                   label="Delete"
                   onClick={handleDeleteClick(row?.id)}
                   color="inherit"

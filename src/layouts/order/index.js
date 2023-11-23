@@ -36,7 +36,7 @@ function Order({ absolute, light, isMini }) {
             field: 'id',
             headerName: 'order ID',
             type: 'text',
-            width: 100,
+            width: 200,
             align: 'left',
             headerAlign: 'left',
             renderCell: (params) => {
@@ -66,13 +66,13 @@ function Order({ absolute, light, isMini }) {
             editable: false,
             filterable: false,
             sortable: false, disableColumnMenu: true,
-            // renderCell: (params) => <Typography sx={{color:"#1B53C5",fontSize:"14px"}}>{moment(params.row.created_at).format("YYYY/MM/DD")}</Typography>
+            renderCell: (params) => <Typography sx={{color:"#1B53C5",fontSize:"14px"}}>{params.row.customer.full_name}</Typography>
         },
         {
             field: 'status',
             headerName: 'Type',
             type: 'text',
-            width:300,
+            width:200,
             align: 'left',
             headerAlign: 'left',
             editable: false,
@@ -97,16 +97,36 @@ function Order({ absolute, light, isMini }) {
             }}>{params.row.status}</Typography>:<></>
         },
             {
-                field: 'total_price',
+                field: 'total',
                 headerName: 'Total Price',
                 type: 'text',
-                width:200,
+                width:100,
                 align: 'left',
                 headerAlign: 'left',
                 editable: false,
                 filterable: false,
                 sortable: false, disableColumnMenu: true,
-        }
+        },{
+            field: 'sub_total',
+            headerName: 'sub total',
+            type: 'text',
+            width:100,
+            align: 'left',
+            headerAlign: 'left',
+            editable: false,
+            filterable: false,
+            sortable: false, disableColumnMenu: true,
+    },{
+        field: 'discount',
+        headerName: 'discount',
+        type: 'text',
+        width:100,
+        align: 'left',
+        headerAlign: 'left',
+        editable: false,
+        filterable: false,
+        sortable: false, disableColumnMenu: true,
+}
     ]
     let [rows,setRows]=useState([])
     let dispatch = useDispatch()

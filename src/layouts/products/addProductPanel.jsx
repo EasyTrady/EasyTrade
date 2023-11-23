@@ -23,7 +23,7 @@ export default function AddProductPanel() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <Container sx={{ mt:4 }}>
+      <Box sx={{ mx:4,my:4 }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" sx={{fontFamily: 'Inter',
  fontSize:'18px',
  fonrWeight:600,
@@ -32,6 +32,7 @@ letterSpacing: '0em',
 textAlign: 'left',
 background:'transparent',
 color:'#5D449B',
+width:{lg:"50%",md:"50%",sm:"100%",xs:"100%"},
 '.MuiTabs-indicator': {
   backgroundColor: '#transparent',
   height: '100%',
@@ -39,13 +40,17 @@ color:'#5D449B',
   color:'#5D449B !important',
   zIndex: -1,
  
+},".MuiTab-root":{
+  justifyContent:"flex-start"
+},".MuiTab-root:visited":{
+  color:"#5D449B !important"
 }
 }}>
-          <Tab label="Product details  (1st step)" {...a11yProps(0)} />
-          <Tab label="Product images (2nd step)" {...a11yProps(1)} />
-          <Tab label="Attributes (3rd step)" {...a11yProps(2)} />
+          <Tab label="Product details  (1st step)" {...a11yProps(0)}sx={{color:value==0&&"#5D449B !important"}} />
+          <Tab label="Product images (2nd step)" {...a11yProps(1)}sx={{color:value==1&&"#5D449B !important"}} />
+          <Tab label="Attributes (3rd step)" {...a11yProps(2)}sx={{color:value==2&&"#5D449B !important"}} />
         </Tabs>
-      </Container>
+      </Box>
       <CustomTabPanel value={value} index={0}>
       
 

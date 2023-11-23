@@ -6,7 +6,9 @@ import Breadcrumbs from 'examples/Breadcrumbs'
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import PropTypes from "prop-types";
 import moment from 'moment';
+import SoftInput from 'components/SoftInput'
 import Accordion from '@mui/material/Accordion';
+import useControls from "hooks/useControls";
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -15,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import useRequest from 'hooks/useRequest'
 import { ORDERS,CUSTOMER } from "data/api"
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import {
     Collapse, Dialog, Icon, InputLabel, List, ListItemButton,
     ListItemIcon, ListItemText, MenuItem, Select, Stack, TextField,
@@ -33,7 +36,11 @@ function DetailOrder({ absolute, light, isMini }) {
     let orders = useSelector((state) => state.orders.value)
     let [order, setOrder] = useState({})
     let [Customer, setCustomer] = useState(null)
-
+    const [{ controls, invalid, required }, { setControl, resetControls, validate ,setInvalid}] = useControls([
+        {
+            control: "status", value: "return", isRequired: false 
+    }
+])
     const [OrderByIdRequest, getOrderByIdResponce] =
         useRequest({
             path: ORDERS,
@@ -45,6 +52,13 @@ function DetailOrder({ absolute, light, isMini }) {
         useRequest({
             path: CUSTOMER,
             method: "get",
+            Token: `Token ${Token}`,
+
+        });
+        const [returnOrderRequest, patchreturnOrderResponce] =
+        useRequest({
+            path: ORDERS,
+            method: "patch",
             Token: `Token ${Token}`,
 
         });
@@ -75,6 +89,29 @@ function DetailOrder({ absolute, light, isMini }) {
         }
 
     }, [order.customer])
+    useEffect(() => {
+        
+        if (controls.status=="return") {
+            returnOrderRequest({
+                id:id+"/return_order",
+                onSuccess: (res) => {
+                    console.log(res.data)
+
+                    setControl("status","return")
+                }
+            })
+        }else if(controls.status=="cancel"){
+            returnOrderRequest({
+                id:id+"/cancel",
+                onSuccess: (res) => {
+                    console.log(res.data)
+
+                    setControl("status","cancel")
+                }
+            })
+        }
+
+    }, [controls.status])
     return (
         <DashboardLayout >
             <DashboardNavbar />
@@ -82,8 +119,8 @@ function DetailOrder({ absolute, light, isMini }) {
                 <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
                     <Breadcrumbs icon="home" title={route[route?.length - 1]} route={route} light={light} />
                 </SoftBox>
-                <Stack direction={"row"} sx={{ gap: "24px" }}>
-                    <SoftBox sx={{ width: "70%", backgroundColor: (theme) => theme.palette.white.main, borderRadius: "8px" }}>
+                <Stack direction={"row"} sx={{ gap: "24px" ,flexDirection:{lg:"row",md:"row",sm:"column",xs:"column"}}}>
+                    <SoftBox sx={{ width: {lg:"70%",md:"70%",sm:"100%",xs:"100%"}, backgroundColor: (theme) => theme.palette.white.main, borderRadius: "8px" }}>
                         <SoftBox sx={{
                             display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 24px 12px 24px",
                             borderBottom: "1px solid gray", borderColor: (theme) => theme.palette.grey[500]
@@ -179,16 +216,33 @@ function DetailOrder({ absolute, light, isMini }) {
                         </SoftBox>
                     </SoftBox>
 
-                    <SoftBox sx={{ width: "25%", backgroundColor: (theme) => theme.palette.white.main, borderRadius: "8px" }}>
+                    <SoftBox sx={{ width: {lg:"25%",md:"25%",sm:"100%",xs:"100%"}, backgroundColor: (theme) => theme.palette.white.main, borderRadius: "8px" }}>
                         <SoftBox sx={{
                             display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 24px 12px 24px",
                             borderBottom: "1px solid gray", borderColor: (theme) => theme.palette.grey[500], fontSize: "16px"
                         }}>
                             {t("Activity")}
                         </SoftBox>
+                        <Container>
+                        <Stack alignItems="center"justifyContent="center">
+                            <SoftBox>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="192" viewBox="0 0 11 192" fill="none">
+  <circle cx="5.5" cy="5" r="5" fill="#F09343"/>
+  <circle cx="5.5" cy="96" r="5" fill="#F2BD00"/>
+  <circle cx="5.5" cy="187" r="5" fill="#F09343"/>
+  <line x1="5.75" y1="17" x2="5.75" y2="84" stroke="#959595" strokeWidth="0.5"/>
+  <line x1="5.75" y1="108" x2="5.75" y2="175" stroke="#959595" strokeWidth="0.5"/>
+</svg>
+                            </SoftBox>
+                            <SoftBox>
+                            </SoftBox>
+                        </Stack>
+
+</Container>
                     </SoftBox>
                 </Stack>
-                <Accordion sx={{ marginY: "24px", width: "70%", boxShadow: "unset", borderRadius: "8px" }}>
+                <Stack direction={"row"} sx={{ gap: "24px" ,mt:4,flexDirection:{lg:"row",md:"row",sm:"column",xs:"column"},alignItems:"center"}}>
+                <Accordion sx={{ marginY: "24px", width: {lg:"70%",md:"70%",sm:"100%",xs:"100%"}, boxShadow: "unset", borderRadius: "8px",alignSelf:"flex-start" }}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
@@ -198,28 +252,103 @@ function DetailOrder({ absolute, light, isMini }) {
                         <Typography sx={{ fontSize: "18px" }}>{t("Customerdetails")}</Typography>
                     </AccordionSummary>
                     <AccordionDetails >
-                        <Table>
-                            <TableBody>
+                        <Table sx={{display:"flex",overflow:"auto"}}>
+                            <TableBody >
                                 <TableRow sx={{border:"unset"}}>
-                                    <TableCell >{t("Name")}</TableCell>
-                                    <TableCell >{order?.customer_name}</TableCell>
+                                    <TableCell sx={{color:(theme)=>theme.palette.grey[500],borderBottom:"unset"}}>{t("Name")}</TableCell>
+                                    <TableCell sx={{borderBottom:"unset"}}>{order?.customer?.full_name}</TableCell>
                                 </TableRow>
                                 {/* <TableRow sx={{border:"unset"}}>
                                     <TableCell >{t("Address")}</TableCell>
                                     <TableCell >{Customer?.phone}</TableCell>
                                 </TableRow> */}
                                 <TableRow sx={{border:"unset"}}>
-                                    <TableCell >{t("Phone")}</TableCell>
-                                    <TableCell >{Customer?.phone}</TableCell>
+                                    <TableCell sx={{color:(theme)=>theme.palette.grey[500],borderBottom:"unset"}}>{t("Phone")}</TableCell>
+                                    <TableCell sx={{borderBottom:"unset"}}>{order?.customer?.phone}</TableCell>
                                 </TableRow>
                                 <TableRow sx={{border:"unset"}}>
-                                    <TableCell >{t("Email")}</TableCell>
-                                    <TableCell >{Customer?.email}</TableCell>
+                                    <TableCell sx={{color:(theme)=>theme.palette.grey[500],borderBottom:"unset"}}>{t("Email")}</TableCell>
+                                    <TableCell sx={{borderBottom:"unset"}}>{order?.customer?.email}</TableCell>
                                 </TableRow>
+                                <TableRow sx={{border:"unset"}}>
+                                    <TableCell sx={{color:(theme)=>theme.palette.grey[500],borderBottom:"unset"}}>{t("country")}</TableCell>
+                                    <TableCell sx={{borderBottom:"unset"}}>{order?.customer?.country}</TableCell>
+                                </TableRow>
+                            </TableBody>
+                            <TableBody >
+                                <TableRow sx={{border:"unset"}}>
+                                    <TableCell sx={{color:(theme)=>theme.palette.grey[500],borderBottom:"unset"}}>{t("PaymentMethod")}</TableCell>
+                                    <TableCell sx={{borderBottom:"unset"}}>{order?.payment_method}</TableCell>
+                                </TableRow>
+                                {/* <TableRow sx={{border:"unset"}}>
+                                    <TableCell >{t("Address")}</TableCell>
+                                    <TableCell >{Customer?.phone}</TableCell>
+                                </TableRow> */}
+                                <TableRow sx={{border:"unset"}}>
+                                    <TableCell sx={{color:(theme)=>theme.palette.grey[500],borderBottom:"unset"}}>{t("status")}</TableCell>
+                                    <TableCell sx={{borderBottom:"unset"}} >{order?.status}</TableCell>
+                                </TableRow>
+                                {/* <TableRow sx={{border:"unset"}}>
+                                    <TableCell sx={{color:(theme)=>theme.palette.grey[500]}}>{t("Email")}</TableCell>
+                                    <TableCell >{order?.customer?.email}</TableCell>
+                                </TableRow>
+                                <TableRow sx={{border:"unset"}}>
+                                    <TableCell sx={{color:(theme)=>theme.palette.grey[500]}}>{t("country")}</TableCell>
+                                    <TableCell >{order?.customer?.country}</TableCell>
+                                </TableRow> */}
                             </TableBody>
                         </Table>
                     </AccordionDetails>
                 </Accordion>
+                <SoftBox sx={{ width: {lg:"25%",md:"25%",sm:"100%",xs:"100%"}, backgroundColor: (theme) => theme.palette.white.main, borderRadius: "8px",alignSelf:"flex-start" }}>
+                        <SoftBox sx={{
+                            display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 24px 12px 24px",
+                            borderBottom: "1px solid gray", borderColor: (theme) => theme.palette.grey[500], fontSize: "16px"
+                        }}>
+                            {t("status")}
+                        </SoftBox>
+                        <Container sx={{m:4}}>
+                        <SoftInput 
+      select
+      onChange={(e)=>setControl("status",e.target.value)}
+      value={controls.status}
+      IconComponent={KeyboardArrowDownIcon}
+      SelectProps={{
+        defaultValue: "",
+        displayEmpty: true,
+        // onOpen: onOpen,
+        // onClose: onClose,
+        renderValue: (selected) => {
+          if (!Boolean(selected)) {
+            return (
+              <Typography sx={{ color: "currentColor", opacity: "0.42",fontSize:"14px" }}>
+                {t("status")}
+              </Typography>
+            );
+          } else {
+            return  selected
+          }
+        },
+        MenuProps: {
+          PaperProps: {
+            sx: {
+              maxHeight: "200px",
+              overflowY: "auto",
+             backgroundColor:"white !important"
+            },
+          },
+        },
+       
+        IconComponent:  ()=><KeyboardArrowDownIcon></KeyboardArrowDownIcon>
+        
+      }} >
+<MenuItem value={"return"}>Return</MenuItem>
+<MenuItem value={"cancel"}>cancel</MenuItem>
+
+      </SoftInput></Container>
+                    </SoftBox>
+      </Stack>
+
             </Container>
 
         </DashboardLayout>
