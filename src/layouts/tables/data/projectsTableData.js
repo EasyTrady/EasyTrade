@@ -40,6 +40,7 @@ const ProjectsTableData = {
     { name: "budget", align: "left" },
     { name: "status", align: "left" },
     { name: "completion", align: "center" },
+
     { name: "action", align: "center" },
   ],
 

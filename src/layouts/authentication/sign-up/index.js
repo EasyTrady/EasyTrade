@@ -113,7 +113,8 @@ function SignUp({ ...others }) {
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center center",
                     height: { md: "30vh", sm: "30vh", xs: "30vh", lg: "100%" },
-                    width: "60%",
+                    width: "50%",
+                    paddingTop:'10px',
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
@@ -153,7 +154,7 @@ function SignUp({ ...others }) {
                               container
                               direction={matchDownSM ? "column-reverse" : "row"}
                               alignItems="end"
-                              justifyContent="end"
+                              justifyContent="center"
                             >
                               <Grid item alignItems="end" justifyContent="end">
                                 <Stack alignItems="end" justifyContent="end" spacing={1}>

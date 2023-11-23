@@ -1,8 +1,10 @@
 /* eslint-disable react/prop-types */
 import { Box, Divider, IconButton, InputAdornment, MenuItem, Select, TextField, Typography } from '@mui/material'
 import React from 'react'
-
+import SoftBox from 'components/SoftBox'
 import { NumericFormat } from 'react-number-format'
+import NumberField from "components/common/NumberFeild";
+
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 const SelectValuePrecentage = ({variant,label,handleValueChange,type,onChange,...rest}) => {
   return (
@@ -14,9 +16,9 @@ lineHeight:' 20px',
 letterSpacing: '0em',
 textAlign: 'left'
 }}>{label}</Typography>
-    <Box 
+    <SoftBox 
     sx={{display:'flex',flexDirection:'row',alignItems:'center',width:'100%', border: '1px solid #C9CDD4 !important', borderRadius:'4px', }}>
-    <NumericFormat
+    <NumberField
       customInput={TextField}
       variant={Boolean(variant) ? variant : "standard"}
       onChange={handleValueChange}
@@ -61,7 +63,7 @@ textAlign: 'left'
     sx={{
         '&.MuiSelect-outlined':{width:'20% !important'},
         border:"none",
-        width:'20% !important',
+        // width:'20% !important',
         fontFamily:'Cairo',
                 boxShadow: "none",
                 height:'40px !important',
@@ -86,7 +88,7 @@ textAlign: 'left'
                 <MenuItem value='false'>$</MenuItem>
                 
               </Select>
-    </Box>
+    </SoftBox>
     </Box>
   )
 }

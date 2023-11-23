@@ -122,7 +122,7 @@ function SignIn() {
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center center",
                     height: { md: "30vh", sm: "30vh", xs: "30vh", lg: "100%" },
-                    width: "60%",
+                    width: "50%",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
@@ -150,7 +150,7 @@ function SignIn() {
                   <Grid
                     container
                     justifyContent="end"
-                    alignItems="center"
+                    alignItems="end"
                     sx={{ minHeight: "calc(100vh - 68px)" }}
                   >
                     <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
@@ -164,10 +164,11 @@ function SignIn() {
                               container
                               direction={matchDownSM ? "column-reverse" : "row"}
                               alignItems="end"
-                              justifyContent="end"
+                              justifyContent="center"
                             >
-                              <Grid item>
-                                <Stack alignItems="end" justifyContent="end" spacing={1}>
+                              <Box >
+                              <Grid item >
+                                <Stack alignItems="center" justifyContent="center" spacing={1}>
                                   <Typography
                                   sx={{fontFamily:'Cairo',fontWeight:600,fontSize:'36px',color:'#3D2D66'}}
                                     color={theme.palette.secondary.main}
@@ -179,6 +180,7 @@ function SignIn() {
                                   <Typography
                                    sx={{fontFamily:'Cairo',fontWeight:400,fontSize:'16px',color:'#667085'}}
                                     variant="caption"
+                                    alignItems="center" justifyContent="center"
                                     fontSize="16px"
                                     textAlign={matchDownSM ? "center" : "inherit"}
                                   >
@@ -186,6 +188,7 @@ function SignIn() {
                                   </Typography>
                                 </Stack>
                               </Grid>
+                              </Box>
                             </Grid>
                           </Grid>
                           <Grid item xs={12}>

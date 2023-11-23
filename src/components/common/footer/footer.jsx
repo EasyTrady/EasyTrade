@@ -35,6 +35,7 @@ export function Footer() {
         display: "flex",
         alignItems: "center",
         flexDirection: "column",
+        bgcolor:'#ffffff',
       }}
     >
       <Box
@@ -43,6 +44,8 @@ export function Footer() {
           display: "flex",
           alignItems: "center",
           flexDirection: "column",
+          bgcolor:'#ffffff',
+
         }}
       >
         <Grid
@@ -50,13 +53,13 @@ export function Footer() {
           container
         >
           <Grid item xs={12} md={6} lg={3}>
-            <Item sx={{ fontSize: "30px", fontWeight: 700, boxShadow: "none", bgcolor: "#f8f9fa", fontFamily:'Cairo' }}>
+            <Item sx={{ fontSize: "30px", fontWeight: 700, boxShadow: "none", bgcolor: "#F9F9FF", fontFamily:'Cairo' ,bgcolor:'#ffffff',}}>
               اشترك ليصلك كل جديد
             </Item>
             <Box
               sx={{
                 display: "flex",
-                background: "#FFFFFF",
+                bgcolor:'#ffffff',
                 padding: "8px 12px",
                 display: "flex",
                 alignItems: "center",
@@ -73,7 +76,7 @@ export function Footer() {
               <InputBase
                 placeholder="ادخل البريد الالكتروني"
                 sx={{
-                  background: "none !important",
+                  bgcolor:'#F9F9FF !important',
                   textAlign: "center !important",
                   border: "none",
                 }}
@@ -82,34 +85,34 @@ export function Footer() {
             </Box>
           </Grid>
           <Grid item  xs={12} md={6} lg={3}>
-            <Item sx={{ fontSize: "30px", fontWeight: 700, boxShadow: "none", bgcolor: "#f8f9fa", fontFamily:'Cairo' }}>
+            <Item sx={{ fontSize: "30px", fontWeight: 700, boxShadow: "none", bgcolor: "#ffffff", fontFamily:'Cairo' }}>
               الرقم الضريبي
             </Item>
-            <Item sx={{ boxShadow: "none", bgcolor: "#f8f9fa", fontFamily:'Cairo' }}> 1123453456678</Item>
+            <Item sx={{ boxShadow: "none", bgcolor: "#ffffff", fontFamily:'Cairo' }}> 1123453456678</Item>
           </Grid>
           <Grid item  xs={12} md={6} lg={3}>
-            <Item sx={{ fontSize: "30px", fontWeight: 700, boxShadow: "none", bgcolor: "#f8f9fa", fontFamily:'Cairo' }}>
+            <Item sx={{ fontSize: "30px", fontWeight: 700, boxShadow: "none", bgcolor: "#ffffff", fontFamily:'Cairo' }}>
               السجل التجاري
             </Item>
-            <Item sx={{ boxShadow: "none", bgcolor: "#f8f9fa", fontFamily:'Cairo' }}>112345678</Item>
+            <Item sx={{ boxShadow: "none", bgcolor: "#ffffff", fontFamily:'Cairo' }}>112345678</Item>
           </Grid>
           <Grid item  xs={12} md={6} lg={3}>
-            <Item sx={{ boxShadow: "none", bgcolor: "#f8f9fa" }}>
+            <Item sx={{ boxShadow: "none", bgcolor: "#ffffff" }}>
               <img src={logo} alt="logo" />
-              <Box sx={{ display: "flex", paddingTop: "30px", bgcolor: "#f8f9fa", justifyContent: 'center'}}>
+              <Box sx={{ display: "flex", paddingTop: "30px", bgcolor: "#ffffff", justifyContent: 'center'}}>
                 <Box
                   component="img"
-                  sx={{ width: "10%", paddingLeft: "3px", bgcolor: "#f8f9fa" }}
+                  sx={{ width: "10%", paddingLeft: "3px", bgcolor: "##ffffff" }}
                   src={face}
                 ></Box>
                 <Box
                   component="img"
-                  sx={{ width: "10%", paddingLeft: "3px", bgcolor: "#f8f9fa" }}
+                  sx={{ width: "10%", paddingLeft: "3px", bgcolor: "#ffffff" }}
                   src={insta}
                 ></Box>
                 <Box
                   component="img"
-                  sx={{ width: "10%", paddingLeft: "3px", bgcolor: "#f8f9fa" }}
+                  sx={{ width: "10%", paddingLeft: "3px", bgcolor: "#ffffff" }}
                   src={linkedin}
                 ></Box>
                 <Box
@@ -118,7 +121,7 @@ export function Footer() {
                     width: "10%",
                     borderRadius: "10px",
                     paddingLeft: "3px",
-                    bgcolor: "#f8f9fa",
+                    bgcolor: "#ffffff",
                   }}
                   src={x}
                 ></Box>

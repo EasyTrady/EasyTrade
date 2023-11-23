@@ -9,7 +9,8 @@ import { MainButton } from "styles/productStyle";
 import { PrintButton } from "styles/productStyle";
 import { useTranslation } from 'react-i18next';
 import SyncIcon from '@mui/icons-material/Sync';
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+// import TwoArrow from ""
+
 import DataGridCustom from 'components/common/DateGridCustomer'
 import Form from 'components/common/Form'
 import CustomPagination from 'components/common/Pagination'
@@ -32,13 +33,16 @@ import input from "assets/theme/components/form/input";
 import SoftInput from 'components/SoftInput'
 import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 // import SoftInput from "components/SoftInput";
-import EditIcon from '@mui/icons-material/Edit';
+
 import SoftBox from 'components/SoftBox'
 import Breadcrumbs from 'examples/Breadcrumbs'
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import PropTypes from "prop-types";
 import SaveAsIcon from '@mui/icons-material/SaveAs';
 import CloseIcon from '@mui/icons-material/Close';
+import TwoArrow from 'examples/Icons/TwoArrow';
+import DeleteIcon from 'examples/Icons/DeleteIcon';
+import EditIcon from 'examples/Icons/EditIcon';
 function Attribute({ absolute, light, isMini }) {
     const [open, setOpen] = React.useState(false);
     const [edit, setEdit] = React.useState(null);
@@ -82,7 +86,7 @@ function Attribute({ absolute, light, isMini }) {
             headerAlign: 'left',
             renderCell: (params) => params?.row?.values?.map((ele) => ele.iscolor ? <Box key={ele.id} sx={{
                 display: "flex",
-                justifyContent: "space-evenly",
+                justifyContent: "flex-end",
                 alignItems: "center",
                 backgroundColor: (theme) => theme.palette.purple.hover,
                 color: (theme) => theme.palette.purple.middle,
@@ -331,7 +335,11 @@ function Attribute({ absolute, light, isMini }) {
             }
         })
     }
-
+    function onDeleteNew(row) {
+        console.log(row)
+        setControl("values", controls.values.filter((ele,index) => index !== row))
+        setEdit(null)
+    }
 
     const MyCustomNoRowsOverlay = () => (
         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
@@ -379,7 +387,6 @@ function Attribute({ absolute, light, isMini }) {
             if (Boolean(controls.value_name) && Boolean(controls.color_value)) {
                 let test = /^(?:#([a-fA-F0-9]{6}|[a-fA-F0-9]{8}))$/
                 let match = test.test(controls.color_value)
-                console.log(match)
                 if (match) {
                     setControl("values", [...controls.values, {
                         value_name: controls.value_name,
@@ -454,6 +461,13 @@ function Attribute({ absolute, light, isMini }) {
                 console.log(attributes.find((ele) => ele.id == controls.id))
             }
         })
+    }
+    function editNew(element,ind){
+        setControl("values",controls.values.map((element,index)=>index==ind?{...element,color_value:Boolean(controls.color_value)?controls.color_value:element.color_value,value_name:Boolean(controls.value_name)?controls.value_name:element.value_name}:element))
+        console.log(element,controls.values[ind],controls.value_name,controls.color_value)
+        setControl("value_name", "")
+                setControl("color_value", "")
+                setEdit(null)
     }
     useEffect(() => {
         console.log(controls?.values)
@@ -577,7 +591,8 @@ function Attribute({ absolute, light, isMini }) {
                             setControl("english_name", controls.name)
                             setControl("name", copyName)
                         }}>
-                            <SyncIcon />
+                            <TwoArrow color={"#959FA3"} size={"16"}/>
+                           
                         </SoftButton>
                         <SoftInput
                             placeholder='English name'
@@ -599,7 +614,7 @@ function Attribute({ absolute, light, isMini }) {
 
                             <Typography sx={{ borderBottom: "1px solid #8080807d", fontSize: "14px", padding: "15px", height: "40px" }}>{controls.name}</Typography>
 
-                            {controls?.values?.map((ele) => <TableRow key={ele.id} sx={{
+                            {controls?.values?.map((ele,index) => <TableRow key={ele.id} sx={{
                                 fontSize: "14px",
                                 display: "flex",
                                 borderBottom: "1px solid #8080807d"
@@ -626,18 +641,27 @@ function Attribute({ absolute, light, isMini }) {
                                     required={required.includes("color_value")}
                                     error={Boolean(invalid?.color_value)}
                                     helperText={invalid?.color_value} /></TableCell > : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.color_value}</TableCell> : <></>}
-                                {attributes?.find((ele) => ele.id == controls.id)?.values.map((ele) => ele.value_name).includes(ele.value_name) && <TableCell sx={{
+                                {attributes?.find((ele) => ele.id == controls.id)?.values.map((ele) => ele.value_name).includes(ele.value_name) ? <TableCell sx={{
                                     width: "50%", borderLeft: "1px solid #8080807d", display: "flex",
-                                    justifyContent: "space-evenly",
+                                    justifyContent: "flex-end",
                                     alignItems: "center"
                                 }}>
+                                   
+                                    {Boolean(edit) && edit?.id == ele?.id ? <SoftBox><SaveAsIcon onClick={() => editValue(ele)} /></SoftBox> : <EditIcon onClick={() => { setEdit(ele); setaddvalue(false) }} />}
+                                    {Boolean(edit) && edit?.id == ele?.id ? <SoftBox> <CloseIcon onClick={() => setEdit(null)} /></SoftBox> : <DeleteIcon sx={{ color: (theme) => theme.palette.error.main, cursor: "pointer" }} onClick={() => onDeleteValue(controls.id, ele.id)} />}
 
-                                    {Boolean(edit) && edit?.id == ele?.id ? <SaveAsIcon onClick={() => editValue(ele)} /> : <EditIcon onClick={() => { setEdit(ele); setaddvalue(false) }} />}
-                                    {Boolean(edit) && edit?.id == ele?.id ? <CloseIcon onClick={() => setEdit(null)} /> : <DeleteIcon sx={{ color: (theme) => theme.palette.error.main, cursor: "pointer" }} onClick={() => onDeleteValue(controls.id, ele.id)} />}
+                                </TableCell>: <TableCell sx={{
+                                    width: "50%", borderLeft: "1px solid #8080807d", display: "flex",
+                                    justifyContent: "flex-end",
+                                    alignItems: "center"
+                                }}>
+                                   
+                                    {Boolean(edit) && edit?.id == ele?.id ? <SaveAsIcon onClick={() => editNew(ele,index)} /> : <EditIcon onClick={() => { setEdit(ele); setaddvalue(false) }} />}
+                                    {Boolean(edit) && edit?.id == ele?.id ? <CloseIcon onClick={() => setEdit(null)} /> : <DeleteIcon sx={{ color: (theme) => theme.palette.error.main, cursor: "pointer" }} onClick={() => onDeleteNew(index)} />}
 
                                 </TableCell>}
                             </TableRow>)}
-                            {addvalue && !controls.iscolor ? <TableCell sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }} >
+                            {addvalue && !controls.iscolor ?<TableRow> <TableCell sx={{ display: "flex", justifyContent: "space-between", alignItem: "center", width: "22rem" }} >
                                 <SoftInput placeholder='value'
                                     sx={{ ".MuiInputBase-root": { border: `unset !important`, padding: "0px !important", borderBottom: "1px solid gray" }, }}
                                     value={controls.value_name}
@@ -647,8 +671,18 @@ function Attribute({ absolute, light, isMini }) {
                                     helperText={invalid?.value_name} />
 
 
-                            </TableCell> : addvalue && controls.iscolor && <TableRow onChange={() => setblurvalue(true)}>
-                                <TableCell sx={{ borderRight: "1px solid #80808059", width: "22rem" }}>
+                            </TableCell>
+                           
+                            <TableCell sx={{width: "22rem" }}>
+                                <Typography sx={{ fontSize: "14px", padding: "15px", height: "40px", color: (theme) => theme.palette.purple.middle, textDecoration: "underline !important" }}
+                                    component="a"
+                                    onClick={AddValue}
+                                >{Blurvalue ? t("Addvalue") : t("newValue")}
+                                </Typography>
+                               
+                            </TableCell>
+                            </TableRow> : addvalue && controls.iscolor && <TableRow onChange={() => setblurvalue(true)}>
+                                <TableCell sx={{ borderRight: "1px solid #80808059", width: "10.3rem" }}>
                                     <SoftInput placeholder='value'
                                         sx={{ ".MuiInputBase-root": { border: `unset`, padding: "0px !important" }, }}
                                         value={controls.value_name}
@@ -661,7 +695,7 @@ function Attribute({ absolute, light, isMini }) {
 
                                 </TableCell>
 
-                                <TableCell sx={{ borderRight: "1px solid #80808059", width: "22rem" }}>
+                                <TableCell sx={{ borderRight: "1px solid #80808059", width: "10.3rem" }}>
                                     <SoftInput placeholder='color'
                                         sx={{ ".MuiInputBase-root": { border: `unset`, padding: "0px !important" }, }}
                                         value={controls.color_value}
@@ -672,22 +706,25 @@ function Attribute({ absolute, light, isMini }) {
                                         error={Boolean(invalid?.color_value)}
                                         helperText={invalid?.color_value} />
                                 </TableCell>
-                            </TableRow>
-
-                            }
-
-                            <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
+                                <TableCell>
                                 <Typography sx={{ fontSize: "14px", padding: "15px", height: "40px", color: (theme) => theme.palette.purple.middle, textDecoration: "underline !important" }}
                                     component="a"
                                     onClick={AddValue}
                                 >{Blurvalue ? t("Addvalue") : t("newValue")}
                                 </Typography>
-                                {/* <Typography sx={{ fontSize: "14px", padding: "15px", height: "40px", color: (theme) => theme.palette.purple.middle, textDecoration: "underline !important" }}
+                                </TableCell>
+                            </TableRow>
+
+                            }
+
+                {addvalue==false&& <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
+                                <Typography sx={{ fontSize: "14px", padding: "15px", height: "40px", color: (theme) => theme.palette.purple.middle, textDecoration: "underline !important" }}
                                     component="a"
-                                    onClick={() => { }}
-                                >{t("ClearAll")}
-                                </Typography> */}
-                            </SoftBox>
+                                    onClick={AddValue}
+                                >{Blurvalue ? t("Addvalue") : t("newValue")}
+                                </Typography>
+                                
+                            </SoftBox> }
 
 
                         </SoftBox>
