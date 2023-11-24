@@ -2,7 +2,7 @@
 import { Box, Container, Switch, Typography } from '@mui/material';
 import React from 'react';
 
-const AddProductTitle = ({ switch: showSwitch, title }) => {
+const AddProductTitle = ({ switch: showSwitch,func, title }) => {
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
   return (
@@ -35,7 +35,8 @@ const AddProductTitle = ({ switch: showSwitch, title }) => {
         </Typography>
         <Box sx={{ display: 'flex',
         alignItems: 'center',justifyContent:'end'}}>
-        {showSwitch && <Switch {...label} defaultChecked />}
+        {func && <Switch {...label} defaultChecked checked={showSwitch}
+      onChange={func}/>}
         </Box>
         </Box>
       {/* </Container> */}
