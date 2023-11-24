@@ -50,6 +50,7 @@ function Attribute({ absolute, light, isMini }) {
     const [openDialogEdit, setOpenDialogEdit] = React.useState(false);
     let [addvalue, setaddvalue] = React.useState(false);
     let [Blurvalue, setblurvalue] = React.useState(false);
+    let [indexedit, setindexedit] = React.useState(0);
 
     let dispatch = useDispatch()
     let { t } = useTranslation("common")
@@ -422,6 +423,7 @@ function Attribute({ absolute, light, isMini }) {
         setblurvalue(false)
     }
     function editValue(ele) {
+        console.log(ele)
         // let newValue=controls.values
         // newValue.value_name=controls.value_name
         // newValue.color_value=controls.color_value
@@ -624,7 +626,7 @@ function Attribute({ absolute, light, isMini }) {
                                 {/* <Divider orientation="vertical" sx={{width:'1px',height:"50px",color:"#8080807d"}}/> */}
 
 
-                                {Boolean(edit) && edit?.id == ele?.id ? <TableCell sx={{ width: "14rem", }}><SoftInput placeholder='value'
+                                {Boolean(edit) && edit?.id == ele?.id &&index==indexedit? <TableCell sx={{ width: "14rem", }}><SoftInput placeholder='value'
                                     sx={{ ".MuiInputBase-root": { border: `unset` }, }}
                                     value={controls.value_name ? controls.value_name : edit?.value_name}
                                     onChange={(e) => setControl("value_name", e.target.value)}
@@ -632,7 +634,7 @@ function Attribute({ absolute, light, isMini }) {
                                     error={Boolean(invalid?.value_name)}
                                     helperText={invalid?.value_name} /></TableCell> : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.value_name}</TableCell>}
 
-                                {ele.color_value ? Boolean(edit) && edit?.id == ele?.id ? <TableCell sx={{ width: "14rem", }}><SoftInput placeholder='color'
+                                {ele.color_value ? Boolean(edit) && edit?.id == ele?.id &&index==indexedit? <TableCell sx={{ width: "14rem", }}><SoftInput placeholder='color'
                                     sx={{ ".MuiInputBase-root": { border: `unset` }, }}
                                     value={controls.color_value ? controls.color_value : edit?.color_value}
                                     // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
@@ -647,8 +649,8 @@ function Attribute({ absolute, light, isMini }) {
                                     alignItems: "center"
                                 }}>
                                    
-                                    {Boolean(edit) && edit?.id == ele?.id ? <SoftBox><SaveAsIcon onClick={() => editValue(ele)} /></SoftBox> : <EditIcon onClick={() => { setEdit(ele); setaddvalue(false) }} />}
-                                    {Boolean(edit) && edit?.id == ele?.id ? <SoftBox> <CloseIcon onClick={() => setEdit(null)} /></SoftBox> : <DeleteIcon sx={{ color: (theme) => theme.palette.error.main, cursor: "pointer" }} onClick={() => onDeleteValue(controls.id, ele.id)} />}
+                                    {Boolean(edit) && edit?.id == ele?.id  &&index==indexedit? <SoftBox><SaveAsIcon onClick={() => editValue(ele)} /></SoftBox> : <EditIcon onClick={() => { setEdit(ele); setindexedit(index);setaddvalue(false) }} />}
+                                    {Boolean(edit) && edit?.id == ele?.id  &&index==indexedit? <SoftBox> <CloseIcon onClick={() => setEdit(null)} /></SoftBox> : <DeleteIcon sx={{ color: (theme) => theme.palette.error.main, cursor: "pointer" }} onClick={() => onDeleteValue(controls.id, ele.id)} />}
 
                                 </TableCell>: <TableCell sx={{
                                     width: "50%", borderLeft: "1px solid #8080807d", display: "flex",
@@ -656,8 +658,8 @@ function Attribute({ absolute, light, isMini }) {
                                     alignItems: "center"
                                 }}>
                                    
-                                    {Boolean(edit) && edit?.id == ele?.id ? <SaveAsIcon onClick={() => editNew(ele,index)} /> : <EditIcon onClick={() => { setEdit(ele); setaddvalue(false) }} />}
-                                    {Boolean(edit) && edit?.id == ele?.id ? <CloseIcon onClick={() => setEdit(null)} /> : <DeleteIcon sx={{ color: (theme) => theme.palette.error.main, cursor: "pointer" }} onClick={() => onDeleteNew(index)} />}
+                                    {Boolean(edit) && edit?.id == ele?.id  &&index==indexedit? <SaveAsIcon onClick={() => editNew(ele,index)} /> : <EditIcon onClick={() => { setEdit(ele);setindexedit(index) ;setaddvalue(false) }} />}
+                                    {Boolean(edit) && edit?.id == ele?.id &&index==indexedit ? <CloseIcon onClick={() => setEdit(null)} /> : <DeleteIcon sx={{ color: (theme) => theme.palette.error.main, cursor: "pointer" }} onClick={() => onDeleteNew(index)} />}
 
                                 </TableCell>}
                             </TableRow>)}
