@@ -84,8 +84,8 @@ textAlign: 'left'
               
               displayEmpty
               >
-                <MenuItem value='true'>Precentage</MenuItem>
-                <MenuItem value='false'>Money</MenuItem>
+                <MenuItem value='true'>%</MenuItem>
+                <MenuItem value='false'>$</MenuItem>
                 
               </Select>
     </SoftBox>

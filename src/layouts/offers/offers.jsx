@@ -52,11 +52,11 @@ const Offers = ({ absolute, light, isMini }) => {
         const { row } = params;
         return (<Stack direction={"row"} justifyContent={'flex-start'} alignItems={'center'}>
             <SoftBox sx={{width:"64px",height:"64px",borderRadius:"8px",display:'flex',alignItems:'centter'}}>
-                {row.offer_banners.map((banner)=>(
-                <img key={banner}src={banner.image} style={{width:"100%",height:'100%',borderRadius:"8px"}}/>
+                {row?.offer_banners?.map((banner)=>(
+                <img key={banner}src={banner?.image} style={{width:"100%",height:'100%',borderRadius:"8px"}}/>
                 ))}
                 </SoftBox>
-            <Typography component={"p"} sx={{ fontSize: "14px",fontWeight:400 ,marginX:"10px" }}>{row.offer_title}</Typography>
+            <Typography component={"p"} sx={{ fontSize: "14px",fontWeight:400 ,marginX:"10px" }}>{row?.offer_title}</Typography>
             {/* <Typography component={"a"} sx={{ color: (theme) => theme.palette.grey[500], fontSize: "0.8rem", cursor: "pointer" }} onClick={() => navigate(`/${shop_name}/dashboard/attribute/${row?.id}`)}>view</Typography> */}
         </Stack>
         );
@@ -95,7 +95,7 @@ const Offers = ({ absolute, light, isMini }) => {
       renderCell: (params) => {
         const { row } = params;
         return (<Stack direction={"row"} justifyContent={'flex-start'} alignItems={'center'}>
-            <SoftBox sx={{width: '139px',
+            <SoftBox sx={{width: 'max-content',
 height: '30px',
 padding: '5px 16px 5px 16px',borderRadius:"130px",display:'flex',alignItems:'centter',color:'#027A48',background:'#ECFDF3',fontSize:'14px',fontWeight:500}}>{row.offer_type}</SoftBox>
                 

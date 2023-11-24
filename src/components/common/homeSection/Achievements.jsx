@@ -17,7 +17,8 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function RowAndColumnSpacing() {
   return (
     <Container sx={{
-      width: '100%'
+      width: '100%',
+      
     }}>
       <Typography sx={{ fontSize: '50px', fontWeight: 600, textAlign: 'center', marginTop: '30px',color:'#3D2D66',fontFamily:'Cairo',my:'30px' }}>انجازاتنا</Typography>
       <Box>

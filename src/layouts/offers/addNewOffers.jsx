@@ -17,6 +17,7 @@ import AddProductTitle from "components/common/AddProductTitle";
 import DatePickerField from "components/common/DatePicker";
 import ImageOffer from "components/common/ImageOffer";
 import OfferBox from "components/common/OfferBox";
+import OfferBoxCategory from "components/common/OfferBoxCategory";
 import RadioButton from "components/common/RadioButton";
 import SelectField from "components/common/SelectField";
 import SelectValuePrecentage from "components/common/SelectValuePrecentage";
@@ -73,30 +74,58 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
     { control: "offer_end_date", value: '', isRequired: false },
     { control: "productX", value: '', isRequired: false },
     { control: "productY", value: '', isRequired: false },
+    { control: "products", value: [], isRequired: false },
+    { control: "category", value: '', isRequired: false },
+    { control: "total_amount", value: '', isRequired: false },
     { control: "banner", value: '', isRequired: false },
     { control: "is_precentage", value: '', isRequired: false },
     { control: "discount", value: '', isRequired: false },
     { control: "copon", value: '', isRequired: false },
+    { control: "published_on", value: '', isRequired: false },
+    { control: "quantity", value: '', isRequired: false },
   ])
 
   function handleSubmit() {
-    
     validate().then((output) => {
       console.log(output);
-      if (!output.isOk) return;
-      console.log(controls?.image);
-
+      if (!output.isOk) return;  
+      let obj = {
+        type: controls.offer_type,
+        offer_title: controls.offer_title,
+        offer_start_date: controls.offer_start_date?.toISOString(),
+        offer_end_date: controls.offer_end_date?.toISOString(),
+        banner: controls.banner,
+        published_on: controls.published_on,
+      };
+  
+      if(controls.offer_type === 1||2){
+        obj.productX= controls.productX
+        obj.productY= controls.productY
+      }
+      if (controls.offer_type === 2||3||4||6||5) {
+        obj.discount = controls.discount;
+        obj.is_precentage = controls.is_precentage;
+        if (controls.offer_type === 3){
+          obj.total_amount = controls.total_amount;
+        }
+        if (controls.offer_type === 4){
+          obj.productX = controls.productX;
+          obj.quantity = controls.quantity;
+        }
+        if (controls.offer_type === 5){
+          obj.products = [...controls.products]
+         
+        }
+        if (controls.offer_type === 6){
+          obj.category = controls.category;
+          
+        }
+      }
+      
+     
       AddOfferRequest({
         body: filter({
-          obj: {
-            offer_type: controls.offer_type,
-            offer_title: controls.offer_title,
-            offer_start_date: controls.offer_start_date?.toISOString(),
-            offer_end_date: controls.offer_end_date?.toISOString(),
-            productX: controls.productX||"31",
-            productY: controls.productY||"23",
-            banner: controls.banner,
-          },
+          obj: obj,
           output: "formData",
         }),
         onSuccess: (res) => {
@@ -113,9 +142,8 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
         //   },
         //   output: "object",
         // });
-
+  
         // setInvalid(responseBody);
-        resetControls("");
       });
     });
   }
@@ -177,14 +205,14 @@ console.log(offerstypes);
                   aria-labelledby="demo-row-radio-buttons-group-label"
                   name="row-radio-buttons-group"
                   sx={{ fontFamily: "Inter", display: "flex", gap: "16px", flexDirection: "row", }}
-                  // value={controls.source}
-                  // onChange={(e) => setControl("source", e?.target?.value)}
-                  // required={required.includes("source")}
-                  // error={Boolean(invalid?.source)}
-                  // helperText={invalid?.source}
+                  value={controls.published_on}
+                  onChange={(e) => setControl("published_on", e?.target?.value)}
+                  required={required.includes("published_on")}
+                  error={Boolean(invalid?.published_on)}
+                  helperText={invalid?.published_on}
                 >
                   <FormControlLabel
-                    value="Website"
+                    value="website"
                     control={<RadioButton />}
                     label="Website"
                     sx={{
@@ -202,7 +230,7 @@ console.log(offerstypes);
                     }}
                   />
                   <FormControlLabel
-                    value="Mobile app"
+                    value="app"
                     control={<RadioButton />}
                     label="Mobile app"
                     sx={{
@@ -220,7 +248,7 @@ console.log(offerstypes);
                     }}
                   />
                   <FormControlLabel
-                    value="Website & Mobile app"
+                    value="both"
                     control={<RadioButton />}
                     label="Website & Mobile app"
                     sx={{
@@ -287,8 +315,8 @@ console.log(offerstypes);
                 label={"Offer Expired"}
                 control={
                   <Switch
-                    // value={controls.in_taxes}
-                    // onChange={(e) => setControl("in_taxes", e.target.checked)}
+                    // value={controls.published_on}
+                    // onChange={(e) => setControl("published_on", e.target.checked)}
                     color="secondary"
                   />
                 }
@@ -324,12 +352,14 @@ console.log(offerstypes);
         {controls.offer_type===1&&
         <>
         <Box sx={{display:'flex',flexDirection:{md:'row',xs:'column'},gap:'20px',mt:'20px',width:'100%'}}>
-        <OfferBox 
+        <OfferBox
+        select 
         title='Product X'
         value={controls.productX}
         onChange={(e)=>setControl('productX',e.target.value)}
         />
         <OfferBox 
+        select
         title='Product Y'
         value={controls.productY}
         onChange={(e)=>setControl('productY',e.target.value)}
@@ -348,11 +378,13 @@ console.log(offerstypes);
          <>
          <Box sx={{display:'flex',flexDirection:{md:'row',xs:'column'},gap:'20px',mt:'20px',width:'100%'}}>
         <OfferBox
+        select
          title='Product X'
          value={controls.productX}
          onChange={(e)=>setControl('productX',e.target.value)}
          />
         <OfferBox 
+        select
         title='Product Y'
         value={controls.productY}
          onChange={(e)=>setControl('productY',e.target.value)}
@@ -374,24 +406,24 @@ console.log(offerstypes);
 {controls.offer_type===3&&
 <>
 <SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5 }}>
-          <AddProductTitle title={"Get discount from your cart"} />
+          <AddProductTitle title={offerstypes?.find((offer) => offer.id === controls.offer_type)?.name} />
           <Container sx={{display:'flex',flexDirection:"column",gap:'20px',py:'20px'}}>
           <SelectValuePrecentage
         variant={'outlined'}
         label={'Discount'}
         type={controls.type}
-        onChange={(e)=>setControl("is_precentage",e.target.vale)}
+        onChange={(e)=>setControl("is_precentage",e.target.value)}
         handleValueChange={(e)=>setControl('discount',e.target.value)}
         />
          <InputField
                 variant="outlined"
                 label={"Minimum Price*"}
                 placeholder={"99 EGP"}
-                  value={controls.offer_title}
-                  onChange={(e) => setControl("offer_title", e.target.value)}
-                  required={required.includes("offer_title")}
-                  error={Boolean(invalid.offer_title)}
-                  helperText={invalid.offer_title}
+                  value={controls.total_amount}
+                  onChange={(e) => setControl("total_amount", e.target.value)}
+                  required={required.includes("total_amount")}
+                  error={Boolean(invalid.total_amount)}
+                  helperText={invalid.total_amount}
                 sx={{ width: "100%" }}
               />
               <FormControlLabel
@@ -426,12 +458,12 @@ console.log(offerstypes);
 {controls.offer_type===4&&
   <>
 <SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5 }}>
-          <AddProductTitle title={"Get discount on product Quntity"} />
+          <AddProductTitle title={offerstypes?.find((offer) => offer.id === controls.offer_type)?.name} />
          
           <OfferBox 
-        
-        value={controls.productY}
-         onChange={(e)=>setControl('productY',e.target.value)}
+        select
+        value={controls.productX}
+         onChange={(e)=>setControl('productX',e.target.value)}
          type={controls.is_precentage}
          typeChange={(e)=>setControl('is_precentage',e.target.value)}
          handleValueChange={(e)=>setControl('discount',e.target.value)} 
@@ -465,18 +497,18 @@ console.log(offerstypes);
 {controls.offer_type===5&&
   <>
 <SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5 }}>
-          <AddProductTitle title={"Get discount on products"} />
+          <AddProductTitle title={offerstypes?.find((offer) => offer.id === controls.offer_type)?.name} />
          
           <OfferBox 
-        
-        value={controls.productY}
-         onChange={(e)=>setControl('productY',e.target.value)}
+        muliple
+        value={controls.products}
+         onChange={(e)=>setControl('products',e.target.value)}
          type={controls.is_precentage}
          typeChange={(e)=>setControl('is_precentage',e.target.value)}
          handleValueChange={(e)=>setControl('discount',e.target.value)} 
         discount
         />
-        <Container sx={{pb:"24px"}}>
+        {/* <Container sx={{pb:"24px"}}>
          <InputField
                 variant="outlined"
                 label={"Minimum Quantity*"}
@@ -489,8 +521,35 @@ console.log(offerstypes);
                 sx={{ width: "100%" ,}}
               />
               </Container>
-           
+            */}
             </SoftBox>
+
+<Box sx={{mt:'20px'}}>
+         <ImageOffer 
+         title='Offer image*'
+         value={controls.banner}
+         onChange={(e)=>setControl('banner',e)}
+         /> 
+        </Box>
+</>
+}
+
+{controls.offer_type===6&&
+  <>
+<SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5 }}>
+          <AddProductTitle title={offerstypes?.find((offer) => offer.id === controls.offer_type)?.name} />
+         
+          <OfferBoxCategory 
+        
+        value={controls.category}
+         onChange={(e)=>setControl('category',e.target.value)}
+         type={controls.is_precentage}
+         typeChange={(e)=>setControl('is_precentage',e.target.value)}
+         handleValueChange={(e)=>setControl('discount',e.target.value)} 
+        discount
+        />
+           
+          </SoftBox>
 
 <Box sx={{mt:'20px'}}>
          <ImageOffer 

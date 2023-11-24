@@ -200,10 +200,10 @@ const FirebaseRegister = ({ ...others }) => {
             <Box sx={{justifyContent:'center',alignItems:'center',textAlign:'center'}}>
           <form noValidate {...others}>
             {console.log(errors)}
-            <Box sx={{display: "flex",justifyContent:'flex-end'}}>
+            <Box sx={{display: "flex",justifyContent:'center'}}>
               
               <FormControl error={Boolean(touched?.logo && errors?.logo)}>
-                <Box sx={{ width: "360px",display: "flex"}}>
+                <Box sx={{ width: "360px",display: "flex",justifyContent:'flex-end'}}>
                   <label htmlFor="profile_image" style={{ position: "relative" }}>
                     <IconButton
                       onClick={() => {
