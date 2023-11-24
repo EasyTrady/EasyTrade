@@ -11,9 +11,18 @@ import {
   Switch,
   Typography,
 } from "@mui/material";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 import borders from "assets/theme/base/borders";
 import SoftBox from "components/SoftBox";
+import TableFooter from '@mui/material/TableFooter';
 import SoftInput from "components/SoftInput";
+import DeleteIcon from 'examples/Icons/DeleteIcon';
 import SoftTypography from "components/SoftTypography";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
@@ -67,6 +76,9 @@ const AddProduct = ({ light, isMini,handleChange }) => {
   const route = useLocation().pathname.split("/").slice(1);
   const { borderWidth, borderColor } = borders;
   const [Value, setValue] = useState("");
+  const[key,setKey]=useState(false)
+  // const [Switch, setSwitch] = useState(true);
+
   const [product, setProduct] = useState(null);
 
   let Token = localStorage.getItem("token");
@@ -101,6 +113,15 @@ const AddProduct = ({ light, isMini,handleChange }) => {
     {
       control: "require_shipping",
       value: "",
+      isRequired: false,
+    },
+    {
+      control:"switchSpecifications",
+      value: false,
+      isRequired: false,
+    }, {
+      control:"specifications",
+      value: [],
       isRequired: false,
     },
     {
@@ -167,6 +188,9 @@ const AddProduct = ({ light, isMini,handleChange }) => {
     { control: "is_published", value: false ,isRequired: false },
     { control: "weight", value: "", isRequired: false },
     { control: "weight_unit", value: "", isRequired: false },
+    { control: "key", value: "", isRequired: false },
+    { control: "value", value: "", isRequired: false },
+
   ]);
   const [categoryRequest, getcategoryResponce] = useRequest({
     path: CATEGORY,
@@ -183,6 +207,22 @@ const AddProduct = ({ light, isMini,handleChange }) => {
       },
     });
   };
+  const addKey = () => {
+    setKey(true)
+    if(Boolean(controls.key)&&Boolean(controls.value)){
+      setControl("specifications",[...controls.specifications,{key:controls.key,value:controls.value}])
+      setControl("key","")
+      setControl("value","")
+
+    }
+    // categoryRequest({
+    //   onSuccess: (res) => {
+    //     console.log(res.data);
+    //     dispatch({ type: "category/set", payload: res?.data });
+    //   },
+    // });
+  };
+  
   // form request add product
   const [AddProductRequest, AddProductResponce] = useRequest({
     path: PRODUCTS,
@@ -220,10 +260,12 @@ const AddProduct = ({ light, isMini,handleChange }) => {
          [controls.purchase_price,product.purchase_price,"purchase_price"],
          [controls.is_percentage_discount,product.is_percentage_discount,"is_percentage_discount"],
          [controls.discount,product.discount,"discount"],
-         [controls.discount_start_date,product.discount_start_date,"discount_start_date"],
-         [controls.discount_end_date,product.discount_end_date,"discount_end_date"],
+         [controls.discount_start_date,product?.discount_start_date,"discount_start_date"],
+         [controls.discount_end_date,product?.discount_end_date,"discount_end_date"],
          [controls.require_shipping,product.require_shipping,"require_shipping"],
          [controls.maximum_order_quanitity,product.maximum_order_quanitity,"maximum_order_quanitity"],
+         [controls.specifications,product.specifications,"specifications"],
+
         // // //  [controls.minimum_stock_quantity,product.minimum_stock_quantity,"minimum_stock_quantity"],
          [controls.description,product.description,"description"],
          [String(controls.categories),String(product.categories),"categories"],
@@ -235,9 +277,10 @@ const AddProduct = ({ light, isMini,handleChange }) => {
          [controls.weight_unit,product.weight_unit,"weight_unit"],
         ],false
       )
+      // console.log(Object.entries(result.array).map(([key,value])=>key==="discount_start_date"||key==="discount_end_date"?{key:value.toISOString()}:{key:value}))
       patchProductRequest({
         id:productId,
-        body:result.array,
+        body:Object.entries(result.array).map(([key,value])=>key==="discount_start_date"||key==="discount_end_date"?{key:value.toISOString()}:{key:value}),
         onSuccess:(res)=>{
           handleChange(undefined,1,res.data.id)
         }
@@ -255,8 +298,8 @@ const AddProduct = ({ light, isMini,handleChange }) => {
               price: controls.price,
               main_image: controls.main_image,
               discount: controls?.discount,
-              discount_start_date: controls?.discount_start_date.toISOString(),
-              discount_end_date: controls?.discount_end_date.toISOString(),
+              discount_start_date: controls?.discount_start_date?.toISOString(),
+              discount_end_date: controls?.discount_end_date?.toISOString(),
               is_percentage_discount: controls.is_percentage_discount,
               purchase_price: controls.purchase_price,
               //  custom_shipping_price: controls.custom_shipping_price,
@@ -353,6 +396,7 @@ useEffect(()=>{
     getCategory()
   }
 },[category])
+console.log(controls.specifications)
   return (
     <>
       <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
@@ -511,7 +555,73 @@ useEffect(()=>{
         </Container>
       </Box>
       <Box sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5 }}>
-        <AddProductTitle title={"Product Specifications"} switch />
+        <AddProductTitle title={"Product Specifications"}  switch={controls.switchSpecifications} func={()=>setControl("switchSpecifications",!controls.switchSpecifications)}/>
+        {controls.switchSpecifications&& <TableContainer component={Paper} sx={{ boxSizing: "border-box" }}>
+      <Table sx={{ margin:"20px 24px 24px 24px",width:"94%"   }} aria-label="simple table">
+        <TableHead  sx={{display: "table-header-group"}}>
+          <TableRow sx={{backgroundColor:"#E5E7E8"}}>
+            <TableCell sx={{width:"50%"}}>key</TableCell>
+            <TableCell sx={{width:"50%"}}>value</TableCell>
+            <TableCell ></TableCell>
+            
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {controls?.specifications&&controls?.specifications?.map((ele,index)=><TableRow key={index}>
+            <TableCell >{ele?.key}</TableCell>
+            <TableCell >{ele?.value}</TableCell>
+            <TableCell ><DeleteIcon/></TableCell>
+
+            </TableRow>)}
+          {key&&<TableRow>
+            <TableCell align="right"><SoftInput placeholder='key'
+                                        sx={{ ".MuiInputBase-root": { border: `unset`, padding: "0px !important" }, }}
+                                        value={controls.key}
+                                        // onChange={(e) => setControl("key", [...controls.key,e.target.value])}
+                                        onChange={(e) => setControl("key",
+                                            e.target.value)}
+                                        required={required.includes("key")}
+                                        error={Boolean(invalid?.key)}
+                                        helperText={invalid?.key} /></TableCell>
+            <TableCell align="right"><SoftInput placeholder='value'
+                                        sx={{ ".MuiInputBase-root": { border: `unset`, padding: "0px !important" }, }}
+                                        value={controls.value}
+                                        // onChange={(e) => setControl("value", [...controls.value,e.target.value])}
+                                        onChange={(e) => setControl("value",
+                                            e.target.value)}
+                                        required={required.includes("value")}
+                                        error={Boolean(invalid?.value)}
+                                        helperText={invalid?.value}/></TableCell>
+            <TableCell align="right"><DeleteIcon/></TableCell>
+
+            </TableRow>}
+          {/* {rows.map((row) => (
+            <TableRow
+              key={row.name}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                {row.name}
+              </TableCell>
+              <TableCell align="right">{row.calories}</TableCell>
+              <TableCell align="right">{row.fat}</TableCell>
+              <TableCell align="right">{row.carbs}</TableCell>
+              <TableCell align="right">{row.protein}</TableCell>
+            </TableRow>
+          ))} */}
+        </TableBody>
+        <TableFooter>
+        <TableFooter>
+                        <TableRow>
+                            <TableCell align="right"><span style={{fontWeight: 'bold',textDecoration: "underline",color:(theme)=>theme.palette.purple.middle,cursor:'pointer'}} onClick={()=>addKey()}>Add key </span></TableCell>
+                            <TableCell align="right"><span style={{fontWeight: 'bold'}}></span></TableCell>
+                            {/* <TableCell /> */}
+                        </TableRow>
+                    </TableFooter>
+          </TableFooter> 
+      </Table>
+    </TableContainer>}
+       
       </Box>
       <Box
         sx={{
