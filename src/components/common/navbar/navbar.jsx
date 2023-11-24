@@ -112,7 +112,7 @@ const Navbar = () => {
               <Divider sx={{ height: '50px' }} orientation="vertical" flexItem />
 
               <ButtonBase
-                onClick={() => navigate('/login')}
+                onClick={() => navigate('/authentication/sign-in')}
                 sx={{
                   padding: '10px',
                   backgroundColor: '#5D449B',

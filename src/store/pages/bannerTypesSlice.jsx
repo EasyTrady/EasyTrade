@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const OffersTypesSlice = createSlice({
-  name: "offerstypes",
+export const BannersTypesSlice = createSlice({
+  name: "bannerstypes",
   initialState: {
     value:[]
   },
@@ -26,4 +26,4 @@ export const OffersTypesSlice = createSlice({
   },
 });
 
-export default OffersTypesSlice.reducer;
+export default BannersTypesSlice.reducer;

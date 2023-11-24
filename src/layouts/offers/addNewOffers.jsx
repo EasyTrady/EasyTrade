@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import {
   Box,
-  Breadcrumbs,
   Container,
   FormControl,
   FormControlLabel,
@@ -24,6 +23,7 @@ import SelectValuePrecentage from "components/common/SelectValuePrecentage";
 import InputField from "components/common/TextField";
 import { OFFERTYPES } from "data/api";
 import { OFFERS } from "data/api";
+import Breadcrumbs from "examples/Breadcrumbs";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import { navbarRow } from "examples/Navbars/DashboardNavbar/styles";
@@ -78,7 +78,7 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
     { control: "category", value: '', isRequired: false },
     { control: "total_amount", value: '', isRequired: false },
     { control: "banner", value: '', isRequired: false },
-    { control: "is_precentage", value: '', isRequired: false },
+    { control: "is_percentage_discount", value: '', isRequired: false },
     { control: "discount", value: '', isRequired: false },
     { control: "copon", value: '', isRequired: false },
     { control: "published_on", value: '', isRequired: false },
@@ -104,7 +104,7 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
       }
       if (controls.offer_type === 2||3||4||6||5) {
         obj.discount = controls.discount;
-        obj.is_precentage = controls.is_precentage;
+        obj.is_percentage_discount = controls.is_percentage_discount;
         if (controls.offer_type === 3){
           obj.total_amount = controls.total_amount;
         }
@@ -388,8 +388,8 @@ console.log(offerstypes);
         title='Product Y'
         value={controls.productY}
          onChange={(e)=>setControl('productY',e.target.value)}
-         type={controls.is_precentage}
-         typeChange={(e)=>setControl('is_precentage',e.target.value)}
+         type={controls.is_percentage_discount}
+         typeChange={(e)=>setControl('is_percentage_discount',e.target.value)}
          handleValueChange={(e)=>setControl('discount',e.target.value)} 
         discount
         />
@@ -412,7 +412,7 @@ console.log(offerstypes);
         variant={'outlined'}
         label={'Discount'}
         type={controls.type}
-        onChange={(e)=>setControl("is_precentage",e.target.value)}
+        onChange={(e)=>setControl("is_percentage_discount",e.target.value)}
         handleValueChange={(e)=>setControl('discount',e.target.value)}
         />
          <InputField
@@ -464,8 +464,8 @@ console.log(offerstypes);
         select
         value={controls.productX}
          onChange={(e)=>setControl('productX',e.target.value)}
-         type={controls.is_precentage}
-         typeChange={(e)=>setControl('is_precentage',e.target.value)}
+         type={controls.is_percentage_discount}
+         typeChange={(e)=>setControl('is_percentage_discount',e.target.value)}
          handleValueChange={(e)=>setControl('discount',e.target.value)} 
         discount
         />
@@ -503,8 +503,8 @@ console.log(offerstypes);
         muliple
         value={controls.products}
          onChange={(e)=>setControl('products',e.target.value)}
-         type={controls.is_precentage}
-         typeChange={(e)=>setControl('is_precentage',e.target.value)}
+         type={controls.is_percentage_discount}
+         typeChange={(e)=>setControl('is_percentage_discount',e.target.value)}
          handleValueChange={(e)=>setControl('discount',e.target.value)} 
         discount
         />
@@ -543,8 +543,8 @@ console.log(offerstypes);
         
         value={controls.category}
          onChange={(e)=>setControl('category',e.target.value)}
-         type={controls.is_precentage}
-         typeChange={(e)=>setControl('is_precentage',e.target.value)}
+         type={controls.is_percentage_discount}
+         typeChange={(e)=>setControl('is_percentage_discount',e.target.value)}
          handleValueChange={(e)=>setControl('discount',e.target.value)} 
         discount
         />

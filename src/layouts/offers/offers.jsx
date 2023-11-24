@@ -39,6 +39,20 @@ const Offers = ({ absolute, light, isMini }) => {
       },
     });
   };
+  const [OffersDeleyeRequest, OffersDeleteResponce] = useRequest({
+    path: OFFERS,
+    method: "DELETE",
+    Token: `Token ${Token}`,
+  });
+  function onDelete(row) {
+    console.log(row)
+    OffersDeleyeRequest({
+        id: row,
+        onSuccess: () => {
+            dispatch({ type: "offers/deleteItem", payload: { id: row } })
+        }
+    })
+}
  const  columns = [
     {
       field: 'main_image',
@@ -88,16 +102,19 @@ const Offers = ({ absolute, light, isMini }) => {
       field: 'offer_type',
       headerName: 'Type',
       type: 'text',
-      width: 139,
+      width: 220,
       align: 'center',
       headerAlign: 'center',
       editable: true,
       renderCell: (params) => {
         const { row } = params;
         return (<Stack direction={"row"} justifyContent={'flex-start'} alignItems={'center'}>
-            <SoftBox sx={{width: 'max-content',
+            <SoftBox sx={{width: '100%',
 height: '30px',
-padding: '5px 16px 5px 16px',borderRadius:"130px",display:'flex',alignItems:'centter',color:'#027A48',background:'#ECFDF3',fontSize:'14px',fontWeight:500}}>{row.offer_type}</SoftBox>
+padding: '5px 16px 5px 16px',borderRadius:"130px",display:'flex',alignItems:'centter',
+color:row.offer_type_id===1?'#027A48':row.offer_type_id===2?"#7A0243":row.offer_type_id===3?'#02157A':row.offer_type_id===4?"#7A6702":row.offer_type_id===5?"#37027A":row.offer_type_id===6?"#7A4A02":""
+,background:row.offer_type_id==1?'#ECFDF3':row.offer_type_id==2?"#FDECF9":row.offer_type_id==3?'#ECF0FD':row.offer_type_id==4?"#FDFBEC":row.offer_type_id==5?"#F2ECFD":row.offer_type_id==6?"#FDF2EC":""
+,fontSize:'14px',fontWeight:500}}>{row.offer_type}</SoftBox>
                 
             
         </Stack>
@@ -125,7 +142,7 @@ padding: '5px 16px 5px 16px',borderRadius:"130px",display:'flex',alignItems:'cen
   useEffect(()=>{
     getOffers()
   },[])
-  console.log(offers);
+  
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -173,14 +190,14 @@ padding: '5px 16px 5px 16px',borderRadius:"130px",display:'flex',alignItems:'cen
           rows={offers?.results}
           columns={columns}
           // onEdit={()=>{}}
-          onDelete={() => {}}
+          onDelete={onDelete}
           onCopy={() => {}}
           checkboxSelection={true}
-          onRowClick={(e, row) => {
-            console.log(e, row);
-            // setClick({ ...e.id });
-          }}
-          notProduct={false}
+          // onRowClick={(e, row) => {
+          //   console.log(e, row);
+          //    setClick({ ...e.id });
+          // }}
+          // notProduct={false}
           // rowsPerPageOptions={[5, 10, 15, 20]}
           // onPaginationModelChange={setPaginationModel}
           rowHeight={72}

@@ -89,6 +89,14 @@ export const TextValidat = styled(Typography)({
   marginLeft: '30px',
   display: 'flex'
 });
+export const TextTitle = styled(Typography)({
+  fontFamily: 'Inter',
+  fontSize: '16px',
+  fontWeight: 500,
+  lineHeight: '24px',
+  letterSpacing: '0em',
+  textAlign: 'left'
+});
 
 export const DropDownSelect = styled(Select)({
   height: '50px',

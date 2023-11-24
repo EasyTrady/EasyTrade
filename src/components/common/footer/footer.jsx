@@ -129,7 +129,7 @@ export function Footer() {
             </Item>
           </Grid>
         </Grid>
-        <Divider sx={{ alignSelf: "center", width: "100%" }} orientation="horizntal" flexItem />
+        <Divider sx={{ alignSelf: "center", width: "100%" }} orientation="horizontal" flexItem />
 
         <Box sx={{ display: "flex", justifyContent: "center", my: "30px" }}>
           <Typography
