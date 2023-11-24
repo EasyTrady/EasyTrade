@@ -481,7 +481,7 @@ const routes = [
     key: "sign-in",
     route: "/authentication/sign-in",
     icon: <Document size="12px" />,
-    component: <Auth><SignIn /></Auth>,
+    component: <SignIn />,
     noCollapse: false,
   },
   {

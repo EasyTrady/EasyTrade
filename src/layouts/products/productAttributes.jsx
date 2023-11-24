@@ -75,7 +75,7 @@ const ProductAttributes = ({ idProduct }) => {
       sx: {
         maxHeight: "200px",
         overflowY: "auto",
-       backgroundColor:"white !important"
+        backgroundColor: "white !important"
       },
     }
   };
@@ -123,27 +123,27 @@ const ProductAttributes = ({ idProduct }) => {
       control: "quantity",
       value: "",
       isRequired: false,
-     
+
     }, {
       control: "sku",
       value: "",
       isRequired: false,
-     
-    },{
+
+    }, {
       control: "price",
       value: "",
       isRequired: false,
-     
-    },{
+
+    }, {
       control: "gtin",
       value: "",
       isRequired: false,
-     
-    },{
+
+    }, {
       control: "variants",
       value: [],
       isRequired: false,
-     
+
     },
 
   ]);
@@ -173,6 +173,13 @@ const ProductAttributes = ({ idProduct }) => {
       Token: `Token ${Token}`,
       // contentType: "multipart/form-data",
     });
+    const [productvariantRequest, productvariantResponce] =
+    useRequest({
+      path: PRODUCTS,
+      method: "get",
+      Token: `Token ${Token}`,
+      // contentType: "multipart/form-data",
+    });
   function handleSubmit() {
     console.log("submit")
     validate().then((output) => {
@@ -192,7 +199,7 @@ const ProductAttributes = ({ idProduct }) => {
               onSuccess: (res) => {
                 console.log(controls.attribute)
                 dispatch({ type: "attribute/addValues", payload: { idattribute: controls.id, values: res.data } })
-                setControl("attribute",controls.attribute.map((elem)=>elem.id==controls.id?{...elem,values:controls.values.map((ele)=>Boolean(ele.id)?ele:res.data.find((elem)=>elem.value_name==ele.value_name))}:elem))
+                setControl("attribute", controls.attribute.map((elem) => elem.id == controls.id ? { ...elem, values: controls.values.map((ele) => Boolean(ele.id) ? ele : res.data.find((elem) => elem.value_name == ele.value_name)) } : elem))
                 // setControl("values", controls.values.map((ele)=>Boolean(ele.id)?ele:res.data.find((elem)=>elem.value_name==ele.value_name)))
                 setOpenDialog(false)
 
@@ -302,9 +309,9 @@ const ProductAttributes = ({ idProduct }) => {
   }
   function onDeleteNew(row) {
     console.log(row)
-    setControl("values", controls.values.filter((ele,index) => index !== row))
+    setControl("values", controls.values.filter((ele, index) => index !== row))
     setEdit(null)
-}
+  }
   const [attributeRequest, attributeResponse] =
     useRequest({
       path: ATTRIBUTES,
@@ -317,19 +324,19 @@ const ProductAttributes = ({ idProduct }) => {
     Token: `Token ${Token}`,
   });
   const [editattributeValueRequest, ValueattributeeditResponce] =
-  useRequest({
+    useRequest({
       path: ATTRIBUTES,
       method: "patch",
       Token: `Token ${Token}`,
       // contentType: "multipart/form-data",
-  });
+    });
   const [GenerationAttributesRequest, GenerationAttributeResponse] =
     useRequest({
-      path: PRODUCTS+"/generate/attributes/",
+      path: PRODUCTS + "/generate/attributes/",
       method: "POST",
       Token: `Token ${Token}`
     });
-    const [variantAttributesRequest, variantAttributeResponse] =
+  const [variantAttributesRequest, variantAttributeResponse] =
     useRequest({
       path: PRODUCTS,
       method: "POST",
@@ -346,15 +353,15 @@ const ProductAttributes = ({ idProduct }) => {
     attributeRequest({
       onSuccess: (res) => {
         dispatch({ type: "attribute/set", payload: res.data })
-      
+
 
       }
     })
 
   }
-  const handleClosepopup=()=>{
-    setControl("attribute", controls?.attribute?.map((ele)=>ele.id==popupvalue.id?{...ele,values:controls.attributevalues.map((elem)=>elem)}:ele)).then(()=>{
-      setControl("attributevalues",[])
+  const handleClosepopup = () => {
+    setControl("attribute", controls?.attribute?.map((ele) => ele.id == popupvalue.id ? { ...ele, values: controls.attributevalues.map((elem) => elem) } : ele)).then(() => {
+      setControl("attributevalues", [])
       setpopupvalue(null)
 
     })
@@ -370,68 +377,50 @@ const ProductAttributes = ({ idProduct }) => {
 
     GenerationAttributesRequest({
       body: {
-        "attributes": controls?.attribute.map((ele) =>({attribute:ele.name ,values:ele.values.map((elem) => elem.value_name)})),
+        "attributes": controls?.attribute.map((ele) => ({ attribute: ele.name, values: ele.values.map((elem) => elem.value_name) })),
       },
       onSuccess: (res) => {
         // localStorage.removeItem('productId');
         // dispatch({ type: "products/addNewProperty", payload: { id: idproduct, item: res?.data[0]?.variant_attributes } })
         setgenerate(!generate)
         setgenerateresult(res.data)
-        let result=res.data.map((ele)=>({
-          attributes:[ele],
-          title:"",
-        sku:"",
-        mpn: product?.mpn,
-        gtin:"",
-        price:"",
-        currency:"SAR",
-        quantity:""
+        let result = res.data.map((ele) => ({
+          attributes: [ele],
+          title: "",
+          sku: "",
+          gtin: "",
+          price: "",
+          currency: "SAR",
+          quantity: ""
         }))
-        console.log(res.data, controls,result);
-        setControl("variants",[...result])
+        console.log(res.data, controls, result);
+        setControl("variants", [...result])
       },
     })
-   
+
   }
 
   const postGenerationAttributes = () => {
-      console.log(controls.variants)
-     controls.variants.map((ele)=>Boolean(ele.title)&&Boolean(ele.sku)&&Boolean(ele.quantity)&&Boolean(ele.price)&&Boolean(ele.mpn)&&Boolean(ele.gtin)?true:setInvalid("variants","you need the title,quantity,price,mpn and gtin"))
-    
-     variantAttributesRequest({
-      id: idproduct + '/variants/',
-      body:controls.variants.filter((ele)=>Boolean(ele.title)&&Boolean(ele.sku)&&Boolean(ele.quantity)&&Boolean(ele.price)&&Boolean(ele.mpn)&&Boolean(ele.gtin)),
-      // filter({
-      //   obj: {
-      //     // attribute: [...controls?.attribute],
-
-      //   },
-      //   output: "object",
-      // }),
-      onSuccess: (res) => {
-        // localStorage.removeItem('productId');
-        if(res?.data[0]?.variant_attributes){
-          dispatch({ type: "products/addNewProperty", payload: { id: idproduct, item: res?.data[0]?.variant_attributes } })
-
+    if(controls.variants.filter((ele)=>Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin)).length>0){
+      variantAttributesRequest({
+        id: idproduct + '/variants/',
+        body: controls.variants.filter((ele)=>Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin)),
+      
+        onSuccess: (res) => {
+          if (res?.data[0]?.variant_attributes) {
+            dispatch({ type: "products/addNewProperty", payload: { id: idproduct, item: res?.data[0]?.variant_attributes } })
+          }
+        },
+      }).then((res) => {
+        let response = res?.response?.data;
+        if(response?.length>0){
+          setInvalid({variants:[...response]});
         }
-        // setgenerate(!generate)
-        console.log(res.data, controls);
-      },
-    }).then((res) => {
-      let response = res?.response?.data;
-      console.log(res);
-      // const responseBody = filter({
-      //   obj: {
-      //     name: response?.name?.join(""),
-      //     quantity: response?.quantity?.join(" "),
-      //    
-      //   },
-      //   output: "object",
-      // });
-
-      setInvalid(response);
-      // resetControls("");
-    });
+      });
+    }else{
+      setInvalid({variants:[]});
+    }
+ 
     // });
   }
 
@@ -454,9 +443,9 @@ const ProductAttributes = ({ idProduct }) => {
 
   }
   function onDelete(id) {
-   console.log(id,controls.attribute)
+    console.log(id, controls.attribute)
     const rowfind = controls.attribute.filter((row) => row.id != id)
-    setControl("attribute",rowfind)
+    setControl("attribute", rowfind)
     // setControl("values",rowfind.)
 
     // Object.keys(controls)?.map((ele) => rowfind[ele] && setControl(ele, rowfind[ele]))
@@ -464,49 +453,48 @@ const ProductAttributes = ({ idProduct }) => {
 
   }
   function editValue(ele) {
- 
+
     if (!Boolean(controls.value_name)) {
-        setControl("value_name", ele.value_name)
+      setControl("value_name", ele.value_name)
     }
     if (!Boolean(controls.color_value)) {
-        setControl("color_value", ele.color_value)
+      setControl("color_value", ele.color_value)
     }
-  
+
     editattributeValueRequest({
-        id: controls.id + "/values/" + ele.id,
-        body: {
-            value_name: Boolean(controls.value_name)?controls.value_name:ele.value_name,
-            color_value:Boolean(controls.color_value)? controls.color_value:ele.color_value
-        },
-        onSuccess: (res) => {
-            dispatch({ type: "attribute/editValue", payload: { id: controls.id, idvalue: ele.id, item: res.data } })
-            setControl("values", controls.values.map((elem)=>elem.id==ele.id?res.data:elem))
+      id: controls.id + "/values/" + ele.id,
+      body: {
+        value_name: Boolean(controls.value_name) ? controls.value_name : ele.value_name,
+        color_value: Boolean(controls.color_value) ? controls.color_value : ele.color_value
+      },
+      onSuccess: (res) => {
+        dispatch({ type: "attribute/editValue", payload: { id: controls.id, idvalue: ele.id, item: res.data } })
+        setControl("values", controls.values.map((elem) => elem.id == ele.id ? res.data : elem))
 
-            setControl("value_name", "")
-            setControl("color_value", "")
-            setEdit(null)
+        setControl("value_name", "")
+        setControl("color_value", "")
+        setEdit(null)
 
-            console.log(attributes.find((ele) => ele.id == controls.id))
-        }
+      }
     })
-}
+  }
 
-function editNew(element,ind){
+  function editNew(element, ind) {
 
-  {openDialogEdit?setControl("values",controls.values.map((element,index)=>index==ind?{...element,color_value:Boolean(controls.color_value)?controls.color_value:element.color_value,value_name:Boolean(controls.value_name)?controls.value_name:element.value_name}:element)):
-  setControl("attributenewvalues",controls.attributenewvalues.map((element,index)=>index==ind?{...element,color_value:Boolean(controls.color_value)?controls.color_value:element.color_value,value_name:Boolean(controls.value_name)?controls.value_name:element.value_name}:element))}
-  
-  console.log(element,controls.values[ind],controls.value_name,controls.color_value)
-  setControl("value_name", "")
-          setControl("color_value", "")
-          setEdit(null)
-}
-  function getblurrow(ele,index,e){
+    {
+      openDialogEdit ? setControl("values", controls.values.map((element, index) => index == ind ? { ...element, color_value: Boolean(controls.color_value) ? controls.color_value : element.color_value, value_name: Boolean(controls.value_name) ? controls.value_name : element.value_name } : element)) :
+        setControl("attributenewvalues", controls.attributenewvalues.map((element, index) => index == ind ? { ...element, color_value: Boolean(controls.color_value) ? controls.color_value : element.color_value, value_name: Boolean(controls.value_name) ? controls.value_name : element.value_name } : element))
+    }
+    setControl("value_name", "")
+    setControl("color_value", "")
+    setEdit(null)
+  }
+  function getblurrow(ele, index, e) {
     // console.log(controls.variants,e.target.value,ele)
 
-    console.log(controls.variants,e.target,ele)
+    console.log(controls.variants, e.target, ele)
 
-   
+
   }
   useEffect(() => {
     if (!Boolean(products.results.length > 0)) {
@@ -523,19 +511,33 @@ function editNew(element,ind){
     setproduct(products.results.find((ele) => ele.id == idproduct))
   }, [idproduct, products])
   useEffect(() => {
-    if(controls.attribute.length>0){
+    if (controls.attribute.length > 0) {
 
-      setpopupvalue(controls.attribute[controls.attribute.length-1])
-      setControl("values",controls.attribute[controls.attribute.length-1].values.map((ele)=>ele))
+      setpopupvalue(controls.attribute[controls.attribute.length - 1])
+      setControl("values", controls.attribute[controls.attribute.length - 1].values.map((ele) => ele))
+    }else{
+      setInvalid("variants",[])
+      setpopupvalue(null)
     }
   }, [controls.attribute])
   useEffect(() => {
     console.log(controls.values.length)
   }, [controls.values.length])
+  useEffect(() => {
+    console.log(controls.variants)
+    if(controls.variants.length==0){
+   
+      setgenerate(false)
+    }
+  }, [controls.variants])
   useEffect(()=>{
-    console.log(controls.attribute)
-
-  },[controls.attribute])
+    productvariantRequest({
+      id:idproduct+"/variants",
+      onSuccess:(res)=>{
+        console.log(res.data)
+      }
+    })
+  },[])
   return (
     <Container
       maxWidth="xl"
@@ -605,7 +607,7 @@ function editNew(element,ind){
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell  sx={{
+                <TableCell sx={{
                   fontFamily: 'Inter',
                   fontSize: '14px',
                   fontWeight: 600,
@@ -623,11 +625,11 @@ function editNew(element,ind){
                 }}
                 >
 
-                  <TableCell align="start"sx={{border:"1px solid " ,borderColor:"#d9d9d9"}}>{row.name}</TableCell>
-                  <TableCell align="start" sx={{border:"1px solid " ,borderColor:"#d9d9d9"}}>{row?.values?.length>0?row?.values?.length:0} values</TableCell>
-                  <TableCell align="center" sx={{border:"1px solid " ,borderColor:"#d9d9d9"}}gap={1}>
+                  <TableCell align="start" sx={{ border: "1px solid ", borderColor: "#d9d9d9" }}>{row.name}</TableCell>
+                  <TableCell align="start" sx={{ border: "1px solid ", borderColor: "#d9d9d9" }}>{row?.values?.length > 0 ? row?.values?.length : 0} values</TableCell>
+                  <TableCell align="center" sx={{ border: "1px solid ", borderColor: "#d9d9d9" }} gap={1}>
                     <img src={Edit} alt="edit" onClick={() => { onEdit(row.id) }} />
-                    <img src={Delete} alt="delete"  onClick={() => { onDelete(row.id) }}/>
+                    <img src={Delete} alt="delete" onClick={() => { onDelete(row.id) }} />
                   </TableCell>
                 </TableRow>
               ))}
@@ -646,7 +648,7 @@ function editNew(element,ind){
                     textTransform: "none",
                     color: "#5D449B",
                   }}
-                  onClick={() => {setOpenDialog(true);setOpenDialogEdit(false)}}
+                  onClick={() => { setOpenDialog(true); setOpenDialogEdit(false) }}
                 >
                   Add Attribute
                 </Button>
@@ -695,17 +697,17 @@ function editNew(element,ind){
             }}>Generate (4 combinations)</Button>
 
         </Box>
-        {generate&&controls.variants.length>0?<Box>
+        {generate ? <Box>
           <Typography sx={{ color: (theme) => theme.palette.grey[600], marginY: "20px" }}>{t("note")}</Typography>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650, color: (theme) => theme.palette.grey[300] }} aria-label="caption table">
               <TableBody>
                 {/* {rows.map((row) => ( */}
-                {controls.variants.map((ele,index)=><TableRow key={index}sx={{
+                {controls.variants.map((ele, index) => <TableRow key={index} sx={{
                   display: "flex",
                   alignItems: "center"
                 }} >
-                  
+
                   <Checkbox defaultChecked color="secondary" />
                   <TableCell align="right">{`${ele?.attributes?.join("")}`}</TableCell>
                   <TableCell align="right"> <SoftInput
@@ -713,339 +715,345 @@ function editNew(element,ind){
                     sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "150px !important" }, }}
                     value={ele?.quantity}
 
-                    onChange={(e) =>  setControl("variants",controls.variants.map((elem,ind)=>ind==index?{
-                      ...ele,quantity:e.target.value
-                       }:elem))}
-                       required={required.includes("variants")}
-                       error={Boolean(invalid?.variants)}
-                       helperText={invalid?.variants}
-                       
+                    onChange={(e) => setControl("variants", controls.variants.map((elem, ind) => ind == index ? {
+                      ...ele, quantity: e.target.value
+                    } : elem))}
+                    required={required.includes("quantity")}
+                    error={Boolean(invalid?.variants&&invalid?.variants[index]?invalid?.variants[index]?.quantity:"")}
+                    helperText={invalid?.variants&&invalid?.variants[index]?invalid?.variants[index]?.quantity:""}
+
                   /></TableCell>
-                   <TableCell align="right"> <SoftInput
+                  <TableCell align="right"> <SoftInput
                     placeholder='title'
                     sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "150px !important" }, }}
                     value={ele?.title}
 
-                    onChange={(e) =>  setControl("variants",controls.variants.map((elem,ind)=>ind==index?{
-                      ...ele,title:e.target.value
-                       }:elem))}
-                       required={required.includes("title")}
-                       error={Boolean(invalid?.title)}
-                       helperText={invalid?.title}
+                    onChange={(e) => setControl("variants", controls.variants.map((elem, ind) => ind == index ? {
+                      ...ele, title: e.target.value
+                    } : elem))}
+                    required={required.includes("title")}
+                    error={Boolean(invalid?.variants&&invalid?.variants[index]?invalid?.variants[index].title:"")}
+                    helperText={invalid?.variants&&invalid?.variants[index]?invalid?.variants[index]?.title:""}
                   /></TableCell>
                   <TableCell align="right"> <SoftInput
                     placeholder='sku'
                     sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "150px !important" }, }}
                     value={ele?.sku}
-                    onChange={(e) =>  setControl("variants",controls.variants.map((elem,ind)=>ind==index?{
-                      ...ele,sku:e.target.value
-                       }:elem))}
-                   
+                    onChange={(e) => setControl("variants", controls.variants.map((elem, ind) => ind == index ? {
+                      ...ele, sku: e.target.value
+                    } : elem))}
+                    required={required.includes("sku")}
+                    error={Boolean(invalid?.variants&&invalid?.variants[index]?invalid?.variants[index].sku:"")}
+                    helperText={invalid?.variants&&invalid?.variants[index]?invalid?.variants[index].sku:""}
                   /></TableCell>
                   <TableCell align="right"> <SoftInput
                     placeholder='price'
                     sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "150px !important" }, }}
                     value={ele?.price}
-                    onChange={(e) =>  setControl("variants",controls.variants.map((elem,ind)=>ind==index?{
-                      ...ele,price:e.target.value
-                       }:elem))}
-                   
+                    onChange={(e) => setControl("variants", controls.variants.map((elem, ind) => ind == index ? {
+                      ...ele, price: e.target.value
+                    } : elem))}
+                    required={required.includes("price")}
+                    error={Boolean(invalid?.variants&&invalid?.variants[index]?invalid?.variants[index].price:"")}
+                    helperText={invalid?.variants&&invalid?.variants[index]?invalid?.variants[index].price:""}
                   // sx={input}
                   /></TableCell>
                   <TableCell align="right"> <SoftInput
                     placeholder='gtin'
                     sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "150px !important" }, }}
                     value={ele?.gtin}
-                    onChange={(e) =>  setControl("variants",controls.variants.map((elem,ind)=>ind==index?{
-                      ...ele,gtin:e.target.value
-                       }:elem))}
-                  
+                    onChange={(e) => setControl("variants", controls.variants.map((elem, ind) => ind == index ? {
+                      ...ele, gtin: e.target.value
+                    } : elem))}
+                    required={required.includes("gtin")}
+                    error={Boolean(invalid?.variants&&invalid?.variants[index]?invalid?.variants[index].gtin:"")}
+                    helperText={invalid?.variants&&invalid?.variants[index]?invalid?.variants[index].gtin:""}
                   // sx={input}
                   /></TableCell>
                   <TableCell align="right"><PhotoIcon /></TableCell>
-                  <TableCell align="right" sx={{color:(theme)=>theme.palette.error.main}}><DeleteIcon /></TableCell>
+                  <TableCell align="right" sx={{ color: (theme) => theme.palette.error.main }}><DeleteIcon /></TableCell>
 
                 </TableRow>)}
-                
+
                 {/* ))} */}
               </TableBody>
             </Table>
           </TableContainer>
-        </Box>:<></>}
-       
+        </Box> : <></>}
+
       </Box>
-      <Box sx={{display:'flex',justifyContent:'flex-end',alignItems:'center',marginY:"14px"}}>
-      <SoftButton variant="gradient"
-                        sx={{
-                            backgroundColor: (theme) => theme.palette.purple.middle,
-                            color: "white !important", "&:hover": {
-                                backgroundColor: (theme) => theme.palette.purple.middle
-                            },width: '260px'
-                        }}
-                        onClick={postGenerationAttributes}
-                    >
-                        Next
-                    </SoftButton>
-                    </Box>
-                   <Dialog
-                    open={openDialog}
-                    onClose={handleCloseDialog}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                    sx={{ ".MuiPaper-root": { minWidth: "37%" }, }}
-                >
-                    <Form component="form"
-                        childrenProps={{
-                            saveBtn: {
-                                onClick: handleSubmit,
-                                // disabled: postjobResponce.isPending,
-                            },
-                            closeBtn: {
-                                onClick: () => {
-                                    // handleClose()
-                                    resetControls();
-                                    setOpenDialog(false)
-                                },
-                                // disabled: postjobResponce.isPending,
-                            },
-                            title: openDialogEdit ? t("editattribute") : t("addnewattribute")
-                        }} sx={{
-                            borderRadius: "8px", display: "flex",
-                            flexDirection: "column"
-                        }}>
-                        <DialogTitle sx={{
-                            padding: "0", fontWeight: 400,
-                            fontSize: "14px",
-                            color: "gray",
-                        }}>
-                            {t("descributionAttribute")}</DialogTitle>
-                        <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", marginBottom: "5px" }}
-                        >{t("Attributename")}
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginY: "14px" }}>
+        <SoftButton variant="gradient"
+          sx={{
+            backgroundColor: (theme) => theme.palette.purple.middle,
+            color: "white !important", "&:hover": {
+              backgroundColor: (theme) => theme.palette.purple.middle
+            }, width: '260px'
+          }}
+          onClick={postGenerationAttributes}
+        >
+          Next
+        </SoftButton>
+      </Box>
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        sx={{ ".MuiPaper-root": { minWidth: "37%" }, }}
+      >
+        <Form component="form"
+          childrenProps={{
+            saveBtn: {
+              onClick: handleSubmit,
+              // disabled: postjobResponce.isPending,
+            },
+            closeBtn: {
+              onClick: () => {
+                // handleClose()
+                resetControls();
+                setOpenDialog(false)
+              },
+              // disabled: postjobResponce.isPending,
+            },
+            title: openDialogEdit ? t("editattribute") : t("addnewattribute")
+          }} sx={{
+            borderRadius: "8px", display: "flex",
+            flexDirection: "column"
+          }}>
+          <DialogTitle sx={{
+            padding: "0", fontWeight: 400,
+            fontSize: "14px",
+            color: "gray",
+          }}>
+            {t("descributionAttribute")}</DialogTitle>
+          <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", marginBottom: "5px" }}
+          >{t("Attributename")}
 
-                        </Typography>
-                        <SoftInput
-                            placeholder='Attribute name'
-                            sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
-                            value={controls.name}
-                            onChange={(e) => setControl("name", e.target.value)}
-                            required={required.includes("name")}
-                            error={Boolean(invalid?.name)}
-                            helperText={invalid?.name}
-                        // sx={input}
-                        />
-                        <SoftButton sx={{
-                            width: "max-content",
-                            padding: "5px",
-                            borderRadius: "50%",
-                            minWidth: "max-content",
-                            minHeight: "max-content",
-                            position: "absolute",
-                            left: "70%",
-                            top: "11.5rem",
-                            zIndex: 1
-                        }} onClick={() => {
-                            let copyName = controls.english_name;
-                            setControl("english_name", controls.name)
-                            setControl("name", copyName)
-                        }}>
-                            <TwoArrow color={"#959FA3"} size={"16"}/>
-                           
-                        </SoftButton>
-                        <SoftInput
-                            placeholder='English name'
-                            sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
-                            value={controls.english_name}
-                            onChange={(e) => setControl("english_name", e.target.value)}
-                            required={required.includes("english_name")}
-                            error={Boolean(invalid?.english_name)}
-                            helperText={invalid?.english_name}
-                        // sx={input}
-                        />
-                        <SoftBox sx={{ display: "flex" }}>
-                            <Checkbox checked={controls.iscolor} onClick={() => setControl("iscolor", !controls.iscolor)} />
-                            <Typography sx={{ fontSize: "14px" }} variant="span">
-                                {t("colorHex")}
-                            </Typography>
-                        </SoftBox>
-                        <SoftBox sx={{ border: "1px solid #8080807d", borderRadius: "8px", }}>
+          </Typography>
+          <SoftInput
+            placeholder='Attribute name'
+            sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
+            value={controls.name}
+            onChange={(e) => setControl("name", e.target.value)}
+            required={required.includes("name")}
+            error={Boolean(invalid?.name)}
+            helperText={invalid?.name}
+          // sx={input}
+          />
+          <SoftButton sx={{
+            width: "max-content",
+            padding: "5px",
+            borderRadius: "50%",
+            minWidth: "max-content",
+            minHeight: "max-content",
+            position: "absolute",
+            left: "70%",
+            top: "11.5rem",
+            zIndex: 1
+          }} onClick={() => {
+            let copyName = controls.english_name;
+            setControl("english_name", controls.name)
+            setControl("name", copyName)
+          }}>
+            <TwoArrow color={"#959FA3"} size={"16"} />
 
-                            <Typography sx={{ borderBottom: "1px solid #8080807d", fontSize: "14px", padding: "15px", height: "40px" }}>{controls.name}</Typography>
-{openDialogEdit? controls?.values?.map((ele,index) => <TableRow key={ele.id} sx={{
-                                fontSize: "14px",
-                                display: "flex",
-                                borderBottom: "1px solid #8080807d"
-                            }}>
+          </SoftButton>
+          <SoftInput
+            placeholder='English name'
+            sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
+            value={controls.english_name}
+            onChange={(e) => setControl("english_name", e.target.value)}
+            required={required.includes("english_name")}
+            error={Boolean(invalid?.english_name)}
+            helperText={invalid?.english_name}
+          // sx={input}
+          />
+          <SoftBox sx={{ display: "flex" }}>
+            <Checkbox checked={controls.iscolor} onClick={() => setControl("iscolor", !controls.iscolor)} />
+            <Typography sx={{ fontSize: "14px" }} variant="span">
+              {t("colorHex")}
+            </Typography>
+          </SoftBox>
+          <SoftBox sx={{ border: "1px solid #8080807d", borderRadius: "8px", }}>
 
-
-                                {/* <Divider orientation="vertical" sx={{width:'1px',height:"50px",color:"#8080807d"}}/> */}
-
-                                {console.log(edit?.id,ele?.id)}
-                                {Boolean(edit) && edit?.id == ele?.id&&index==indexedit ? <TableCell sx={{ width: "14rem", }}><SoftInput placeholder='value'
-                                    sx={{ ".MuiInputBase-root": { border: `unset` }, }}
-                                    value={controls.value_name ? controls.value_name : edit?.value_name}
-                                    onChange={(e) => setControl("value_name", e.target.value)}
-                                    required={required.includes("value_name")}
-                                    error={Boolean(invalid?.value_name)}
-                                    helperText={invalid?.value_name} /></TableCell> : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.value_name}</TableCell>}
-
-                                {ele.color_value ? Boolean(edit) && edit?.id == ele?.id &&index==indexedit? <TableCell sx={{ width: "14rem", }}><SoftInput placeholder='color'
-                                    sx={{ ".MuiInputBase-root": { border: `unset` }, }}
-                                    value={controls.color_value ? controls.color_value : edit?.color_value}
-                                    // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
-                                    onChange={(e) => setControl("color_value",
-                                        e.target.value)}
-                                    required={required.includes("color_value")}
-                                    error={Boolean(invalid?.color_value)}
-                                    helperText={invalid?.color_value} /></TableCell > : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.color_value}</TableCell> : <></>}
-                                {attributes?.find((ele) => ele.id == controls.id)?.values.map((ele) => ele.value_name).includes(ele.value_name) ? <TableCell sx={{
-                                    width: "50%", borderLeft: "1px solid #8080807d", display: "flex",
-                                    justifyContent: "flex-end",
-                                    alignItems: "center"
-                                }}>
-                                   
-                                    {Boolean(edit) && edit?.id == ele?.id &&index==indexedit ? <SoftBox><SaveAsIcon onClick={() => editValue(ele)} /></SoftBox> : <EditIcon onClick={() => { setEdit(ele);setindexedit(index); setaddvalue(false) }} />}
-                                    {Boolean(edit) && edit?.id == ele?.id  &&index==indexedit? <SoftBox> <CloseIcon onClick={() => setEdit(null)} /></SoftBox> : <DeleteIcon sx={{ color: (theme) => theme.palette.error.main, cursor: "pointer" }} onClick={() => onDeleteValue(controls.id, ele.id)} />}
-
-                                </TableCell>: <TableCell sx={{
-                                    width: "50%", borderLeft: "1px solid #8080807d", display: "flex",
-                                    justifyContent: "flex-end",
-                                    alignItems: "center"
-                                }}>
-                                   
-                                    {Boolean(edit) && edit?.id == ele?.id  &&index==indexedit? <SaveAsIcon onClick={() => editNew(ele,index)} /> : <EditIcon onClick={() => { setEdit(ele);setindexedit(index) ;setaddvalue(false);console.log(ele) }} />}
-                                    {Boolean(edit) && edit?.id == ele?.id  &&index==indexedit? <CloseIcon onClick={() => setEdit(null)} /> : <DeleteIcon sx={{ color: (theme) => theme.palette.error.main, cursor: "pointer" }} onClick={() => onDeleteNew(index)} />}
-
-                                </TableCell>}
-                            </TableRow>): controls?.attributenewvalues?.map((ele,index) => <TableRow key={ele.id} sx={{
-                              fontSize: "14px",
-                              display: "flex",
-                              borderBottom: "1px solid #8080807d"
-                          }}>
+            <Typography sx={{ borderBottom: "1px solid #8080807d", fontSize: "14px", padding: "15px", height: "40px" }}>{controls.name}</Typography>
+            {openDialogEdit ? controls?.values?.map((ele, index) => <TableRow key={ele.id} sx={{
+              fontSize: "14px",
+              display: "flex",
+              borderBottom: "1px solid #8080807d"
+            }}>
 
 
-                              {/* <Divider orientation="vertical" sx={{width:'1px',height:"50px",color:"#8080807d"}}/> */}
+              {/* <Divider orientation="vertical" sx={{width:'1px',height:"50px",color:"#8080807d"}}/> */}
 
-                              {console.log(edit?.id,ele?.id)}
-                              {Boolean(edit) && edit?.id == ele?.id&&index==indexedit ? <TableCell sx={{ width: "14rem", }}><SoftInput placeholder='value'
-                                  sx={{ ".MuiInputBase-root": { border: `unset` }, }}
-                                  value={controls.value_name ? controls.value_name : edit?.value_name}
-                                  onChange={(e) => setControl("value_name", e.target.value)}
-                                  required={required.includes("value_name")}
-                                  error={Boolean(invalid?.value_name)}
-                                  helperText={invalid?.value_name} /></TableCell> : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.value_name}</TableCell>}
+              
+              {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <TableCell sx={{ width: "14rem", }}><SoftInput placeholder='value'
+                sx={{ ".MuiInputBase-root": { border: `unset` }, }}
+                value={controls.value_name ? controls.value_name : edit?.value_name}
+                onChange={(e) => setControl("value_name", e.target.value)}
+                required={required.includes("value_name")}
+                error={Boolean(invalid?.value_name)}
+                helperText={invalid?.value_name} /></TableCell> : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.value_name}</TableCell>}
 
-                              {ele.color_value ? Boolean(edit) && edit?.id == ele?.id &&index==indexedit? <TableCell sx={{ width: "14rem", }}><SoftInput placeholder='color'
-                                  sx={{ ".MuiInputBase-root": { border: `unset` }, }}
-                                  value={controls.color_value ? controls.color_value : edit?.color_value}
-                                  // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
-                                  onChange={(e) => setControl("color_value",
-                                      e.target.value)}
-                                  required={required.includes("color_value")}
-                                  error={Boolean(invalid?.color_value)}
-                                  helperText={invalid?.color_value} /></TableCell > : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.color_value}</TableCell> : <></>}
-                              {attributes?.find((ele) => ele.id == controls.id)?.values.map((ele) => ele.value_name).includes(ele.value_name) ? <TableCell sx={{
-                                  width: "50%", borderLeft: "1px solid #8080807d", display: "flex",
-                                  justifyContent: "flex-end",
-                                  alignItems: "center"
-                              }}>
-                                 
-                                  {Boolean(edit) && edit?.id == ele?.id &&index==indexedit ? <SoftBox><SaveAsIcon onClick={() => editValue(ele)} /></SoftBox> : <EditIcon onClick={() => { setEdit(ele);setindexedit(index); setaddvalue(false) }} />}
-                                  {Boolean(edit) && edit?.id == ele?.id  &&index==indexedit? <SoftBox> <CloseIcon onClick={() => setEdit(null)} /></SoftBox> : <DeleteIcon sx={{ color: (theme) => theme.palette.error.main, cursor: "pointer" }} onClick={() => onDeleteValue(controls.id, ele.id)} />}
+              {ele.color_value ? Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <TableCell sx={{ width: "14rem", }}><SoftInput placeholder='color'
+                sx={{ ".MuiInputBase-root": { border: `unset` }, }}
+                value={controls.color_value ? controls.color_value : edit?.color_value}
+                // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
+                onChange={(e) => setControl("color_value",
+                  e.target.value)}
+                required={required.includes("color_value")}
+                error={Boolean(invalid?.color_value)}
+                helperText={invalid?.color_value} /></TableCell > : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.color_value}</TableCell> : <></>}
+              {attributes?.find((ele) => ele.id == controls.id)?.values.map((ele) => ele.value_name).includes(ele.value_name) ? <TableCell sx={{
+                width: "50%", borderLeft: "1px solid #8080807d", display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center"
+              }}>
 
-                              </TableCell>: <TableCell sx={{
-                                  width: "50%", borderLeft: "1px solid #8080807d", display: "flex",
-                                  justifyContent: "flex-end",
-                                  alignItems: "center"
-                              }}>
-                                 
-                                  {Boolean(edit) && edit?.id == ele?.id  &&index==indexedit? <SaveAsIcon onClick={() => editNew(ele,index)} /> : <EditIcon onClick={() => { setEdit(ele);setindexedit(index) ;setaddvalue(false);console.log(ele) }} />}
-                                  {Boolean(edit) && edit?.id == ele?.id  &&index==indexedit? <CloseIcon onClick={() => setEdit(null)} /> : <DeleteIcon sx={{ color: (theme) => theme.palette.error.main, cursor: "pointer" }} onClick={() => onDeleteNew(index)} />}
+                {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <SoftBox><SaveAsIcon onClick={() => editValue(ele)} /></SoftBox> : <EditIcon onClick={() => { setEdit(ele); setindexedit(index); setaddvalue(false) }} />}
+                {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <SoftBox> <CloseIcon onClick={() => setEdit(null)} /></SoftBox> : <DeleteIcon sx={{ color: (theme) => theme.palette.error.main, cursor: "pointer" }} onClick={() => onDeleteValue(controls.id, ele.id)} />}
 
-                              </TableCell>}
-                          </TableRow>)}
-                           
-                            {addvalue && !controls.iscolor ?<TableRow> <TableCell sx={{ display: "flex", justifyContent: "space-between", alignItem: "center", width: "22rem" }} >
-                                <SoftInput placeholder='value'
-                                    sx={{ ".MuiInputBase-root": { border: `unset !important`, padding: "0px !important", borderBottom: "1px solid gray" }, }}
-                                    value={controls.value_name}
-                                    onChange={(e) => { setControl("value_name", e.target.value); setblurvalue(true) }}
-                                    required={required.includes("value_name")}
-                                    error={Boolean(invalid?.value_name)}
-                                    helperText={invalid?.value_name} />
+              </TableCell> : <TableCell sx={{
+                width: "50%", borderLeft: "1px solid #8080807d", display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center"
+              }}>
+
+                {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <SaveAsIcon onClick={() => editNew(ele, index)} /> : <EditIcon onClick={() => { setEdit(ele); setindexedit(index); setaddvalue(false); console.log(ele) }} />}
+                {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <CloseIcon onClick={() => setEdit(null)} /> : <DeleteIcon sx={{ color: (theme) => theme.palette.error.main, cursor: "pointer" }} onClick={() => onDeleteNew(index)} />}
+
+              </TableCell>}
+            </TableRow>) : controls?.attributenewvalues?.map((ele, index) => <TableRow key={ele.id} sx={{
+              fontSize: "14px",
+              display: "flex",
+              borderBottom: "1px solid #8080807d"
+            }}>
 
 
-                            </TableCell>
-                           
-                            <TableCell sx={{width: "22rem" }}>
-                                <Typography sx={{ fontSize: "14px", padding: "15px", height: "40px", color: (theme) => theme.palette.purple.middle, textDecoration: "underline !important" }}
-                                    component="a"
-                                    onClick={openDialogEdit?AddValue:AddnewValue}
-                                >{Blurvalue ? t("Addvalue") : t("newValue")}
-                                </Typography>
-                               
-                            </TableCell>
-                            </TableRow> : addvalue && controls.iscolor && <TableRow onChange={() => setblurvalue(true)}>
-                                <TableCell sx={{ borderRight: "1px solid #80808059", width: "10.3rem" }}>
-                                    <SoftInput placeholder='value'
-                                        sx={{ ".MuiInputBase-root": { border: `unset`, padding: "0px !important" }, }}
-                                        value={controls.value_name}
-                                        // onChange={(e) => setControl("value_name", e.target.value)}
-                                        onChange={(e) => setControl("value_name", e.target.value)}
-                                        required={required.includes("value_name")}
-                                        error={Boolean(invalid?.value_name)}
-                                        helperText={invalid?.value_name} />
+              {/* <Divider orientation="vertical" sx={{width:'1px',height:"50px",color:"#8080807d"}}/> */}
+
+             
+              {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <TableCell sx={{ width: "14rem", }}><SoftInput placeholder='value'
+                sx={{ ".MuiInputBase-root": { border: `unset` }, }}
+                value={controls.value_name ? controls.value_name : edit?.value_name}
+                onChange={(e) => setControl("value_name", e.target.value)}
+                required={required.includes("value_name")}
+                error={Boolean(invalid?.value_name)}
+                helperText={invalid?.value_name} /></TableCell> : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.value_name}</TableCell>}
+
+              {ele.color_value ? Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <TableCell sx={{ width: "14rem", }}><SoftInput placeholder='color'
+                sx={{ ".MuiInputBase-root": { border: `unset` }, }}
+                value={controls.color_value ? controls.color_value : edit?.color_value}
+                // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
+                onChange={(e) => setControl("color_value",
+                  e.target.value)}
+                required={required.includes("color_value")}
+                error={Boolean(invalid?.color_value)}
+                helperText={invalid?.color_value} /></TableCell > : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.color_value}</TableCell> : <></>}
+              {attributes?.find((ele) => ele.id == controls.id)?.values.map((ele) => ele.value_name).includes(ele.value_name) ? <TableCell sx={{
+                width: "50%", borderLeft: "1px solid #8080807d", display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center"
+              }}>
+
+                {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <SoftBox><SaveAsIcon onClick={() => editValue(ele)} /></SoftBox> : <EditIcon onClick={() => { setEdit(ele); setindexedit(index); setaddvalue(false) }} />}
+                {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <SoftBox> <CloseIcon onClick={() => setEdit(null)} /></SoftBox> : <DeleteIcon sx={{ color: (theme) => theme.palette.error.main, cursor: "pointer" }} onClick={() => onDeleteValue(controls.id, ele.id)} />}
+
+              </TableCell> : <TableCell sx={{
+                width: "50%", borderLeft: "1px solid #8080807d", display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center"
+              }}>
+
+                {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <SaveAsIcon onClick={() => editNew(ele, index)} /> : <EditIcon onClick={() => { setEdit(ele); setindexedit(index); setaddvalue(false); console.log(ele) }} />}
+                {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <CloseIcon onClick={() => setEdit(null)} /> : <DeleteIcon sx={{ color: (theme) => theme.palette.error.main, cursor: "pointer" }} onClick={() => onDeleteNew(index)} />}
+
+              </TableCell>}
+            </TableRow>)}
+
+            {addvalue && !controls.iscolor ? <TableRow> <TableCell sx={{ display: "flex", justifyContent: "space-between", alignItem: "center", width: "22rem" }} >
+              <SoftInput placeholder='value'
+                sx={{ ".MuiInputBase-root": { border: `unset !important`, padding: "0px !important", borderBottom: "1px solid gray" }, }}
+                value={controls.value_name}
+                onChange={(e) => { setControl("value_name", e.target.value); setblurvalue(true) }}
+                required={required.includes("value_name")}
+                error={Boolean(invalid?.value_name)}
+                helperText={invalid?.value_name} />
 
 
-                                </TableCell>
+               </TableCell>
 
-                                <TableCell sx={{ borderRight: "1px solid #80808059", width: "10.3rem" }}>
-                                    <SoftInput placeholder='color'
-                                        sx={{ ".MuiInputBase-root": { border: `unset`, padding: "0px !important" }, }}
-                                        value={controls.color_value}
-                                        // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
-                                        onChange={(e) => setControl("color_value",
-                                            e.target.value)}
-                                        required={required.includes("color_value")}
-                                        error={Boolean(invalid?.color_value)}
-                                        helperText={invalid?.color_value} />
-                                </TableCell>
-                                <TableCell>
-                                <Typography sx={{ fontSize: "14px", padding: "15px", height: "40px", color: (theme) => theme.palette.purple.middle, textDecoration: "underline !important" }}
-                                    component="a"
-                                    onClick={openDialogEdit?AddValue:AddnewValue}
-                                >{Blurvalue ? t("Addvalue") : t("newValue")}
-                                </Typography>
-                                </TableCell>
-                            </TableRow>
+              <TableCell sx={{ width: "22rem" }}>
+                <Typography sx={{ fontSize: "14px", padding: "15px", height: "40px", color: (theme) => theme.palette.purple.middle, textDecoration: "underline !important" }}
+                  component="a"
+                  onClick={openDialogEdit ? AddValue : AddnewValue}
+                >{Blurvalue ? t("Addvalue") : t("newValue")}
+                </Typography>
 
-                            }
-
-                {addvalue==false&& <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
-                                <Typography sx={{ fontSize: "14px", padding: "15px", height: "40px", color: (theme) => theme.palette.purple.middle, textDecoration: "underline !important" }}
-                                    component="a"
-                                    onClick={openDialogEdit?AddValue:AddnewValue}
-                                >{Blurvalue ? t("Addvalue") : t("newValue")}
-                                </Typography>
-                                
-                            </SoftBox> }
+              </TableCell>
+            </TableRow> : addvalue && controls.iscolor && <TableRow onChange={() => setblurvalue(true)}>
+              <TableCell sx={{ borderRight: "1px solid #80808059", width: "10.3rem" }}>
+                <SoftInput placeholder='value'
+                  sx={{ ".MuiInputBase-root": { border: `unset`, padding: "0px !important" }, }}
+                  value={controls.value_name}
+                  // onChange={(e) => setControl("value_name", e.target.value)}
+                  onChange={(e) => setControl("value_name", e.target.value)}
+                  required={required.includes("value_name")}
+                  error={Boolean(invalid?.value_name)}
+                  helperText={invalid?.value_name} />
 
 
-                        </SoftBox>
-                        {/* <PictureField placeholder={"add image profile"}
+              </TableCell>
+
+              <TableCell sx={{ borderRight: "1px solid #80808059", width: "10.3rem" }}>
+                <SoftInput placeholder='color'
+                  sx={{ ".MuiInputBase-root": { border: `unset`, padding: "0px !important" }, }}
+                  value={controls.color_value}
+                  // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
+                  onChange={(e) => setControl("color_value",
+                    e.target.value)}
+                  required={required.includes("color_value")}
+                  error={Boolean(invalid?.color_value)}
+                  helperText={invalid?.color_value} />
+              </TableCell>
+              <TableCell>
+                <Typography sx={{ fontSize: "14px", padding: "15px", height: "40px", color: (theme) => theme.palette.purple.middle, textDecoration: "underline !important" }}
+                  component="a"
+                  onClick={openDialogEdit ? AddValue : AddnewValue}
+                >{Blurvalue ? t("Addvalue") : t("newValue")}
+                </Typography>
+              </TableCell>
+            </TableRow>
+
+            }
+
+            {addvalue == false && <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
+              <Typography sx={{ fontSize: "14px", padding: "15px", height: "40px", color: (theme) => theme.palette.purple.middle, textDecoration: "underline !important" }}
+                component="a"
+                onClick={openDialogEdit ? AddValue : AddnewValue}
+              >{Blurvalue ? t("Addvalue") : t("newValue")}
+              </Typography>
+
+            </SoftBox>}
+
+
+          </SoftBox>
+          {/* <PictureField placeholder={"add image profile"}
                         error={Boolean(invalid.image)}
                         helperText={invalid.image}
                         required={required.includes("image")}
                         label={"profile"} accept={"image/*"} onChange={handleImageChange} value={selectedImage} /> */}
-                    </Form>
-                </Dialog>
+        </Form>
+      </Dialog>
       <Dialog
         open={Boolean(popupvalue)}
         onClose={handleClosepopup}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-        sx={{ ".MuiPaper-root": { minWidth: "50%" },padding:"12px 24px" }}
+        sx={{ ".MuiPaper-root": { minWidth: "50%" }, padding: "12px 24px" }}
       >
-        <Container sx={{my:"20px"}}>
+        <Container sx={{ my: "20px" }}>
           <SelectField
             multiple
             variant="outlined"
@@ -1053,14 +1061,13 @@ function editNew(element,ind){
             placeholder={"Select..."}
             // onOpen={getAttributies}
             renderValue={(selected) => {
-              console.log(selected,controls?.values)
-              let resultcategory=controls?.values?.filter((category) => selected.map((ele)=>ele.id).includes(category.id))
-              return resultcategory.map((ele)=>ele.value_name).join(" , ")
-             
+              let resultcategory = controls?.values?.filter((category) => selected.map((ele) => ele.id).includes(category.id))
+              return resultcategory.map((ele) => ele.value_name).join(" , ")
+
             }}
             // isPending={attributeResponse.isPending}
             value={controls?.attributevalues}
-            onChange={(e) => {setControl("attributevalues", e.target.value)}}
+            onChange={(e) => { setControl("attributevalues", e.target.value) }}
             required={required.includes("attributevalues")}
             error={Boolean(invalid?.attributevalues)}
             helperText={invalid?.attributevalues}
@@ -1071,9 +1078,13 @@ function editNew(element,ind){
               <MenuItem key={attribute.id} value={attribute}>{attribute.value_name}</MenuItem>
             ))}
           </SelectField>
-          </Container>
+        </Container>
       </Dialog>
       {editValueattributeResponce.failAlert}
+      {variantAttributeResponse.failAlert}
+      {GenerationAttributeResponse.failAlert}
+      {ValueattributeeditResponce.failAlert}
+      {DeleteattributerResponce.failAlert}
     </Container>
   );
 };
