@@ -580,7 +580,7 @@ console.log(offerstypes);
         </Box>
       </Container>
       {AddOfferResponce.failAlert}
-      {AddOfferResponce.successlAlert}
+      {AddOfferResponce.successAlert}
     </DashboardLayout>
   );
 };

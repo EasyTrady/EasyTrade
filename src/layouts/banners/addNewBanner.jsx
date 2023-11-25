@@ -1,8 +1,13 @@
 /* eslint-disable react/prop-types */
-import { Container, FormControl, FormControlLabel, FormLabel, Grid, MenuItem, RadioGroup, Typography } from '@mui/material'
+import { Box, Checkbox, Container, FormControl, FormControlLabel, FormLabel, Grid, MenuItem, RadioGroup, Typography } from '@mui/material'
 import SoftBox from 'components/SoftBox'
+import SoftButton from 'components/SoftButton'
+import OfferBoxCategory from 'components/common/OfferBoxCategory'
 import RadioButton from 'components/common/RadioButton'
 import SelectField from 'components/common/SelectField'
+import InputField from 'components/common/TextField'
+import Bannerbox from 'components/common/bannerbox'
+import { OFFERTYPES } from 'data/api'
 import { BANNERS } from 'data/api'
 import { BannersTYPES } from 'data/api'
 import Breadcrumbs from 'examples/Breadcrumbs'
@@ -40,7 +45,22 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
           },
         });
       }
-      const [AddOfferRequest, AddOfferResponce] = useRequest({
+      const offerstypes = useSelector((state) => state.offerstypes.value);
+      const [OffersTypesGetRequest, OffersTypesGetResponce] = useRequest({
+        path: OFFERTYPES,
+        method: "get",
+        Token: `Token ${Token}`,
+      });
+
+      const getOfferTypes=()=>{
+        OffersTypesGetRequest({
+          onSuccess: (res) => {
+            console.log(res.data);
+            dispatch({ type: "offerstypes/set", payload: res?.data });
+          },
+        });
+      }
+      const [AddBannerRequest, AddBannerResponce] = useRequest({
         path: BANNERS,
         method: "POST",
         Token: `Token ${Token}`,
@@ -49,10 +69,9 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
     
     const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
         { control: "banner_type", value: '', isRequired: false },
-        { control: "offer_title", value: '', isRequired: false },
-        { control: "productX", value: '', isRequired: false },
-        { control: "productY", value: '', isRequired: false },
-        { control: "products", value: [], isRequired: false },
+        { control: "offer_type", value: '', isRequired: false },
+        { control: "alloffers", value: '', isRequired: false },
+        { control: "product", value: [], isRequired: false },
         { control: "category", value: '', isRequired: false },
         { control: "total_amount", value: '', isRequired: false },
         { control: "banner", value: '', isRequired: false },
@@ -62,7 +81,67 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
         { control: "published_on", value: '', isRequired: false },
        
       ])
-    
+      function handleSubmit() {
+        validate().then((output) => {
+          console.log(output);
+          if (!output.isOk) return;  
+          let obj = {
+            banner_type: controls.banner_type,
+            object_id: controls.object_id,
+            is_public: controls?.is_public||'true',
+            is_rectangular: controls.is_rectangular||"true",
+            
+          };
+      
+        //   if(controls.offer_type === 1||2){
+        //     obj.productX= controls.productX
+        //     obj.productY= controls.productY
+        //   }
+        //   if (controls.offer_type === 2||3||4||6||5) {
+        //     obj.discount = controls.discount;
+        //     obj.is_percentage_discount = controls.is_percentage_discount;
+        //     if (controls.offer_type === 3){
+        //       obj.total_amount = controls.total_amount;
+        //     }
+        //     if (controls.offer_type === 4){
+        //       obj.productX = controls.productX;
+        //       obj.quantity = controls.quantity;
+        //     }
+        //     if (controls.offer_type === 5){
+        //       obj.products = [...controls.products]
+             
+        //     }
+        //     if (controls.offer_type === 6){
+        //       obj.category = controls.category;
+              
+        //     }
+        //   }
+          
+         
+          AddBannerRequest({
+            body: filter({
+              obj: obj,
+              output: "formData",
+            }),
+            onSuccess: (res) => {
+              resetControls("");
+            }
+          }).then((res) => {
+            let response = res?.response?.data;
+            console.log(res);
+            // const responseBody = filter({
+            //   obj: {
+            //     name: response?.name?.join(""),
+            //     quantity: response?.quantity?.join(" "),
+            //    
+            //   },
+            //   output: "object",
+            // });
+      
+            // setInvalid(responseBody);
+          });
+        });
+      }
   return (
     <DashboardLayout>
     <DashboardNavbar />
@@ -186,12 +265,93 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
                 </MenuItem>
               ))}
               </SelectField>
-              </Container>
+              {controls.banner_type==1&&
+              <Bannerbox
+              value={controls.product}
+              onChange={(e)=>setControl("product",e.target.value)}
+              />}
+               {controls.banner_type==3&&
+              <Box sx={{display:'flex',flexDirection:'column',gap:'16px'}}>
+              <SelectField
+                variant="outlined"
+                placeholder="Buy X get Y free"
+                label="Choose offer type*"
+                onOpen={getOfferTypes}
+                renderValue={(selected) => {
+                  return offerstypes?.find((offer) => offer.id === selected)?.name
+                }}
+                value={controls.offer_type}
+                onChange={(e) => setControl("offer_type", e.target.value)}
+                required={required.includes("offer_type")}
+                textHelper={controls.offer_type}
+                error={Boolean(invalid.offer_type)}
+                helperText={invalid.offer_type}
+                disabled={controls.alloffers}
+                sx={{ width: "100%", fontSize: "14px", background: "#fff" }}
+              >
+                {offerstypes?.map((offer, index) => (
+                <MenuItem key={`${offer.id} ${index}`} value={offer.id}>
+                  {offer?.name}
+                  
+                </MenuItem>
+              ))}
+              </SelectField>
+              <FormControlLabel
+              sx={{color:'#626C70 !important'}}
+                label={'Select all the offers under this type'}  
+                control={
+              <Checkbox
+              value={controls.alloffers}
+              onChange={(e)=>setControl('alloffers',e.target.checked)} 
+              
+              color="secondary" />
+  }/>
+              </Box>
+}
+{controls.banner_type==4&&
+    <InputField
+    variant="outlined"
+    label={"URL*"}
+    placeholder={"www.easytrade.com"}
+      value={controls.url}
+      onChange={(e) => setControl("url", e.target.value)}
+      required={required.includes("url")}
+      error={Boolean(invalid.url)}
+      helperText={invalid.url}
+    sx={{ width: "100%" }}
+  />
+}
+                 </Container>
+                 {controls.banner_type==2&&
+              <OfferBoxCategory
+               value={controls.category}
+               onChange={(e)=>setControl("category",e.target.value)}
+              />
+                 }
                 </SoftBox>
             </Grid>
         </Grid>
       </Grid>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt:"24px" }}>
+          <SoftButton
+            type="submit"
+            variant="gradient"
+            sx={{
+              backgroundColor: (theme) => theme.palette.purple.middle,
+              color: "white !important",
+              "&:hover": {
+                backgroundColor: (theme) => theme.palette.purple.middle,
+              },
+              width: "260px",
+            }}
+             onClick={handleSubmit}
+          >
+           Publish
+          </SoftButton>
+        </Box>
       </Container>
+      {AddBannerResponce.failAlert}
+      {AddBannerResponce.successAlert}
       </DashboardLayout>
   )
 }

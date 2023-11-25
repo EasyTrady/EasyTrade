@@ -473,7 +473,7 @@ const routes = [
     key: "Add new banner",
     route: `/${sub_domain}/dashboard/banners/addnewbanner`,
     icon: <Office size="12px" />,
-    component:<Auth><AddNewBanner /></Auth> ,
+    component:<AddNewBanner /> ,
      noCollapse: false,
   },
   // {

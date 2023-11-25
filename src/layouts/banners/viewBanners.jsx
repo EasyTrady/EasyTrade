@@ -1,17 +1,20 @@
 /* eslint-disable react/prop-types */
-import {  Button, Container, Icon } from '@mui/material'
+import {  Button, Container, Icon, Stack, Typography } from '@mui/material'
 import SoftBox from 'components/SoftBox'
 import SoftButton from 'components/SoftButton'
 import DataGridCustom from 'components/common/DateGridCustomer'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 import Breadcrumbs from 'examples/Breadcrumbs'
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
+import useRequest from 'hooks/useRequest'
+import { BANNERS } from 'data/api'
+import moment from 'moment'
 const ViewBanners = ({ absolute, light, isMini }) => {
     const navigate = useNavigate();
     const dispatch=useDispatch()
@@ -20,6 +23,110 @@ const ViewBanners = ({ absolute, light, isMini }) => {
     let { t } = useTranslation("common");
   
     let Token = localStorage.getItem("token");
+    const banners = useSelector((state) => state.banners.value);
+  const [BannersGetRequest, BannersGetResponce] = useRequest({
+    path: BANNERS,
+    method: "get",
+    Token: `Token ${Token}`,
+  });
+
+  const getBanners = () => {
+    BannersGetRequest({
+      onSuccess: (res) => {
+        console.log(res.data);
+        dispatch({ type: "banners/set", payload: res?.data });
+      },
+    });
+  };
+  const  columns = [
+    {
+      field: 'image',
+      headerName: 'Banner',
+      type: 'image',
+      width: 220,
+      height:72,
+      align: 'center',
+      headerAlign: 'center',
+      renderCell: (params) => {
+        const { row } = params;
+        return (<Stack direction={"row"} justifyContent={'flex-start'} alignItems={'center'}>
+            <SoftBox sx={{width:"216px",height:"64px",borderRadius:"8px",display:'flex',alignItems:'centter'}}>
+                
+                <img src={row?.image} style={{width:"100%",height:'100%',borderRadius:"8px"}}/>
+               
+                </SoftBox>
+            {/* <Typography component={"p"} sx={{ fontSize: "14px",fontWeight:400 ,marginX:"10px" }}>{row?.banner_type_name}</Typography> */}
+            {/* <Typography component={"a"} sx={{ color: (theme) => theme.palette.grey[500], fontSize: "0.8rem", cursor: "pointer" }} onClick={() => navigate(`/${shop_name}/dashboard/attribute/${row?.id}`)}>view</Typography> */}
+        </Stack>
+        );
+    },
+      editable: true,
+      filterable: false,
+      sortable: false,disableColumnMenu: true
+    }
+   ,{
+      field: 'offer_end_date',
+      headerName: 'Expire date',
+      type: 'text',
+      width: 179.4,
+      align: 'center',
+      color:'#1B53C5',
+      headerAlign: 'center',
+      editable: true,
+      filterable: true,
+      sortable: false,disableColumnMenu: true,
+      renderCell: (params) => {
+        const { row } = params;
+        return (<Stack direction={"row"} justifyContent={'flex-start'} alignItems={'center'}>
+            <Typography sx={{color:'#1B53C5',fontSize:'14px',fontWeight:400}}>{moment(row?.offer_end_date).format("YYYY-MM-DD")}</Typography>
+        </Stack>
+        );
+    },
+    }, 
+     {
+      field: 'banner_type_name',
+      headerName: 'Type',
+      type: 'text',
+      width: 220,
+      align: 'center',
+      headerAlign: 'center',
+      editable: true,
+      renderCell: (params) => {
+        const { row } = params;
+        return (<Stack direction={"row"} justifyContent={'flex-start'} alignItems={'center'}>
+            <SoftBox sx={{width: '100%',
+height: '30px',
+padding: '5px 16px 5px 16px',borderRadius:"130px",display:'flex',alignItems:'centter',
+color:row?.banner_type===1?'#027A48':row?.banner_type===2?"#7A0243":row?.banner_type===3?'#02157A':row?.banner_type===4?"#7A6702":row?.banner_type===5?"#37027A":""
+,background:row.banner_type==1?'#ECFDF3':row?.banner_type==2?"#FDECF9":row?.banner_type==3?'#ECF0FD':row?.banner_type==4?"#FDFBEC":row?.banner_type==5?"#F2ECFD":""
+,fontSize:'14px',fontWeight:500}}>{row.banner_type_name}</SoftBox>
+                
+            
+        </Stack>
+        );
+    },
+    },
+     {
+      field: 'status',
+      headerName: 'status',
+      type: 'text',
+      width: 186,
+      align: 'center',
+      headerAlign: 'center',
+      // editable: true,
+      renderCell:(params)=>{
+        const { row } = params;
+        row?.categories?.map((cat)=>(
+          <span key={cat?.id}>{cat?.name}</span>
+          
+        ))
+      }
+    },
+    
+  ]
+  useEffect(()=>{
+    getBanners()
+  },[])
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -63,11 +170,11 @@ const ViewBanners = ({ absolute, light, isMini }) => {
             &nbsp;{t("addnewbanner")}
           </SoftButton>
         </SoftBox>
-        {/* <DataGridCustom
-          rows={offers?.results}
+        <DataGridCustom
+          rows={banners?.results}
           columns={columns}
           onEdit={()=>{}}
-          onDelete={onDelete}
+          onDelete={() => {}}
           onCopy={() => {}}
           checkboxSelection={true}
           onRowClick={(e, row) => {
@@ -75,15 +182,15 @@ const ViewBanners = ({ absolute, light, isMini }) => {
              setClick({ ...e.id });
           }}
           notProduct={false}
-          rowsPerPageOptions={[5, 10, 15, 20]}
-          onPaginationModelChange={setPaginationModel}
+        //   rowsPerPageOptions={[5, 10, 15, 20]}
+        //   onPaginationModelChange={setPaginationModel}
           rowHeight={72}
           getRowSpacing={4}
           sx={{
             backgroundColor: "white !important",
             " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" },
           }}
-        /> */}
+        />
       </Container>
     </DashboardLayout>
   )
