@@ -393,7 +393,6 @@ const ProductAttributes = ({ idProduct }) => {
           currency: "SAR",
           quantity: ""
         }))
-        console.log(res.data, controls, result);
         setControl("variants", [...result])
       },
     })
@@ -429,7 +428,6 @@ const ProductAttributes = ({ idProduct }) => {
       id: row + "/values/" + valueId,
       onSuccess: () => {
         dispatch({ type: "attribute/deleteValueofAttribute", payload: { idattribute: row, idValue: valueId } })
-        // setControl("values", controls.values.filter((elem)=>elem.id!=valueId))
         setControl("values", controls.values.filter((ele) => ele.id !== valueId))
       }
     })
@@ -445,7 +443,13 @@ const ProductAttributes = ({ idProduct }) => {
   function onDelete(id) {
     console.log(id, controls.attribute)
     const rowfind = controls.attribute.filter((row) => row.id != id)
-    setControl("attribute", rowfind)
+    if(rowfind.length>0){
+      setControl("attribute", rowfind)
+    }else{
+      setControl("attribute", rowfind)
+      setControl("variants", [])
+
+    }
     // setControl("values",rowfind.)
 
     // Object.keys(controls)?.map((ele) => rowfind[ele] && setControl(ele, rowfind[ele]))
@@ -521,10 +525,12 @@ const ProductAttributes = ({ idProduct }) => {
     }
   }, [controls.attribute])
   useEffect(() => {
-    console.log(controls.values.length)
+    if(openDialogEdit&&controls.values.length>0){
+      setControl("iscolor",controls.values[0].iscolor)
+    }
   }, [controls.values.length])
   useEffect(() => {
-    console.log(controls.variants)
+   
     if(controls.variants.length==0){
    
       setgenerate(false)

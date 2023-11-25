@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import { useState, useEffect } from "react";
 
 // react-router components
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link ,useNavigate} from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -68,7 +68,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [openMenu, setOpenMenu] = useState(false);
   
   let Token = localStorage.getItem('token')
-
+  const navigate = useNavigate();
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {
@@ -195,7 +195,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
                         localStorage.removeItem('image')
                         localStorage.removeItem('email')
                         localStorage.removeItem('phone')
-                        localStorage.removeItem('sub_domain')   
+                        localStorage.removeItem('sub_domain')
+                        navigate("/authentication/sign-in")
                       }
                     }}
                   >
