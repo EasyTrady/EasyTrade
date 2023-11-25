@@ -8,8 +8,6 @@ function Auth({children}) {
    
     useEffect(()=>{
          // 24 hours in milliseconds
-
-
         if (currentTime  > tokenTimestamp) {
             // Token has expired, delete it from localStorage
             localStorage.removeItem('token');

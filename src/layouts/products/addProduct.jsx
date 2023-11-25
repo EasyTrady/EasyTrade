@@ -215,12 +215,6 @@ const AddProduct = ({ light, isMini,handleChange }) => {
       setControl("value","")
 
     }
-    // categoryRequest({
-    //   onSuccess: (res) => {
-    //     console.log(res.data);
-    //     dispatch({ type: "category/set", payload: res?.data });
-    //   },
-    // });
   };
   
   // form request add product
@@ -229,6 +223,11 @@ const AddProduct = ({ light, isMini,handleChange }) => {
     method: "post",
     Token: `Token ${Token}`,
     contentType: "multipart/form-data",
+  });
+  const [specificationsRequest, specificationsResponce] = useRequest({
+    path: PRODUCTS,
+    method: "post",
+    Token: `Token ${Token}`,
   });
   const [patchProductRequest, patchProductResponce] = useRequest({
     path: PRODUCTS,
@@ -264,7 +263,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
          [controls.discount_end_date,product?.discount_end_date,"discount_end_date"],
          [controls.require_shipping,product.require_shipping,"require_shipping"],
          [controls.maximum_order_quanitity,product.maximum_order_quanitity,"maximum_order_quanitity"],
-         [controls.specifications,product.specifications,"specifications"],
+        
 
         // // //  [controls.minimum_stock_quantity,product.minimum_stock_quantity,"minimum_stock_quantity"],
          [controls.description,product.description,"description"],
@@ -285,6 +284,19 @@ const AddProduct = ({ light, isMini,handleChange }) => {
           handleChange(undefined,1,res.data.id)
         }
       })
+     
+        let resultValue=compare([ [controls.specifications,product.specifications,"specifications"]],false)
+        if(resultValue.nochange){
+          specificationsRequest({
+            id:productId+"/specifications",
+            body:resultValue.array.specifications,
+            onSuccess:(res)=>{
+              console.log(res.data)
+            }
+          }) 
+        }
+        console.log(resultValue)
+      
       }else{
         AddProductRequest({
           body: filter({
@@ -310,7 +322,8 @@ const AddProduct = ({ light, isMini,handleChange }) => {
               quantity: controls.quantity,
               weight: controls.weight,
               weight_unit: controls.weight_unit,
-              dimensions: controls.dimensions
+              dimensions: controls.dimensions,
+              specifications:[...controls.specifications]
             },
             output: "formData",
           }),
@@ -385,18 +398,19 @@ const AddProduct = ({ light, isMini,handleChange }) => {
           console.log(controls)
         }
       })
-        // Object.entries(state?.dataRow)?.forEach(([key,value])=>setControl(key,value))
-
     }
-    // setControl()
-   
 }, [state])
 useEffect(()=>{
   if(category.length==0){
     getCategory()
   }
 },[category])
-console.log(controls.specifications)
+useEffect(()=>{
+  if(controls.specifications.length>0){
+    setControl("switchSpecifications",true)
+  }
+},[controls.specifications])
+
   return (
     <>
       <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
@@ -570,7 +584,7 @@ console.log(controls.specifications)
           {controls?.specifications&&controls?.specifications?.map((ele,index)=><TableRow key={index}>
             <TableCell >{ele?.key}</TableCell>
             <TableCell >{ele?.value}</TableCell>
-            <TableCell ><DeleteIcon/></TableCell>
+            <TableCell ><DeleteIcon onClick={()=>setControl("specifications",controls?.specifications.filter((elem,ind)=>index!=ind))}/></TableCell>
 
             </TableRow>)}
           {key&&<TableRow>
