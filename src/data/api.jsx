@@ -15,6 +15,8 @@ export const CARTLEFT= `${BaseUrl}shop/dashboard/cartsleft/`
 export const PRODUCTS= `${BaseUrl}products/`
 export const OFFERS= `${BaseUrl}shop/dashboard/offers/`
 export const OFFERTYPES= `${BaseUrl}shop/dashboard/offer/types/`
+export const BannersTYPES= `${BaseUrl}shop/dashboard/banner/types/`
+export const BANNERS= `${BaseUrl}shop/dashboard/banners/`
 // /products/attributes/15/values/bulkupdate/
 export const SENDEMAILPRODUCT=`${BaseUrl}/shop/dashboard/notifycart/`
 export const EMPLOYEE= `${BaseUrl}shop/dashboard/employees/`

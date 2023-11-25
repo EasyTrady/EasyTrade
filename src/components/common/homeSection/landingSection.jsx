@@ -2,7 +2,7 @@
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import home from '../../../assets/images/icons/Social Media Icon Square/homme.svg';
-import { Box, ButtonBase, Stack, Typography } from '@mui/material';
+import { Box, ButtonBase, Container, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 export default function landingSection () {
@@ -19,7 +19,7 @@ export default function landingSection () {
         background: "linear-gradient(180deg, #cde3f3 -0%, rgba(74, 153, 211, 0.00) 54.91%),#d4d2e300",
       }}
     >
-      <container>
+      <Container>
       <Grid container spacing={0}>
         <Grid xs={12} md={6}>
           <Box
@@ -113,7 +113,7 @@ export default function landingSection () {
           </Stack>
         </Grid>
       </Grid>
-      </container>
+      </Container>
     </Box>
   );
 }

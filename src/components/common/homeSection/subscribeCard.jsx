@@ -234,7 +234,7 @@ const SubscribeCard = ({ type }) => {
                   }}
                 >
                   <Typography>شهريا/</Typography>
-                  <Typography variant="h3" margin="0" sx={PriceStyle}>
+                  <Typography variant="h3" margin={0} sx={PriceStyle}>
                     ${card.price}
                   </Typography>
                 </Box>

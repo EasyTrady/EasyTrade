@@ -86,7 +86,9 @@ import Price from "layouts/Price/Price";
 import Offers from "layouts/offers/offers";
 import offers from './assets/images/offers.svg'
 import AddNewOffers from "layouts/offers/addNewOffers";
-
+import ViewBanners from "layouts/banners/viewBanners";
+import AddNewBanner from "layouts/banners/addNewBanner";
+import banner from "./assets/images/banner.svg"
 const sub_domain = localStorage.getItem('sub_domain')
 
 const routes = [
@@ -325,6 +327,33 @@ const routes = [
     ]
   },
   {
+    type: "collapse",
+    name: "Banners",
+    key: "Banners",
+    route: `/${sub_domain}/dashboard/banners`,
+    icon: <img src={banner} size="12px" />,
+    noCollapse: true,
+    component: <Auth><ViewBanners /></Auth>,
+    children: [{
+
+      id: "Banners",
+      path: `/${sub_domain}/dashboard/banners`,
+      title: "Banners",
+      element: <Auth><ViewBanners /></Auth>,
+      type: "item"
+
+    }, {
+      type: "title",
+      name: "Add new banner",
+      key: "Add new banner",
+      route: `/${sub_domain}/dashboard/banners/addnewbanner`,
+      icon: <Office size="12px" />,
+      component:<Auth><AddNewBanner /></Auth> ,
+       noCollapse: false,
+    },
+    ]
+  },
+  {
     type: "title",
     name: "abandonedbasket",
     key: "abandonedbasket",
@@ -438,6 +467,15 @@ const routes = [
     component:<Auth><AddNewOffers /></Auth> ,
      noCollapse: false,
   },
+  {
+    type: "title",
+    name: "Add new banner",
+    key: "Add new banner",
+    route: `/${sub_domain}/dashboard/banners/addnewbanner`,
+    icon: <Office size="12px" />,
+    component:<AddNewBanner /> ,
+     noCollapse: false,
+  },
   // {
   //   type: "collapse",
   //   name: "Billing",
@@ -470,7 +508,7 @@ const routes = [
     type: "collapse",
     name: "Profile",
     key: "profile",
-    route: "/profile",
+    route: `/${sub_domain}/dashboard/profile`,
     icon: <CustomerSupport size="12px" />,
     component:<Auth> <Profile /></Auth>,
     noCollapse: false,
@@ -495,7 +533,6 @@ const routes = [
   },
   {
     type: "title",
-   
     key: "sign-up",
     route: "/authentication/sign-up",
     icon: <SpaceShip size="12px" />,
@@ -504,11 +541,12 @@ const routes = [
   },
   {
     type: "title",
-    
     key: "sign-in",
     route: "/authentication/sign-in",
     icon: <Document size="12px" />,
+
     component:<Auth><SignIn /></Auth>,
+
     noCollapse: false,
   },
 ];

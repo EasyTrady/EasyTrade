@@ -8,7 +8,7 @@ import NumberField from "components/common/NumberFeild";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 const SelectValuePrecentage = ({variant,label,handleValueChange,type,onChange,...rest}) => {
   return (
-    <Box sx={{display:'flex',flexDirection:'column',alignItems:'start',width:'100%',  }}>
+    <Box sx={{display:'flex',flexDirection:'column',alignItems:'start',width:'100%',borderRadius:'8px'  }}>
    <Typography sx={{
 fontSize: '14px',
 fontWeight: 400,
@@ -17,7 +17,17 @@ letterSpacing: '0em',
 textAlign: 'left'
 }}>{label}</Typography>
     <SoftBox 
-    sx={{display:'flex',flexDirection:'row',alignItems:'center',width:'100%', border: '1px solid #C9CDD4 !important', borderRadius:'4px', }}>
+    sx={{display:'flex',flexDirection:'row',alignItems:'center',width:'100%', border: '1px solid #C9CDD4 !important', borderRadius:'4px',
+    '& .MuiOutlinedInput-root':{
+      border:'none !important',
+      ":hover":{
+        border:'none !important',
+      },
+      '& .MuiOutlinedInput-notchedOutline': {
+        border: 'none'
+     },
+    }
+    }}>
     <NumberField
       customInput={TextField}
       variant={Boolean(variant) ? variant : "standard"}
@@ -26,15 +36,15 @@ textAlign: 'left'
       sx={{ width: "100%",
       '& .MuiOutlinedInput-root': {
         height:'40px !important',
-       
+       width: "100%",
        background:'#F7F8FA',
-      border:'transparent',
+      border:'none !important',
         ':hover': {
         //   border: '1px solid #1B53C5 !important',
         },
         ':focus-within': {background:'#fff'}
       },
-      '& .MuiOutlinedInput-root.Mui-disabled': {
+      '& .MuiOutlinedInput-root .Mui-disabled': {
         ':hover': {
         //   border: '1px solid #1B53C5 !important',
           boxShadow: 'none'
@@ -63,7 +73,7 @@ textAlign: 'left'
     sx={{
         '&.MuiSelect-outlined':{width:'20% !important'},
         border:"none",
-        // width:'20% !important',
+         width:'20% !important',
         fontFamily:'Cairo',
                 boxShadow: "none",
                 height:'40px !important',

@@ -36,6 +36,15 @@ const SelectField = ({
   SelectProps = {},
   ...rest
 }) => {
+  const MenuProps = {
+    PaperProps: {
+      sx: {
+        maxHeight: "200px",
+        overflowY: "auto",
+       backgroundColor:"white !important"
+      },
+    }
+  };
   return (
     <Box 
     // sx={{ width: "100%",
@@ -78,6 +87,7 @@ mb:'6px'
     displayEmpty= {true}
     onOpen={onOpen}
     onClose= {onClose}
+    MenuProps={MenuProps}
     renderValue= {(selected) => {
       if (!Boolean(selected)) {
         return (

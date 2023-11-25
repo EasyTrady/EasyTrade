@@ -35,7 +35,7 @@ function cardContent(theme, ownerState) {
   const { borderRadius } = borders;
 
   return {
-    color: white.main,
+    color: "#fff",
     position: "relative",
     zIndex: 2,
     width: "100%",

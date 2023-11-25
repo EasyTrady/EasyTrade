@@ -1,11 +1,11 @@
 import React from 'react'
 import { useEffect } from 'react'
-import { Navigate } from 'react-router'
+import { Navigate ,useNavigate} from 'react-router'
 import PropTypes from "prop-types";
 function Auth({children}) {
     const currentTime = new Date().getTime();
     const tokenTimestamp = localStorage.getItem('tokenTimestamp');
-   
+   let navigate=useNavigate()
     useEffect(()=>{
          // 24 hours in milliseconds
          console.log(currentTime)
@@ -21,6 +21,7 @@ function Auth({children}) {
             localStorage.removeItem('email')
             localStorage.removeItem('phone')
             localStorage.removeItem('sub_domain')
+            navigate("/authentication/sign-in")
           }
     },[
         currentTime

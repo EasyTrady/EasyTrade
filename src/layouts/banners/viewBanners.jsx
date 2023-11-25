@@ -1,76 +1,61 @@
 /* eslint-disable react/prop-types */
-import { Button, Container, Icon, Stack, Typography } from "@mui/material";
-import SoftBox from "components/SoftBox";
-import SoftButton from "components/SoftButton";
-import Breadcrumbs from "examples/Breadcrumbs";
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import {  Button, Container, Icon, Stack, Typography } from '@mui/material'
+import SoftBox from 'components/SoftBox'
+import SoftButton from 'components/SoftButton'
+import DataGridCustom from 'components/common/DateGridCustomer'
+import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
+import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
+import React, { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
-import React, { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { navbarRow } from "examples/Navbars/DashboardNavbar/styles";
-import { useTranslation } from "react-i18next";
-import useRequest from "hooks/useRequest";
-import { OFFERS } from "data/api";
-import DataGridCustom from "components/common/DateGridCustomer";
-import moment from "moment";
-
-const Offers = ({ absolute, light, isMini }) => {
-  const navigate = useNavigate();
-  const dispatch=useDispatch()
-  const route = useLocation().pathname.split("/").slice(1);
-  const sub_domain = localStorage.getItem("sub_domain");
-  let { t } = useTranslation("common");
-
-  let Token = localStorage.getItem("token");
-  const offers = useSelector((state) => state.offers.value);
-  const [OffersGetRequest, OffersGetResponce] = useRequest({
-    path: OFFERS,
+import Breadcrumbs from 'examples/Breadcrumbs'
+import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
+import useRequest from 'hooks/useRequest'
+import { BANNERS } from 'data/api'
+import moment from 'moment'
+const ViewBanners = ({ absolute, light, isMini }) => {
+    const navigate = useNavigate();
+    const dispatch=useDispatch()
+    const route = useLocation().pathname.split("/").slice(1);
+    const sub_domain = localStorage.getItem("sub_domain");
+    let { t } = useTranslation("common");
+  
+    let Token = localStorage.getItem("token");
+    const banners = useSelector((state) => state.banners.value);
+  const [BannersGetRequest, BannersGetResponce] = useRequest({
+    path: BANNERS,
     method: "get",
     Token: `Token ${Token}`,
   });
 
-  const getOffers = () => {
-    OffersGetRequest({
+  const getBanners = () => {
+    BannersGetRequest({
       onSuccess: (res) => {
         console.log(res.data);
-        dispatch({ type: "offers/set", payload: res?.data });
+        dispatch({ type: "banners/set", payload: res?.data });
       },
     });
   };
-  const [OffersDeleyeRequest, OffersDeleteResponce] = useRequest({
-    path: OFFERS,
-    method: "DELETE",
-    Token: `Token ${Token}`,
-  });
-  function onDelete(row) {
-    console.log(row)
-    OffersDeleyeRequest({
-        id: row,
-        onSuccess: () => {
-            dispatch({ type: "offers/deleteItem", payload: { id: row } })
-        }
-    })
-}
- const  columns = [
+  const  columns = [
     {
-      field: 'main_image',
-      headerName: 'Offer',
+      field: 'image',
+      headerName: 'Banner',
       type: 'image',
-      width: 180,
+      width: 220,
       height:72,
       align: 'center',
       headerAlign: 'center',
       renderCell: (params) => {
         const { row } = params;
         return (<Stack direction={"row"} justifyContent={'flex-start'} alignItems={'center'}>
-            <SoftBox sx={{width:"64px",height:"64px",borderRadius:"8px",display:'flex',alignItems:'centter'}}>
-                {row?.offer_banners?.map((banner)=>(
-                <img key={banner}src={banner?.image} style={{width:"100%",height:'100%',borderRadius:"8px"}}/>
-                ))}
+            <SoftBox sx={{width:"216px",height:"64px",borderRadius:"8px",display:'flex',alignItems:'centter'}}>
+                
+                <img src={row?.image} style={{width:"100%",height:'100%',borderRadius:"8px"}}/>
+               
                 </SoftBox>
-            <Typography component={"p"} sx={{ fontSize: "14px",fontWeight:400 ,marginX:"10px" }}>{row?.offer_title}</Typography>
+            {/* <Typography component={"p"} sx={{ fontSize: "14px",fontWeight:400 ,marginX:"10px" }}>{row?.banner_type_name}</Typography> */}
             {/* <Typography component={"a"} sx={{ color: (theme) => theme.palette.grey[500], fontSize: "0.8rem", cursor: "pointer" }} onClick={() => navigate(`/${shop_name}/dashboard/attribute/${row?.id}`)}>view</Typography> */}
         </Stack>
         );
@@ -99,7 +84,7 @@ const Offers = ({ absolute, light, isMini }) => {
     },
     }, 
      {
-      field: 'offer_type',
+      field: 'banner_type_name',
       headerName: 'Type',
       type: 'text',
       width: 220,
@@ -112,9 +97,9 @@ const Offers = ({ absolute, light, isMini }) => {
             <SoftBox sx={{width: '100%',
 height: '30px',
 padding: '5px 16px 5px 16px',borderRadius:"130px",display:'flex',alignItems:'centter',
-color:row.offer_type_id===1?'#027A48':row.offer_type_id===2?"#7A0243":row.offer_type_id===3?'#02157A':row.offer_type_id===4?"#7A6702":row.offer_type_id===5?"#37027A":row.offer_type_id===6?"#7A4A02":""
-,background:row.offer_type_id==1?'#ECFDF3':row.offer_type_id==2?"#FDECF9":row.offer_type_id==3?'#ECF0FD':row.offer_type_id==4?"#FDFBEC":row.offer_type_id==5?"#F2ECFD":row.offer_type_id==6?"#FDF2EC":""
-,fontSize:'14px',fontWeight:500}}>{row.offer_type}</SoftBox>
+color:row?.banner_type===1?'#027A48':row?.banner_type===2?"#7A0243":row?.banner_type===3?'#02157A':row?.banner_type===4?"#7A6702":row?.banner_type===5?"#37027A":""
+,background:row.banner_type==1?'#ECFDF3':row?.banner_type==2?"#FDECF9":row?.banner_type==3?'#ECF0FD':row?.banner_type==4?"#FDFBEC":row?.banner_type==5?"#F2ECFD":""
+,fontSize:'14px',fontWeight:500}}>{row.banner_type_name}</SoftBox>
                 
             
         </Stack>
@@ -140,9 +125,8 @@ color:row.offer_type_id===1?'#027A48':row.offer_type_id===2?"#7A0243":row.offer_
     
   ]
   useEffect(()=>{
-    getOffers()
+    getBanners()
   },[])
-  
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -180,26 +164,26 @@ color:row.offer_type_id===1?'#027A48':row.offer_type_id===2?"#7A0243":row.offer_
                 backgroundColor: (theme) => theme.palette.purple.middle,
               },
             }}
-            onClick={() => navigate(`/${sub_domain}/dashboard/offers/addnewoffer`)}
+            onClick={() => navigate(`/${sub_domain}/dashboard/banners/addnewbanner`)}
           >
             <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-            &nbsp;{t("addnewoffer")}
+            &nbsp;{t("addnewbanner")}
           </SoftButton>
         </SoftBox>
         <DataGridCustom
-          rows={offers?.results}
+          rows={banners?.results}
           columns={columns}
-          // onEdit={()=>{}}
-          onDelete={onDelete}
+          onEdit={()=>{}}
+          onDelete={() => {}}
           onCopy={() => {}}
           checkboxSelection={true}
-          // onRowClick={(e, row) => {
-          //   console.log(e, row);
-          //    setClick({ ...e.id });
-          // }}
-          // notProduct={false}
-          // rowsPerPageOptions={[5, 10, 15, 20]}
-          // onPaginationModelChange={setPaginationModel}
+          onRowClick={(e, row) => {
+            console.log(e, row);
+             setClick({ ...e.id });
+          }}
+          notProduct={false}
+        //   rowsPerPageOptions={[5, 10, 15, 20]}
+        //   onPaginationModelChange={setPaginationModel}
           rowHeight={72}
           getRowSpacing={4}
           sx={{
@@ -209,7 +193,7 @@ color:row.offer_type_id===1?'#027A48':row.offer_type_id===2?"#7A0243":row.offer_
         />
       </Container>
     </DashboardLayout>
-  );
-};
+  )
+}
 
-export default Offers;
+export default ViewBanners
