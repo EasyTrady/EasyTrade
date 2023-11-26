@@ -10,16 +10,24 @@ import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
 import { Container } from '@mui/material';
 import ProductAttributes from './productAttributes';
-
+import {useEffect}from "react"
 export default function AddProductPanel() {
   const [value, setValue] = React.useState(0);
-  const [IdProduct, setIdProduct] = React.useState(0);
-
+  let productId=localStorage.getItem('productId');
+  const [IdProduct, setIdProduct] = React.useState(productId);
+  
   const handleChange = (e,newValue,id) => {
-  console.log(newValue,id)
-  setIdProduct(id)
+  console.log(newValue,id,IdProduct,(newValue==1||newValue==2),(Boolean(IdProduct)||Boolean(productId)))
+ 
+  if((newValue==1||newValue==2)&&(Boolean(IdProduct)||Boolean(productId))){
+    
+      setValue(newValue);
+    
+  }else if(newValue==0) {
     setValue(newValue);
+  }
   };
+  useEffect(()=>{setIdProduct(productId)},[productId])
   return (
     <DashboardLayout>
       <DashboardNavbar />

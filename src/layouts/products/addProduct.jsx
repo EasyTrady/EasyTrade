@@ -243,26 +243,26 @@ const AddProduct = ({ light, isMini,handleChange }) => {
   });
   function handleSubmit() {
     validate()?.then((output) => {
-      console.log(output);
+ 
       if (!output.isOk) return;
       if(Boolean(productId)){
         let  result= compare(
           [
-          [controls.name,product.name,"name"],
-          [controls.main_image,product.main_image,"main_image"],
-          [controls.require_shipping,product.require_shipping,"require_shipping"],
-         [controls.quantity,product.quantity,"quantity"],
-         [controls.price,product.price,"price"],
-         [controls.sku,product.sku,"sku"],
-         [controls.mpn,product.mpn,"mpn"],
-         [controls.gtin,product.gtin,"gtin"],
-         [controls.purchase_price,product.purchase_price,"purchase_price"],
-         [controls.is_percentage_discount,product.is_percentage_discount,"is_percentage_discount"],
-         [controls.discount,product.discount,"discount"],
-         [controls.discount_start_date,product?.discount_start_date,"discount_start_date"],
-         [controls.discount_end_date,product?.discount_end_date,"discount_end_date"],
-         [controls.require_shipping,product.require_shipping,"require_shipping"],
-         [controls.maximum_order_quanitity,product.maximum_order_quanitity,"maximum_order_quanitity"],
+          [controls?.name,product?.name,"name"],
+          [controls?.main_image,product?.main_image,"main_image"],
+          [controls?.require_shipping,product?.require_shipping,"require_shipping"],
+         [controls?.quantity,product?.quantity,"quantity"],
+         [controls?.price,product?.price,"price"],
+         [controls?.sku,product?.sku,"sku"],
+         [controls?.mpn,product?.mpn,"mpn"],
+         [controls?.gtin,product?.gtin,"gtin"],
+         [controls?.purchase_price,product?.purchase_price,"purchase_price"],
+         [controls?.is_percentage_discount,product?.is_percentage_discount,"is_percentage_discount"],
+         [controls?.discount,product?.discount,"discount"],
+         [controls?.discount_start_date,product?.discount_start_date,"discount_start_date"],
+         [controls?.discount_end_date,product?.discount_end_date,"discount_end_date"],
+         [controls?.require_shipping,product?.require_shipping,"require_shipping"],
+         [controls?.maximum_order_quanitity,product?.maximum_order_quanitity,"maximum_order_quanitity"],
         
 
         // // //  [controls.minimum_stock_quantity,product.minimum_stock_quantity,"minimum_stock_quantity"],
@@ -277,13 +277,15 @@ const AddProduct = ({ light, isMini,handleChange }) => {
         ],false
       )
       // console.log(Object.entries(result.array).map(([key,value])=>key==="discount_start_date"||key==="discount_end_date"?{key:value.toISOString()}:{key:value}))
-      patchProductRequest({
+     
+      if(result.nochange){ patchProductRequest({
         id:productId,
         body:Object.entries(result.array).map(([key,value])=>key==="discount_start_date"||key==="discount_end_date"?{key:value.toISOString()}:{key:value}),
         onSuccess:(res)=>{
-          handleChange(undefined,1,res.data.id)
+          dispatch({ type: "products/patchItem", payload:{ id:res?.data?.id,item:res?.data} });
+          // handleChange(undefined,1,res.data.id)
         }
-      })
+      })}
      
         let resultValue=compare([ [controls.specifications,product.specifications,"specifications"]],false)
         if(resultValue.nochange){
@@ -291,11 +293,11 @@ const AddProduct = ({ light, isMini,handleChange }) => {
             id:productId+"/specifications",
             body:resultValue.array.specifications,
             onSuccess:(res)=>{
-              console.log(res.data)
+              // handleChange(undefined,1,productId)
             }
           }) 
         }
-        console.log(resultValue)
+        handleChange(undefined,1,productId)
       
       }else{
         AddProductRequest({
@@ -330,18 +332,13 @@ const AddProduct = ({ light, isMini,handleChange }) => {
           onSuccess: (res) => {
             localStorage.setItem('productId', res.data.id);
             dispatch({ type: "products/addItem", payload: res?.data });
- 
-            handleChange(undefined,1,res.data.id)
-            localStorage.setItem('productId', res.data.id);
-            console.log(res.data, controls);
-            if(index===1){
-              return value===index
-            }
+           
             resetControls("");
           },
         }).then((res) => {
+          handleChange(undefined,1,res.data.id)
           let response = res?.response?.data;
-          console.log(res);
+          
           const responseBody = filter({
             obj: {
               categories: response?.categories,
@@ -377,11 +374,6 @@ const AddProduct = ({ light, isMini,handleChange }) => {
       
     });
   }
-
- 
-
-  console.log(controls.in_taxes);
-
   // console.log(index,value);
   useEffect(() => {
     // jobRequest({
@@ -490,7 +482,7 @@ useEffect(()=>{
                 return resultcategory.map((ele)=>ele.name).join(" , ")
               }}
               value={controls.categories.map((ele)=>ele.id?ele.id:ele)}
-              onChange={(e) => setControl("categories", e.target.value)}
+              onChange={(e) => {setControl("categories", e.target.value);console.log(e.target.value)}}
               required={required.includes("categories")}
               textHelper={controls.categories}
               error={Boolean(invalid.categories)}

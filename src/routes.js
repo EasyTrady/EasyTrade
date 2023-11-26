@@ -316,13 +316,12 @@ const routes = [
       type: "item"
 
     }, {
-      type: "title",
-      name: "Add new offer",
+      id: "Add new offer",
+      title: "Add new offer",
       key: "Add new offer",
-      route: `/:${sub_domain}/dashboard/offers/addnewoffer`,
-      icon: <Office size="12px" />,
-      component:<Auth><AddNewOffers /></Auth> ,
-       noCollapse: false,
+      path: `/${sub_domain}/dashboard/offers/addnewoffer`,
+      element:<Auth><AddNewOffers /></Auth> ,
+       type: "item"
     },
     ]
   },
@@ -343,13 +342,13 @@ const routes = [
       type: "item"
 
     }, {
-      type: "title",
-      name: "Add new banner",
-      key: "Add new banner",
-      route: `/${sub_domain}/dashboard/banners/addnewbanner`,
-      icon: <Office size="12px" />,
-      component:<Auth><AddNewBanner /></Auth> ,
-       noCollapse: false,
+      id: "Add_new_banner",
+      type: "item",
+      title: "Add new banner",
+      path: `/${sub_domain}/dashboard/banners/addnewbanner`,
+      
+      element:<Auth><AddNewBanner /></Auth> ,
+       
     },
     ]
   },

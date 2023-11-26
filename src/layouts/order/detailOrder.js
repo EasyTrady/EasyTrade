@@ -16,7 +16,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import useRequest from 'hooks/useRequest'
-import { ORDERS,CUSTOMER } from "data/api"
+import { ORDERS,CUSTOMER,ORDERSTATE } from "data/api"
+import EditIcon from 'examples/Icons/EditIcon';
+import SelectField from "components/common/SelectField";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import {
     Collapse, Dialog, Icon, InputLabel, List, ListItemButton,
@@ -27,14 +29,25 @@ import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@m
 function DetailOrder({ absolute, light, isMini }) {
     const route = useLocation().pathname.split("/").slice(1);
     let Token = localStorage.getItem('token');
-
+    let [edit,setEdit]=useState(false)
     let { t } = useTranslation("common")
     let { id } = useParams();
+    const MenuProps = {
+        PaperProps: {
+          sx: {
+            maxHeight: "200px",
+            overflowY: "auto",
+            backgroundColor: "white !important"
+          },
+        }
+      };
     const createMarkup = (word) => {
         return { __html: word };
     };
     let orders = useSelector((state) => state.orders.value)
     let [order, setOrder] = useState({})
+    let [status, setstatus] = useState([])
+
     let [Customer, setCustomer] = useState(null)
     const [{ controls, invalid, required }, { setControl, resetControls, validate ,setInvalid}] = useControls([
         {
@@ -62,6 +75,14 @@ function DetailOrder({ absolute, light, isMini }) {
             Token: `Token ${Token}`,
 
         });
+        const [statusOrderRequest, stateOrderResponce] =
+        useRequest({
+            path: ORDERSTATE,
+            method: "get",
+            Token: `Token ${Token}`,
+
+        });
+        
     useEffect(() => {
         if (Boolean(orders.results.find((ele) => ele.id == id))) {
             setOrder(orders.results.find((ele) => ele.id == id))
@@ -89,29 +110,29 @@ function DetailOrder({ absolute, light, isMini }) {
         }
 
     }, [order.customer])
-    useEffect(() => {
+    // useEffect(() => {
         
-        if (controls.status=="return") {
-            returnOrderRequest({
-                id:id+"/return_order",
-                onSuccess: (res) => {
-                    console.log(res.data)
+    //     if (controls.status=="return") {
+    //         returnOrderRequest({
+    //             id:id+"/return_order",
+    //             onSuccess: (res) => {
+    //                 console.log(res.data)
 
-                    setControl("status","return")
-                }
-            })
-        }else if(controls.status=="cancel"){
-            returnOrderRequest({
-                id:id+"/cancel",
-                onSuccess: (res) => {
-                    console.log(res.data)
+    //                 setControl("status","return")
+    //             }
+    //         })
+    //     }else if(controls.status=="cancel"){
+    //         returnOrderRequest({
+    //             id:id+"/cancel",
+    //             onSuccess: (res) => {
+    //                 console.log(res.data)
 
-                    setControl("status","cancel")
-                }
-            })
-        }
+    //                 setControl("status","cancel")
+    //             }
+    //         })
+    //     }
 
-    }, [controls.status])
+    // }, [controls.status])
     return (
         <DashboardLayout >
             <DashboardNavbar />
@@ -250,32 +271,44 @@ function DetailOrder({ absolute, light, isMini }) {
                        
                     >
                         <Typography sx={{ fontSize: "18px" }}>{t("Customerdetails")}</Typography>
+                        {/* <EditIcon onClick={()=>setEdit(true)}/> */}
                     </AccordionSummary>
                     <AccordionDetails >
+                        {/* {edit?} */}
                         <Table sx={{display:"flex",overflow:"auto"}}>
                             <TableBody >
                                 <TableRow sx={{border:"unset"}}>
                                     <TableCell sx={{color:(theme)=>theme.palette.grey[500],borderBottom:"unset"}}>{t("Name")}</TableCell>
                                     <TableCell sx={{borderBottom:"unset"}}>{order?.customer?.full_name}</TableCell>
                                 </TableRow>
-                                {/* <TableRow sx={{border:"unset"}}>
-                                    <TableCell >{t("Address")}</TableCell>
-                                    <TableCell >{Customer?.phone}</TableCell>
-                                </TableRow> */}
                                 <TableRow sx={{border:"unset"}}>
-                                    <TableCell sx={{color:(theme)=>theme.palette.grey[500],borderBottom:"unset"}}>{t("Phone")}</TableCell>
-                                    <TableCell sx={{borderBottom:"unset"}}>{order?.customer?.phone}</TableCell>
+                                    <TableCell sx={{color:(theme)=>theme.palette.grey[500],borderBottom:"unset"}}>{t("Address")}</TableCell>
+                                    <TableCell sx={{borderBottom:"unset"}} >{order?.customer?.addresses?.map((ele)=>ele.address)?.join(",")}</TableCell>
                                 </TableRow>
                                 <TableRow sx={{border:"unset"}}>
+                                    <TableCell sx={{color:(theme)=>theme.palette.grey[500],borderBottom:"unset"}}>{t("city")}</TableCell>
+                                    <TableCell sx={{borderBottom:"unset"}} >{order?.customer?.addresses?.map((ele)=>ele.city)?.join(",")}</TableCell>
+                                </TableRow>
+                                <TableRow sx={{border:"unset"}}>
+                                    <TableCell sx={{color:(theme)=>theme.palette.grey[500],borderBottom:"unset"}}>{t("state")}</TableCell>
+                                    <TableCell sx={{borderBottom:"unset"}} >{order?.customer?.addresses?.map((ele)=>ele.country)?.join(",")}</TableCell>
+                                </TableRow>
+                              
+        
+                                {/* <TableRow sx={{border:"unset"}}>
+                                    <TableCell sx={{color:(theme)=>theme.palette.grey[500],borderBottom:"unset"}}>{t("country")}</TableCell>
+                                    <TableCell sx={{borderBottom:"unset"}}>{order?.customer?.country}</TableCell>
+                                </TableRow> */}
+                            </TableBody>
+                            <TableBody >
+                            <TableRow sx={{border:"unset"}}>
                                     <TableCell sx={{color:(theme)=>theme.palette.grey[500],borderBottom:"unset"}}>{t("Email")}</TableCell>
                                     <TableCell sx={{borderBottom:"unset"}}>{order?.customer?.email}</TableCell>
                                 </TableRow>
                                 <TableRow sx={{border:"unset"}}>
-                                    <TableCell sx={{color:(theme)=>theme.palette.grey[500],borderBottom:"unset"}}>{t("country")}</TableCell>
-                                    <TableCell sx={{borderBottom:"unset"}}>{order?.customer?.country}</TableCell>
+                                    <TableCell sx={{color:(theme)=>theme.palette.grey[500],borderBottom:"unset"}}>{t("Phone")}</TableCell>
+                                    <TableCell sx={{borderBottom:"unset"}}>{order?.customer?.phone}</TableCell>
                                 </TableRow>
-                            </TableBody>
-                            <TableBody >
                                 <TableRow sx={{border:"unset"}}>
                                     <TableCell sx={{color:(theme)=>theme.palette.grey[500],borderBottom:"unset"}}>{t("PaymentMethod")}</TableCell>
                                     <TableCell sx={{borderBottom:"unset"}}>{order?.payment_method}</TableCell>
@@ -308,44 +341,40 @@ function DetailOrder({ absolute, light, isMini }) {
                             {t("status")}
                         </SoftBox>
                         <Container sx={{m:4}}>
-                        <SoftInput 
-      select
-      onChange={(e)=>setControl("status",e.target.value)}
-      value={controls.status}
-      IconComponent={KeyboardArrowDownIcon}
-      SelectProps={{
-        defaultValue: "",
-        displayEmpty: true,
-        // onOpen: onOpen,
-        // onClose: onClose,
-        renderValue: (selected) => {
-          if (!Boolean(selected)) {
-            return (
-              <Typography sx={{ color: "currentColor", opacity: "0.42",fontSize:"14px" }}>
-                {t("status")}
-              </Typography>
-            );
-          } else {
-            return  selected
-          }
-        },
-        MenuProps: {
-          PaperProps: {
-            sx: {
-              maxHeight: "200px",
-              overflowY: "auto",
-             backgroundColor:"white !important"
-            },
-          },
-        },
-       
-        IconComponent:  ()=><KeyboardArrowDownIcon></KeyboardArrowDownIcon>
-        
-      }} >
-<MenuItem value={"return"}>Return</MenuItem>
-<MenuItem value={"cancel"}>cancel</MenuItem>
+                        <SelectField 
+                         
+                          variant="outlined"
+                          label={"Select status"}
+                          placeholder={"Select..."}
+                          // onOpen={getAttributies}
+                          renderValue={ (selected) => {
+                            if (!Boolean(selected)) {
+                              return (
+                                <Typography sx={{ color: "currentColor", opacity: "0.42",fontSize:"14px" }}>
+                                  {t("status")}
+                                </Typography>
+                              );
+                            } else {
+                              return  selected
+                            }
+                          }}
+                          // isPending={attributeResponse.isPending}
+                          value={controls?.attributevalues}
+                          onChange={(e) => { setControl("attributevalues", e.target.value) }}
+                          required={required.includes("attributevalues")}
+                          error={Boolean(invalid?.attributevalues)}
+                          helperText={invalid?.attributevalues}
+                          MenuProps={MenuProps}
+                        onOpen={()=>statusOrderRequest({
+                            onSuccess:(res)=>{
+                                console.log(res.data.map((ele)=>ele.name))
+                                setstatus(res.data.map((ele)=>ele.name))
+                            }
+                        })}
+       >{status.map((ele,index)=><MenuItem key={index} value={ele}>{ele}</MenuItem>)}
 
-      </SoftInput></Container>
+
+      </SelectField></Container>
                     </SoftBox>
       </Stack>
 
