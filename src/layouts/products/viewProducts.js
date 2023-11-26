@@ -48,16 +48,21 @@ function Products({ absolute, light, isMini }) {
     method: "get",
     Token: `Token ${Token}`,
   });
+  const [RequestDeleteProducts, ResponseDeleteProducts] = useRequest({
+    path: PRODUCTS,
+    method: "delete",
+    Token: `Token ${Token}`,
+  });
   const [customerDeleteRequest, DeleteCustomerrResponce] = useRequest({
     path: CUSTOMER,
     method: "delete",
   });
   function onDelete(row) {
     console.log(row);
-    customerDeleteRequest({
+    RequestDeleteProducts({
       id: row,
       onSuccess: () => {
-        // dispatch({ type: "custom/deleteItem", payload: {id:row} })
+        dispatch({ type: "products/deleteItem", payload: {id:row} })
       },
     });
   }
@@ -185,7 +190,7 @@ function Products({ absolute, light, isMini }) {
 
           onDialog={onEdit}
 
-          onDelete={()=>{}}
+          onDelete={onDelete}
 
           checkboxSelection={true}
           onRowClick={(e,row) => {
