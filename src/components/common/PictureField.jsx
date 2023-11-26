@@ -42,6 +42,9 @@ function PictureField({ accept, label, placeholder, onChange, value,productName,
     if(Boolean(value)){setAvatarUrl(value)}
     
   },[value])
+  useEffect(()=>{
+    console.log(categories,"categories")
+  },[categories])
   return (
     <Box sx={{ display: "flex", flexDirection: "column", background: "#fff", borderRadius: "8px" }}>
       <AddProductTitle title={"Product main image*"} />
@@ -140,7 +143,7 @@ function PictureField({ accept, label, placeholder, onChange, value,productName,
                 <Box sx={{display: "flex",
                   alignItems: "flex-start",
                   flexDirection: "row",gap:'10px'}}>
-                {categories.map((cat)=>(
+                {categories?.map((cat)=>(
                 <Box key={cat?.id}  sx={{width: 'fit-content',p:1,
                 borderRadius:'8px',
                   height: '24px',background:'#FFE5D3',fontFamily: 'Inter',
