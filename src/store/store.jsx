@@ -36,3 +36,26 @@ const store = configureStore({
   }
 });
 export default store
+
+
+
+
+
+
+
+
+
+// {subscribtion.map(({ id, type, price, name, features }) => (
+//   <TableRow key={id} sx={{ direction: 'rtl' }}>
+    
+//     {features.map((feature)=>(<TableCell sx={{ textAlign: 'right', bgcolor: '#f8f9fa' }}>
+//       {feature}
+//     </TableCell>))}
+//     <Grid item xs={2} sx={{ padding: '16px', bgcolor: '#f8f9fa' }}>
+//       <Item sx={{ fontSize: '16px', fontWeight: 600, color: '#272C2E', boxShadow: 'none', bgcolor: '#f8f9fa', fontFamily: 'Cairo' }}>{name}</Item>
+//       <Item sx={{ fontSize: '25px', fontWeight: 800, boxShadow: 'none', bgcolor: '#f8f9fa', fontFamily: 'Cairo' }}>${price}</Item>
+//       <Item sx={{ fontSize: '14px', fontWeight: 400, boxShadow: 'none', fontFamily: 'Inter', bgcolor: '#f8f9fa', fontFamily: 'Cairo' }}>{type}/</Item>
+//       <ButtonBase sx={{ bgcolor: '#5D449B', borderRadius: '12px', width: '195px', boxShadow: 'none', color: '#faf8f9', padding: '10px', fontFamily: 'Cairo' }}>ابدأ تجربتك</ButtonBase>
+//     </Grid>
+//   </TableRow>
+// ))}
