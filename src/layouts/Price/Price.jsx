@@ -208,11 +208,13 @@ export default function Price() {
                                
                                 سنوي
                                 <Typography
+                                aria-data-type="annual"
+                                onClick={pricetTypeBtnTapped}
                                   sx={{
                                     fontSize: "12px",
                                     fontWeight: 200,
                                     color: "#C02431",
-                                    paddingTop: "5px",
+                                    padding: "5px 5px",
                                     fontFamily: "Cairo",
                                   }}
                                 >
@@ -333,7 +335,7 @@ export default function Price() {
         </Container>
       </Box>
 
-      <Footer />
+      <Footer/>
     </>
   );
 }
