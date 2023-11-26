@@ -24,6 +24,7 @@ import Edit from "../../assets/images/Edit.svg";
 import Delete from "../../assets/images/Delete.svg";
 import React from "react";
 import useRequest from "hooks/useRequest";
+import CircularProgress from '@mui/material/CircularProgress';
 import { ATTRIBUTES } from "data/api";
 import { useDispatch, useSelector } from "react-redux";
 import useControls from "hooks/useControls";
@@ -416,23 +417,23 @@ const ProductAttributes = ({ idProduct }) => {
 
   const postGenerationAttributes = () => {
     if(controls.variants.filter((ele)=>(Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin))&&!Boolean(ele.id)).length>0){
-
+      
       variantAttributesRequest({
         id: idproduct + '/variants/',
         body: controls.variants.filter((ele)=>(Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin))&&!Boolean(ele.id)),
       
         onSuccess: (res) => {
           console.log(res?.data)
-          if (res?.data[0]?.variant_attributes) {
-            dispatch({ type: "products/addVariantProperty", payload: { id: idproduct, item: res?.data[0]?.variant_attributes } })
+          if (res?.data[0]) {
+            dispatch({ type: "products/addVariantProperty", payload: { id: idproduct, item: res?.data[0] } })
           }
         },
       }).then((res) => {
         let response = res?.response?.data;
-        console.log( [...controls.variants.filter((ele)=>ele.id),response])
+        console.log()
 
         if(response?.length>0){
-          setInvalid({variants:response});
+          setInvalid({variants: [...controls.variants.filter((ele)=>ele.id).map((elem)=>{}),...response]});
         }
       });
     }
@@ -496,7 +497,7 @@ const ProductAttributes = ({ idProduct }) => {
       setControl("attribute", rowfind)
     }else{
       setControl("attribute", rowfind)
-      setControl("variants", [])
+      // setControl("variants", [])
     }
   }
   function editValue(ele) {
@@ -570,26 +571,27 @@ const ProductAttributes = ({ idProduct }) => {
       setControl("iscolor",controls.values[0].iscolor)
     }
   }, [controls.values.length])
-  useEffect(() => {
-   
-    if(controls?.variants?.length==0){
-   
-      setgenerate(false)
-    }
-  }, [controls.variants])
+
   useEffect(()=>{
     productvariantRequest({
       id:idproduct+"/variants",
       onSuccess:(res)=>{
-        // setControl("variants",res.data.map((ele)=>ele))
+        setControl("variants",res.data.map((ele)=>ele))
         dispatch({ type: "products/addNewProperty", payload: { id: idproduct, item: res?.data } })
-        // console.log(res.data)
+     
       }
     })
   },[])
   useEffect(()=>{
-    setControl("variants",products.results.find((ele)=>ele.id==idproduct)?.variant_attributes)
+    setControl("variants",products?.results?.find((ele)=>ele.id==idproduct)?.variant_attributes)
   },[products])
+  useEffect(() => {
+    console.log(controls?.variants?.length==0)
+     if(controls?.variants?.length==0){
+    
+       setgenerate(false)
+     }
+   }, [controls?.variants])
   return (
     <Container
       maxWidth="xl"
@@ -759,9 +761,9 @@ const ProductAttributes = ({ idProduct }) => {
                   display: "flex",
                   alignItems: "center"
                 }} >
-              
+                  
                   <Checkbox  color="secondary" onChange={(e)=>console.log(e.target.checked)}/>
-                  <TableCell align="right">{`${ele?.attributes?.join("")||ele?.variant_attributes?.map((elem)=>elem?.value_name)}`}</TableCell>
+                  <TableCell align="right">{`${Boolean(ele?.attributes)?ele?.attributes?.join(""):ele?.variant_attributes?.map((elem)=>elem?.value_name)?.join("")}`}</TableCell>
                   <TableCell align="right"> <SoftInput
                     placeholder='quantity'
                     sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "150px !important" }, }}
@@ -836,6 +838,7 @@ const ProductAttributes = ({ idProduct }) => {
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginY: "14px" }}>
         <SoftButton variant="gradient"
+          
           sx={{
             backgroundColor: (theme) => theme.palette.purple.middle,
             color: "white !important", "&:hover": {
@@ -844,7 +847,8 @@ const ProductAttributes = ({ idProduct }) => {
           }}
           onClick={postGenerationAttributes}
         >
-          Next
+         {controls?.variants?.filter((ele)=>(Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin))&&!Boolean(ele.id)).length>0?
+         variantAttributeResponse.isPending?<CircularProgress />:"Next":productvariantupdateResponce.isPending?<CircularProgress />:"Next"}
         </SoftButton>
       </Box>
       <Dialog
@@ -948,15 +952,16 @@ const ProductAttributes = ({ idProduct }) => {
                 error={Boolean(invalid?.value_name)}
                 helperText={invalid?.value_name} /></TableCell> : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.value_name}</TableCell>}
 
-              {ele.color_value ? Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <TableCell sx={{ width: "14rem", }}><SoftInput placeholder='color'
-                sx={{ ".MuiInputBase-root": { border: `unset` }, }}
-                value={controls.color_value ? controls.color_value : edit?.color_value}
-                // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
-                onChange={(e) => setControl("color_value",
-                  e.target.value)}
-                required={required.includes("color_value")}
-                error={Boolean(invalid?.color_value)}
-                helperText={invalid?.color_value} /></TableCell > : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.color_value}</TableCell> : <></>}
+              {ele.color_value ? Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <TableCell sx={{ width: "14rem",display:"flex",justifyContent:"space-between" ,alignItems:"center",borderRight: "1px solid #8080807d"}}><SoftInput placeholder='color'
+                                    sx={{ ".MuiInputBase-root": { border: `unset` }, }}
+                                    type="color"
+                                    value={controls.color_value ? controls.color_value : edit?.color_value}
+                                    // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
+                                    onChange={(e) => setControl("color_value",
+                                        e.target.value)}
+                                    required={required.includes("color_value")}
+                                    error={Boolean(invalid?.color_value)}
+                                    helperText={invalid?.color_value} /> <Typography sx={{fontSize:"14px"}}>{controls.color_value ? controls.color_value : edit?.color_value}</Typography></TableCell >: <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.color_value}</TableCell> : <></>}
               {attributes?.find((ele) => ele.id == controls.id)?.values.map((ele) => ele.value_name).includes(ele.value_name) ? <TableCell sx={{
                 width: "50%", borderLeft: "1px solid #8080807d", display: "flex",
                 justifyContent: "flex-end",
@@ -994,15 +999,16 @@ const ProductAttributes = ({ idProduct }) => {
                 error={Boolean(invalid?.value_name)}
                 helperText={invalid?.value_name} /></TableCell> : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.value_name}</TableCell>}
 
-              {ele.color_value ? Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <TableCell sx={{ width: "14rem", }}><SoftInput placeholder='color'
-                sx={{ ".MuiInputBase-root": { border: `unset` }, }}
-                value={controls.color_value ? controls.color_value : edit?.color_value}
-                // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
-                onChange={(e) => setControl("color_value",
-                  e.target.value)}
-                required={required.includes("color_value")}
-                error={Boolean(invalid?.color_value)}
-                helperText={invalid?.color_value} /></TableCell > : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.color_value}</TableCell> : <></>}
+              {ele.color_value ? Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <TableCell sx={{ width: "14rem",display:"flex",justifyContent:"space-between" ,alignItems:"center",borderRight: "1px solid #8080807d"}}><SoftInput placeholder='color'
+                                    sx={{ ".MuiInputBase-root": { border: `unset` }, }}
+                                    type="color"
+                                    value={controls.color_value ? controls.color_value : edit?.color_value}
+                                    // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
+                                    onChange={(e) => setControl("color_value",
+                                        e.target.value)}
+                                    required={required.includes("color_value")}
+                                    error={Boolean(invalid?.color_value)}
+                                    helperText={invalid?.color_value} /> <Typography sx={{fontSize:"14px"}}>{controls.color_value ? controls.color_value : edit?.color_value}</Typography></TableCell > : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.color_value}</TableCell> : <></>}
               {attributes?.find((ele) => ele.id == controls.id)?.values.map((ele) => ele.value_name).includes(ele.value_name) ? <TableCell sx={{
                 width: "50%", borderLeft: "1px solid #8080807d", display: "flex",
                 justifyContent: "flex-end",
@@ -1057,18 +1063,19 @@ const ProductAttributes = ({ idProduct }) => {
 
 
               </TableCell>
-
-              <TableCell sx={{ borderRight: "1px solid #80808059", width: "10.3rem" }}>
-                <SoftInput placeholder='color'
-                  sx={{ ".MuiInputBase-root": { border: `unset`, padding: "0px !important" }, }}
-                  value={controls.color_value}
-                  // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
-                  onChange={(e) => setControl("color_value",
-                    e.target.value)}
-                  required={required.includes("color_value")}
-                  error={Boolean(invalid?.color_value)}
-                  helperText={invalid?.color_value} />
-              </TableCell>
+              <TableCell sx={{ borderRight: "1px solid #80808059", width: "10.3rem",display:"flex",justifyContent:"space-between" }}>
+                                    <SoftInput placeholder='color'
+                                    type="color"
+                                        sx={{ ".MuiInputBase-root": { border: `unset`, padding: "0px !important" }, }}
+                                        value={controls.color_value}
+                                        // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
+                                        onChange={(e) => setControl("color_value",
+                                            e.target.value)}
+                                        required={required.includes("color_value")}
+                                        error={Boolean(invalid?.color_value)}
+                                        helperText={invalid?.color_value} />
+                                        <Typography sx={{fontSize:"14px"}}>{controls.color_value}</Typography>
+                                </TableCell>
               <TableCell>
                 <Typography sx={{ fontSize: "14px", padding: "15px", height: "40px", color: (theme) => theme.palette.purple.middle, textDecoration: "underline !important" }}
                   component="a"

@@ -14,10 +14,13 @@ import SoftButton from "components/SoftButton";
 import useRequest from "hooks/useRequest";
 import { PRODUCTS } from "data/api";
 import { useDispatch, useSelector } from "react-redux";
+import CircularProgress from '@mui/material/CircularProgress';
 import filter from "utils/ClearNull";
 const AddProductFetures = ({handleChange}) => {
   let Token = localStorage.getItem("token");
  let idProduct= localStorage.getItem('productId');
+//  let productIdEdit= localStorage.getItem('productIdEdit');
+
  let products=useSelector((state)=>state.products.value)
   const [AddProductImagesRequest, AddProductImagesResponce] = useRequest({
     path: PRODUCTS,
@@ -35,9 +38,8 @@ const AddProductFetures = ({handleChange}) => {
   function handleSubmit() {
     
     validate().then((output) => {
-      console.log(output);
+
       if (!output.isOk) return;
-      console.log(Boolean(controls?.images));
       if(Boolean(controls?.images)){
         AddProductImagesRequest({
           id:idProduct+'/images',
@@ -149,7 +151,7 @@ useEffect(()=>{
     </Box>
     <Box sx={{display:'flex',justifyContent:'flex-end',alignItems:'center'}}>
       <SoftButton variant="gradient"
-        // disabled={Boolean(productId)?patchProductResponce.isPending:AddProductResponce.isPending}
+        disabled={AddProductImagesResponce.isPending}
                         sx={{
                             backgroundColor: (theme) => theme.palette.purple.middle,
                             color: "white !important", "&:hover": {
@@ -158,7 +160,7 @@ useEffect(()=>{
                         }}
                         onClick={handleSubmit}
                     >
-                        Next
+                       {AddProductImagesResponce.isPending?<CircularProgress />:"Next"}
                     </SoftButton>
     </Box>
     </Box>

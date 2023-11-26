@@ -48,7 +48,8 @@ export const ProductsSlice = createSlice({
     },addNewProperty: (state, action) => {
       state.value.results.find((ele)=>ele.id==action.payload.id)["variant_attributes"]=action?.payload?.item?.map((elem)=>elem)
     },addVariantProperty: (state, action) => {
-      state.value.results.find((ele)=>ele.id==action.payload.id)["variant_attributes"].push(action?.payload?.item?.map((elem)=>elem))
+    state.value.results.find((ele)=>ele.id==action.payload.id)["variant_attributes"].push(action?.payload?.item)
+      
     },deleteVariantProperty: (state, action) => {
       state.value.results =  state.value.results?.map((ele)=>ele?.id==action.payload.id?{...ele,variant_attributes:ele.variant_attributes.filter((elem)=>elem.id!=action.payload.idVariant)}:ele)
     },

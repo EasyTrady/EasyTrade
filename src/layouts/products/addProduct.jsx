@@ -63,6 +63,7 @@ import PictureField from "components/common/PictureField";
 import SelectValueWeight from "components/common/SelectValueWeight";
 import MultiSelect from "components/common/MultiSelect";
 import compare from "utils/compare";
+import CircularProgress from '@mui/material/CircularProgress';
 const ReactQuill = require("react-quill");
 
 
@@ -266,14 +267,14 @@ const AddProduct = ({ light, isMini,handleChange }) => {
         
 
         // // //  [controls.minimum_stock_quantity,product.minimum_stock_quantity,"minimum_stock_quantity"],
-         [controls.description,product.description,"description"],
-         [String(controls.categories),String(product.categories),"categories"],
+         [controls?.description,product?.description,"description"],
+         [String(controls?.categories),String(product?.categories),"categories"],
         //  [controls.custom_shipping_price,product.custom_shipping_price,"custom_shipping_price"],
-         [controls.dimensions,product.dimensions,"dimensions"],
-         [controls.weight,product.weight,"weight"],
-         [controls.in_taxes,product.in_taxes,"in_taxes"],
-         [controls.is_published,product.is_published,"is_published"],
-         [controls.weight_unit,product.weight_unit,"weight_unit"],
+         [controls?.dimensions,product?.dimensions,"dimensions"],
+         [controls?.weight,product?.weight,"weight"],
+         [controls?.in_taxes,product?.in_taxes,"in_taxes"],
+         [controls?.is_published,product?.is_published,"is_published"],
+         [controls?.weight_unit,product?.weight_unit,"weight_unit"],
         ],false
       )
       // console.log(Object.entries(result.array).map(([key,value])=>key==="discount_start_date"||key==="discount_end_date"?{key:value.toISOString()}:{key:value}))
@@ -312,8 +313,8 @@ const AddProduct = ({ light, isMini,handleChange }) => {
               price: controls.price,
               main_image: controls.main_image,
               discount: controls?.discount,
-              discount_start_date: controls?.discount_start_date?.toISOString(),
-              discount_end_date: controls?.discount_end_date?.toISOString(),
+              discount_start_date: controls?.discount_start_date&&controls?.discount_start_date?.toISOString(),
+              discount_end_date:controls?.discount_start_date&&controls?.discount_end_date?.toISOString(),
               is_percentage_discount: controls.is_percentage_discount,
               purchase_price: controls.purchase_price,
               //  custom_shipping_price: controls.custom_shipping_price,
@@ -332,11 +333,11 @@ const AddProduct = ({ light, isMini,handleChange }) => {
           onSuccess: (res) => {
             localStorage.setItem('productId', res.data.id);
             dispatch({ type: "products/addItem", payload: res?.data });
-           
+            handleChange(undefined,1,res?.data?.id)
             resetControls("");
           },
         }).then((res) => {
-          handleChange(undefined,1,res.data.id)
+       
           let response = res?.response?.data;
           
           const responseBody = filter({
@@ -936,7 +937,8 @@ useEffect(()=>{
           }}
           onClick={handleSubmit}
         >
-          Next
+           
+          {Boolean(productId)?patchProductResponce.isPending?<CircularProgress />:"Next":AddProductResponce.isPending?<CircularProgress />:"Next"}
         </SoftButton>
       </Box>
       {AddProductResponce.failAlert}

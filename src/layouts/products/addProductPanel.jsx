@@ -13,13 +13,15 @@ import ProductAttributes from './productAttributes';
 import {useEffect}from "react"
 export default function AddProductPanel() {
   const [value, setValue] = React.useState(0);
+  let productIdEdit=localStorage.getItem('productIdEdit');
   let productId=localStorage.getItem('productId');
+
   const [IdProduct, setIdProduct] = React.useState(productId);
   
   const handleChange = (e,newValue,id) => {
-  console.log(newValue,id,IdProduct,(newValue==1||newValue==2),(Boolean(IdProduct)||Boolean(productId)))
+  console.log(newValue,id,productId,(newValue==1||newValue==2),(Boolean(IdProduct)||Boolean(productId)))
  
-  if((newValue==1||newValue==2)&&(Boolean(IdProduct)||Boolean(productId))){
+  if((newValue==1||newValue==2)&&(Boolean(id)||Boolean(productId)||Boolean(productIdEdit))){
     
       setValue(newValue);
     

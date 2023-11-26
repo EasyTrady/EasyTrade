@@ -209,6 +209,7 @@ function Products({ absolute, light, isMini }) {
       </DashboardLayout>
       {ResponseGetProducts.successAlert}
       {ResponseGetProducts.failAlert}
+      {ResponseDeleteProducts.failAlert}
     </>
   );
 }

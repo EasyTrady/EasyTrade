@@ -5,20 +5,41 @@ import React,{useEffect} from "react";
 import PropTypes from "prop-types";
 import productImage from "../../assets/images/ivana-square.jpg";
 import image from '../../assets/images/icons/image.svg'
+import useRequest from "hooks/useRequest";
+import { PRODUCTS } from "data/api";
+import { Alert } from "@mui/material";
 // eslint-disable-next-line react/prop-types
 const ImageBox = ({ main_image, onChange }) => {
   const [mainImages, setMainImages] = React.useState([]);
+  const [alert, setAlert] = React.useState("");
 
+  let idProduct= localStorage.getItem('productId');
+  let Token = localStorage.getItem("token");
+  const [deleteProductImagesRequest,deleteProductImagesResponce] = useRequest({
+    path: PRODUCTS,
+    method: "delete",
+    Token: `Token ${Token}`,
+    contentType: "multipart/form-data",
+  });
   const handleAvatarChange = (event) => {
     const files = event.target.files;
     const readers = [];
 
     for (let i = 0; i < files.length; i++) {
       const reader = new FileReader();
+      
+      const img = new Image();
 
       reader.onload = (e) => {
         const imageDataUrl = reader.result;
-        setMainImages((prevImages) => [...prevImages, imageDataUrl]);
+        img.src = imageDataUrl;
+        if (img.width === 700 && img.height === 700) {
+          setMainImages((prevImages) => [...prevImages, imageDataUrl]);
+          setAlert("")
+        }else{
+          setAlert("image width should be 700px and hight should be 700px also")
+        }
+        console.log(img.width)
       };
 
       readers.push(reader);
@@ -28,12 +49,23 @@ const ImageBox = ({ main_image, onChange }) => {
   };
   const handelDeleteImage = (selectedImageIndex) => {
     // Delete the selected image from the images array
-    
     const updatedImages = mainImages.filter((image, index) => index != selectedImageIndex);
+    const newImage=mainImages.find((ele,index)=>index==selectedImageIndex)
+    let idofimage=main_image.find((ele)=>ele.image==newImage)
+
+    
+    if(main_image.map((ele)=>ele.image).includes(newImage)){
+      deleteProductImagesRequest({
+        id:idProduct+"/images/"+idofimage?.id,
+        onSuccess:(res)=>{
+          onChange(main_image.filter((ele)=>ele.id!=idofimage?.id))
+          console.log(res.data)
+        }
+      })
+    }
   
     // Update the state with the new images array
     setMainImages(updatedImages);
-    onChange(updatedImages)
   };
   useEffect(()=>{
     
@@ -45,7 +77,7 @@ const ImageBox = ({ main_image, onChange }) => {
     main_image
   ])
   return (
-    <Box
+   <> <Box
       sx={{
         display: "flex",
         flexDirection: "row",
@@ -250,7 +282,17 @@ const ImageBox = ({ main_image, onChange }) => {
         ))}   
         </Box>
       )}
+      
+     
     </Box>
+    {Boolean(alert)&& <Alert
+            severity="error"
+            variant="filled"
+            onClose={() =>  setAlert("")}
+          >
+            {alert}
+          </Alert>}
+    </>
   );
 };
 
