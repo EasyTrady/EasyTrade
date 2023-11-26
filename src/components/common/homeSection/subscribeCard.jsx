@@ -29,109 +29,109 @@ const SubscribeCard = ({ type }) => {
     setIsHovering(-1);
   };
 
-  const Card = [
-    {
-      id: 1,
-      title: "Basic",
-      decription: "Perfect for Growing Businesses on a Budget",
-      offer: "Start 14 days free trail",
-      price: "$200",
-      landing: {
-        icon: <CheckCircleIcon />,
-        address: "Landing Page",
-      },
-      responsive: {
-        icon: <CheckCircleIcon />,
-        address: "Responsive designs",
-      },
-      domain: {
-        icon: <CheckCircleIcon />,
-        address: "Custom domain name",
-      },
-      support: {
-        icon: <CheckCircleIcon />,
-        address: "24 hours Support",
-      },
-      button: "Choose Plan",
-      link: "See details",
-    },
-    {
-      id: 2,
-      title: "Pro",
-      decription: "Advanced Features for High-Performing Businesses",
-      offer: "Start 14 days free trail",
-      price: "$500",
-      landing: {
-        icon: <CheckCircleIcon />,
-        address: " Pro landing Page",
-      },
-      responsive: {
-        icon: <CheckCircleIcon />,
-        address: "Product banners",
-      },
-      domain: {
-        icon: <CheckCircleIcon />,
-        address: "Chats",
-      },
-      support: {
-        icon: <CheckCircleIcon />,
-        address: "Sales management",
-      },
-      button: "Choose Plan",
-      link: "See details",
-    },
-    {
-      id: 3,
-      title: "Enterprise",
-      decription: "Collaboration Tools for Large Organizations",
-      offer: "Start 14 days free trail",
-      price: "$800",
-      landing: {
-        icon: <CheckCircleIcon />,
-        address: "Pro landing page",
-      },
-      responsive: {
-        icon: <CheckCircleIcon />,
-        address: "Coupons links",
-      },
-      domain: {
-        icon: <CheckCircleIcon />,
-        address: "Affiliate system",
-      },
-      support: {
-        icon: <CheckCircleIcon />,
-        address: "Payment Gateways",
-      },
-      button: "Choose Plan",
-      link: "See details",
-    },
-    {
-      id: 4,
-      title: "Vip",
-      decription: "Ideal for Small Businesses and Solo Entrepreneurs",
-      price: "$1000",
-      landing: {
-        icon: <CheckCircleIcon />,
-        address: "Pro landing page",
-      },
-      responsive: {
-        icon: <CheckCircleIcon />,
-        address: "POS",
-      },
-      domain: {
-        icon: <CheckCircleIcon />,
-        address: "Return management",
-      },
-      support: {
-        icon: <CheckCircleIcon />,
-        address: "Subscription",
-      },
-      button: "Choose Plan",
-      link: "See details",
-    },
-  ];
+  // const Card = [
+  //   {
+  //     id: 1,
+  //     title: "Basic",
+  //     decription: "Perfect for Growing Businesses on a Budget",
+  //     offer: "Start 14 days free trail",
+  //     price: "$200",
+  //     landing: {
+  //       icon: <CheckCircleIcon />,
+  //       address: "Landing Page",
+  //     },
+  //     responsive: {
+  //       icon: <CheckCircleIcon />,
+  //       address: "Responsive designs",
+  //     },
+  //     domain: {
+  //       icon: <CheckCircleIcon />,
+  //       address: "Custom domain name",
+  //     },
+  //     support: {
+  //       icon: <CheckCircleIcon />,
+  //       address: "24 hours Support",
+  //     },
+  //     button: "Choose Plan",
+  //     link: "See details",
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Pro",
+  //     decription: "Advanced Features for High-Performing Businesses",
+  //     offer: "Start 14 days free trail",
+  //     price: "$500",
+  //     landing: {
+  //       icon: <CheckCircleIcon />,
+  //       address: " Pro landing Page",
+  //     },
+  //     responsive: {
+  //       icon: <CheckCircleIcon />,
+  //       address: "Product banners",
+  //     },
+  //     domain: {
+  //       icon: <CheckCircleIcon />,
+  //       address: "Chats",
+  //     },
+  //     support: {
+  //       icon: <CheckCircleIcon />,
+  //       address: "Sales management",
+  //     },
+  //     button: "Choose Plan",
+  //     link: "See details",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Enterprise",
+  //     decription: "Collaboration Tools for Large Organizations",
+  //     offer: "Start 14 days free trail",
+  //     price: "$800",
+  //     landing: {
+  //       icon: <CheckCircleIcon />,
+  //       address: "Pro landing page",
+  //     },
+  //     responsive: {
+  //       icon: <CheckCircleIcon />,
+  //       address: "Coupons links",
+  //     },
+  //     domain: {
+  //       icon: <CheckCircleIcon />,
+  //       address: "Affiliate system",
+  //     },
+  //     support: {
+  //       icon: <CheckCircleIcon />,
+  //       address: "Payment Gateways",
+  //     },
+  //     button: "Choose Plan",
+  //     link: "See details",
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "Vip",
+  //     decription: "Ideal for Small Businesses and Solo Entrepreneurs",
+  //     price: "$1000",
+  //     landing: {
+  //       icon: <CheckCircleIcon />,
+  //       address: "Pro landing page",
+  //     },
+  //     responsive: {
+  //       icon: <CheckCircleIcon />,
+  //       address: "POS",
+  //     },
+  //     domain: {
+  //       icon: <CheckCircleIcon />,
+  //       address: "Return management",
+  //     },
+  //     support: {
+  //       icon: <CheckCircleIcon />,
+  //       address: "Subscription",
+  //     },
+  //     button: "Choose Plan",
+  //     link: "See details",
+  //   },
+  // ];
 
-  console.log(Card);
+  // console.log(Card);
   // ....................................skeleton......................................
   const [isLoading, setIsLoading] = useState(true);
 
