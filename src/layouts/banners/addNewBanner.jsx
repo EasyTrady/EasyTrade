@@ -6,6 +6,7 @@ import OfferBoxCategory from 'components/common/OfferBoxCategory'
 import RadioButton from 'components/common/RadioButton'
 import SelectField from 'components/common/SelectField'
 import InputField from 'components/common/TextField'
+import BannerShape from 'components/common/bannerShape'
 import Bannerbox from 'components/common/bannerbox'
 import { OFFERTYPES } from 'data/api'
 import { BANNERS } from 'data/api'
@@ -152,11 +153,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
       <Grid item>
         <Grid container spacing={3}>
             <Grid item md={6}>
-            <SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5,py:'24px' }}>
-                <Container>
-                <TextTitle >Banner Shape</TextTitle>
-                </Container>
-            </SoftBox>
+            <BannerShape/>
             </Grid>
             <Grid item md={6}>
                 <SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5 ,py:'24px'}} >
