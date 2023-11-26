@@ -35,6 +35,7 @@
     "lodash": "^4.17.21",
     "material-ui-phone-number": "^3.0.0",
     "moment": "^2.29.4",
+    "mui-color-input": "^2.0.1",
     "prop-types": "15.8.1",
     "react": ">=16.8.0",
     "react-carousel-rtl": "^3.0.4",

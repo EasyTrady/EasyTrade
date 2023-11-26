@@ -24,6 +24,7 @@ import Edit from "../../assets/images/Edit.svg";
 import Delete from "../../assets/images/Delete.svg";
 import React from "react";
 import useRequest from "hooks/useRequest";
+import CircularProgress from '@mui/material/CircularProgress';
 import { ATTRIBUTES } from "data/api";
 import { useDispatch, useSelector } from "react-redux";
 import useControls from "hooks/useControls";
@@ -41,6 +42,7 @@ import { PRODUCTS } from "data/api";
 import SaveAsIcon from '@mui/icons-material/SaveAs';
 import CloseIcon from '@mui/icons-material/Close';
 import TwoArrow from 'examples/Icons/TwoArrow';
+import compare from "utils/compare";
 // import DeleteIcon from 'examples/Icons/DeleteIcon';
 import EditIcon from 'examples/Icons/EditIcon';
 function createData(name, calories, fat, carbs, protein) {
@@ -180,6 +182,13 @@ const ProductAttributes = ({ idProduct }) => {
       Token: `Token ${Token}`,
       // contentType: "multipart/form-data",
     });
+    const [productvariantupdate, productvariantupdateResponce] =
+    useRequest({
+      path: PRODUCTS,
+      method: "patch",
+      Token: `Token ${Token}`,
+      // contentType: "multipart/form-data",
+    });
   function handleSubmit() {
     console.log("submit")
     validate().then((output) => {
@@ -308,7 +317,7 @@ const ProductAttributes = ({ idProduct }) => {
     setaddvalue(true);
   }
   function onDeleteNew(row) {
-    console.log(row)
+
     setControl("values", controls.values.filter((ele, index) => index !== row))
     setEdit(null)
   }
@@ -336,6 +345,13 @@ const ProductAttributes = ({ idProduct }) => {
       method: "POST",
       Token: `Token ${Token}`
     });
+    const [deleteVariantRequest, deleteVariantResponse] =
+    useRequest({
+      path: PRODUCTS,
+      method: "delete",
+      Token: `Token ${Token}`
+    });
+   
   const [variantAttributesRequest, variantAttributeResponse] =
     useRequest({
       path: PRODUCTS,
@@ -393,36 +409,71 @@ const ProductAttributes = ({ idProduct }) => {
           currency: "SAR",
           quantity: ""
         }))
-        setControl("variants", [...result])
+        setControl("variants", [...controls.variants,...result])
       },
     })
 
   }
 
   const postGenerationAttributes = () => {
-    if(controls.variants.filter((ele)=>Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin)).length>0){
+    if(controls.variants.filter((ele)=>(Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin))&&!Boolean(ele.id)).length>0){
+      
       variantAttributesRequest({
         id: idproduct + '/variants/',
-        body: controls.variants.filter((ele)=>Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin)),
+        body: controls.variants.filter((ele)=>(Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin))&&!Boolean(ele.id)),
       
         onSuccess: (res) => {
-          if (res?.data[0]?.variant_attributes) {
-            dispatch({ type: "products/addNewProperty", payload: { id: idproduct, item: res?.data[0]?.variant_attributes } })
+          console.log(res?.data)
+          if (res?.data[0]) {
+            dispatch({ type: "products/addVariantProperty", payload: { id: idproduct, item: res?.data[0] } })
           }
         },
       }).then((res) => {
         let response = res?.response?.data;
+        console.log()
+
         if(response?.length>0){
-          setInvalid({variants:[...response]});
+          setInvalid({variants: [...controls.variants.filter((ele)=>ele.id).map((elem)=>{}),...response]});
         }
       });
-    }else{
+    }
+     if(controls.variants.filter((ele)=>(Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin))&&Boolean(ele.id)).length>0){
+     let variant=products.results.find((ele)=>ele.id==idproduct)?.variant_attributes
+     let newvariant=controls.variants.filter((ele)=>(Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin))&&Boolean(ele.id))
+    
+    let result=newvariant?.map((ele,index)=>(compare([[ele?.quantity,variant[index]?.quantity,"quantity"],
+     [ele?.title,variant[index]?.title,"title"],
+     [ele?.sku,variant[index]?.sku,"sku"],
+     [String(ele?.gtin),String(variant[index]?.gtin),"gtin"],
+     [ele?.price,variant[index]?.price,"price"],
+    ],false))
+     )
+   
+      productvariantupdate({
+        id: idproduct + '/variants/bulk_update',
+        body:result.map((ele,index)=>ele.nochange&&({variant_id:newvariant[index].id,...ele.array}))?.filter((ele)=>Boolean(ele)),
+        onSuccess:(res)=>{
+          conssole.log(res.data)
+        }
+      })
+      
+    }if(controls.variants.filter((ele)=>(Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin))&&!Boolean(ele.id)).length==0){
       setInvalid({variants:[]});
     }
- 
-    // });
   }
-
+  function deleteVariant(ele){
+    if(ele.id){
+      deleteVariantRequest({
+        id:idproduct+"/variants/bulk_delete",
+        body:[ele.id],
+        onSuccess:(res)=>{
+          dispatch({type:"products/deleteVariantProperty",payload:{id:idproduct,idVariant:ele.id}})
+          console.log(res.data)
+        }
+      })
+    }else{setControl("variants",controls.variants.filter((elem)=>elem!=ele))}
+   
+  }
   function onDeleteValue(row, valueId) {
     attributeDeleteRequest({
       id: row + "/values/" + valueId,
@@ -441,20 +492,13 @@ const ProductAttributes = ({ idProduct }) => {
 
   }
   function onDelete(id) {
-    console.log(id, controls.attribute)
     const rowfind = controls.attribute.filter((row) => row.id != id)
     if(rowfind.length>0){
       setControl("attribute", rowfind)
     }else{
       setControl("attribute", rowfind)
-      setControl("variants", [])
-
+      // setControl("variants", [])
     }
-    // setControl("values",rowfind.)
-
-    // Object.keys(controls)?.map((ele) => rowfind[ele] && setControl(ele, rowfind[ele]))
-    console.log(rowfind, controls)
-
   }
   function editValue(ele) {
 
@@ -464,7 +508,6 @@ const ProductAttributes = ({ idProduct }) => {
     if (!Boolean(controls.color_value)) {
       setControl("color_value", ele.color_value)
     }
-
     editattributeValueRequest({
       id: controls.id + "/values/" + ele.id,
       body: {
@@ -516,7 +559,6 @@ const ProductAttributes = ({ idProduct }) => {
   }, [idproduct, products])
   useEffect(() => {
     if (controls.attribute.length > 0) {
-
       setpopupvalue(controls.attribute[controls.attribute.length - 1])
       setControl("values", controls.attribute[controls.attribute.length - 1].values.map((ele) => ele))
     }else{
@@ -529,21 +571,27 @@ const ProductAttributes = ({ idProduct }) => {
       setControl("iscolor",controls.values[0].iscolor)
     }
   }, [controls.values.length])
-  useEffect(() => {
-   
-    if(controls.variants.length==0){
-   
-      setgenerate(false)
-    }
-  }, [controls.variants])
+
   useEffect(()=>{
     productvariantRequest({
       id:idproduct+"/variants",
       onSuccess:(res)=>{
-        console.log(res.data)
+        setControl("variants",res.data.map((ele)=>ele))
+        dispatch({ type: "products/addNewProperty", payload: { id: idproduct, item: res?.data } })
+     
       }
     })
   },[])
+  useEffect(()=>{
+    setControl("variants",products?.results?.find((ele)=>ele.id==idproduct)?.variant_attributes)
+  },[products])
+  useEffect(() => {
+    console.log(controls?.variants?.length==0)
+     if(controls?.variants?.length==0){
+    
+       setgenerate(false)
+     }
+   }, [controls?.variants])
   return (
     <Container
       maxWidth="xl"
@@ -703,19 +751,19 @@ const ProductAttributes = ({ idProduct }) => {
             }}>Generate (4 combinations)</Button>
 
         </Box>
-        {generate ? <Box>
+        {generate|| controls?.variants?.length>0? <Box>
           <Typography sx={{ color: (theme) => theme.palette.grey[600], marginY: "20px" }}>{t("note")}</Typography>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650, color: (theme) => theme.palette.grey[300] }} aria-label="caption table">
               <TableBody>
                 {/* {rows.map((row) => ( */}
-                {controls.variants.map((ele, index) => <TableRow key={index} sx={{
+                {controls?.variants?.map((ele, index) => <TableRow key={index} sx={{
                   display: "flex",
                   alignItems: "center"
                 }} >
-
-                  <Checkbox defaultChecked color="secondary" />
-                  <TableCell align="right">{`${ele?.attributes?.join("")}`}</TableCell>
+                  
+                  <Checkbox  color="secondary" onChange={(e)=>console.log(e.target.checked)}/>
+                  <TableCell align="right">{`${Boolean(ele?.attributes)?ele?.attributes?.join(""):ele?.variant_attributes?.map((elem)=>elem?.value_name)?.join("")}`}</TableCell>
                   <TableCell align="right"> <SoftInput
                     placeholder='quantity'
                     sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "150px !important" }, }}
@@ -777,7 +825,7 @@ const ProductAttributes = ({ idProduct }) => {
                   // sx={input}
                   /></TableCell>
                   <TableCell align="right"><PhotoIcon /></TableCell>
-                  <TableCell align="right" sx={{ color: (theme) => theme.palette.error.main }}><DeleteIcon /></TableCell>
+                  <TableCell align="right" sx={{ color: (theme) => theme.palette.error.main }}><DeleteIcon onClick={()=>deleteVariant(ele)}/></TableCell>
 
                 </TableRow>)}
 
@@ -790,6 +838,7 @@ const ProductAttributes = ({ idProduct }) => {
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginY: "14px" }}>
         <SoftButton variant="gradient"
+          
           sx={{
             backgroundColor: (theme) => theme.palette.purple.middle,
             color: "white !important", "&:hover": {
@@ -798,7 +847,8 @@ const ProductAttributes = ({ idProduct }) => {
           }}
           onClick={postGenerationAttributes}
         >
-          Next
+         {controls?.variants?.filter((ele)=>(Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin))&&!Boolean(ele.id)).length>0?
+         variantAttributeResponse.isPending?<CircularProgress />:"Next":productvariantupdateResponce.isPending?<CircularProgress />:"Next"}
         </SoftButton>
       </Box>
       <Dialog
@@ -902,15 +952,16 @@ const ProductAttributes = ({ idProduct }) => {
                 error={Boolean(invalid?.value_name)}
                 helperText={invalid?.value_name} /></TableCell> : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.value_name}</TableCell>}
 
-              {ele.color_value ? Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <TableCell sx={{ width: "14rem", }}><SoftInput placeholder='color'
-                sx={{ ".MuiInputBase-root": { border: `unset` }, }}
-                value={controls.color_value ? controls.color_value : edit?.color_value}
-                // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
-                onChange={(e) => setControl("color_value",
-                  e.target.value)}
-                required={required.includes("color_value")}
-                error={Boolean(invalid?.color_value)}
-                helperText={invalid?.color_value} /></TableCell > : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.color_value}</TableCell> : <></>}
+              {ele.color_value ? Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <TableCell sx={{ width: "14rem",display:"flex",justifyContent:"space-between" ,alignItems:"center",borderRight: "1px solid #8080807d"}}><SoftInput placeholder='color'
+                                    sx={{ ".MuiInputBase-root": { border: `unset` }, }}
+                                    type="color"
+                                    value={controls.color_value ? controls.color_value : edit?.color_value}
+                                    // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
+                                    onChange={(e) => setControl("color_value",
+                                        e.target.value)}
+                                    required={required.includes("color_value")}
+                                    error={Boolean(invalid?.color_value)}
+                                    helperText={invalid?.color_value} /> <Typography sx={{fontSize:"14px"}}>{controls.color_value ? controls.color_value : edit?.color_value}</Typography></TableCell >: <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.color_value}</TableCell> : <></>}
               {attributes?.find((ele) => ele.id == controls.id)?.values.map((ele) => ele.value_name).includes(ele.value_name) ? <TableCell sx={{
                 width: "50%", borderLeft: "1px solid #8080807d", display: "flex",
                 justifyContent: "flex-end",
@@ -948,15 +999,16 @@ const ProductAttributes = ({ idProduct }) => {
                 error={Boolean(invalid?.value_name)}
                 helperText={invalid?.value_name} /></TableCell> : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.value_name}</TableCell>}
 
-              {ele.color_value ? Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <TableCell sx={{ width: "14rem", }}><SoftInput placeholder='color'
-                sx={{ ".MuiInputBase-root": { border: `unset` }, }}
-                value={controls.color_value ? controls.color_value : edit?.color_value}
-                // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
-                onChange={(e) => setControl("color_value",
-                  e.target.value)}
-                required={required.includes("color_value")}
-                error={Boolean(invalid?.color_value)}
-                helperText={invalid?.color_value} /></TableCell > : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.color_value}</TableCell> : <></>}
+              {ele.color_value ? Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <TableCell sx={{ width: "14rem",display:"flex",justifyContent:"space-between" ,alignItems:"center",borderRight: "1px solid #8080807d"}}><SoftInput placeholder='color'
+                                    sx={{ ".MuiInputBase-root": { border: `unset` }, }}
+                                    type="color"
+                                    value={controls.color_value ? controls.color_value : edit?.color_value}
+                                    // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
+                                    onChange={(e) => setControl("color_value",
+                                        e.target.value)}
+                                    required={required.includes("color_value")}
+                                    error={Boolean(invalid?.color_value)}
+                                    helperText={invalid?.color_value} /> <Typography sx={{fontSize:"14px"}}>{controls.color_value ? controls.color_value : edit?.color_value}</Typography></TableCell > : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.color_value}</TableCell> : <></>}
               {attributes?.find((ele) => ele.id == controls.id)?.values.map((ele) => ele.value_name).includes(ele.value_name) ? <TableCell sx={{
                 width: "50%", borderLeft: "1px solid #8080807d", display: "flex",
                 justifyContent: "flex-end",
@@ -1011,18 +1063,19 @@ const ProductAttributes = ({ idProduct }) => {
 
 
               </TableCell>
-
-              <TableCell sx={{ borderRight: "1px solid #80808059", width: "10.3rem" }}>
-                <SoftInput placeholder='color'
-                  sx={{ ".MuiInputBase-root": { border: `unset`, padding: "0px !important" }, }}
-                  value={controls.color_value}
-                  // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
-                  onChange={(e) => setControl("color_value",
-                    e.target.value)}
-                  required={required.includes("color_value")}
-                  error={Boolean(invalid?.color_value)}
-                  helperText={invalid?.color_value} />
-              </TableCell>
+              <TableCell sx={{ borderRight: "1px solid #80808059", width: "10.3rem",display:"flex",justifyContent:"space-between" }}>
+                                    <SoftInput placeholder='color'
+                                    type="color"
+                                        sx={{ ".MuiInputBase-root": { border: `unset`, padding: "0px !important" }, }}
+                                        value={controls.color_value}
+                                        // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
+                                        onChange={(e) => setControl("color_value",
+                                            e.target.value)}
+                                        required={required.includes("color_value")}
+                                        error={Boolean(invalid?.color_value)}
+                                        helperText={invalid?.color_value} />
+                                        <Typography sx={{fontSize:"14px"}}>{controls.color_value}</Typography>
+                                </TableCell>
               <TableCell>
                 <Typography sx={{ fontSize: "14px", padding: "15px", height: "40px", color: (theme) => theme.palette.purple.middle, textDecoration: "underline !important" }}
                   component="a"

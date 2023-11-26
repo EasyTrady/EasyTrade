@@ -209,7 +209,7 @@ function Attribute({ absolute, light, isMini }) {
             }
 
         ]);
-    let [counter, setCounter] = React.useState(controls.values.length > 0 ? controls.values.length - 1 : controls.values.length);
+    let [counter, setCounter] = React.useState(controls?.values?.length > 0 ? controls?.values?.length - 1 : controls?.values?.length);
 
     const [attributeDeleteRequest, DeleteattributerResponce] =
         useRequest({
@@ -442,17 +442,12 @@ function Attribute({ absolute, light, isMini }) {
 
         //     }
         // }),...controls.values])
-        if (!Boolean(controls.value_name)) {
-            setControl("value_name", ele.value_name)
-        }
-        if (!Boolean(controls.color_value)) {
-            setControl("color_value", ele.color_value)
-        }
+       
         editattributeValueRequest({
             id: controls.id + "/values/" + ele.id,
             body: {
-                value_name: controls.value_name,
-                color_value: controls.color_value
+                value_name: controls.value_name?controls.value_name:ele.value_name,
+                color_value: controls.color_value?controls.color_value: ele.color_value
             },
             onSuccess: (res) => {
                 dispatch({ type: "attribute/editValue", payload: { id: controls.id, idvalue: ele.id, item: res.data } })
@@ -626,7 +621,7 @@ function Attribute({ absolute, light, isMini }) {
                                 {/* <Divider orientation="vertical" sx={{width:'1px',height:"50px",color:"#8080807d"}}/> */}
 
 
-                                {Boolean(edit) && edit?.id == ele?.id &&index==indexedit? <TableCell sx={{ width: "14rem", }}><SoftInput placeholder='value'
+                                {Boolean(edit) && edit?.id == ele?.id &&index==indexedit? <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d"}}><SoftInput placeholder='value'
                                     sx={{ ".MuiInputBase-root": { border: `unset` }, }}
                                     value={controls.value_name ? controls.value_name : edit?.value_name}
                                     onChange={(e) => setControl("value_name", e.target.value)}
@@ -634,15 +629,16 @@ function Attribute({ absolute, light, isMini }) {
                                     error={Boolean(invalid?.value_name)}
                                     helperText={invalid?.value_name} /></TableCell> : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.value_name}</TableCell>}
 
-                                {ele.color_value ? Boolean(edit) && edit?.id == ele?.id &&index==indexedit? <TableCell sx={{ width: "14rem", }}><SoftInput placeholder='color'
+                                {ele.color_value ? Boolean(edit) && edit?.id == ele?.id &&index==indexedit? <TableCell sx={{ width: "14rem",display:"flex",justifyContent:"space-between" ,alignItems:"center",borderRight: "1px solid #8080807d"}}><SoftInput placeholder='color'
                                     sx={{ ".MuiInputBase-root": { border: `unset` }, }}
+                                    type="color"
                                     value={controls.color_value ? controls.color_value : edit?.color_value}
                                     // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
                                     onChange={(e) => setControl("color_value",
                                         e.target.value)}
                                     required={required.includes("color_value")}
                                     error={Boolean(invalid?.color_value)}
-                                    helperText={invalid?.color_value} /></TableCell > : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.color_value}</TableCell> : <></>}
+                                    helperText={invalid?.color_value} /> <Typography sx={{fontSize:"14px"}}>{controls.color_value ? controls.color_value : edit?.color_value}</Typography></TableCell > : <TableCell sx={{ width: "14rem", borderRight: "1px solid #8080807d" }}>{ele.color_value}</TableCell> : <></>}
                                 {attributes?.find((ele) => ele.id == controls.id)?.values.map((ele) => ele.value_name).includes(ele.value_name) ? <TableCell sx={{
                                     width: "50%", borderLeft: "1px solid #8080807d", display: "flex",
                                     justifyContent: "flex-end",
@@ -697,8 +693,9 @@ function Attribute({ absolute, light, isMini }) {
 
                                 </TableCell>
 
-                                <TableCell sx={{ borderRight: "1px solid #80808059", width: "10.3rem" }}>
+                                <TableCell sx={{ borderRight: "1px solid #80808059", width: "10.3rem",display:"flex",justifyContent:"space-between" }}>
                                     <SoftInput placeholder='color'
+                                    type="color"
                                         sx={{ ".MuiInputBase-root": { border: `unset`, padding: "0px !important" }, }}
                                         value={controls.color_value}
                                         // onChange={(e) => setControl("color_value", [...controls.color_value,e.target.value])}
@@ -707,6 +704,7 @@ function Attribute({ absolute, light, isMini }) {
                                         required={required.includes("color_value")}
                                         error={Boolean(invalid?.color_value)}
                                         helperText={invalid?.color_value} />
+                                        <Typography sx={{fontSize:"14px"}}>{controls.color_value}</Typography>
                                 </TableCell>
                                 <TableCell>
                                 <Typography sx={{ fontSize: "14px", padding: "15px", height: "40px", color: (theme) => theme.palette.purple.middle, textDecoration: "underline !important" }}
