@@ -315,14 +315,7 @@ const routes = [
       element: <Auth><Offers /></Auth>,
       type: "item"
 
-    }, {
-      id: "Add new offer",
-      title: "Add new offer",
-      key: "Add new offer",
-      path: `/${sub_domain}/dashboard/offers/addnewoffer`,
-      element:<Auth><AddNewOffers /></Auth> ,
-       type: "item"
-    },
+    }
     ]
   },
   {
@@ -341,15 +334,7 @@ const routes = [
       element: <Auth><ViewBanners /></Auth>,
       type: "item"
 
-    }, {
-      id: "Add_new_banner",
-      type: "item",
-      title: "Add new banner",
-      path: `/${sub_domain}/dashboard/banners/addnewbanner`,
-      
-      element:<Auth><AddNewBanner /></Auth> ,
-       
-    },
+    }
     ]
   },
   {

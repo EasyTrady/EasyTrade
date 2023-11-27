@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { Box, Button, Container, Typography } from "@mui/material";
 import React, { useRef, useState } from "react";
-import circleShape from "../../assets/images/shapes/Frame 41366.png";
-import rectangularShape from "../../assets/images/shapes/Frame 41363.png";
+import rectangleShape from "../../assets/images/shapes/Frame 41366.png";
+import circleShape from "../../assets/images/shapes/Frame 41363.png";
 import BG from "../../assets/images/shapes/BG.png";
 import upload from "../../assets/images/upload.svg";
 import SoftBox from "components/SoftBox";
@@ -31,8 +31,8 @@ const BannerShape = ({product_images,onChange}) => {
       <Container>
         <TextTitle>Banner Shape</TextTitle>
         <Box sx={{ display: "flex", flexDirection: "row", gap: "24px",width:'100%',mt:'16px' }}>
-          <img src={rectangularShape} alt="rec"  onClick={handlePaperClick}/>
-          <img src={circleShape} alt="circular" onClick={handlePaperClick}/>
+        <img src={circleShape} alt="circular" onClick={handlePaperClick}/>
+          <img src={rectangleShape} alt="rec"  onClick={handlePaperClick}/>
           <input
               multiple
               id="profile_image"
