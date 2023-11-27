@@ -32,7 +32,19 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
      let dispatch = useDispatch()
     const navigate = useNavigate();
     const location = useLocation();
-
+    const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
+      { control: "banner_type", value: '', isRequired: false },
+      { control: "offer_type", value: '', isRequired: false },
+      { control: "alloffers", value: '', isRequired: false },
+      { control: "product", value: [], isRequired: false },
+      { control: "category", value: '', isRequired: false },
+      { control: "banner", value: '', isRequired: false },
+      { control: "is_percentage_discount", value: '', isRequired: false },
+      { control: "discount", value: '', isRequired: false },
+      { control: "copon", value: '', isRequired: false },
+      { control: "published_on", value: '', isRequired: false },
+     
+    ])
     const [BannersTypesGetRequest, BannersTypesGetResponce] = useRequest({
         path: BannersTYPES,
         method: "get",
@@ -48,12 +60,13 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
       }
       const offerstypes = useSelector((state) => state.offerstypes.value);
       const [OffersTypesGetRequest, OffersTypesGetResponce] = useRequest({
-        path: OFFERTYPES,
+        path: OFFERTYPES+`?type=${controls.offer_type}`,
         method: "get",
         Token: `Token ${Token}`,
       });
 
       const getOfferTypes=()=>{
+        
         OffersTypesGetRequest({
           onSuccess: (res) => {
             console.log(res.data);
@@ -68,20 +81,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
         contentType: "multipart/form-data",
       });
     
-    const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
-        { control: "banner_type", value: '', isRequired: false },
-        { control: "offer_type", value: '', isRequired: false },
-        { control: "alloffers", value: '', isRequired: false },
-        { control: "product", value: [], isRequired: false },
-        { control: "category", value: '', isRequired: false },
-        { control: "total_amount", value: '', isRequired: false },
-        { control: "banner", value: '', isRequired: false },
-        { control: "is_percentage_discount", value: '', isRequired: false },
-        { control: "discount", value: '', isRequired: false },
-        { control: "copon", value: '', isRequired: false },
-        { control: "published_on", value: '', isRequired: false },
-       
-      ])
+   
       function handleSubmit() {
         validate().then((output) => {
           console.log(output);
@@ -126,6 +126,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
             }),
             onSuccess: (res) => {
               resetControls("");
+              navigate(`/${sub_domain}/dashboard/banners`)
             }
           }).then((res) => {
             let response = res?.response?.data;
@@ -153,7 +154,9 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
       <Grid item>
         <Grid container spacing={3}>
             <Grid item md={6}>
-            <BannerShape/>
+            <BannerShape
+            onChange={(e)=>setControl('banner',e)}
+            />
             </Grid>
             <Grid item md={6}>
                 <SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5 ,py:'24px'}} >
@@ -273,6 +276,33 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
                 variant="outlined"
                 placeholder="Buy X get Y free"
                 label="Choose offer type*"
+                isPinding={OffersTypesGetResponce.isPinding}
+                onOpen={getOfferTypes}
+                renderValue={(selected) => {
+                  return offerstypes?.find((offer) => offer.id === selected)?.name
+                }}
+                value={controls.offer_type}
+                onChange={(e) => setControl("offer_type", e.target.value)}
+                required={required.includes("offer_type")}
+                textHelper={controls.offer_type}
+                error={Boolean(invalid.offer_type)}
+                helperText={invalid.offer_type}
+                disabled={controls.alloffers}
+                sx={{ width: "100%", fontSize: "14px", background: "#fff" }}
+              >
+                {offerstypes?.map((offer, index) => (
+                <MenuItem key={`${offer.id} ${index}`} value={offer.id}>
+                  {offer?.name}
+                  
+                </MenuItem>
+              ))}
+              </SelectField>
+              {/* get offers of specific offer */}
+              <SelectField
+                variant="outlined"
+                placeholder="Buy X get Y free"
+                label="Choose offer"
+                isPinding={OffersTypesGetResponce.isPinding}
                 onOpen={getOfferTypes}
                 renderValue={(selected) => {
                   return offerstypes?.find((offer) => offer.id === selected)?.name
