@@ -46,7 +46,8 @@ mb:'6px'
               </Typography>
             );
           } else {
-            return  selected
+            
+            return  selected=="true"?"Precentage":"g"
           }
         },
         MenuProps: {

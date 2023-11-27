@@ -56,6 +56,7 @@ import SelectValue from "components/common/SelectValue";
 import { useLocation } from "react-router-dom";
 import { navbarRow } from "examples/Navbars/DashboardNavbar/styles";
 import { PRODUCTS } from "data/api";
+import {  useNavigate } from 'react-router-dom';
 import { CATEGORY } from "data/api";
 import { useDispatch, useSelector } from "react-redux";
 import filter from "utils/ClearNull";
@@ -68,7 +69,8 @@ const ReactQuill = require("react-quill");
 
 
 const AddProduct = ({ light, isMini,handleChange }) => {
-
+  const navigate = useNavigate()
+  const sub_domain = localStorage.getItem('sub_domain')
   const location = useLocation();
   const { state } = location;
   let productId=localStorage.getItem('productId');
@@ -923,6 +925,9 @@ useEffect(()=>{
             />
       </Box>
       <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: "24px" }}>
+      <SoftButton variant="contained" color="white"sx={{mx:"20px"}} onClick={() =>{resetControls(); navigate(`/${sub_domain}/dashboard/products`)}}>
+                        {"cancel"}
+                    </SoftButton>
         <SoftButton
           type="submit"
           variant="gradient"
@@ -933,13 +938,14 @@ useEffect(()=>{
             "&:hover": {
               backgroundColor: (theme) => theme.palette.purple.middle,
             },
-            width: "260px",
+            // width: "260px",
           }}
           onClick={handleSubmit}
         >
            
           {Boolean(productId)?patchProductResponce.isPending?<CircularProgress />:"Next":AddProductResponce.isPending?<CircularProgress />:"Next"}
         </SoftButton>
+        
       </Box>
       {AddProductResponce.failAlert}
       {AddProductResponce.successAlert}
