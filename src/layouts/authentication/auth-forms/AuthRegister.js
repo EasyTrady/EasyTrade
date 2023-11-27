@@ -197,8 +197,8 @@ const FirebaseRegister = ({ ...others }) => {
         }}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-            <Box sx={{justifyContent:'center',alignItems:'center',textAlign:'center'}}>
-          <form noValidate {...others}>
+            <Box >
+          <form noValidate {...others} style={{justifyContent:'center',alignItems:'center',textAlign:'center',display:'flex ',flexDirection:'column '}}>
             {console.log(errors)}
             <Box sx={{display: "flex",justifyContent:'center'}}>
               
@@ -269,7 +269,7 @@ const FirebaseRegister = ({ ...others }) => {
                 sx={{
                   direction: "rtl",
                   width:'360px',
-                  marginRight: 'auto',
+                  // marginRight: 'auto',
 
                 }}
                 name="email"
@@ -295,7 +295,7 @@ const FirebaseRegister = ({ ...others }) => {
                   direction: "rtl",
                   marginTop: "10px",
                   width:'360px',
-                  marginRight: 'auto',
+                  // marginRight: 'auto',
                 }}
                 name="email"
                 value={values.email}
@@ -314,7 +314,7 @@ const FirebaseRegister = ({ ...others }) => {
             
             
               error={Boolean(touched?.password && errors?.password)}
-              sx={{ ...theme.typography.customInput , marginRight: 'auto',}}
+              sx={{ ...theme.typography.customInput }}
             >
               {/* <InputLabel htmlFor="outlined-adornment-password-register">كلمة المرور</InputLabel> */}
               <TextField
@@ -323,7 +323,7 @@ const FirebaseRegister = ({ ...others }) => {
                   direction: "rtl",
                   paddingTop: "10px",
                   width:'360px',
-                  marginRight: 'auto',
+                  // marginRight: 'auto',
                 }}
                 name="password"
                 value={values.password}
@@ -364,7 +364,7 @@ const FirebaseRegister = ({ ...others }) => {
               <MuiPhoneNumber
                 sx={{
                   paddingTop: "10px",
-                  marginRight: 'auto',
+                  // marginRight: 'auto',
                   width:'360px'
                 }}
                 defaultCountry={"eg"}
@@ -391,7 +391,7 @@ const FirebaseRegister = ({ ...others }) => {
             <FormControl
               
               error={Boolean(touched?.shop_name && errors?.shop_name)}
-              sx={{ ...theme.typography.customInput ,  marginRight: 'auto',
+              sx={{ ...theme.typography.customInput ,  
               width:'360px'}}
             >
               {/* <InputLabel htmlFor="outlined-adornment-storename-register">اسم المتجر</InputLabel> */}
@@ -456,7 +456,7 @@ const FirebaseRegister = ({ ...others }) => {
                   variant="contained"
                   sx={{
                     borderRadius: "12PX",
-                    marginRight: 'auto',
+                    // marginRight: 'auto',
                     width:'360px',
                     padding: "10px, 18px, 10px, 18px",
                     backgroundColor: "#5D449B",
@@ -502,7 +502,7 @@ const FirebaseRegister = ({ ...others }) => {
                   size="large"
                   sx={{
                     color: "grey.700",
-                    marginRight: 'auto',
+                    // marginRight: 'auto',
                     width:'360px',
                     backgroundColor: theme.palette.grey[50],
                     borderColor: theme.palette.grey[100],

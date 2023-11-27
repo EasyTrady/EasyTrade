@@ -1,119 +1,98 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import { Container } from '@mui/system';
-import { Typography } from '@mui/material';
+import * as React from "react";
+import { styled } from "@mui/material/styles";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import { Container } from "@mui/system";
+import { Divider, Typography } from "@mui/material";
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
   padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary
+  textAlign: "center",
+  color: theme.palette.text.secondary,
 }));
 
 export default function RowAndColumnSpacing() {
-  return (
-    <Container sx={{
-      width: '100%',
-      
-    }}>
-      <Typography sx={{ fontSize: '50px', fontWeight: 600, textAlign: 'center', marginTop: '30px',color:'#3D2D66',fontFamily:'Cairo',my:'30px' }}>انجازاتنا</Typography>
-      <Box>
-        <Grid container sx={{textAlign:'center',justifyContent:'center', display: 'flex', width: '100%', alignItems: 'start',marginBottom:'100px'}}>
-          <Grid item xs={4} md={3} lg={2} sx={{
-            borderRight: '2px solid #C4C4C4',
-            padding: '16px',
-            
-          }}>
-            <Item sx={{
-              fontSize: '48px',
-              fontWeight: 700,
-              boxShadow: 'none',
-             bgcolor: '#f8f9fa',
-             fontFamily:'Cairo'
-            }}>+150</Item>
-            <Item sx={{
-              fontSize: '24px',
-              fontWeight: 500,
-              boxShadow: 'none',
-              borderRightWidth: '8PX',
-              bgcolor: '#f8f9fa',
-              fontFamily:'Cairo'
-            }}>عملاء</Item>
-          </Grid>
-          <Grid item xs={4} md={3} lg={2} sx={{ borderRight: '2px solid #C4C4C4', padding: '16px' }}>
-            <Item sx={{
-              fontSize: '48px',
-              boxShadow: 'none',
-              fontWeight: 700,
-              bgcolor: '#f8f9fa',
-              fontFamily:'Cairo'
-            }}>+8</Item>
-            <Item sx={{
-              fontSize: '24px',
-              fontWeight: 500,
-              boxShadow: 'none',
-              bgcolor: '#f8f9fa',
-              fontFamily:'Cairo'
+  const acheivements = [
+    { title: "عملاء", number: "150" },
+    { title: "تطبيق", number: "8" },
+    { title: "صفحات", number: "100" },
+    { title: "شركاء النجاح", number: "5" },
+    { title: "مبيعات", number: "70" },
+  ];
+  const itemRef = React.useRef(null);
+  const [itemHeight, setItemHeight] = React.useState(0);
+  
 
-            }}>تطبيق</Item>
-          </Grid>
-          <Grid item xs={4} md={3} lg={2} sx={{ borderRight: '2px solid #C4C4C4', padding: '16px' }}>
-            <Item sx={{
-              fontSize: '48px',
-              fontWeight: 700,
-              boxShadow: 'none',
-              bgcolor: '#f8f9fa',
-              fontFamily:'Cairo'
-            }}>+100</Item>
-            <Item sx={{
-              fontSize: '24px',
-              fontWeight: 500,
-              boxShadow: 'none',
-              borderRightWidth: '8PX',
-              bgcolor: '#f8f9fa',
-              fontFamily:'Cairo'
-            }}>صفحات</Item>
-          </Grid>
-          <Grid item xs={4} md={3} lg={2} sx={{ borderRight: '2px solid #C4C4C4', padding: '16px' }}>
-            <Item sx={{
-              fontSize: '48px',
-              boxShadow: 'none',
-              fontWeight: 700,
-              bgcolor: '#f8f9fa',
-              fontFamily:'Cairo'
-            }}>+5</Item>
-            <Item sx={{
-              fontSize: '24px',
-              fontWeight: 500,
-              borderRightWidth: '8PX',
-              boxShadow: 'none',
-              bgcolor: '#f8f9fa',
-              fontFamily:'Cairo'
-            }}>شركات النجاح</Item>
-          </Grid>
-          <Grid item xs={4} md={3} lg={2} sx={{ padding: '16px' }}>
-            <Item sx={{
-              fontSize: '48px',
-              fontWeight: 700,
-              boxShadow: 'none',
-              bgcolor: '#f8f9fa',
-              fontFamily:'Cairo'
-            }}>+70</Item>
-            <Item sx={{
-              fontSize: '24px',
-              fontWeight: 500,
-              boxShadow: 'none',
-              bgcolor: '#f8f9fa',
-              fontFamily:'Cairo'
-            }}>مبيعات</Item>
-          </Grid>
-        </Grid>
+  React.useEffect(() => {
+    setItemHeight(itemRef.current.offsetHeight);
+    const windowResize = window.addEventListener("resize", () => {
+      setItemHeight(itemRef.current?.offsetHeight);
+    });
+  }, [itemRef]);
+
+
+  return (
+    <Container
+      sx={{
+        width: "100%",
+      }}
+    >
+      <Typography
+        sx={{
+          fontSize: "50px",
+          fontWeight: 600,
+          textAlign: "center",
+          marginTop: "30px",
+          color: "#3D2D66",
+          fontFamily: "Cairo",
+          my: "30px",
+        }}
+      >
+        انجازاتنا
+      </Typography>
+
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "start",
+        }}
+      >
+        {acheivements.map((el, index) => {
+          return (
+            <React.Fragment key={index}>
+              <Box
+                sx={{
+                  display: acheivements - 1 == index || index == 0 ? "none" : "inherit",
+                  height: itemHeight + "px",
+                  width: "2px",
+                  background: "#C4C4C4",
+                }}
+              />
+              <Box
+                ref={itemRef}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  padding: "20px",
+                  maxWidth: "calc(100% / 5 - 8px)",
+                }}
+              >
+                <Typography fontWeight="bolder" sx={{ fontSize: "clamp(3vw, 48px, 5vw)" }}>
+                  {el.number >= 10 ? "+" + el.number : el.number}
+                </Typography>
+                <Typography color={"#505050"} sx={{ fontSize: "clamp(2.5vw, 25px, 4vw)",fontFamily:'Cairo' }}>
+                  {el.title}
+                </Typography>
+              </Box>
+            </React.Fragment>
+          );
+        })}
       </Box>
-    
     </Container>
   );
 }
