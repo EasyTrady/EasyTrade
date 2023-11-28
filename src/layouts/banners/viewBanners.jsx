@@ -38,6 +38,20 @@ const ViewBanners = ({ absolute, light, isMini }) => {
       },
     });
   };
+  const [BannerDeleteRequest, BannerDeleteResponce] = useRequest({
+    path: BANNERS,
+    method: "DELETE",
+    Token: `Token ${Token}`,
+  });
+  function onDelete(row) {
+    console.log(row)
+    BannerDeleteRequest({
+        id: row,
+        onSuccess: () => {
+            dispatch({ type: "banners/deleteItem", payload: { id: row } })
+        }
+    })
+  }
   const  columns = [
     {
       field: 'image',
@@ -174,12 +188,12 @@ color:row?.banner_type===1?'#027A48':row?.banner_type===2?"#7A0243":row?.banner_
           rows={banners?.results}
           columns={columns}
           onEdit={()=>{}}
-          onDelete={() => {}}
+          onDelete={onDelete}
           onCopy={() => {}}
           checkboxSelection={true}
           onRowClick={(e, row) => {
             console.log(e, row);
-             setClick({ ...e.id });
+            //  setClick({ ...e.id });
           }}
           notProduct={false}
         //   rowsPerPageOptions={[5, 10, 15, 20]}
@@ -192,6 +206,8 @@ color:row?.banner_type===1?'#027A48':row?.banner_type===2?"#7A0243":row?.banner_
           }}
         />
       </Container>
+      {BannerDeleteResponce.failAlert}
+      {BannerDeleteResponce.successAlert}
     </DashboardLayout>
   )
 }

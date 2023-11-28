@@ -17,6 +17,7 @@ import OffersSlice  from './pages/offersSlice';
 import  OffersTypesSlice  from './pages/offerTypesSlice';
 import  BannersTypesSlice  from './pages/bannerTypesSlice';
 import  BannersSlice  from './pages/bannersSlice';
+import  PagesSlice   from './pages/pagesSlice';
 
 const store = configureStore({
   reducer: {
@@ -36,7 +37,8 @@ const store = configureStore({
      offers:OffersSlice,
      offerstypes:OffersTypesSlice,
      banners:BannersSlice,
-     bannerstypes:BannersTypesSlice
+     bannerstypes:BannersTypesSlice,
+     pages:PagesSlice
   }
 });
 export default store
