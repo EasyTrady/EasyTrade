@@ -20,7 +20,7 @@ import SoftBadge from "components/SoftBadge";
 //         align: 'left',
 //         headerAlign: 'left',
 //         renderCell: (params) => <Avatar src={params.row.image} />,
-//         editable: true,
+//         editable: false,
 //     }
 //     , {
 //         field: 'full_name',
@@ -68,7 +68,7 @@ export const ProductTableData =() =>{
                 </Stack>
                 );
             },
-              editable: true,
+              editable: false,
               filterable: false,
               sortable: false,disableColumnMenu: true
             }
@@ -79,7 +79,7 @@ export const ProductTableData =() =>{
               width: 179.4,
               align: 'center',
               headerAlign: 'center',
-              editable: true,
+              editable: false,
               filterable: true,
               sortable: false,disableColumnMenu: true
             }, 
@@ -90,7 +90,7 @@ export const ProductTableData =() =>{
               width: 76,
               align: 'center',
               headerAlign: 'center',
-              editable: true,
+              editable: false,
         
             },
              {
@@ -100,7 +100,7 @@ export const ProductTableData =() =>{
               width: 186,
               align: 'center',
               headerAlign: 'center',
-              // editable: true,
+              // editable: false,
               renderCell:(params)=>{
                 const { row } = params;
                 let list=row?.categories?.map((cat)=>(cat?.name)).join(",")
@@ -117,7 +117,7 @@ export const ProductTableData =() =>{
               align: 'center',
               headerAlign: 'center',
               renderCell: (params) => <Box sx={{padding:'5px 16px 5px 16px',borderRadius:'130px',height:'30px',display:'flex',alignItems:'center',justifyContent:'center'}}  bgcolor={params.row.is_published?"#ECFDF3":"#FDECEC"} size="small" color={params.row.is_published?"#027A480":"#7A0202"}container >{params.row.is_published?"Published":"Draft"}</Box>,
-              editable: true,
+              editable: false,
               filterable: true,
               sortable: false,
               disableColumnMenu: true
@@ -130,7 +130,7 @@ export const ProductTableData =() =>{
               width: 162.5,
               align: 'center',
               headerAlign: 'center',
-              editable: true,
+              editable: false,
               filterable: true,
               sortable: false,disableColumnMenu: true
             },
