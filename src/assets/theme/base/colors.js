@@ -72,7 +72,7 @@ const colors = {
 
   warning: {
     main: "#fbcf33",
-    focus: "#fcd652",
+    focus: "#fcd65224",
   },
 
   error: {
