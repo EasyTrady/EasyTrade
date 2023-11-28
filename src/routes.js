@@ -131,7 +131,9 @@ const routes = [
     //     element: <Auth><Dashboard /></Auth>,
     //     type:"title"
     //   }]
-  }, {
+  }, 
+  { type: "title", title: "Pages", key: "pages" },
+  {
     type: "collapse",
     name: "Statistics",
     key: "Statistics",
@@ -216,6 +218,48 @@ const routes = [
 
     ]
   },
+  { type: "title", title: "Discounts & Ads", key: "Discounts-&-Ads" },
+  {
+    type: "collapse",
+    name: "Offers",
+    key: "Offers",
+    route: `/${sub_domain}/dashboard/offers`,
+    icon: <img src={offers} size="12px" />,
+    noCollapse: true,
+    component: <Auth><Offers /></Auth>,
+    children: [{
+
+      id: "Offers",
+      path: `/${sub_domain}/dashboard/offers`,
+      title: "offers",
+      element: <Auth><Offers /></Auth>,
+      type: "item"
+
+    }
+    ]
+  },
+ 
+  
+  {
+    type: "collapse",
+    name: "Banners",
+    key: "Banners",
+    route: `/${sub_domain}/dashboard/banners`,
+    icon: <img src={banner} size="12px" />,
+    noCollapse: true,
+    component: <Auth><ViewBanners /></Auth>,
+    children: [{
+
+      id: "Banners",
+      path: `/${sub_domain}/dashboard/banners`,
+      title: "Banners",
+      element: <Auth><ViewBanners /></Auth>,
+      type: "item"
+
+    }
+    ]
+  },
+  { type: "title", title: "Members", key: "Members" },
   {
     type: "collapse",
     name: "customer",
@@ -281,6 +325,15 @@ const routes = [
     icon: <Office size="12px" />,
     component: <Auth><Employee /></Auth>,
     noCollapse: false,
+  }, {
+    type: "title",
+    name: "values",
+    key: "valuse",
+    route: `/:${sub_domain}/dashboard/employee/addNewEmployee`,
+    icon: <Shop size="12px" />,
+    component: <Auth><AddNewEmployee /></Auth>,
+    noCollapse: false,
+
   },
   {
     type: "title",
@@ -313,25 +366,6 @@ const routes = [
       path: `/${sub_domain}/dashboard/offers`,
       title: "offers",
       element: <Auth><Offers /></Auth>,
-      type: "item"
-
-    }
-    ]
-  },
-  {
-    type: "collapse",
-    name: "Banners",
-    key: "Banners",
-    route: `/${sub_domain}/dashboard/banners`,
-    icon: <img src={banner} size="12px" />,
-    noCollapse: true,
-    component: <Auth><ViewBanners /></Auth>,
-    children: [{
-
-      id: "Banners",
-      path: `/${sub_domain}/dashboard/banners`,
-      title: "Banners",
-      element: <Auth><ViewBanners /></Auth>,
       type: "item"
 
     }
@@ -403,16 +437,7 @@ const routes = [
     noCollapse: false,
 
   },
-  {
-    type: "title",
-    name: "values",
-    key: "valuse",
-    route: `/:${sub_domain}/dashboard/employee/addNewEmployee`,
-    icon: <Shop size="12px" />,
-    component: <Auth><AddNewEmployee /></Auth>,
-    noCollapse: false,
-
-  },
+ 
   {
     type: "title",
     name: "values",
