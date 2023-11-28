@@ -30,7 +30,7 @@ const BannerShape = ({ banner, onChange }) => {
     onChange(event.target.files[0]);
   };
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
       <SoftBox
         sx={{ background: "#FFFFFF", borderRadius: "8px", width: "100%", mt: 2.5, py: "24px" }}
       >
@@ -47,7 +47,7 @@ const BannerShape = ({ banner, onChange }) => {
             }}
           >
             {shape ? (
-              <CircleBanner>Circular Banner</CircleBanner>
+              <CircleBanner>Square Banner</CircleBanner>
             ) : (
               <img
                 src={circleShape}

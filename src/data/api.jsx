@@ -20,6 +20,6 @@ export const BANNERS= `${BaseUrl}shop/dashboard/banners/`
 // /products/attributes/15/values/bulkupdate/
 export const SENDEMAILPRODUCT=`${BaseUrl}/shop/dashboard/notifycart/`
 export const EMPLOYEE= `${BaseUrl}shop/dashboard/employees/`
-// export const JOBS= `${BaseUrl}shop/dashboard/employees/`
+ export const PAGES= `${BaseUrl}shop/pages/`
 
 export const SHOP= `${BaseUrl}shop/accounts/shop/info/`

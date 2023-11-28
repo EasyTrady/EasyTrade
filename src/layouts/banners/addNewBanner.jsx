@@ -10,6 +10,8 @@ import BannerShape from 'components/common/bannerShape'
 import Bannerbox from 'components/common/bannerbox'
 import { OFFERTYPES } from 'data/api'
 import { BANNERS } from 'data/api'
+import { STATIC } from 'data/api'
+import { PAGES } from 'data/api'
 import { BannersTYPES } from 'data/api'
 import Breadcrumbs from 'examples/Breadcrumbs'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
@@ -22,6 +24,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { TextTitle } from 'styles/style'
+import filter from 'utils/ClearNull'
 
 const AddNewBanner = ({ absolute, light, isMini }) => {
     const route = useLocation().pathname.split("/").slice(1);
@@ -29,20 +32,23 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
     let Token = localStorage.getItem("token");
     let { t } = useTranslation("common");
     const bannerstypes = useSelector((state) => state.bannerstypes.value);
+    const offerstypes = useSelector((state) => state.offerstypes.value);
+    const pages = useSelector((state) => state.pages.value);
      let dispatch = useDispatch()
     const navigate = useNavigate();
     const location = useLocation();
     const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
       { control: "banner_type", value: '', isRequired: false },
       { control: "offer_type", value: '', isRequired: false },
-      { control: "alloffers", value: '', isRequired: false },
+      { control: "alloffers", value: true, isRequired: false },
       { control: "product", value: [], isRequired: false },
       { control: "category", value: '', isRequired: false },
       { control: "banner", value: '', isRequired: false },
       { control: "is_percentage_discount", value: '', isRequired: false },
-      { control: "discount", value: '', isRequired: false },
-      { control: "copon", value: '', isRequired: false },
+      { control: "url", value: '', isRequired: false },
+      { control: "image", value: {}, isRequired: false },
       { control: "published_on", value: '', isRequired: false },
+      { control: "pages", value: '', isRequired: false },
      
     ])
     const [BannersTypesGetRequest, BannersTypesGetResponce] = useRequest({
@@ -58,7 +64,20 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
           },
         });
       }
-      const offerstypes = useSelector((state) => state.offerstypes.value);
+    const [PagesGetRequest, PagesGetResponce] = useRequest({
+        path: PAGES,
+        method: "get",
+        Token: `Token ${Token}`,
+      });
+      const getPages=()=>{
+        PagesGetRequest({
+          onSuccess: (res) => {
+            console.log(res.data);
+            dispatch({ type: "pages/set", payload: res?.data });
+          },
+        });
+      }
+      
       const [OffersTypesGetRequest, OffersTypesGetResponce] = useRequest({
         path: OFFERTYPES+`?type=${controls.offer_type}`,
         method: "get",
@@ -88,37 +107,28 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
           if (!output.isOk) return;  
           let obj = {
             banner_type: controls.banner_type,
-            object_id: controls.object_id,
+            // object_id: controls.object_id,
             is_public: controls?.is_public||'true',
             is_rectangular: controls.is_rectangular||"true",
-            
+            image:controls.image
           };
       
-        //   if(controls.offer_type === 1||2){
-        //     obj.productX= controls.productX
-        //     obj.productY= controls.productY
-        //   }
-        //   if (controls.offer_type === 2||3||4||6||5) {
-        //     obj.discount = controls.discount;
-        //     obj.is_percentage_discount = controls.is_percentage_discount;
-        //     if (controls.offer_type === 3){
-        //       obj.total_amount = controls.total_amount;
-        //     }
-        //     if (controls.offer_type === 4){
-        //       obj.productX = controls.productX;
-        //       obj.quantity = controls.quantity;
-        //     }
-        //     if (controls.offer_type === 5){
-        //       obj.products = [...controls.products]
-             
-        //     }
-        //     if (controls.offer_type === 6){
-        //       obj.category = controls.category;
-              
-        //     }
-        //   }
-          
-         
+          if(controls.banner_type === 1){
+            obj.object_id=[...controls.product]
+          }
+          if(controls.banner_type === 2){
+            obj.object_id=controls.category
+          }
+          if(controls.banner_type === 3){
+            obj.object_id=controls.offer_type
+          }
+          if(controls.banner_type === 4){
+            obj.link=controls.url
+          }
+          if(controls.banner_type === 5){
+            obj.object_id=controls.pages
+          }
+       
           AddBannerRequest({
             body: filter({
               obj: obj,
@@ -155,11 +165,12 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
         <Grid container spacing={3}>
             <Grid item md={6}>
             <BannerShape
-            onChange={(e)=>setControl('banner',e)}
+            value={controls.image}
+            onChange={(e)=>setControl('image',e)}
             />
             </Grid>
             <Grid item md={6}>
-                <SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5 ,py:'24px'}} >
+                <SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5 ,py:'24px',height:'fit-content'}} >
                     <Container sx={{display:'flex',flexDirection:'column',gap:'16px'}}>
                 <FormControl>
                 <FormLabel
@@ -297,7 +308,18 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
                 </MenuItem>
               ))}
               </SelectField>
+              <FormControlLabel
+              sx={{color:'#626C70 !important'}}
+                label={'Select all the offers under this type'}  
+                control={
+              <Checkbox
+              
+              value={controls.alloffers}
+              onChange={(e)=>setControl('alloffers',e.target.checked)} 
+              color="secondary" />
+  }/>
               {/* get offers of specific offer */}
+              {controls.offer_type!==""?
               <SelectField
                 variant="outlined"
                 placeholder="Buy X get Y free"
@@ -323,20 +345,12 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
                 </MenuItem>
               ))}
               </SelectField>
-              <FormControlLabel
-              sx={{color:'#626C70 !important'}}
-                label={'Select all the offers under this type'}  
-                control={
-              <Checkbox
-              value={controls.alloffers}
-              onChange={(e)=>setControl('alloffers',e.target.checked)} 
-              
-              color="secondary" />
-  }/>
+             :<></>}
               </Box>
 }
 {controls.banner_type==4&&
     <InputField
+    type="url"
     variant="outlined"
     label={"URL*"}
     placeholder={"www.easytrade.com"}
@@ -348,6 +362,31 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
     sx={{ width: "100%" }}
   />
 }
+{controls.banner_type==5&&
+  <SelectField
+                variant="outlined"
+                placeholder="pages info"
+                label="Choose page"
+                isPinding={PagesGetResponce.isPinding}
+                onOpen={getPages}
+                renderValue={(selected) => {
+                  return pages?.results.find((page) => page.id === selected)?.title
+                }}
+                value={controls.pages}
+                onChange={(e) => setControl("pages", e.target.value)}
+                required={required.includes("pages")}
+                textHelper={controls.pages}
+                error={Boolean(invalid.pages)}
+                helperText={invalid.pages}
+                sx={{ width: "100%", fontSize: "14px", background: "#fff" }}
+              >
+                {pages?.results?.map((page, index) => (
+                <MenuItem key={`${page.id} ${index}`} value={page.id}>
+                  {page?.title}
+                  
+                </MenuItem>
+              ))}
+              </SelectField>}
                  </Container>
                  {controls.banner_type==2&&
               <OfferBoxCategory
@@ -359,7 +398,24 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
             </Grid>
         </Grid>
       </Grid>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt:"24px" }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-end", mt:"24px",gap:'12px' }}>
+          
+          <SoftButton
+            type="submit"
+            variant="gradient"
+            sx={{
+              backgroundColor: "transparent !important",
+              // color: "white !important",
+              border:' 0.5px solid #D0D5DD',
+              "&:hover": {
+                backgroundColor: "transparent !important"
+              },
+              width: "20%",
+            }}
+             onClick={()=>navigate(`/${sub_domain}/dashboard/banners`)}
+          >
+           Cancel
+          </SoftButton>
           <SoftButton
             type="submit"
             variant="gradient"
@@ -369,7 +425,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
               "&:hover": {
                 backgroundColor: (theme) => theme.palette.purple.middle,
               },
-              width: "260px",
+              width: "20%",
             }}
              onClick={handleSubmit}
           >
