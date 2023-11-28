@@ -36,6 +36,8 @@ import SyncIcon from '@mui/icons-material/Sync';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom'
+
 import { useEffect } from 'react'
 import PhotoIcon from '@mui/icons-material/Photo';
 import { PRODUCTS } from "data/api";
@@ -60,10 +62,11 @@ const ProductAttributes = ({ idProduct }) => {
   let Token = localStorage.getItem('token')
   let attributes = useSelector((state) => state.attribute.value)
   const dispatch = useDispatch()
+  const sub_domain = localStorage.getItem('sub_domain')
   let { t } = useTranslation("common")
   let [addvalue, setaddvalue] = React.useState(false);
   let [indexedit, setindexedit] = React.useState(0);
-
+  let navigate = useNavigate()
   const [openDialog, setOpenDialog] = React.useState(false);
   const [generate, setgenerate] = React.useState(false);
   const [generateresult, setgenerateresult] = React.useState(false);
@@ -190,9 +193,9 @@ const ProductAttributes = ({ idProduct }) => {
       // contentType: "multipart/form-data",
     });
   function handleSubmit() {
-    console.log("submit")
+   
     validate().then((output) => {
-      console.log(output)
+     
       if (!output.isOk) return;
       if (openDialogEdit) {
         attributeEditRequest({
@@ -206,7 +209,7 @@ const ProductAttributes = ({ idProduct }) => {
               id: controls.id + "/values/bulkupdate",
               body: controls.values.filter((ele) => Boolean(ele.id) == false),
               onSuccess: (res) => {
-                console.log(controls.attribute)
+              
                 dispatch({ type: "attribute/addValues", payload: { idattribute: controls.id, values: res.data } })
                 setControl("attribute", controls.attribute.map((elem) => elem.id == controls.id ? { ...elem, values: controls.values.map((ele) => Boolean(ele.id) ? ele : res.data.find((elem) => elem.value_name == ele.value_name)) } : elem))
                 // setControl("values", controls.values.map((ele)=>Boolean(ele.id)?ele:res.data.find((elem)=>elem.value_name==ele.value_name)))
@@ -230,11 +233,10 @@ const ProductAttributes = ({ idProduct }) => {
             setOpenDialog(false)
 
 
-            console.log(res.data, controls)
           }
         }).then((res) => {
           let response = res?.response?.data;
-          console.log(res)
+
 
           setInvalid(response);
 
@@ -423,15 +425,15 @@ const ProductAttributes = ({ idProduct }) => {
         body: controls.variants.filter((ele)=>(Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin))&&!Boolean(ele.id)),
       
         onSuccess: (res) => {
-          console.log(res?.data)
+         
           if (res?.data[0]) {
             dispatch({ type: "products/addVariantProperty", payload: { id: idproduct, item: res?.data[0] } })
+            setInvalid({variants:[]});
+            navigate(`/${sub_domain}/dashboard/products`)
           }
         },
       }).then((res) => {
         let response = res?.response?.data;
-        console.log()
-
         if(response?.length>0){
           setInvalid({variants: [...controls.variants.filter((ele)=>ele.id).map((elem)=>{}),...response]});
         }
@@ -440,22 +442,31 @@ const ProductAttributes = ({ idProduct }) => {
      if(controls.variants.filter((ele)=>(Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin))&&Boolean(ele.id)).length>0){
      let variant=products.results.find((ele)=>ele.id==idproduct)?.variant_attributes
      let newvariant=controls.variants.filter((ele)=>(Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin))&&Boolean(ele.id))
-    
-    let result=newvariant?.map((ele,index)=>(compare([[ele?.quantity,variant[index]?.quantity,"quantity"],
+   
+    let result=newvariant?.map((ele,index)=>(compare([[String(ele?.quantity),String(variant[index]?.quantity),"quantity"],
      [ele?.title,variant[index]?.title,"title"],
      [ele?.sku,variant[index]?.sku,"sku"],
      [String(ele?.gtin),String(variant[index]?.gtin),"gtin"],
      [ele?.price,variant[index]?.price,"price"],
     ],false))
      )
-   
+    
       productvariantupdate({
         id: idproduct + '/variants/bulk_update',
         body:result.map((ele,index)=>ele.nochange&&({variant_id:newvariant[index].id,...ele.array}))?.filter((ele)=>Boolean(ele)),
         onSuccess:(res)=>{
-          conssole.log(res.data)
+          res.data.map((elem)=>dispatch({ type: "products/updateVariantProperty", payload: { id: idproduct,idvariant:elem.id, item: elem } }))
+          
+          setInvalid({variants:[]});
+          navigate(`/${sub_domain}/dashboard/products`)
         }
-      })
+      }).then((res) => {
+        let response = res?.response?.data;
+       
+        if(response){
+          setInvalid({variants:result.map((ele,index)=>ele.nochange&&response)});
+        }
+      });
       
     }if(controls.variants.filter((ele)=>(Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin))&&!Boolean(ele.id)).length==0){
       setInvalid({variants:[]});
@@ -468,7 +479,7 @@ const ProductAttributes = ({ idProduct }) => {
         body:[ele.id],
         onSuccess:(res)=>{
           dispatch({type:"products/deleteVariantProperty",payload:{id:idproduct,idVariant:ele.id}})
-          console.log(res.data)
+         
         }
       })
     }else{setControl("variants",controls.variants.filter((elem)=>elem!=ele))}
@@ -488,8 +499,7 @@ const ProductAttributes = ({ idProduct }) => {
     setOpenDialogEdit(true);
     const rowfind = controls.attribute.find((row) => row.id === id)
     Object.keys(controls)?.map((ele) => rowfind[ele] ? setControl(ele, rowfind[ele]) : null)
-    console.log(rowfind, controls)
-
+   
   }
   function onDelete(id) {
     const rowfind = controls.attribute.filter((row) => row.id != id)
@@ -586,10 +596,12 @@ const ProductAttributes = ({ idProduct }) => {
     setControl("variants",products?.results?.find((ele)=>ele.id==idproduct)?.variant_attributes)
   },[products])
   useEffect(() => {
-    console.log(controls?.variants?.length==0)
+    
      if(controls?.variants?.length==0){
     
        setgenerate(false)
+     }else{
+      setgenerate(true)
      }
    }, [controls?.variants])
   return (
@@ -763,7 +775,7 @@ const ProductAttributes = ({ idProduct }) => {
                 }} >
                   
                   <Checkbox  color="secondary" onChange={(e)=>console.log(e.target.checked)}/>
-                  <TableCell align="right">{`${Boolean(ele?.attributes)?ele?.attributes?.join(""):ele?.variant_attributes?.map((elem)=>elem?.value_name)?.join("")}`}</TableCell>
+                  <TableCell align="right"sx={{width:"70%",height:"70px"}}>{`${Boolean(ele?.attributes)?ele?.attributes?.join(""):ele?.variant_attributes?.map((elem)=>elem?.value_name)?.join("")}`}</TableCell>
                   <TableCell align="right"> <SoftInput
                     placeholder='quantity'
                     sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important", width: "150px !important" }, }}
@@ -838,7 +850,8 @@ const ProductAttributes = ({ idProduct }) => {
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginY: "14px" }}>
         <SoftButton variant="gradient"
-          
+            disabled={controls?.variants?.filter((ele)=>(Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin))&&!Boolean(ele.id)).length>0?
+              variantAttributeResponse.isPending:productvariantupdateResponce.isPending}
           sx={{
             backgroundColor: (theme) => theme.palette.purple.middle,
             color: "white !important", "&:hover": {
@@ -848,7 +861,7 @@ const ProductAttributes = ({ idProduct }) => {
           onClick={postGenerationAttributes}
         >
          {controls?.variants?.filter((ele)=>(Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin))&&!Boolean(ele.id)).length>0?
-         variantAttributeResponse.isPending?<CircularProgress />:"Next":productvariantupdateResponce.isPending?<CircularProgress />:"Next"}
+         variantAttributeResponse.isPending?<CircularProgress />:"Finish":productvariantupdateResponce.isPending?<CircularProgress />:"Finish"}
         </SoftButton>
       </Box>
       <Dialog

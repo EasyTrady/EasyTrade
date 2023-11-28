@@ -32,6 +32,7 @@ import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@m
 import PhoneField from 'components/common/PhoneField'
 function DetailOrder({ absolute, light, isMini }) {
     const route = useLocation().pathname.split("/").slice(1);
+    let dispatch=useDispatch()
     let Token = localStorage.getItem('token');
     let [edit, setEdit] = useState(false)
     let { t } = useTranslation("common")
@@ -100,7 +101,14 @@ function DetailOrder({ absolute, light, isMini }) {
             Token: `Token ${Token}`,
 
         });
+       
+        const [updataOrderstatusRequest, patchOrderstatusResponce] =
+        useRequest({
+            path: ORDERS,
+            method: "patch",
+            Token: `Token ${Token}`,
 
+        });
     useEffect(() => {
         if (Boolean(orders.results.find((ele) => ele.id == id))) {
             setOrder(orders.results.find((ele) => ele.id == id))
@@ -129,7 +137,16 @@ function DetailOrder({ absolute, light, isMini }) {
 
     }, [order.customer])
     useEffect(() => {
-
+        if(controls.status){
+            updataOrderstatusRequest({
+                id:order.id,
+                body:{status:controls.status.id},
+                onSuccess:(res)=>{
+                    dispatch({type:"orders/patchItem",payload:{id:order.id,item:res.data}})
+                    console.log(res.data)
+                }
+            })
+        }
         //     if (controls.status=="return") {
         //         returnOrderRequest({
         //             id:id+"/return_order",
@@ -182,10 +199,11 @@ function DetailOrder({ absolute, light, isMini }) {
         [controls?.country,order?.shipping_address?.country,"country"],
         [controls?.city,order?.shipping_address?.city,"city"],
         [controls?.governorate,order?.shipping_address?.governorate,"governorate"],
-        [controls?.code+controls?.phone,order?.shipping_address?.phone,"phone"],
+        [controls?.phone,order?.shipping_address?.phone,"phone"],
         
     ])
-   if(result.noChange){
+    console.log(result)
+   if(result.nochange){
     updataOrderRequest({
         id:order.id+"/updateaddress/"+order.shipping_address.id,
         body:result.array,
@@ -196,6 +214,9 @@ function DetailOrder({ absolute, light, isMini }) {
    }
        
     }
+    useEffect(()=>{
+
+    },[controls.status])
     return (
         <DashboardLayout >
             <DashboardNavbar />
@@ -391,8 +412,8 @@ function DetailOrder({ absolute, light, isMini }) {
                                 <EditIcon onClick={() => setEdit(!edit)} />
                             </AccordionSummary>
                             <AccordionDetails >
-                                {edit ? <Table sx={{ display: "flex", overflow: "auto", justifyContent: 'space-between' }}>
-                                    <TableBody sx={{ width: "50%" }}>
+                                {edit ? <Table sx={{ display: "flex", overflow: "auto", justifyContent: 'space-between',flexDirection:{lg:"row",md:"column",sm:"column",xs:"column"} }}>
+                                    <TableBody sx={{ width: {lg:"50%",md:"100%",sm:"100%",xs:"100%"} }}>
 
                                         <TableRow sx={{ border: "unset", fontSize: "15px", display: "block", my: 1 }}>{t("Name")}</TableRow>
                                         <SoftInput placeholder={order?.shipping_address?.name}
@@ -456,7 +477,7 @@ function DetailOrder({ absolute, light, isMini }) {
 
 
                                     </TableBody>
-                                    <TableBody sx={{ width: "45%" }}>
+                                    <TableBody sx={{ width: {lg:"45%",md:"100%",sm:"100%",xs:"100%"} }}>
 
                                         <TableRow sx={{ border: "unset" }}>
                                             <TableCell sx={{ color: (theme) => theme.palette.grey[500], borderBottom: "unset" }}>{t("postal_code")}</TableCell>
@@ -475,7 +496,8 @@ function DetailOrder({ absolute, light, isMini }) {
                                             value={controls.phone}
                                             onChange={(e) => setControl("phone", e.target.value)}
                                             error={Boolean(invalid.phone)}
-                                            helperText={invalid.phone} />
+                                            helperText={invalid.phone}
+                                            sx={{width:"100%"}} />
 
 
                                         {/* <TableRow sx={{border:"unset"}}>
@@ -492,8 +514,8 @@ function DetailOrder({ absolute, light, isMini }) {
                                             <TableCell sx={{ borderBottom: "unset" }} >{order?.status}</TableCell>
                                         </TableRow>
                                         <TableRow sx={{ border: "unset" }}>
-                                            <TableCell sx={{ color: (theme) => theme.palette.grey[500] }}>{t("additional_information")}</TableCell>
-                                            <TableCell >{order?.shipping_address?.additional_information}</TableCell>
+                                            <TableCell sx={{ color: (theme) => theme.palette.grey[500],borderBottom: "unset" }}>{t("additional_information")}</TableCell>
+                                            <TableCell  sx={{ borderBottom: "unset" }} >{order?.shipping_address?.additional_information}</TableCell>
                                         </TableRow>
 
                                     </TableBody>
@@ -596,7 +618,7 @@ function DetailOrder({ absolute, light, isMini }) {
                             </SelectField></Container>
                     </SoftBox>
                 </Stack>
-                {edit&&     <SoftButton
+                {edit&&    <SoftBox sx={{textAlign:"right",}}>   <SoftButton
           type="submit"
           variant="gradient"
           disabled={patchOrderResponce.isPending}
@@ -611,8 +633,8 @@ function DetailOrder({ absolute, light, isMini }) {
           onClick={handleSubmit}
         >
            
-          {patchOrderResponce.isPending?<CircularProgress />:"Next"}
-        </SoftButton>}
+          {patchOrderResponce.isPending?<CircularProgress />:"Save"}
+        </SoftButton>  </SoftBox>}
            
             </Container>
 

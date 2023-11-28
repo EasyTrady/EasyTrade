@@ -291,6 +291,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
         body:result.array,
         onSuccess:(res)=>{
           dispatch({ type: "products/patchItem", payload:{ id:res?.data?.id,item:res?.data} });
+         
           // handleChange(undefined,1,res.data.id)
         }
       })}
@@ -970,7 +971,7 @@ useEffect(()=>{
           onClick={handleSubmit}
         >
            
-          {Boolean(productId)?patchProductResponce.isPending?<CircularProgress />:"Next":AddProductResponce.isPending?<CircularProgress />:"Next"}
+          {Boolean(productId)?patchProductResponce.isPending?<CircularProgress />:"Save":AddProductResponce.isPending?<CircularProgress />:"Next"}
         </SoftButton>
         
       </Box>
