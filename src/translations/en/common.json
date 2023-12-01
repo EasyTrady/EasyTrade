@@ -184,5 +184,6 @@
 "Name":"name",
 "Address":"Address",
 "country":"country",
-"PaymentMethod":"Payment Method"
+"PaymentMethod":"Payment Method",
+"Shippingdetails":"Shipping details"
 }

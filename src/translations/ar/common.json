@@ -181,5 +181,6 @@
 "Name":"اسم",
 "Address":"عنوان",
 "country":"دولة",
-"PaymentMethod":"طريقة دفع"
+"PaymentMethod":"طريقة دفع",
+"Shippingdetails":"تفاصيل الشحن"
 }

@@ -16,8 +16,11 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import PropTypes from "prop-types";
 import AddProductTitle from "./AddProductTitle";
 import Image from "../../assets/images/Image.png";
+import { useDispatch, useSelector } from "react-redux";
+
 function PictureField({ accept, label, placeholder, onChange, value,productName,categories,description, ...rest }) {
   const ref = useRef(null);
+  const category = useSelector((state) => state.category.value);
   const [avatarUrl, setAvatarUrl] = React.useState(Boolean(value)==false?null:value);
   const handleAvatarChange = (event) => {
     const file = event.target.files[0];
@@ -144,7 +147,7 @@ function PictureField({ accept, label, placeholder, onChange, value,productName,
                   alignItems: "flex-start",
                   flexDirection: "row",gap:'10px'}}>
                 {categories?.map((cat)=>(
-                <Box key={cat?.id}  sx={{width: 'fit-content',p:1,
+                <Box key={cat?.id?cat?.id:cat}  sx={{width: 'fit-content',p:1,
                 borderRadius:'8px',
                   height: '24px',background:'#FFE5D3',fontFamily: 'Inter',
                   fontSize: '10px',
@@ -156,7 +159,7 @@ function PictureField({ accept, label, placeholder, onChange, value,productName,
                   alignItems:'center',
                   justifyContent:'center'
                   
-                  }}>{cat?.name||"category"}</Box>
+                  }}>{cat?.name||category?.find((ele)=>ele?.id==cat)?.name}</Box>
               ))}
               </Box>
                 <Typography

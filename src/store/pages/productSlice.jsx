@@ -47,7 +47,10 @@ export const ProductsSlice = createSlice({
       });
     },addNewProperty: (state, action) => {
       state.value.results.find((ele)=>ele.id==action.payload.id)["variant_attributes"]=action?.payload?.item?.map((elem)=>elem)
-    },addVariantProperty: (state, action) => {
+    },updateVariantProperty: (state, action) => {
+      state.value.results.find((ele)=>ele.id==action.payload.id)["variant_attributes"].map((ele)=>ele.id==action.payload.idvariant?action?.payload?.item:ele)
+    },
+    addVariantProperty: (state, action) => {
     state.value.results.find((ele)=>ele.id==action.payload.id)["variant_attributes"].push(action?.payload?.item)
       
     },deleteVariantProperty: (state, action) => {

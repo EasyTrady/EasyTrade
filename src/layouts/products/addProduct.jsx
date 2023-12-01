@@ -56,6 +56,7 @@ import SelectValue from "components/common/SelectValue";
 import { useLocation } from "react-router-dom";
 import { navbarRow } from "examples/Navbars/DashboardNavbar/styles";
 import { PRODUCTS } from "data/api";
+import {  useNavigate } from 'react-router-dom';
 import { CATEGORY } from "data/api";
 import { useDispatch, useSelector } from "react-redux";
 import filter from "utils/ClearNull";
@@ -68,7 +69,8 @@ const ReactQuill = require("react-quill");
 
 
 const AddProduct = ({ light, isMini,handleChange }) => {
-
+  const navigate = useNavigate()
+  const sub_domain = localStorage.getItem('sub_domain')
   const location = useLocation();
   const { state } = location;
   let productId=localStorage.getItem('productId');
@@ -230,6 +232,11 @@ const AddProduct = ({ light, isMini,handleChange }) => {
     method: "post",
     Token: `Token ${Token}`,
   });
+  const [specificationsdeleteRequest, deletespecificationsResponce] = useRequest({
+    path: PRODUCTS,
+    method: "delete",
+    Token: `Token ${Token}`,
+  });
   const [patchProductRequest, patchProductResponce] = useRequest({
     path: PRODUCTS,
     method: "patch",
@@ -260,8 +267,8 @@ const AddProduct = ({ light, isMini,handleChange }) => {
          [controls?.purchase_price,product?.purchase_price,"purchase_price"],
          [controls?.is_percentage_discount,product?.is_percentage_discount,"is_percentage_discount"],
          [controls?.discount,product?.discount,"discount"],
-         [controls?.discount_start_date,product?.discount_start_date,"discount_start_date"],
-         [controls?.discount_end_date,product?.discount_end_date,"discount_end_date"],
+         [new Date(controls?.discount_start_date)?.toISOString(),product?.discount_start_date,"discount_start_date"],
+         [new Date(controls?.discount_end_date)?.toISOString(),product?.discount_end_date,"discount_end_date"],
          [controls?.require_shipping,product?.require_shipping,"require_shipping"],
          [controls?.maximum_order_quanitity,product?.maximum_order_quanitity,"maximum_order_quanitity"],
         
@@ -278,12 +285,13 @@ const AddProduct = ({ light, isMini,handleChange }) => {
         ],false
       )
       // console.log(Object.entries(result.array).map(([key,value])=>key==="discount_start_date"||key==="discount_end_date"?{key:value.toISOString()}:{key:value}))
-     
+   
       if(result.nochange){ patchProductRequest({
         id:productId,
-        body:Object.entries(result.array).map(([key,value])=>key==="discount_start_date"||key==="discount_end_date"?{key:value.toISOString()}:{key:value}),
+        body:result.array,
         onSuccess:(res)=>{
           dispatch({ type: "products/patchItem", payload:{ id:res?.data?.id,item:res?.data} });
+         
           // handleChange(undefined,1,res.data.id)
         }
       })}
@@ -325,8 +333,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
               quantity: controls.quantity,
               weight: controls.weight,
               weight_unit: controls.weight_unit,
-              dimensions: controls.dimensions,
-              specifications:[...controls.specifications]
+              dimensions: controls.dimensions
             },
             output: "formData",
           }),
@@ -370,10 +377,34 @@ const AddProduct = ({ light, isMini,handleChange }) => {
            setInvalid(responseBody);
         
         });
+        if(controls.specifications.length>0){
+          specificationsRequest({
+            id:productId+"/specifications",
+            body:resultValue.array.specifications,
+            onSuccess:(res)=>{
+              // handleChange(undefined,1,productId)
+            }
+          }) 
+        }
+       
       }
       
       
     });
+  }
+  console.log(controls?.in_taxes)
+  function DeleteSpecification(ele){
+    if(ele.id){
+      specificationsdeleteRequest({
+        id:productId+"/specifications/"+ele.id,
+        onSuccess:(res)=>{
+          setControl("specifications",controls?.specifications.filter((elem,ind)=>elem!=ele))
+           console.log(res.data)
+        }
+      })
+    }else{
+      setControl("specifications",controls?.specifications.filter((elem,ind)=>elem!=ele))
+    }
   }
   // console.log(index,value);
   useEffect(() => {
@@ -392,7 +423,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
         }
       })
     }
-}, [state])
+}, [productId])
 useEffect(()=>{
   if(category.length==0){
     getCategory()
@@ -577,7 +608,7 @@ useEffect(()=>{
           {controls?.specifications&&controls?.specifications?.map((ele,index)=><TableRow key={index}>
             <TableCell >{ele?.key}</TableCell>
             <TableCell >{ele?.value}</TableCell>
-            <TableCell ><DeleteIcon onClick={()=>setControl("specifications",controls?.specifications.filter((elem,ind)=>index!=ind))}/></TableCell>
+            <TableCell ><DeleteIcon onClick={()=>DeleteSpecification(ele)}/></TableCell>
 
             </TableRow>)}
           {key&&<TableRow>
@@ -807,7 +838,6 @@ useEffect(()=>{
             error={Boolean(invalid.discount)}
             helperText={invalid.discount}
             sx={input}
-            
           /> 
           <Box>
             <Typography
@@ -864,7 +894,7 @@ useEffect(()=>{
                 control={
                   <Switch
                     
-                    value={controls.in_taxes}
+                  checked={controls?.in_taxes}
                     onChange={(e) => setControl("in_taxes", e.target.checked)}
                     color="secondary"
                   />
@@ -881,7 +911,7 @@ useEffect(()=>{
                 label={"Publish on website"}
                 control={
                   <Switch
-                    value={controls.is_published}
+                  checked={controls?.is_published}
                     onChange={(e) => setControl("is_published", e.target.checked)}
                     
                     color="secondary"
@@ -900,7 +930,7 @@ useEffect(()=>{
                 label={"Must pay shipping"}
                 control={
                   <Switch
-                    value={controls.require_shipping}
+                  checked={controls?.require_shipping}
                     onChange={(e) => setControl("require_shipping", e.target.checked)}
                     
                     color="secondary"
@@ -923,6 +953,9 @@ useEffect(()=>{
             />
       </Box>
       <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: "24px" }}>
+      <SoftButton variant="contained" color="white"sx={{mx:"20px"}} onClick={() =>{resetControls(); navigate(`/${sub_domain}/dashboard/products`)}}>
+                        {"cancel"}
+                    </SoftButton>
         <SoftButton
           type="submit"
           variant="gradient"
@@ -933,13 +966,14 @@ useEffect(()=>{
             "&:hover": {
               backgroundColor: (theme) => theme.palette.purple.middle,
             },
-            width: "260px",
+            // width: "260px",
           }}
           onClick={handleSubmit}
         >
            
-          {Boolean(productId)?patchProductResponce.isPending?<CircularProgress />:"Next":AddProductResponce.isPending?<CircularProgress />:"Next"}
+          {Boolean(productId)?patchProductResponce.isPending?<CircularProgress />:"Save":AddProductResponce.isPending?<CircularProgress />:"Next"}
         </SoftButton>
+        
       </Box>
       {AddProductResponce.failAlert}
       {AddProductResponce.successAlert}

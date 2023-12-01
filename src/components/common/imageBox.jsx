@@ -28,19 +28,22 @@ const ImageBox = ({ main_image, onChange }) => {
     for (let i = 0; i < files.length; i++) {
       const reader = new FileReader();
       
-      const img = new Image();
 
       reader.onload = (e) => {
+      const img = new Image();
+
         const imageDataUrl = reader.result;
         img.src = imageDataUrl;
+        img.onload = function () {
+       
         if (img.width === 700 && img.height === 700) {
           setMainImages((prevImages) => [...prevImages, imageDataUrl]);
           setAlert("")
         }else{
           setAlert("image width should be 700px and hight should be 700px also")
         }
-        console.log(img.width)
-      };
+  
+      }}
 
       readers.push(reader);
       readers[i].readAsDataURL(files[i]);

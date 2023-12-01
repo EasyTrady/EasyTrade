@@ -38,7 +38,7 @@ const PhoneField = ({
       customInput={TextField}
       variant="standard"
       disabled={requiredCode && !Boolean(country)}
-     sx={{"& .MuiInputBase-root": { justifyContent: "flex-end"}}}
+     sx={{fontSize:"15px","& .MuiInputBase-root": { justifyContent: "flex-end",paddingX:"0px !important"},"& .MuiInputBase-root::before":{borderBottom: "unset"},"& .MuiInputBase-root::after":{borderBottom: "unset"}}}
       onValueChange={(e) =>
         onChange({ target: { value: e.value, valueAsNumber: e.floatValue } })
       }
@@ -76,7 +76,7 @@ const PhoneField = ({
                       >
                         {selectProps.value
                           ? selectProps.value
-                          : globalLang.code[lang]}
+                          : "+20"}
                         
                       </Typography>
                     );
