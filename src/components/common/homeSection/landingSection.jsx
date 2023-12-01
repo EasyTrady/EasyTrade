@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Grid from '@mui/material/Grid';
-import home from '../../../assets/images/icons/Social Media Icon Square/homme.svg';
+import home from '../../../assets/images/icons/Social Media Icon Square/home.svg';
 import { Box, ButtonBase, Container, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
@@ -44,8 +44,8 @@ export default function landingSection () {
             <Typography
               sx={{
                 fontSize: '25px',
-                fontWeight: 900,
-                lineHeight: '86.4px',
+                fontWeight: {md:900,xs:700},
+                lineHeight: '50.4px',
                 color: '#03090d',
                 fontFamily: 'Cairo'
               }}
@@ -54,11 +54,11 @@ export default function landingSection () {
             </Typography>
             <Typography
               sx={{
-                fontSize: '15px',
-                fontWeight: 700,
+                fontSize: {md:'15px',xs:"14px"},
+                fontWeight:{md: 700,xs:500},
                 lineHeight: '21.33px',
                 color: '#616161',
-                px: '10px',
+                
                 fontFamily: 'Cairo'
 
               }}
@@ -93,6 +93,7 @@ export default function landingSection () {
                   lineHeight: '22.4px',
                   fontWeight: 600,
                   mt: '15px',
+                  fontFamily:'Cairo',
                   width: { md: '30%', xs: '50%', xL: '30%', sm: '50%', lg: '30%' }
                 }}
               >
@@ -102,7 +103,7 @@ export default function landingSection () {
                 sx={{
                   color: '#8a2296',
                   width: { xl: '100%', md: '100%', xs: '100%' },
-                  fontSize: '20px',
+                  fontSize: '16px',
                   fontFamily: 'Cairo',
                   textAlign:'right'
                 }}

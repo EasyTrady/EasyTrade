@@ -87,14 +87,14 @@ const Navbar = () => {
             }}></Box> */}
           <Box sx={{
             display: 'flex',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             alignItems: 'center',
             width: '100%'
           }}>
             <Box
               sx={{
                 display: 'flex',
-                justifyContent: 'space-evenly',
+                justifyContent: 'flex-start',
                 alignItems: 'center',
                 gap: '5px'
               }}
@@ -114,14 +114,15 @@ const Navbar = () => {
               <ButtonBase
                 onClick={() => navigate('/authentication/sign-in')}
                 sx={{
-                  padding: '10px',
+                  padding:{md: '10px',xs:"15px"},
                   backgroundColor: '#5D449B',
-                  borderRadius: '12px',
-                  fontSize: '16px',
+                  borderRadius: {md:'12px',xs:'8px'},
+                  fontSize: {md:'16px',xs:'12px'},
                   textAlign: 'center',
                   fontWeight: 600,
                   fontFamily:'Cairo',
                   // lineHeight: "29.98px",
+                  height:{md:"40px",xs:'24px'},
                   color: '#FFFFFF',
                   width:{sm:'20%',lg:'80%',xl:'80%',md:'100%'}
                 }}
@@ -163,9 +164,9 @@ const Navbar = () => {
                 </Button>
               ))}
             </Box>
-            <Box component="img" src={home} sx={{width:{xs:'30%',sm:'30%',lg:'20%',xl:'20%',md:'20%'},marginLeft:'10px'}}/>
+            
           </Box>
-              
+          <Box component="img" src={home} sx={{width:{xs:'30%',sm:'30%',lg:'20%',xl:'20%',md:'20%'},}}/>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton

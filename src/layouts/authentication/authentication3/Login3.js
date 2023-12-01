@@ -56,7 +56,7 @@ const Login = () => {
                   <Grid item xs={12}>
                     <Grid container direction={matchDownSM ? 'column-reverse' : 'row'} alignItems="center" justifyContent="center">
                       <Grid item>
-                        <Stack alignItems="center" justifyContent="center" spacing={1}>
+                        <Stack alignItems="center" justifyContent="flex-end" gap={'12px'} >
                           <Typography color={theme.palette.secondary.main}  gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
                             تسجيل الدخول 
                           </Typography>
