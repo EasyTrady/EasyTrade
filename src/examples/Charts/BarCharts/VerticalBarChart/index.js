@@ -38,14 +38,14 @@ function VerticalBarChart({ title, description, height, chart }) {
   const chartDatasets = chart.datasets
     ? chart.datasets.map((dataset) => ({
         ...dataset,
-        weight: 5,
+        weight: 0,
         borderWidth: 0,
         borderRadius: 4,
         backgroundColor: colors[dataset.color]
           ? colors[dataset.color || "dark"].main
           : colors.dark.main,
         fill: false,
-        maxBarThickness: 35,
+        maxBarThickness: 55,
       }))
     : [];
 

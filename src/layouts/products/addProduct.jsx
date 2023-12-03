@@ -19,6 +19,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import borders from "assets/theme/base/borders";
+import DateIcon from 'examples/Icons/DateIcon';
+
 import SoftBox from "components/SoftBox";
 import TableFooter from '@mui/material/TableFooter';
 import SoftInput from "components/SoftInput";
@@ -855,6 +857,7 @@ useEffect(()=>{
              <DatePickerField
               value={controls.discount_start_date}
               onChange={(newvalue) => {setControl("discount_start_date", newvalue);console.log(newvalue)}}
+              icon={DateIcon}
             /> 
           </Box>
           <Box>
@@ -873,6 +876,7 @@ useEffect(()=>{
            <DatePickerField
               value={controls.discount_end_date}
               onChange={(e) => setControl("discount_end_date", e)}
+              icon={DateIcon}
             /> 
           </Box>
         </Container>

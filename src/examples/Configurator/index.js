@@ -18,6 +18,8 @@ import { useState, useEffect } from "react";
 // @mui material components
 import Divider from "@mui/material/Divider";
 import Switch from "@mui/material/Switch";
+import Stack from "@mui/material/Stack";
+
 import IconButton from "@mui/material/IconButton";
 import Link from "@mui/material/Link";
 import Icon from "@mui/material/Icon";
@@ -25,6 +27,11 @@ import Icon from "@mui/material/Icon";
 // @mui icons
 import TwitterIcon from "@mui/icons-material/Twitter";
 import FacebookIcon from "@mui/icons-material/Facebook";
+import imageSideBar from "assets/images/Button.png"
+import whiteSideBar from "assets/images/white.png"
+
+import greySideBar from "assets/images/grey.png"
+import gradientSideBar from "assets/images/gradient.png"
 
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
@@ -41,11 +48,12 @@ import {
   setTransparentSidenav,
   setFixedNavbar,
   setSidenavColor,
+  setIconOnly,setColorSideBar
 } from "context";
 
 function Configurator() {
   const [controller, dispatch] = useSoftUIController();
-  const { openConfigurator, transparentSidenav, fixedNavbar, sidenavColor } = controller;
+  const { openConfigurator, transparentSidenav, fixedNavbar, sidenavColor,makeIconOnly } = controller;
   const [disabled, setDisabled] = useState(false);
   const sidenavColors = ["primary", "dark", "info", "success", "warning", "error"];
 
@@ -152,7 +160,31 @@ function Configurator() {
             ))}
           </SoftBox>
         </SoftBox>
+        <SoftBox>
+          <SoftTypography variant="h6">Sidenav</SoftTypography>
+          <SoftTypography variant="p"sx={{fontSize:"14px",color:"#667085"}}>choose show or hide sidebar</SoftTypography>
+          <Stack sx={{display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "row"}}>
+     
+            <SoftTypography variant="img" component="img"src={imageSideBar}sx={{width:"40%",cursor:"pointer"}} onClick={()=>setIconOnly(dispatch,false)}/>
+            <SoftTypography variant="img" component="img"src={whiteSideBar}sx={{width:"40%",cursor:"pointer"}}onClick={()=>setIconOnly(dispatch,true)}/>
 
+          </Stack>
+          </SoftBox>
+          <SoftBox>
+          <SoftTypography variant="h6">Sidenav color</SoftTypography>
+          <SoftTypography variant="p"sx={{fontSize:"14px",color:"#667085"}}>choose show or hide sidebar</SoftTypography>
+          <Stack sx={{display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "row"}}>
+     
+            <SoftTypography variant="img" component="img"src={whiteSideBar}sx={{width:"30%",cursor:"pointer"}} onClick={()=>setColorSideBar(dispatch,"white")}/>
+            <SoftTypography variant="img" component="img"src={greySideBar}sx={{width:"30%",cursor:"pointer"}}onClick={()=>setColorSideBar(dispatch,"gray")}/>
+            <SoftTypography variant="img" component="img"src={gradientSideBar}sx={{width:"30%",cursor:"pointer"}}onClick={()=>setColorSideBar(dispatch,"linear-gradient(gray, white)")}/>
+
+          </Stack>
+          </SoftBox>
         <SoftBox mt={3} lineHeight={1}>
           <SoftTypography variant="h6">Sidenav Type</SoftTypography>
           <SoftTypography variant="button" color="text" fontWeight="regular">

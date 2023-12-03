@@ -42,6 +42,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <SoftUIControllerProvider>
+  
       <Provider store={store}>
 
       <I18nextProvider i18n={i18next}>

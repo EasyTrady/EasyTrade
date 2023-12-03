@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 export default function sidenavLogoLabel(theme, ownerState) {
   const { functions, transitions, typography, breakpoints } = theme;
-  const { miniSidenav } = ownerState;
+  const { miniSidenav,makeIconOnly } = ownerState;
 
   const { pxToRem } = functions;
   const { fontWeightMedium } = typography;
@@ -27,7 +27,7 @@ export default function sidenavLogoLabel(theme, ownerState) {
       easing: transitions.easing.easeInOut,
       duration: transitions.duration.standard,
     }),
-
+    display:makeIconOnly?"none":"block",
     [breakpoints.up("xl")]: {
       opacity: miniSidenav ? 0 : 1,
     },

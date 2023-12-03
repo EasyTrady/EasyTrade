@@ -38,6 +38,9 @@ function reducer(state, action) {
     case "TRANSPARENT_SIDENAV": {
       return { ...state, transparentSidenav: action.value };
     }
+    case "COLOR_SIDENAV": {
+      return { ...state, ColorSidenav: action.value };
+    }
     case "SIDENAV_COLOR": {
       return { ...state, sidenavColor: action.value };
     }
@@ -56,6 +59,9 @@ function reducer(state, action) {
     case "LAYOUT": {
       return { ...state, layout: action.value };
     }
+    case "ICONONLY": {
+      return { ...state, makeIconOnly: action.value };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -67,12 +73,14 @@ function SoftUIControllerProvider({ children }) {
   const initialState = {
     miniSidenav: false,
     transparentSidenav: true,
-    sidenavColor: "info",
+    sidenavColor: "default",
     transparentNavbar: true,
     fixedNavbar: true,
     openConfigurator: false,
     direction: "ltr",
     layout: "dashboard",
+    makeIconOnly:false,
+    ColorSidenav:"white"
   };
 
   const [controller, dispatch] = useReducer(reducer, initialState);
@@ -107,6 +115,9 @@ const setFixedNavbar = (dispatch, value) => dispatch({ type: "FIXED_NAVBAR", val
 const setOpenConfigurator = (dispatch, value) => dispatch({ type: "OPEN_CONFIGURATOR", value });
 const setDirection = (dispatch, value) => dispatch({ type: "DIRECTION", value });
 const setLayout = (dispatch, value) => dispatch({ type: "LAYOUT", value });
+const setIconOnly = (dispatch, value) => dispatch({ type: "ICONONLY", value });
+const setColorSideBar = (dispatch, value) => dispatch({ type: "COLOR_SIDENAV", value });
+
 
 export {
   SoftUIControllerProvider,
@@ -119,4 +130,6 @@ export {
   setOpenConfigurator,
   setDirection,
   setLayout,
+  setIconOnly,
+  setColorSideBar,
 };

@@ -48,7 +48,7 @@ import NavItem from "./CollapseItem";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useSoftUIController();
-  const { miniSidenav, transparentSidenav } = controller;
+  const { miniSidenav, transparentSidenav,sidenavColor,makeIconOnly ,ColorSidenav} = controller;
   const location = useLocation();
   const { pathname } = location;
   const collapseName = pathname.split("/").pop();
@@ -86,7 +86,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         case 'collapse':
           return <NavCollapse key={item.id} menu={item}  />;
         case 'item':
-          return <NavItem key={item.id} item={item} color={color}/>;
+          return <NavItem key={item.id} item={item} color={sidenavColor}/>;
         default:
           return (
             <Typography key={item.id} variant="h6" color="error" align="center">
@@ -106,7 +106,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           onClick={(e)=>setActive((previous)=>previous===key?"":key)}
         >
           <SidenavCollapse
-            color={color}
+            color={sidenavColor}
             name={name}
             icon={icon}
             setOpen={setOpen}
@@ -120,7 +120,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       ) : (
         <NavLink to={!noCollapse&&route} key={key} onClick={(e)=>setActive((previous)=>previous===key?"":key)}>
           <SidenavCollapse
-            color={color}
+            color={sidenavColor}
             key={key}
             name={name}
             icon={icon}
@@ -138,15 +138,16 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       returnValue = (
         <SoftTypography
           key={key}
-          display="block"
+          display={makeIconOnly?"none":"block"}
           variant="caption"
           fontWeight="bold"
           textTransform="uppercase"
-          opacity={0.6}
+          opacity={makeIconOnly?0:0.6}
           pl={3}
           mt={2}
           mb={1}
           ml={1}
+         
         >
           {title}
         </SoftTypography>
@@ -159,7 +160,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   });
 
   return (
-    <SidenavRoot {...rest} variant="permanent" ownerState={{ transparentSidenav, miniSidenav }}>
+    <SidenavRoot {...rest} variant="permanent" ownerState={{ transparentSidenav, miniSidenav ,ColorSidenav,makeIconOnly}}>
       <SoftBox pt={3} pb={1} px={4} textAlign="center">
         <SoftBox
           display={{ xs: "block", xl: "none" }}
@@ -178,11 +179,12 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           {brand && <SoftBox component="img" src={brand} alt="Soft UI Logo" width="2rem" />}
           <SoftBox
             width={!brandName && "100%"}
-            sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
+            sx={(theme) => sidenavLogoLabel(theme, { miniSidenav,makeIconOnly })}
           >
             <SoftTypography component="h6" variant="button" fontWeight="medium">
               {brandName}
             </SoftTypography>
+            
           </SoftBox>
         </SoftBox>
       </SoftBox>

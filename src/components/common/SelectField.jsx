@@ -72,7 +72,7 @@ const SelectField = ({
     //   '& .MuiOutlinedInput-notchedOutline': {
     //     border: '1px solid #C9CDD4'
     //   },}}
-     sx={{display:'flex',flexDirection:'column',alignItems:'start',width:'100%',}}
+     sx={{display:'flex',flexDirection:'column',alignItems:'start',width:'100%'}}
     >
     <Typography sx={{
 fontSize: '14px',

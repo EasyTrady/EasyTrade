@@ -8,7 +8,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TextField } from '@mui/material';
 import {useEffect} from 'react';
 
-export default function DatePickerField({value,onChange}) {
+export default function DatePickerField({value,onChange,icon,sx}) {
   const [date, setDate] = React.useState(dayjs(value));
 useEffect(()=>{
   setDate(dayjs(value))
@@ -19,9 +19,10 @@ useEffect(()=>{
         <DatePicker
   inputFormat="YYYY-MM-DDThh:mm[:ss[.uuuuuu]][+HH:MM|-HH:MM|Z]"
   value={date}
+  slots={{openPickerIcon:icon}}
   onChange={onChange}
-  renderInput={(params) => <TextField {...params} fullWidth  sx={{idth:'100%'}}/>}  
-  sx={{width:'100%'}}
+  renderInput={(params) => <TextField {...params} fullWidth  sx={{width:'100%'}}/>}  
+  sx={{...sx,width:'100%'}}
 />
     </LocalizationProvider>
   );

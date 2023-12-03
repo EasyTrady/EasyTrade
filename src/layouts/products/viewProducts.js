@@ -168,7 +168,7 @@ function Products({ absolute, light, isMini }) {
                         &nbsp;Add new product
                     </SoftButton>
                 </SoftBox>
-            <Box sx={{p:'16px',bgcolor:'#fff',mt:'24px'}}>
+            {/* <Box sx={{p:'16px',bgcolor:'#fff',mt:'24px'}}>
               <TextField sx={{height:'41px',borderRadius:'4px',width:'100%'}} placeholder="Search product name,SKU..."/>
               <Stack direction="row" spacing={1} mt={1}>
       <Chip
@@ -183,7 +183,7 @@ function Products({ absolute, light, isMini }) {
         onDelete={handleDelete}
       />
     </Stack>
-            </Box>
+            </Box> */}
         <DataGridCustom
           rows={products?.results}
           columns={columns}

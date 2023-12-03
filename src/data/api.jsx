@@ -6,6 +6,8 @@ export const PROFILE=`${BaseUrl}accounts/shop/info/`
 // export const CATEGORY=`${BaseUrl}accounts/shop/info/`
 
 // "products/categories/"
+export const REPORT= `${BaseUrl}shop/dashboard/reports/`
+
 export const CUSTOMER= `${BaseUrl}shop/dashboard/customers/`
 export const CATEGORY= `${BaseUrl}products/categories/`
 export const ORDERS= `${BaseUrl}shop/dashboard/orders/`
