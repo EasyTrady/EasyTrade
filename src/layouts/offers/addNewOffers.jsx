@@ -10,6 +10,8 @@ import {
   Switch,
   Typography,
 } from "@mui/material";
+import DateIcon from 'examples/Icons/DateIcon';
+
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import AddProductTitle from "components/common/AddProductTitle";
@@ -284,6 +286,7 @@ console.log(offerstypes);
                 <DatePickerField
                   value={controls.offer_start_date}
                   onChange={(e) => setControl("offer_start_date", e)}
+                  icon={DateIcon}
                 />
               </Box>
               <Box>
@@ -302,6 +305,7 @@ console.log(offerstypes);
                 <DatePickerField
                   value={controls.offer_end_date}
                   onChange={(e) => setControl("offer_end_date", e)}
+                  icon={DateIcon}
                 />
               </Box>
               <FormControlLabel

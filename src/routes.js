@@ -89,6 +89,8 @@ import AddNewOffers from "layouts/offers/addNewOffers";
 import ViewBanners from "layouts/banners/viewBanners";
 import AddNewBanner from "layouts/banners/addNewBanner";
 import banner from "./assets/images/banner.svg"
+import Report from "layouts/Report";
+import ReportIcon from "examples/Icons/ReportIcon";
 const sub_domain = localStorage.getItem('sub_domain')
 
 const routes = [
@@ -140,6 +142,22 @@ const routes = [
     route: `/${sub_domain}/dashboard/statistics`,
     icon: <AlignHorizontalLeftIcon size="12px" />,
     component: <Auth><Dashboard /></Auth>,
+    noCollapse: false,
+    // children: [
+    //   {
+    //     path: `/${sub_domain}`,
+    //     title: "shop",
+    //     element: <Auth><Dashboard /></Auth>,
+    //     type:"title"
+    //   }]
+  }, 
+  {
+    type: "collapse",
+    name: "Report",
+    key: "Report",
+    route: `/${sub_domain}/dashboard/Report`,
+    icon: <ReportIcon size="12px" />,
+    component: <Auth><Report /></Auth>,
     noCollapse: false,
     // children: [
     //   {

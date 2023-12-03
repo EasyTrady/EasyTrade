@@ -34,16 +34,24 @@ import MenuCustom from "assets/theme/components/menu";
 import SoftInput from "components/SoftInput";
 import DeleteIcon from "examples/Icons/DeleteIcon";
 import EditIcon from "examples/Icons/EditIcon";
+import { Chip,  Stack } from "@mui/material";
+
 function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
   checkboxSelection, onEdit,onDialog, onDelete, onBlock,sx, rowsPerPageOptions, notProduct = true, onState,
-  onNotify,
+  onNotify,onFilter,
   onCopy, onPaginationModelChange, ...rest }) {
   const [, setRows] = React.useState(rows);
   let { t } = useTranslation("common")
 
   let refSelect = React.useRef()
   const [status, setStatus] = React.useState(false)
+  const handleClick = () => {
+    console.info('You clicked the Chip.');
+  };
 
+  const handleDelete = () => {
+    console.info('You clicked the delete icon.');
+  };
 
   const [rowModesModel, setRowModesModel] = React.useState({});
 
@@ -276,7 +284,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
   return (
     <>
               
-    <Box sx={{backgroundColor: "white !important",
+    {/* <Box sx={{backgroundColor: "white !important",
     padding: "10px !important",marginY:"10px", ".MuiInputBase-root": { border: `1px solid !important`,borderColor:(theme)=>theme.palette.grey[400]+"!important" }, }}>
       <SoftInput
         id="outlined-adornment-password"
@@ -329,7 +337,23 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
         }}
 
       />
-      </Box>
+      </Box> */}
+   {onFilter&&   <Box sx={{p:'16px',bgcolor:'#fff',mt:'24px'}}>
+              <TextField sx={{height:'41px',borderRadius:'4px',width:'100%'}} placeholder="Search product name,SKU..."/>
+              <Stack direction="row" spacing={1} mt={1}>
+      <Chip
+        label="Price between : 100 up to 200"
+        onClick={handleClick}
+        onDelete={handleDelete}
+      />
+      <Chip
+        label="out of stock"
+        variant="outlined"
+        onClick={handleClick}
+        onDelete={handleDelete}
+      />
+    </Stack>
+            </Box>}
       <Box>
         <Checkbox checked />
         <Typography sx={{ fontSize: "14px" }} variant="span">
@@ -439,5 +463,5 @@ DataGridCustom.propTypes = {
   onBlock:PropTypes.func,
   onDialog:PropTypes.func,
   className:PropTypes.string,
-  selected:PropTypes.bool
+  selected:PropTypes.bool,onFilter: PropTypes?.func
 };

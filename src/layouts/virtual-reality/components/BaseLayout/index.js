@@ -82,6 +82,7 @@ function BaseLayout({ children }) {
       <SoftBox sx={baseLayoutBackground}>
         <SoftBox display={{ xs: "block", lg: "none" }}>
           <Sidenav
+           color={sidenavColor}
             brand={brand}
             brandName="Easy trady"
             routes={routes}

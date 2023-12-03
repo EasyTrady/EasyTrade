@@ -22,7 +22,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Icon from "@mui/material/Icon";
-
+import {  MenuItem } from 'react-pro-sidebar';
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
 
@@ -41,12 +41,12 @@ import { StarBorder } from "@mui/icons-material";
 
 function SidenavCollapse({ color, icon, name, children, active, noCollapse,  open,setOpen,onClick,...rest }) {
   const [controller] = useSoftUIController();
-  const { miniSidenav, transparentSidenav } = controller;
+  const { miniSidenav, transparentSidenav,makeIconOnly,ColorSidenav } = controller;
 
   return (
     <>
       <ListItem component="li" onClick={onClick}>
-        <SoftBox {...rest} sx={(theme) => collapseItem(theme, { active, transparentSidenav })}>
+        <SoftBox {...rest} sx={(theme) => collapseItem(theme, { active, transparentSidenav,makeIconOnly })}  >
           <ListItemIcon
             sx={(theme) => collapseIconBox(theme, { active, transparentSidenav, color })}
           >
@@ -59,7 +59,8 @@ function SidenavCollapse({ color, icon, name, children, active, noCollapse,  ope
 
           <ListItemText
             primary={name}
-            sx={(theme) => collapseText(theme, { miniSidenav, transparentSidenav, active })}
+            sx={(theme) => collapseText(theme, { miniSidenav, transparentSidenav, active,makeIconOnly,ColorSidenav })}
+            
           />
         </SoftBox>
       </ListItem>

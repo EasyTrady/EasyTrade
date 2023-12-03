@@ -32,7 +32,7 @@ import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@m
 import PhoneField from 'components/common/PhoneField'
 function DetailOrder({ absolute, light, isMini }) {
     const route = useLocation().pathname.split("/").slice(1);
-    let dispatch=useDispatch()
+    let dispatch = useDispatch()
     let Token = localStorage.getItem('token');
     let [edit, setEdit] = useState(false)
     let { t } = useTranslation("common")
@@ -52,6 +52,7 @@ function DetailOrder({ absolute, light, isMini }) {
     let orders = useSelector((state) => state.orders.value)
     let [order, setOrder] = useState({})
     let [status, setstatus] = useState([])
+    let [activity, setActivity] = useState([])
 
     let [Customer, setCustomer] = useState(null)
     const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] = useControls([
@@ -69,7 +70,7 @@ function DetailOrder({ absolute, light, isMini }) {
             control: "city", value: "", isRequired: false
         }, {
             control: "phone", value: "", isRequired: false
-        },{
+        }, {
             control: "code", value: "+20", isRequired: false
         }
     ])
@@ -101,8 +102,15 @@ function DetailOrder({ absolute, light, isMini }) {
             Token: `Token ${Token}`,
 
         });
-       
-        const [updataOrderstatusRequest, patchOrderstatusResponce] =
+    const [activiteOrderRequest, activiteOrderResponce] =
+        useRequest({
+            path: ORDERS,
+            method: "get",
+            Token: `Token ${Token}`,
+
+        });
+    "https://easytradyapi.shop/shop/dashboard/orders/1/activity/"
+    const [updataOrderstatusRequest, patchOrderstatusResponce] =
         useRequest({
             path: ORDERS,
             method: "patch",
@@ -137,12 +145,12 @@ function DetailOrder({ absolute, light, isMini }) {
 
     }, [order.customer])
     useEffect(() => {
-        if(controls.status){
+        if (controls.status) {
             updataOrderstatusRequest({
-                id:order.id,
-                body:{status:controls.status.id},
-                onSuccess:(res)=>{
-                    dispatch({type:"orders/patchItem",payload:{id:order.id,item:res.data}})
+                id: order.id,
+                body: { status: controls.status.id },
+                onSuccess: (res) => {
+                    dispatch({ type: "orders/patchItem", payload: { id: order.id, item: res.data } })
                     console.log(res.data)
                 }
             })
@@ -170,9 +178,9 @@ function DetailOrder({ absolute, light, isMini }) {
     }, [controls.status])
     useEffect(() => {
 
-            if (Boolean(order?.shipping_address)) {
-                Object.entries(order?.shipping_address).map(([key,value])=>setControl(key,value))
-            }
+        if (Boolean(order?.shipping_address)) {
+            Object.entries(order?.shipping_address).map(([key, value]) => setControl(key, value))
+        }
         //         returnOrderRequest({
         //             id:id+"/return_order",
         //             onSuccess: (res) => {
@@ -191,32 +199,50 @@ function DetailOrder({ absolute, light, isMini }) {
         //             }
         //         })
         //     }
-       
-    }, [order.shipping_address])
-    function handleSubmit(){
-        let result=compare([[controls?.name,order?.shipping_address?.name,"name"],
-        [controls?.address,order?.shipping_address?.address,"address"],
-        [controls?.country,order?.shipping_address?.country,"country"],
-        [controls?.city,order?.shipping_address?.city,"city"],
-        [controls?.governorate,order?.shipping_address?.governorate,"governorate"],
-        [controls?.phone,order?.shipping_address?.phone,"phone"],
-        
-    ])
-    console.log(result)
-   if(result.nochange){
-    updataOrderRequest({
-        id:order.id+"/updateaddress/"+order.shipping_address.id,
-        body:result.array,
-        onSuccess:(res)=>{
-            console.log(res.data)
-        }
-    })
-   }
-       
-    }
-    useEffect(()=>{
 
-    },[controls.status])
+    }, [order.shipping_address])
+    function handleSubmit() {
+        let result = compare([[controls?.name, order?.shipping_address?.name, "name"],
+        [controls?.address, order?.shipping_address?.address, "address"],
+        [controls?.country, order?.shipping_address?.country, "country"],
+        [controls?.city, order?.shipping_address?.city, "city"],
+        [controls?.governorate, order?.shipping_address?.governorate, "governorate"],
+        [controls?.phone, order?.shipping_address?.phone, "phone"],
+
+        ])
+        if (result.nochange) {
+            updataOrderRequest({
+                id: order.id + "/updateaddress/" + order.shipping_address.id,
+                body: result.array,
+                onSuccess: (res) => {
+                    console.log(res.data)
+                }
+            })
+        }
+    }
+    useEffect(() => {
+
+    }, [controls.status])
+    useEffect(() => {
+        if (status.length == 0) {
+            statusOrderRequest({
+                onSuccess: (res) => {
+                    console.log(res.data.map((ele) => ele.name))
+                    setstatus(res.data.map((ele) => ele))
+                }
+            })
+        }
+        if (order.id && status.length > 0) {
+            activiteOrderRequest({
+                id: order.id + "/activity",
+                onSuccess: (res) => {
+                    setActivity(res.data)
+                }
+            })
+        }
+
+    }, [order.id, status])
+
     return (
         <DashboardLayout >
             <DashboardNavbar />
@@ -326,24 +352,93 @@ function DetailOrder({ absolute, light, isMini }) {
                         </SoftBox>
                     </SoftBox>
 
-                    <SoftBox sx={{ width: { lg: "25%", md: "25%", sm: "100%", xs: "100%" }, backgroundColor: (theme) => theme.palette.white.main, borderRadius: "8px" }}>
+                    <SoftBox sx={{ width: { lg: "25%", md: "25%", sm: "100%", xs: "100%" }, height: "100%", backgroundColor: (theme) => theme.palette.white.main, borderRadius: "8px" }}>
                         <SoftBox sx={{
                             display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 24px 12px 24px",
                             borderBottom: "1px solid gray", borderColor: (theme) => theme.palette.grey[500], fontSize: "16px"
                         }}>
                             {t("Activity")}
                         </SoftBox>
-                        <Container>
-                            <Stack alignItems="center" justifyContent="center">
-                                <SoftBox>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="192" viewBox="0 0 11 192" fill="none">
-                                        <circle cx="5.5" cy="5" r="5" fill="#F09343" />
-                                        <circle cx="5.5" cy="96" r="5" fill="#F2BD00" />
-                                        <circle cx="5.5" cy="187" r="5" fill="#F09343" />
-                                        <line x1="5.75" y1="17" x2="5.75" y2="84" stroke="#959595" strokeWidth="0.5" />
-                                        <line x1="5.75" y1="108" x2="5.75" y2="175" stroke="#959595" strokeWidth="0.5" />
-                                    </svg>
+                        <Container sx={{ padding: "24px" }}>
+                            <Stack alignItems="center" justifyContent="flex-start" sx={{ alignItems: "flex-start" }}>
+                                {activity.map((ele, index) => index % 2 == 0 ? <SoftBox key={index} sx={{ display: "flex", justifyContent: "flex-start", width: "100%" }}>
+
+                                    <SoftBox sx={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "center"
+                                    }}>
+
+                                        <Typography sx={{ backgroundColor: "#F09343", width: "10px", height: "10px", borderRadius: "50%" }}>
+
+                                        </Typography>
+                                        <Typography sx={{
+                                            height: index != activity.length - 1 ? "55px" : "0px",
+                                            width: "1px",
+                                            backgroundColor: "#000000", marginTop: "3px"
+                                        }}></Typography>
+                                    </SoftBox>
+                                    <SoftBox sx={{ marginX: "10px" }}>
+                                        <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                            <Typography sx={{ fontSize: "16px", }}  >
+                                                {ele.status}
+                                            </Typography>
+                                            <Typography component={"span"} sx={{ color: "#757575", fontSize: "14px", marginX: "10px" }} >
+                                                {moment(ele?.history_date).format("YYYY/MM/DD")}
+
+                                            </Typography>
+                                        </SoftBox>
+                                        <Typography sx={{ fontSize: "16px", color: "#757575" }}  >
+                                            {ele.user}
+                                        </Typography>
+                                    </SoftBox>
+                                </SoftBox> : <SoftBox key={index} sx={{ display: "flex", justifyContent: "flex-start", width: "100%" }}>
+
+                                    <SoftBox sx={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "center"
+                                    }}>
+
+                                        <Typography sx={{ backgroundColor: "#F2BD00", width: "10px", height: "10px", borderRadius: "50%" }}>
+
+                                        </Typography>
+                                        <Typography sx={{
+                                            height: index != activity.length - 1 ? "55px" : "0px",
+                                            width: "1px",
+                                            backgroundColor: "#000000", marginTop: "3px"
+                                        }}></Typography>
+                                    </SoftBox>
+                                    <SoftBox sx={{ marginX: "10px" }}>
+                                        <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                            <Typography sx={{ fontSize: "16px" }}>
+                                                {ele.status}
+                                            </Typography>
+                                            <Typography sx={{ color: "#757575", fontSize: "14px", marginX: "10px" }}>
+                                                {moment(ele?.date).format("YYYY/MM/DD")}
+
+                                            </Typography>
+                                        </SoftBox>
+                                        <Typography sx={{ fontSize: "16px", color: "#757575" }}  >
+                                            {ele.user}
+                                        </Typography>
+                                    </SoftBox>
+                                </SoftBox>)}
+                                {/*                                 
+                                <SoftBox sx={{display: "flex",
+    flexDirection: "column",
+    alignItems: "center"}}>
+                                  
+                                    <Typography sx={{backgroundColor:"#F2BD00",width:"10px",height:"10px",borderRadius:"50%",}}></Typography>
+                                    <Typography sx={{height: "55px",
+        width: "1px",
+        backgroundColor: "#000000",marginTop:"3px"}}></Typography>
                                 </SoftBox>
+                                <SoftBox sx={{display: "flex",
+    flexDirection: "column",
+    alignItems: "center"}}>
+                                   
+                                    <Typography sx={{backgroundColor:"#F09343",width:"10px",height:"10px",borderRadius:"50%",}}></Typography></SoftBox> */}
                                 <SoftBox>
                                 </SoftBox>
                             </Stack>
@@ -352,7 +447,7 @@ function DetailOrder({ absolute, light, isMini }) {
                     </SoftBox>
                 </Stack>
                 <Stack direction={"row"} sx={{ gap: "24px", mt: 4, flexDirection: { lg: "row", md: "row", sm: "column", xs: "column" }, alignItems: "center" }}>
-                    <Stack direction={"column"} sx={{width: { lg: "70%", md: "70%", sm: "100%", xs: "100%" },}}>
+                    <Stack direction={"column"} sx={{ width: { lg: "70%", md: "70%", sm: "100%", xs: "100%" }, }}>
                         <Accordion sx={{ marginY: "24px", width: { lg: "100%", md: "100%", sm: "100%", xs: "100%" }, boxShadow: "unset", borderRadius: "8px", alignSelf: "flex-start" }}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
@@ -400,7 +495,7 @@ function DetailOrder({ absolute, light, isMini }) {
                                 </Table>
                             </AccordionDetails>
                         </Accordion>
-                        
+
                         <Accordion sx={{ marginY: "24px", width: { lg: "100%", md: "100%", sm: "100%", xs: "100%" }, boxShadow: "unset", borderRadius: "8px", alignSelf: "flex-start" }}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
@@ -412,8 +507,8 @@ function DetailOrder({ absolute, light, isMini }) {
                                 <EditIcon onClick={() => setEdit(!edit)} />
                             </AccordionSummary>
                             <AccordionDetails >
-                                {edit ? <Table sx={{ display: "flex", overflow: "auto", justifyContent: 'space-between',flexDirection:{lg:"row",md:"column",sm:"column",xs:"column"} }}>
-                                    <TableBody sx={{ width: {lg:"50%",md:"100%",sm:"100%",xs:"100%"} }}>
+                                {edit ? <Table sx={{ display: "flex", overflow: "auto", justifyContent: 'space-between', flexDirection: { lg: "row", md: "column", sm: "column", xs: "column" } }}>
+                                    <TableBody sx={{ width: { lg: "50%", md: "100%", sm: "100%", xs: "100%" } }}>
 
                                         <TableRow sx={{ border: "unset", fontSize: "15px", display: "block", my: 1 }}>{t("Name")}</TableRow>
                                         <SoftInput placeholder={order?.shipping_address?.name}
@@ -477,7 +572,7 @@ function DetailOrder({ absolute, light, isMini }) {
 
 
                                     </TableBody>
-                                    <TableBody sx={{ width: {lg:"45%",md:"100%",sm:"100%",xs:"100%"} }}>
+                                    <TableBody sx={{ width: { lg: "45%", md: "100%", sm: "100%", xs: "100%" } }}>
 
                                         <TableRow sx={{ border: "unset" }}>
                                             <TableCell sx={{ color: (theme) => theme.palette.grey[500], borderBottom: "unset" }}>{t("postal_code")}</TableCell>
@@ -497,7 +592,7 @@ function DetailOrder({ absolute, light, isMini }) {
                                             onChange={(e) => setControl("phone", e.target.value)}
                                             error={Boolean(invalid.phone)}
                                             helperText={invalid.phone}
-                                            sx={{width:"100%"}} />
+                                            sx={{ width: "100%" }} />
 
 
                                         {/* <TableRow sx={{border:"unset"}}>
@@ -514,8 +609,8 @@ function DetailOrder({ absolute, light, isMini }) {
                                             <TableCell sx={{ borderBottom: "unset" }} >{order?.status}</TableCell>
                                         </TableRow>
                                         <TableRow sx={{ border: "unset" }}>
-                                            <TableCell sx={{ color: (theme) => theme.palette.grey[500],borderBottom: "unset" }}>{t("additional_information")}</TableCell>
-                                            <TableCell  sx={{ borderBottom: "unset" }} >{order?.shipping_address?.additional_information}</TableCell>
+                                            <TableCell sx={{ color: (theme) => theme.palette.grey[500], borderBottom: "unset" }}>{t("additional_information")}</TableCell>
+                                            <TableCell sx={{ borderBottom: "unset" }} >{order?.shipping_address?.additional_information}</TableCell>
                                         </TableRow>
 
                                     </TableBody>
@@ -618,24 +713,24 @@ function DetailOrder({ absolute, light, isMini }) {
                             </SelectField></Container>
                     </SoftBox>
                 </Stack>
-                {edit&&    <SoftBox sx={{textAlign:"right",}}>   <SoftButton
-          type="submit"
-          variant="gradient"
-          disabled={patchOrderResponce.isPending}
-          sx={{
-            backgroundColor: (theme) => theme.palette.purple.middle,
-            color: "white !important",
-            "&:hover": {
-              backgroundColor: (theme) => theme.palette.purple.middle,
-            },
-            // width: "260px",
-          }}
-          onClick={handleSubmit}
-        >
-           
-          {patchOrderResponce.isPending?<CircularProgress />:"Save"}
-        </SoftButton>  </SoftBox>}
-           
+                {edit && <SoftBox sx={{ textAlign: "right", }}>   <SoftButton
+                    type="submit"
+                    variant="gradient"
+                    disabled={patchOrderResponce.isPending}
+                    sx={{
+                        backgroundColor: (theme) => theme.palette.purple.middle,
+                        color: "white !important",
+                        "&:hover": {
+                            backgroundColor: (theme) => theme.palette.purple.middle,
+                        },
+                        // width: "260px",
+                    }}
+                    onClick={handleSubmit}
+                >
+
+                    {patchOrderResponce.isPending ? <CircularProgress /> : "Save"}
+                </SoftButton>  </SoftBox>}
+
             </Container>
 
         </DashboardLayout>

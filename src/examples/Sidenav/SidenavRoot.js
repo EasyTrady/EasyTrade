@@ -16,10 +16,10 @@ Coded by www.creative-tim.com
 // @mui material components
 import Drawer from "@mui/material/Drawer";
 import { styled } from "@mui/material/styles";
-
+import { Sidebar} from 'react-pro-sidebar';
 export default styled(Drawer)(({ theme, ownerState }) => {
   const { palette, boxShadows, transitions, breakpoints, functions } = theme;
-  const { transparentSidenav, miniSidenav } = ownerState;
+  const { transparentSidenav, miniSidenav ,ColorSidenav,makeIconOnly} = ownerState;
 
   const sidebarWidth = 250;
   const { white, transparent } = palette;
@@ -35,17 +35,20 @@ export default styled(Drawer)(({ theme, ownerState }) => {
     }),
 
     [breakpoints.up("xl")]: {
-      backgroundColor: white.main,
+      backgroundColor:ColorSidenav?ColorSidenav: white.main,
+      backgroundImage:ColorSidenav=="linear-gradient(gray, white)"&&ColorSidenav,
       boxShadow: transparentSidenav ? "none" : xxl,
       marginBottom: transparentSidenav ? 0 : "inherit",
       left: "0",
-      width: sidebarWidth,
+
       transform: "translateX(0)",
       transition: transitions.create(["width", "background-color"], {
         easing: transitions.easing.sharp,
         duration: transitions.duration.enteringScreen,
       }),
     },
+    width:makeIconOnly?"10%":sidebarWidth,
+
   });
 
   // styles for the sidenav when miniSidenav={true}
@@ -75,8 +78,9 @@ export default styled(Drawer)(({ theme, ownerState }) => {
     "& .MuiDrawer-paper": {
       boxShadow: xxl,
       border: "none",
-
+    
       ...(miniSidenav ? drawerCloseStyles() : drawerOpenStyles()),
     },
+    
   };
 });
