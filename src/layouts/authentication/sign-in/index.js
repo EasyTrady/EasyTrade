@@ -39,6 +39,7 @@ import curved9 from "assets/images/curved-images/curved-6.jpg";
 import { Formik } from "formik";
 import {
   Box,
+  Container,
   Divider,
   FormControl,
   FormControlLabel,
@@ -76,145 +77,64 @@ function SignIn() {
   };
   return (
     <PageLayout>
-      <Card>
-        <AuthWrapper1>
-          <Box
-            sx={{
-              display: "flex",
-              flexWrap: "nowrap",
-              flexDirection: {
-                xl: "row",
-                lg: "row",
-                md: "column",
-                sm: "column",
-                xs: "column",
-              },
-              gap: "2px",
-              justifyContent: "space-between",
-              overflow: "auto",
-              bgcolor: "#FFFFFF",
-              height: "fit-content",
-              alignItems: "stretch",
-            }}
-          >
+      <Box sx={{height:'100vh'}}>
+      <Grid item>
+        <Grid container>
+          <Grid item md={6} xs={12}  height={{md:"100vh",xs:"100%"}}>
             <Box
               sx={{
+                backgroundImage: `URL(${dots})`,
+                backgroundSize: "30px",
+                backgroundRepeat: "repeat",
+                backgroundPosition: "center center",
+                height: { md: "30vh", sm: "30vh", xs: "30vh", lg: "100%" },
                 width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
               <Box
                 sx={{
-                  backgroundImage: `URL(${dots})`,
-                  backgroundSize: "30px",
-                  backgroundRepeat: "repeat",
+                  backgroundImage: `URL(${vector})`,
+                  backgroundSize: "contain",
+                  backgroundRepeat: "no-repeat",
                   backgroundPosition: "center center",
                   height: { md: "30vh", sm: "30vh", xs: "30vh", lg: "100%" },
-                  width: "100%",
+                  width: "50%",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
                 }}
-              >
-                <Box
-                  sx={{
-                    backgroundImage: `URL(${vector})`,
-                    backgroundSize: "contain",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center center",
-                    height: { md: "30vh", sm: "30vh", xs: "30vh", lg: "100%" },
-                    width: "50%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                ></Box>
-              </Box>
+              ></Box>
             </Box>
-            <Grid
-              container
-              direction="column"
-              justifyContent="flex-end"
-              sx={{ minHeight: "100vh", bgcolor: "#FFFFFF" }}
-            >
-              <Grid item xs={12}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                    flexDirection: "column",
-                    gap: 2,
-                    px: "12px",
-                  }}
-                >
-                  <Grid
-                    container
-                    justifyContent="end"
-                    alignItems="end"
-                    sx={{ minHeight: "calc(100vh - 68px)" }}
-                  >
-                    <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
-                      <AuthCardWrapper sx={{ border: "none" ,boxShadow:'none' }}>
-                        <Grid container spacing={2} alignItems="end" justifyContent="end">
-                          <Grid item sx={{ mb: 3 }}>
-                            <Link to="#">{/* <Logo /> */}</Link>
-                          </Grid>
-                          <Grid item xs={12}>
-                            <Grid
-                              container
-                              direction={matchDownSM ? "column-reverse" : "row"}
-                              alignItems="end"
-                              justifyContent="center"
-                            >
-                              <Box >
-                              <Grid item >
-                                <Stack alignItems="center" justifyContent="center" spacing={1}>
-                                  <Typography
-                                  sx={{fontFamily:'Cairo',fontWeight:600,fontSize:'36px',color:'#3D2D66'}}
-                                    color={theme.palette.secondary.main}
-                                    gutterBottom
-                                    variant={matchDownSM ? "h3" : "h2"}
-                                  >
-                                    تسجيل الدخول
-                                  </Typography>
-                                  <Typography
-                                   sx={{fontFamily:'Cairo',fontWeight:400,fontSize:'16px',color:'#667085'}}
-                                    variant="caption"
-                                    alignItems="center" justifyContent="center"
-                                    fontSize="16px"
-                                    textAlign={matchDownSM ? "center" : "inherit"}
-                                  >
-                                    مرحبًا بعودتك! برجاء ادخال التفاصيل الخاصة بك
-                                  </Typography>
-                                </Stack>
-                              </Grid>
-                              </Box>
-                            </Grid>
-                          </Grid>
-                          <Grid item xs={12}>
-                            <AuthLogin />
-                          </Grid>
-                          <Grid item xs={12}>
-                            <Divider />
-                          </Grid>
-                          <Grid item xs={12}>
-                            <Grid item container direction="column" alignItems="center" xs={12}>
-                              {/* <Typography component={Link} to="/register" variant="subtitle1" sx={{ textDecoration: 'none' }}>
-                        Don&apos;t have an account?
-                      </Typography> */}
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                      </AuthCardWrapper>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </Grid>
-              <Grid item xs={12} sx={{ m: 3, mt: 1 }}></Grid>
-            </Grid>
-          </Box>
-        </AuthWrapper1>
-      </Card>
+          </Grid>
+          <Grid item md={6} xs={12}  height="100vh" >
+            <Container>
+            <Box  sx={{alignItems:"flex-end",justifyContent:"center", height:"100vh",display:'flex',flexDirection:'column',width:{md:'60%',xs:'100%'},margin:'auto',}} >
+              <Typography
+                sx={{ fontFamily: "Cairo", fontWeight: 600, fontSize: "36px", color: "#3D2D66" ,mb:"12px"}}
+                color={theme.palette.secondary.main}
+                gutterBottom
+                variant={matchDownSM ? "h3" : "h2"}
+              >
+                تسجيل الدخول
+              </Typography>
+              <Typography
+                sx={{ fontFamily: "Cairo", fontWeight: 400, fontSize: "16px", color: "#667085",mb:'32px' }}
+                
+                fontSize="16px"
+                textAlign={matchDownSM ? "center" : "inherit"}
+              >
+                مرحبًا بعودتك! برجاء ادخال التفاصيل الخاصة بك
+              </Typography>
+              <AuthLogin/>
+            </Box>
+            </Container>
+          </Grid>
+        </Grid>
+      </Grid>
+      </Box>
     </PageLayout>
   );
 }

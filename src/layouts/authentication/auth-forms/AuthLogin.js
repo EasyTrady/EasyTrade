@@ -79,13 +79,7 @@ const FirebaseLogin = ({ ...others }) => {
  
   return (
     <>
-      <Grid container direction="column" justifyContent="center" spacing={2}>
-        {/* <Grid item xs={12} container alignItems="center" justifyContent="center">
-          <Box sx={{ mb: 2 }}>
-            <Typography variant="subtitle1">Sign in with Email address</Typography>
-          </Box>
-        </Grid> */}
-      </Grid>
+     
       <Formik
         initialValues={{
           email: '',
@@ -173,10 +167,10 @@ const FirebaseLogin = ({ ...others }) => {
           }}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-           <Box sx={{justifyContent:'center',alignItems:'center',textAlign:'center'}}>
+           <Box sx={{justifyContent:'center',alignItems:'flex-end',textAlign:'right',width:'100%',}}>
 
           <form noValidate onSubmit={handleSubmit} {...others} >
-            {console.log(values)}
+            <Box sx={{width:'100%',display:'flex',flexDirection:'column'}}>
            <FormControl
               
               error={Boolean(touched.email && errors.email)}
@@ -187,8 +181,8 @@ const FirebaseLogin = ({ ...others }) => {
               variant='outlined'
                 sx={{
                   direction: 'rtl',
-                  width:'360px',
-                  marginRight: 'auto',
+                  width:'100%',
+                  
                   
                 }}
                 name="email"
@@ -245,7 +239,7 @@ const FirebaseLogin = ({ ...others }) => {
               /> */}
               <Box
                 sx={{
-                  position: 'relative',
+                  width:'100%'
 
                 }}
               >
@@ -253,8 +247,7 @@ const FirebaseLogin = ({ ...others }) => {
                 variant='outlined'
                   sx={{
                     direction: 'rtl',
-                    width:'360px',
-                    marginRight: 'auto',
+                    minWidth:'100%',
                     
                   }}
                   name="password"
@@ -264,6 +257,7 @@ const FirebaseLogin = ({ ...others }) => {
                   
                   onBlur={handleBlur}
                 onChange={handleChange}
+                
                 ></TextField>
                 <InputAdornment sx={{
                   position: 'absolute',
@@ -290,9 +284,10 @@ const FirebaseLogin = ({ ...others }) => {
                 </FormHelperText>
               )}
             </FormControl>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
+            </Box>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1} >
               <FormControlLabel
-              sx={{width:'360px', marginRight: 'auto',}}
+              
                 control={
                   <Checkbox
                     checked={checked}
@@ -307,7 +302,7 @@ const FirebaseLogin = ({ ...others }) => {
               <Typography
                 variant="subtitle1"
                 color="secondary"
-                sx={{  cursor: 'pointer',color:'#5D449B',fontFamily:'Cairo',fontSize:'14px',fontWeight:500,paddingRight:'100px' }}
+                sx={{  cursor: 'pointer',color:'#5D449B',fontFamily:'Cairo',fontSize:'14px',fontWeight:500 }}
               >
                 هل نسيت كلمة المرور ؟
               </Typography>
@@ -322,7 +317,7 @@ const FirebaseLogin = ({ ...others }) => {
               <AnimateButton>
                 <Button
                   sx={{ borderRadius: '12PX', padding: '10px, 18px, 10px, 18px' ,
-                  backgroundColor:'#5D449B',color:'#FFFFFF', width:'360px',
+                  backgroundColor:'#5D449B',color:'#FFFFFF', width:'100%',
                   '&:hover': {
                     backgroundColor: '#5D449B',
                   },
@@ -348,27 +343,14 @@ const FirebaseLogin = ({ ...others }) => {
 
         )}
       </Formik>
-      <Grid item xs={12}>
-        <Box
-          sx={{
-            alignItems: 'center',
-            display: 'flex'
-          }}
-        >
-          <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-
-
-          <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-        </Box>
-      </Grid>
-      <Box sx={{justifyContent:'center',alignItems:'center',textAlign:'center'}}>
-      <Grid item xs={12}>
-        <AnimateButton>
-          <Button
-            disableElevation
-            fullWidth
+      
+        
+          <Divider  />
+     <Box width={'100%'}>
+        <AnimateButton >
+          <Button  
             onClick={googleHandler}
-            size="large"
+           
             variant="outlined"
             sx={{
               color: 'grey.700',
@@ -376,7 +358,7 @@ const FirebaseLogin = ({ ...others }) => {
               borderColor: '#D0D5DD',
               padding: '10px 16px 10px 16px',
               marginTop: '20px',
-              width:'360px',
+              width:'100%',
               borderRadius: '12px',
               '&:hover': {
                 backgroundColor: theme.palette.grey[50] ,
@@ -397,8 +379,8 @@ const FirebaseLogin = ({ ...others }) => {
             تسجيل الدخول بحساب جوجل
           </Button>
         </AnimateButton>
-      </Grid>
-      </Box>
+      
+        </Box>
       <ToastContainer />
       {signInResponse.failAlert}
       {ShopInfoResponse.failAlert}
