@@ -62,6 +62,9 @@ function reducer(state, action) {
     case "ICONONLY": {
       return { ...state, makeIconOnly: action.value };
     }
+    case "BACKGROUNDCOLOR": {
+      return { ...state, backgroundColor: action.value };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -80,7 +83,8 @@ function SoftUIControllerProvider({ children }) {
     direction: "ltr",
     layout: "dashboard",
     makeIconOnly:false,
-    ColorSidenav:"white"
+    ColorSidenav:"white",
+    backgroundColor:"#ecf4fa"
   };
 
   const [controller, dispatch] = useReducer(reducer, initialState);
@@ -118,6 +122,7 @@ const setLayout = (dispatch, value) => dispatch({ type: "LAYOUT", value });
 const setIconOnly = (dispatch, value) => dispatch({ type: "ICONONLY", value });
 const setColorSideBar = (dispatch, value) => dispatch({ type: "COLOR_SIDENAV", value });
 
+const setColorBackground = (dispatch, value) => dispatch({ type: "BACKGROUNDCOLOR", value });
 
 export {
   SoftUIControllerProvider,
@@ -132,4 +137,5 @@ export {
   setLayout,
   setIconOnly,
   setColorSideBar,
+  setColorBackground
 };

@@ -29,7 +29,7 @@ const NavItem = ({ item }) => {
   const { pathname } = useLocation();
  let navigate= useNavigate()
 
-
+  
   const Icon = item.icon;
   const itemIcon = item?.icon ? (
     <Icon stroke={1.5} size="1.3rem" />
@@ -76,7 +76,7 @@ const NavItem = ({ item }) => {
 //     // eslint-disable-next-line
 //   }, [pathname]);
 const handleClick = () => {
-  setOpen(!open);
+  setOpen(true);
   setSelected(!selected ? item.id : null);
   // if (menu?.id !== 'authentication') {
   //   navigate(menu.children[0]?.url);

@@ -33,10 +33,10 @@ export default styled(Drawer)(({ theme, ownerState }) => {
       easing: transitions.easing.sharp,
       duration: transitions.duration.shorter,
     }),
-
+    backgroundColor:ColorSidenav?ColorSidenav: white.main,
+    backgroundImage:ColorSidenav=="linear-gradient(gray, white)"&&ColorSidenav,
     [breakpoints.up("xl")]: {
-      backgroundColor:ColorSidenav?ColorSidenav: white.main,
-      backgroundImage:ColorSidenav=="linear-gradient(gray, white)"&&ColorSidenav,
+     
       boxShadow: transparentSidenav ? "none" : xxl,
       marginBottom: transparentSidenav ? 0 : "inherit",
       left: "0",

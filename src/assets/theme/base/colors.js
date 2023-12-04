@@ -37,7 +37,10 @@ const colors = {
   transparent: {
     main: "transparent",
   },
-
+  babyblue:{
+    main:"#43AA8B",
+    hover:"#43aa8b3b"
+  },
   white: {
     main: "#ffffff",
     focus: "#ffffff",
@@ -69,7 +72,10 @@ const colors = {
     focus: "#95dc39",
     hover:"#ECFDF3"
   },
-
+orange:{
+  main:"#F3722C",
+  hover:"#f3722c40"
+},
   warning: {
     main: "#fbcf33",
     focus: "#fcd65224",

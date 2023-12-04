@@ -112,7 +112,7 @@ function collapseText(theme, ownerState) {
 
   const { size, fontWeightMedium, fontWeightRegular } = typography;
   const { pxToRem } = functions;
-  console.log(ColorSidenav)
+
   return {
     marginLeft: pxToRem(12.8),
     // display:"none",
@@ -130,7 +130,7 @@ function collapseText(theme, ownerState) {
       fontWeight: active ? fontWeightMedium : fontWeightRegular,
       fontSize: size.sm,
       lineHeight: 0,
-    color:ColorSidenav=="gray"||ColorSidenav=="linear-gradient(gray, white)"?"#ffffff":"gray",
+    color:(ColorSidenav=="gray"||ColorSidenav=="linear-gradient(gray, white)")&&!active?"#ffffff":"gray",
 
     },
   };

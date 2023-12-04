@@ -18,6 +18,7 @@ import {
    Container,InputAdornment,Avatar
 } from '@mui/material'
 import moment from 'moment';
+import Footer from "examples/Footer";
 
 import DateIcon from 'examples/Icons/DateIcon';
 import useRequest from "hooks/useRequest";
@@ -77,7 +78,7 @@ function Report() {
             end_date:controls?.end_date
           },
           onSuccess:(res)=>{
-          setControl(`total_${data}`,res.data.total)
+          setControl(`total_${data}`,res.data.count)
             setRows(res.data.results.map((ele)=>ele))
               setColumns(res.data.results.length>0?Object.keys(res.data.results[0]).map((elem)=>(elem=="created_at"||elem=="date"?{field:elem, renderCell: (params) => (moment(params.row.created_at).format('MMMM-DD-YYYY')), headerName: elem.replace("_"," "),width:150}:elem=="main_image"?{field:elem,renderCell: (params) => <Avatar src={BaseUrl+params.row.main_image}/>, headerName: elem.replace("_"," "),width:150}:{field:elem, headerName: elem.replace("_"," "),width:150})):[])
             
@@ -98,26 +99,26 @@ function Report() {
                 chart={chart}
                 items={items} /> */}
                  <Grid container spacing={2}>
-                 <Grid item xs={6} sm={3} md={2.3} onClick={()=>togetdataoftable("sales")}>
+                 <Grid item xs={12} sm={6} md={2.3} onClick={()=>togetdataoftable("sales")}>
                  <Chart color={"red"} chart={gradientLineChartData} title={controls.total_sales} description={"sales"}subDescription={"-0.91% this week"} />
 
-    </Grid><Grid item xs={6} sm={3} md={2.3} onClick={()=>togetdataoftable("products")}>
+    </Grid><Grid item xs={12} sm={6} md={2.3} onClick={()=>togetdataoftable("products")}>
                  <Chart color={"#F9C74F"} chart={gradientLineChartData} title={controls.total_products} description={"products"}subDescription={"-0.91% this week"}/>
 
-    </Grid><Grid item xs={6} sm={3} md={2.3} onClick={()=>togetdataoftable("profit")}>
+    </Grid><Grid item xs={12} sm={6} md={2.3} onClick={()=>togetdataoftable("profit")}>
                  <Chart  color={"#F8961E"}chart={gradientLineChartData} title={controls.total_profit} description={"profile"}subDescription={"-0.91% this week"}/>
 
-    </Grid><Grid item xs={6} sm={3} md={2.3} onClick={()=>togetdataoftable("customers")}>
+    </Grid><Grid item xs={12} sm={6} md={2.3} onClick={()=>togetdataoftable("customers")}>
                  <Chart  color={"#F3722C"}chart={gradientLineChartData} title={controls.total_customers} description={"customer"}subDescription={"-0.91% this week"}/>
 
-    </Grid><Grid item xs={6} sm={3} md={2.3} onClick={()=>togetdataoftable("employees")}>
+    </Grid><Grid item xs={12} sm={6} md={2.3} onClick={()=>togetdataoftable("employees")}>
                  <Chart  color={"#52C41A"}chart={gradientLineChartData} title={controls.total_employees} description={"employee"}subDescription={"-0.91% this week"}/>
 
     </Grid>
             </Grid>
-            <SoftBox sx={{display:"flex", justifyContent:"space-between", marginY:"24px"}}>
+            <SoftBox sx={{display:"flex", justifyContent:"space-between", marginY:"24px",flexDirection:{lg:"row",md:"row",sm:"column",xs:"column"}}}>
             <SoftTypography variant="h5">Sales Report</SoftTypography>
-            <SoftBox sx={{display:"flex",width:"50%",borderRadius: '8px',
+            <SoftBox sx={{display:"flex",width:{lg:"50%",md:"50%",sm:"100%",xs:"100%"},borderRadius: '8px',
 border: "1px solid #D9D9D9",overflow:"hidden",alignItems:"center"}}>
           
                                  <DatePickerField
@@ -168,6 +169,7 @@ border: "1px solid #D9D9D9",overflow:"hidden",alignItems:"center"}}>
           getRowSpacing={4}/>
 
             </Container>
+            <Footer />
     </DashboardLayout>
   )
 }

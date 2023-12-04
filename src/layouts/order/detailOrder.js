@@ -57,7 +57,7 @@ function DetailOrder({ absolute, light, isMini }) {
     let [Customer, setCustomer] = useState(null)
     const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] = useControls([
         {
-            control: "status", value: "return", isRequired: false
+            control: "status", value: "", isRequired: false
         }, {
             control: "name", value: "", isRequired: false
         }, {
@@ -109,7 +109,7 @@ function DetailOrder({ absolute, light, isMini }) {
             Token: `Token ${Token}`,
 
         });
-    "https://easytradyapi.shop/shop/dashboard/orders/1/activity/"
+   
     const [updataOrderstatusRequest, patchOrderstatusResponce] =
         useRequest({
             path: ORDERS,
@@ -128,15 +128,15 @@ function DetailOrder({ absolute, light, isMini }) {
                 }
             })
         }
-        console.log(Boolean(orders.results.find((ele) => ele.id == id)))
+        
     }, [orders])
     useEffect(() => {
-        console.log(Boolean(Customer), order.customer, order)
+      
         if (!Boolean(Customer)) {
             customerByIdRequest({
                 id: order.customer,
                 onSuccess: (res) => {
-                    console.log(res.data)
+                 
 
                     setCustomer(res.data)
                 }
@@ -151,54 +151,18 @@ function DetailOrder({ absolute, light, isMini }) {
                 body: { status: controls.status.id },
                 onSuccess: (res) => {
                     dispatch({ type: "orders/patchItem", payload: { id: order.id, item: res.data } })
-                    console.log(res.data)
+                 
                 }
             })
         }
-        //     if (controls.status=="return") {
-        //         returnOrderRequest({
-        //             id:id+"/return_order",
-        //             onSuccess: (res) => {
-        //                 console.log(res.data)
-
-        //                 setControl("status","return")
-        //             }
-        //         })
-        //     }else if(controls.status=="cancel"){
-        //         returnOrderRequest({
-        //             id:id+"/cancel",
-        //             onSuccess: (res) => {
-        //                 console.log(res.data)
-
-        //                 setControl("status","cancel")
-        //             }
-        //         })
-        //     }
-
+      
     }, [controls.status])
     useEffect(() => {
 
         if (Boolean(order?.shipping_address)) {
             Object.entries(order?.shipping_address).map(([key, value]) => setControl(key, value))
         }
-        //         returnOrderRequest({
-        //             id:id+"/return_order",
-        //             onSuccess: (res) => {
-        //                 console.log(res.data)
-
-        //                 setControl("status","return")
-        //             }
-        //         })
-        //     }else if(controls.status=="cancel"){
-        //         returnOrderRequest({
-        //             id:id+"/cancel",
-        //             onSuccess: (res) => {
-        //                 console.log(res.data)
-
-        //                 setControl("status","cancel")
-        //             }
-        //         })
-        //     }
+       
 
     }, [order.shipping_address])
     function handleSubmit() {
@@ -215,7 +179,7 @@ function DetailOrder({ absolute, light, isMini }) {
                 id: order.id + "/updateaddress/" + order.shipping_address.id,
                 body: result.array,
                 onSuccess: (res) => {
-                    console.log(res.data)
+                  
                 }
             })
         }
@@ -227,7 +191,7 @@ function DetailOrder({ absolute, light, isMini }) {
         if (status.length == 0) {
             statusOrderRequest({
                 onSuccess: (res) => {
-                    console.log(res.data.map((ele) => ele.name))
+                   
                     setstatus(res.data.map((ele) => ele))
                 }
             })
@@ -265,12 +229,12 @@ function DetailOrder({ absolute, light, isMini }) {
                                 </Typography>
                             </SoftBox>
                             <SoftBox>
-                                {order?.status_name === "pending" ? <Typography sx={{
+                                {order?.status_name === "In Progress" ? <Typography sx={{
                                     color: (theme) => theme.palette.blue.main,
                                     fontSize: "14px", borderRadius: "8px",
                                     backgroundColor: (theme) => theme.palette.blue.hover,
                                     padding: "5px 16px 5px 16px"
-                                }}>{order?.status_name}</Typography> : order?.status_name === "canceled" ? <Typography sx={{
+                                }}>{order?.status_name}</Typography> : order?.status_name === "Cancelled" ? <Typography sx={{
                                     color: (theme) => theme.palette.error.main,
                                     fontSize: "14px", borderRadius: "8px",
                                     backgroundColor: (theme) => theme.palette.error.hover,
@@ -280,15 +244,20 @@ function DetailOrder({ absolute, light, isMini }) {
                                     fontSize: "14px", borderRadius: "8px",
                                     backgroundColor: (theme) => theme.palette.success.hover,
                                     padding: "5px 16px 5px 16px"
-                                }}>{order?.status_name}</Typography> : order?.status_name === "shipped" ? <Typography sx={{
+                                }}>{order?.status_name}</Typography> : order?.status_name === "Shipped" ? <Typography sx={{
                                     color: (theme) => theme.palette.warning.main,
                                     fontSize: "14px", borderRadius: "8px",
                                     backgroundColor: (theme) => theme.palette.warning.focus,
                                     padding: "5px 16px 5px 16px"
-                                }}>{order?.status_name}</Typography> : <Typography sx={{
-                                    color: (theme) => theme.palette.warning.main,
+                                }}>{order?.status_name}</Typography> :order?.status_name === "In Packaging"? <Typography sx={{
+                                    color: (theme) => theme.palette.babyblue.main,
                                     fontSize: "14px", borderRadius: "8px",
-                                    backgroundColor: (theme) => theme.palette.warning.focus,
+                                    backgroundColor: (theme) => theme.palette.babyblue.hover,
+                                    padding: "5px 16px 5px 16px"
+                                }}>{order?.status_name}</Typography>: <Typography sx={{
+                                    color: (theme) => theme.palette.orange.main,
+                                    fontSize: "14px", borderRadius: "8px",
+                                    backgroundColor: (theme) => theme.palette.orange.hover,
                                     padding: "5px 16px 5px 16px"
                                 }}>{order?.status_name}</Typography>}
                             </SoftBox>
@@ -680,30 +649,24 @@ function DetailOrder({ absolute, light, isMini }) {
                             <SelectField
 
                                 variant="outlined"
-                                label={"Select status"}
+                                
                                 placeholder={"Select..."}
                                 // onOpen={getAttributies}
                                 renderValue={(selected) => {
-                                    if (!Boolean(selected)) {
-                                        return (
-                                            <Typography sx={{ color: "currentColor", opacity: "0.42", fontSize: "14px" }}>
-                                                {t("status")}
-                                            </Typography>
-                                        );
-                                    } else {
-                                        return selected.name
-                                    }
+                                 
+                                        return selected.name?selected.name:selected
+                                    
                                 }}
                                 // isPending={attributeResponse.isPending}
-                                value={controls?.status}
-                                onChange={(e) => { setControl("status", e.target.value); console.log(e.target.value) }}
+                                value={Boolean(controls?.status)?controls.status:order.status_name}
+                                onChange={(e) => { setControl("status", e.target.value); }}
                                 required={required.includes("status")}
                                 error={Boolean(invalid?.status)}
                                 helperText={invalid?.status}
                                 MenuProps={MenuProps}
                                 onOpen={() => statusOrderRequest({
                                     onSuccess: (res) => {
-                                        console.log(res.data.map((ele) => ele.name))
+                                        
                                         setstatus(res.data.map((ele) => ele))
                                     }
                                 })}
