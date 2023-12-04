@@ -645,6 +645,7 @@ function DetailOrder({ absolute, light, isMini }) {
                         }}>
                             {t("status")}
                         </SoftBox>
+                        {console.log(order?.status_name,Boolean(controls?.status),order?.status_name)}
                         <Container sx={{ m: 4 }}>
                             <SelectField
 
@@ -653,12 +654,10 @@ function DetailOrder({ absolute, light, isMini }) {
                                 placeholder={"Select..."}
                                 // onOpen={getAttributies}
                                 renderValue={(selected) => {
-                                 
-                                        return selected.name?selected.name:selected
-                                    
+                                        return Boolean(controls?.status)?selected?.name:selected
                                 }}
                                 // isPending={attributeResponse.isPending}
-                                value={Boolean(controls?.status)?controls.status:order.status_name}
+                                value={Boolean(controls?.status)?controls?.status:order?.status_name}
                                 onChange={(e) => { setControl("status", e.target.value); }}
                                 required={required.includes("status")}
                                 error={Boolean(invalid?.status)}

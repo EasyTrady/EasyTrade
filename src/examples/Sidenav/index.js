@@ -74,7 +74,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     return () => window.removeEventListener("resize", handleMiniSidenav);
   }, [dispatch, location]);
   let [active,setActive]=useState("")
-
+console.log(active)
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
   const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, route, path, children,color }) => {
     let returnValue;
@@ -95,6 +95,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           );
       }
     });
+   
     if (type === "collapse") {
       returnValue = path ? (
         <Link
@@ -103,8 +104,10 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           target="_blank"
           rel="noreferrer"
           sx={{ textDecoration: "none" }}
-          onClick={(e)=>setActive((previous)=>previous===key?"":key)}
+          onClick={(e)=>setActive((previous)=>previous===key?previous:key)}
         >
+          
+
           <SidenavCollapse
             color={sidenavColor}
             name={name}
@@ -118,14 +121,14 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           </SidenavCollapse>
         </Link>
       ) : (
-        <NavLink to={!noCollapse&&route} key={key} onClick={(e)=>setActive((previous)=>previous===key?"":key)}>
+        <NavLink to={!noCollapse&&route} key={key} onClick={(e)=>setActive((previous)=>previous===key?previous:key)}>
           <SidenavCollapse
             color={sidenavColor}
             key={key}
             name={name}
             icon={icon}
             setOpen={setOpen}
-            open={open}
+            open={key === active?open:false}
           active={key === active}
           noCollapse={noCollapse}
           onClick={()=>setOpen(!open)}

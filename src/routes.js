@@ -177,6 +177,7 @@ const routes = [
     noCollapse: true,
     children: [
       {
+        key: "products",
         id: "attribute",
         path: `/${sub_domain}/dashboard/attribute`,
         title: "Attribute",
@@ -185,6 +186,7 @@ const routes = [
 
       },
       {
+        key: "products",
         id: "products",
         path: `/${sub_domain}/dashboard/products`,
         title: "products",
@@ -200,6 +202,7 @@ const routes = [
       //   type: 'item',
       // },
       {
+        key: "products",
         id: "category",
         title: "category",
         path: `/${sub_domain}/dashboard/products/category`,
@@ -218,6 +221,7 @@ const routes = [
     noCollapse: true,
     children: [
       {
+        key: "order",
         id: "order",
         path: `/${sub_domain}/dashboard/order`,
         title: "order",
@@ -226,7 +230,8 @@ const routes = [
 
       },
       {
-        id: "abandonedbasket",
+        key: "order",
+        id: "order",
         path: `/${sub_domain}/dashboard/abandonedbasket`,
         title: "abandoned basket",
         element: <Auth><Basket /></Auth>,
@@ -246,7 +251,7 @@ const routes = [
     noCollapse: true,
     component: <Auth><Offers /></Auth>,
     children: [{
-
+    
       id: "Offers",
       path: `/${sub_domain}/dashboard/offers`,
       title: "offers",
@@ -267,7 +272,7 @@ const routes = [
     noCollapse: true,
     component: <Auth><ViewBanners /></Auth>,
     children: [{
-
+     
       id: "Banners",
       path: `/${sub_domain}/dashboard/banners`,
       title: "Banners",
@@ -287,8 +292,8 @@ const routes = [
     noCollapse: true,
     component: <Auth><Customer /></Auth>,
     children: [{
-
-      id: "customer",
+    
+      id: "Customer",
       path: `/${sub_domain}/dashboard/customer`,
       title: "Customer",
       element: <Auth><Customer /></Auth>,
@@ -316,7 +321,7 @@ const routes = [
     noCollapse: true,
     component: <Auth><Employee /></Auth>,
     children: [{
-
+     
       id: "Employees",
       path: `/${sub_domain}/dashboard/employee`,
       title: "employee",
@@ -324,8 +329,8 @@ const routes = [
       type: "item"
 
     }, {
-
-      id: "Jobs",
+     
+      id: "Employees",
       path: `/${sub_domain}/dashboard/jobs`,
       title: "Jobs",
       element: <Auth><Job /></Auth>,
@@ -379,7 +384,7 @@ const routes = [
     noCollapse: true,
     component: <Auth><Offers /></Auth>,
     children: [{
-
+      key: "Offers",
       id: "Offers",
       path: `/${sub_domain}/dashboard/offers`,
       title: "offers",
