@@ -360,7 +360,7 @@ function Basket({ absolute, light, isMini }) {
           sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
           onNotify={(ele) => { setOpenDialog(ele); console.log(ele, "row") }}
           rowsPerPageOptions={[5, 10, 15, 20]}
-
+          loading={getCartResponce.isPending}
           //  onState={onDelete}
           onPaginationModelChange={setPaginationModel}
         />

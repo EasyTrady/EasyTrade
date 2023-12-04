@@ -189,6 +189,7 @@ function Products({ absolute, light, isMini }) {
         <DataGridCustom
           rows={products?.results}
           columns={columns}
+          loading={ResponseGetProducts.isPending}
 
           onDialog={onEdit}
 

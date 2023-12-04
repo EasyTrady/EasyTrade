@@ -455,6 +455,7 @@ function Employee({ absolute, light, isMini }) {
                     onDelete={onDelete}
                     columns={columns}
                     checkboxSelection={true}
+                    loading={getemployeeResponce.isPending}
                     // onRowClic/k={(e) => { setClick({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
                     sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
                     onDialog={onEdit}

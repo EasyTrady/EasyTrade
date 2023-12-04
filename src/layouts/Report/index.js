@@ -172,6 +172,7 @@ border: "1px solid #D9D9D9",overflow:"hidden",alignItems:"center"}}>
             console.log(e,row);
             // setClick({ ...e.id });
           }}
+          loading={getReportResponce.isPending}
           // notProduct={false}
           // rowsPerPageOptions={[5, 10, 15, 20]}
           // onPaginationModelChange={setPaginationModel}

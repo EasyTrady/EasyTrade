@@ -174,6 +174,7 @@ function Order({ absolute, light, isMini }) {
                 </SoftBox>
                 <DataGridCustom
                     rows={rows}
+                    loading={getOrderResponce.isPending}
                     // onDelete={onDelete}
                     // onDialog={onEdit}
                     columns={columns}

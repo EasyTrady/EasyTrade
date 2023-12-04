@@ -375,25 +375,25 @@ const routes = [
     component: <Auth><DetailOrder /></Auth>,
     noCollapse: false,
   },
-  {
-    type: "collapse",
-    name: "Offers",
-    key: "Offers",
-    route: `/${sub_domain}/dashboard/offers`,
-    icon: <img src={offers} size="12px" />,
-    noCollapse: true,
-    component: <Auth><Offers /></Auth>,
-    children: [{
-      key: "Offers",
-      id: "Offers",
-      path: `/${sub_domain}/dashboard/offers`,
-      title: "offers",
-      element: <Auth><Offers /></Auth>,
-      type: "item"
+  // {
+  //   type: "collapse",
+  //   name: "Offers",
+  //   key: "Offers",
+  //   route: `/${sub_domain}/dashboard/offers`,
+  //   icon: <img src={offers} size="12px" />,
+  //   noCollapse: true,
+  //   component: <Auth><Offers /></Auth>,
+  //   children: [{
+  //     key: "Offers",
+  //     id: "Offers",
+  //     path: `/${sub_domain}/dashboard/offers`,
+  //     title: "offers",
+  //     element: <Auth><Offers /></Auth>,
+  //     type: "item"
 
-    }
-    ]
-  },
+  //   }
+  //   ]
+  // },
   {
     type: "title",
     name: "abandonedbasket",

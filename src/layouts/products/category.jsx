@@ -173,6 +173,7 @@ function Category({ absolute, light, isMini }) {
                     onDialog={onEdit}
                     columns={columns}
                     checkboxSelection={true}
+                    loading={getcategoryResponce.isPending}
                     // onRowClick={(e) => { console.log({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
                     // sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
                     // onEdit={onEdit}

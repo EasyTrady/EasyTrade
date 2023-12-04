@@ -193,6 +193,7 @@ color:row.offer_type_id===1?'#027A48':row.offer_type_id===2?"#7A0243":row.offer_
           onDelete={onDelete}
           onCopy={() => {}}
           checkboxSelection={true}
+          loading={OffersGetResponce.isPending}
           // onRowClick={(e, row) => {
           //   console.log(e, row);
           //    setClick({ ...e.id });
