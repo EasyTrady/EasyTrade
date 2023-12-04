@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import ReactCountryFlag from "react-country-flag";
 import PropTypes from "prop-types";
 import SoftInput from "components/SoftInput";
+import input from "assets/theme/components/form/input";
 
 const PhoneField = ({
   selectProps = {},
@@ -34,13 +35,14 @@ const PhoneField = ({
   }, [selectProps?.value]);
  
   return (
-    <NumericFormat
-      customInput={TextField}
-      variant="standard"
+    <SoftInput
+      // customInput={TextField}
+      // variant="standard"
       disabled={requiredCode && !Boolean(country)}
-     sx={{fontSize:"15px","& .MuiInputBase-root": { justifyContent: "flex-end",paddingX:"0px !important"},"& .MuiInputBase-root::before":{borderBottom: "unset"},"& .MuiInputBase-root::after":{borderBottom: "unset !important"}}}
-      onValueChange={(e) =>
-        onChange({ target: { value: e.value, valueAsNumber: e.floatValue } })
+    sx={input}
+      onChange={(e) =>
+       
+        Number(e.target.value)&&onChange({ target: { value: e.target.value, valueAsNumber: e.target.floatValue } })
       }
       {...rest}
       inputProps={{ min: 0 }}
@@ -52,6 +54,7 @@ const PhoneField = ({
               select
               sx={{
                 "& .MuiInputBase-root": {
+                 justifyContent: "flex-end",paddingX:"0px !important",
                   borderRadius: 0,
                   borderLeft: "none",
                   padding:"0px !important",

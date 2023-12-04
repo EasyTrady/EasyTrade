@@ -144,6 +144,7 @@ function Customer({ absolute, light, isMini }) {
           <DataGridCustom
             rows={rows}
             columns={columns} checkboxSelection={true}
+            loading={getCustomerResponce.isPending}
             /* navigate(`/${shopName}/dashboard/customer/${e?.row?.id}`) */
             sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
             // onDelete={onDelete}

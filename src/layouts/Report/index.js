@@ -14,8 +14,10 @@ import SelectField from "components/common/SelectField";
 import DataGridCustom from 'components/common/DateGridCustomer'
 import DatePickerField from "components/common/DatePicker";
 import useControls from "hooks/useControls";
+import Switch from '@mui/material/Switch';
+
 import {
-   Container,InputAdornment,Avatar
+   Container,InputAdornment,Avatar,Icon
 } from '@mui/material'
 import moment from 'moment';
 import Footer from "examples/Footer";
@@ -80,12 +82,17 @@ function Report() {
           onSuccess:(res)=>{
           setControl(`total_${data}`,res.data.count)
             setRows(res.data.results.map((ele)=>ele))
-              setColumns(res.data.results.length>0?Object.keys(res.data.results[0]).map((elem)=>(elem=="created_at"||elem=="date"?{field:elem, renderCell: (params) => (moment(params.row.created_at).format('MMMM-DD-YYYY')), headerName: elem.replace("_"," "),width:150}:elem=="main_image"?{field:elem,renderCell: (params) => <Avatar src={BaseUrl+params.row.main_image}/>, headerName: elem.replace("_"," "),width:150}:{field:elem, headerName: elem.replace("_"," "),width:150})):[])
+              setColumns(res.data.results.length>0?Object.keys(res.data.results[0]).map((elem)=>(elem=="created_at"||elem=="date"?
+              {field:elem, renderCell: (params) => (moment(params.row.created_at).format('MMMM-DD-YYYY')), headerName: elem.replace("_"," "),width:150}:elem=="main_image"?
+              {field:elem,renderCell: (params) => <Avatar src={BaseUrl+params.row.main_image}/>, headerName: elem.replace("_"," "),width:150}
+              :elem=="is_active"?{field:elem,renderCell: (params) => <Switch checked={params.row.is_active}  inputProps={{ 'aria-label': 'uncontrolled' }}/>, headerName: elem.replace("_"," "),width:150}:{field:elem, headerName: elem.replace("_"," "),width:150})):[])
             
           }
         })
       }
-    
+    // useEffect(()=>{
+
+    // },[])
   return (
     <DashboardLayout >
     <DashboardNavbar />
@@ -106,7 +113,7 @@ function Report() {
                  <Chart color={"#F9C74F"} chart={gradientLineChartData} title={controls.total_products} description={"products"}subDescription={"-0.91% this week"}/>
 
     </Grid><Grid item xs={12} sm={6} md={2.3} onClick={()=>togetdataoftable("profit")}>
-                 <Chart  color={"#F8961E"}chart={gradientLineChartData} title={controls.total_profit} description={"profile"}subDescription={"-0.91% this week"}/>
+                 <Chart  color={"#F8961E"}chart={gradientLineChartData} title={controls.total_profit} description={"profit"}subDescription={"-0.91% this week"}/>
 
     </Grid><Grid item xs={12} sm={6} md={2.3} onClick={()=>togetdataoftable("customers")}>
                  <Chart  color={"#F3722C"}chart={gradientLineChartData} title={controls.total_customers} description={"customer"}subDescription={"-0.91% this week"}/>
@@ -118,10 +125,12 @@ function Report() {
             </Grid>
             <SoftBox sx={{display:"flex", justifyContent:"space-between", marginY:"24px",flexDirection:{lg:"row",md:"row",sm:"column",xs:"column"}}}>
             <SoftTypography variant="h5">Sales Report</SoftTypography>
+            <SoftBox sx={{justifyContent: "flex-end",
+    display: "flex",alignItems:"center"}}>
             <SoftBox sx={{display:"flex",width:{lg:"50%",md:"50%",sm:"100%",xs:"100%"},borderRadius: '8px',
 border: "1px solid #D9D9D9",overflow:"hidden",alignItems:"center"}}>
           
-                                 <DatePickerField
+            <DatePickerField
               value={controls.start_date}
               onChange={(newvalue) => {setControl("start_date",newvalue)}}
               icon={DateIcon}
@@ -135,7 +144,7 @@ border: "1px solid #D9D9D9",overflow:"hidden",alignItems:"center"}}>
               sx={{".MuiInputBase-root":{border:"unset !important",borderRadius:"unset !important"}}}
             />                   
             </SoftBox>
-            <SoftBox>
+            <SoftBox sx={{marginX:"10px"}}>
             <SelectField
           variant="outlined"
           placeholder={"Export"}
@@ -155,6 +164,7 @@ border: "1px solid #D9D9D9",overflow:"hidden",alignItems:"center"}}>
           } */}
         </SelectField>
         </SoftBox>
+        </SoftBox>
             </SoftBox>
 
             <DataGridCustom  rows={rows}  columns={columns}   checkboxSelection={true}
@@ -162,6 +172,7 @@ border: "1px solid #D9D9D9",overflow:"hidden",alignItems:"center"}}>
             console.log(e,row);
             // setClick({ ...e.id });
           }}
+          loading={getReportResponce.isPending}
           // notProduct={false}
           // rowsPerPageOptions={[5, 10, 15, 20]}
           // onPaginationModelChange={setPaginationModel}

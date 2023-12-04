@@ -27,7 +27,7 @@ function Chart({ color, title, description, chart, items, subDescription }) {
     'Page L',
   ];
   return (
-    <Card sx={{ height: "100%" }}>
+    <Card sx={{ height: "100%",justifyContent: "space-around" }}>
       <SoftBox padding="1rem">
 
         <SoftBox px={1}>
@@ -43,7 +43,7 @@ function Chart({ color, title, description, chart, items, subDescription }) {
           {useMemo(
             () => (
               <ChartContainer
-              width={200}height={200}
+              width={800}height={300}
                 series={[{ data: uData, label: 'uv', type: 'bar' }]}
                 xAxis={[{ scaleType: 'band', data: xLabels }]}
                 colors={[color]}
@@ -58,7 +58,7 @@ function Chart({ color, title, description, chart, items, subDescription }) {
           
           <SoftBox>
 
-            <SoftTypography variant="p" fontWeight="regular" textTransform="capitalize" fontSize="14px">
+            <SoftTypography variant="p" fontWeight="regular" textTransform="capitalize" fontSize="12px">
               {subDescription}
             </SoftTypography>
           </SoftBox>

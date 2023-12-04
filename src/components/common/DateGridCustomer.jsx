@@ -399,6 +399,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
           onRowClick={onRowClick}
           isRowSelectable={isRowSelectable}
           setPagination={true}
+
           // autoHeight={true}
         
           // initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
