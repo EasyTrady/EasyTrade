@@ -28,6 +28,8 @@ import Icon from "@mui/material/Icon";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import imageSideBar from "assets/images/Button.png"
+import imageSideBar1 from "assets/images/Button (1).png"
+
 import whiteSideBar from "assets/images/white.png"
 
 import greySideBar from "assets/images/grey.png"
@@ -48,15 +50,15 @@ import {
   setTransparentSidenav,
   setFixedNavbar,
   setSidenavColor,
-  setIconOnly,setColorSideBar
+  setIconOnly,setColorSideBar,setColorBackground
 } from "context";
 
 function Configurator() {
   const [controller, dispatch] = useSoftUIController();
-  const { openConfigurator, transparentSidenav, fixedNavbar, sidenavColor,makeIconOnly } = controller;
+  const { openConfigurator, transparentSidenav, fixedNavbar, sidenavColor,makeIconOnly,ColorSidenav } = controller;
   const [disabled, setDisabled] = useState(false);
   const sidenavColors = ["primary", "dark", "info", "success", "warning", "error"];
-
+  const backgroundColors = ["#FFFFFF", "#ECF4FA", "#FAEEEC", "#FAECF9", "#EDFAEC"];
   // Use the useEffect hook to change the button state for the sidenav type based on window size.
   useEffect(() => {
     // A function that sets the disabled state of the buttons for the sidenav type.
@@ -127,7 +129,7 @@ function Configurator() {
       <Divider />
 
       <SoftBox pt={1.25} pb={3} px={3}>
-        <SoftBox>
+        {/* <SoftBox>
           <SoftTypography variant="h6">Sidenav Colors</SoftTypography>
 
           <SoftBox mb={0.5}>
@@ -159,7 +161,7 @@ function Configurator() {
               />
             ))}
           </SoftBox>
-        </SoftBox>
+        </SoftBox> */}
         <SoftBox>
           <SoftTypography variant="h6">Sidenav</SoftTypography>
           <SoftTypography variant="p"sx={{fontSize:"14px",color:"#667085"}}>choose show or hide sidebar</SoftTypography>
@@ -167,8 +169,48 @@ function Configurator() {
     justifyContent: "space-between",
     flexDirection: "row"}}>
      
-            <SoftTypography variant="img" component="img"src={imageSideBar}sx={{width:"40%",cursor:"pointer"}} onClick={()=>setIconOnly(dispatch,false)}/>
-            <SoftTypography variant="img" component="img"src={whiteSideBar}sx={{width:"40%",cursor:"pointer"}}onClick={()=>setIconOnly(dispatch,true)}/>
+            <SoftTypography variant="img" component="img"src={imageSideBar}sx={({ borders: { borderWidth }, palette: { white, dark,purple }, transitions }) => ({
+                  width:"40%",cursor:"pointer",
+                  border: `${borderWidth[1]} solid ${makeIconOnly==false?purple.middle:white.main}`,
+                  borderColor:makeIconOnly==false?purple.middle:white.main,
+                  borderRadius:"8px",
+                  transition: transitions.create("border-color", {
+                    easing: transitions.easing.sharp,
+                    duration: transitions.duration.shorter,
+                  }),
+                  // backgroundColor:color,
+                  // backgroundImage: ({ functions: { linearGradient }, palette: { gradients } }) =>
+                  //   linearGradient(gradients[color].main, gradients[color].state),
+
+                  "&:not(:last-child)": {
+                    mr: 1,
+                  },
+
+                  "&:hover, &:focus, &:active": {
+                    borderColor: dark.main,
+                  },
+                })} onClick={()=>setIconOnly(dispatch,false)}/>
+            <SoftTypography variant="img" component="img"src={imageSideBar1}sx={({ borders: { borderWidth }, palette: { white, dark,purple }, transitions }) => ({
+                  width:"40%",cursor:"pointer",
+                  border: `${borderWidth[1]} solid ${white.main}`,
+                  borderColor:makeIconOnly==true?purple.middle:white.main,
+                  borderRadius:"8px",
+                  transition: transitions.create("border-color", {
+                    easing: transitions.easing.sharp,
+                    duration: transitions.duration.shorter,
+                  }),
+                  // backgroundColor:color,
+                  // backgroundImage: ({ functions: { linearGradient }, palette: { gradients } }) =>
+                  //   linearGradient(gradients[color].main, gradients[color].state),
+
+                  "&:not(:last-child)": {
+                    mr: 1,
+                  },
+
+                  "&:hover, &:focus, &:active": {
+                    borderColor: dark.main,
+                  },
+                })}onClick={()=>setIconOnly(dispatch,true)}/>
 
           </Stack>
           </SoftBox>
@@ -178,14 +220,77 @@ function Configurator() {
           <Stack sx={{display: "flex",
     justifyContent: "space-between",
     flexDirection: "row"}}>
-     
-            <SoftTypography variant="img" component="img"src={whiteSideBar}sx={{width:"30%",cursor:"pointer"}} onClick={()=>setColorSideBar(dispatch,"white")}/>
-            <SoftTypography variant="img" component="img"src={greySideBar}sx={{width:"30%",cursor:"pointer"}}onClick={()=>setColorSideBar(dispatch,"gray")}/>
-            <SoftTypography variant="img" component="img"src={gradientSideBar}sx={{width:"30%",cursor:"pointer"}}onClick={()=>setColorSideBar(dispatch,"linear-gradient(gray, white)")}/>
+            
+            <SoftTypography variant="img" component="img"src={whiteSideBar}sx={({ borders: { borderWidth }, palette: { white, dark,purple }, transitions }) => ({
+                  width:"30%",cursor:"pointer",
+                  border: `${borderWidth[1]} solid ${ColorSidenav=="white"?purple.middle:white.main}`,
+                  borderColor:ColorSidenav=="white"?purple.middle:white.main,
+                  borderRadius:"8px",
+                  transition: transitions.create("border-color", {
+                    easing: transitions.easing.sharp,
+                    duration: transitions.duration.shorter,
+                  }),
+                  background:ColorSidenav,
+                  // backgroundColor:color,
+                  // backgroundImage: ({ functions: { linearGradient }, palette: { gradients } }) =>
+                  //   linearGradient(gradients[color].main, gradients[color].state),
+
+                  "&:not(:last-child)": {
+                    mr: 1,
+                  },
+
+                  "&:hover, &:focus, &:active": {
+                    borderColor: dark.main,
+                  },
+                })} onClick={()=>setColorSideBar(dispatch,"white")}/>
+            <SoftTypography variant="img" component="img"src={greySideBar}sx={({ borders: { borderWidth }, palette: { white, dark ,purple}, transitions }) => ({
+                  width:"30%",cursor:"pointer",
+                  border: `${borderWidth[1]} solid ${ColorSidenav=="gray"?purple.middle:white.main}`,
+                  borderColor:ColorSidenav=="gray"?purple.middle:white.main,
+                  borderRadius:"8px",
+                  transition: transitions.create("border-color", {
+                    easing: transitions.easing.sharp,
+                    duration: transitions.duration.shorter,
+                  }),
+                  background:ColorSidenav,
+                  // backgroundColor:color,
+                  // backgroundImage: ({ functions: { linearGradient }, palette: { gradients } }) =>
+                  //   linearGradient(gradients[color].main, gradients[color].state),
+
+                  "&:not(:last-child)": {
+                    mr: 1,
+                  },
+
+                  "&:hover, &:focus, &:active": {
+                    borderColor: dark.main,
+                  },
+                })}onClick={()=>setColorSideBar(dispatch,"gray")}/>
+            <SoftTypography variant="img" component="img"src={gradientSideBar}sx={({ borders: { borderWidth }, palette: { white, dark,purple }, transitions }) => ({
+                  width:"30%",cursor:"pointer",
+                  border: `${borderWidth[1]} solid ${ColorSidenav=="linear-gradient(gray, white)"?purple.middle:white.main}`,
+                  borderColor:ColorSidenav=="linear-gradient(gray, white)"?purple.middle:white.main,
+                  borderRadius:"8px",
+                  transition: transitions.create("border-color", {
+                    easing: transitions.easing.sharp,
+                    duration: transitions.duration.shorter,
+                  }),
+                  background:ColorSidenav,
+                  // backgroundColor:color,
+                  // backgroundImage: ({ functions: { linearGradient }, palette: { gradients } }) =>
+                  //   linearGradient(gradients[color].main, gradients[color].state),
+
+                  "&:not(:last-child)": {
+                    mr: 1,
+                  },
+
+                  "&:hover, &:focus, &:active": {
+                    borderColor: dark.main,
+                  },
+                })}onClick={()=>setColorSideBar(dispatch,"linear-gradient(gray, white)")}/>
 
           </Stack>
           </SoftBox>
-        <SoftBox mt={3} lineHeight={1}>
+        {/* <SoftBox mt={3} lineHeight={1}>
           <SoftTypography variant="h6">Sidenav Type</SoftTypography>
           <SoftTypography variant="button" color="text" fontWeight="regular">
             Choose between 2 different sidenav types.
@@ -220,6 +325,40 @@ function Configurator() {
             >
               White
             </SoftButton>
+          </SoftBox>
+        </SoftBox> */}
+        <SoftBox>
+          <SoftTypography variant="h6">Background</SoftTypography>
+
+          <SoftBox mb={0.5}>
+            {backgroundColors.map((color) => (
+              <IconButton
+                key={color}
+                sx={({ borders: { borderWidth }, palette: { white, dark }, transitions }) => ({
+                  width: "24px",
+                  height: "24px",
+                  padding: 0,
+                  border: `${borderWidth[1]} solid ${white.main}`,
+                  borderColor: sidenavColor === color && dark.main,
+                  transition: transitions.create("border-color", {
+                    easing: transitions.easing.sharp,
+                    duration: transitions.duration.shorter,
+                  }),
+                  backgroundColor:color,
+                  // backgroundImage: ({ functions: { linearGradient }, palette: { gradients } }) =>
+                  //   linearGradient(gradients[color].main, gradients[color].state),
+
+                  "&:not(:last-child)": {
+                    mr: 1,
+                  },
+
+                  "&:hover, &:focus, &:active": {
+                    borderColor: dark.main,
+                  },
+                })}
+                onClick={() => setColorBackground(dispatch, color)}
+              />
+            ))}
           </SoftBox>
         </SoftBox>
         <SoftBox mt={3} mb={2} lineHeight={1}>

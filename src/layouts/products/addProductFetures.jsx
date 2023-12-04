@@ -10,6 +10,7 @@ import ImageBox from "components/common/imageBox";
 import PictureField from "components/common/PictureField";
 import ImagesAlbums from "components/common/ImagesAlbums";
 import AddIcon from "@mui/icons-material/Add";
+import Footer from "examples/Footer";
 import SoftButton from "components/SoftButton";
 import useRequest from "hooks/useRequest";
 import { PRODUCTS } from "data/api";
@@ -163,6 +164,8 @@ useEffect(()=>{
                        {AddProductImagesResponce.isPending?<CircularProgress />:"Next"}
                     </SoftButton>
     </Box>
+    <Footer />
+
     </Box>
   );
 };

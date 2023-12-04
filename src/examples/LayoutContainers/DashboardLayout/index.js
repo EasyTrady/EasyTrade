@@ -31,7 +31,7 @@ import { useSoftUIController, setLayout } from "context";
 
 function DashboardLayout({ children,absolute, light, isMini }) {
   const [controller, dispatch] = useSoftUIController();
-  const { miniSidenav } = controller;
+  const { miniSidenav,backgroundColor } = controller;
   const { pathname } = useLocation();
   const route = useLocation().pathname.split("/").slice(1);
 
@@ -44,7 +44,7 @@ function DashboardLayout({ children,absolute, light, isMini }) {
       sx={({ breakpoints, transitions, functions: { pxToRem } }) => ({
         p: 3,
         position: "relative",
-        backgroundColor:"#ECF4FA",
+        backgroundColor:backgroundColor,
         minHeight:"100vh",
         padding:"0",
         [breakpoints.up("xl")]: {

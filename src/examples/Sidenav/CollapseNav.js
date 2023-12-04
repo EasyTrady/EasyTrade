@@ -26,7 +26,7 @@ const NavCollapse = ({ menu }) => {
   const [selected, setSelected] = useState(null);
 
   const handleClick = () => {
-    setOpen(!open);
+    setOpen(true);
     setSelected(!selected ? menu.id : null);
     // if (menu?.id !== 'authentication') {
     //   navigate(menu.children[0]?.url);
@@ -46,6 +46,7 @@ const NavCollapse = ({ menu }) => {
 
   // menu collapse for sub-levels
   useEffect(() => {
+    
     setOpen(false);
     setSelected(null);
     if (menu.children) {
@@ -127,6 +128,7 @@ const NavCollapse = ({ menu }) => {
           <KeyboardArrowDownIcon stroke={1.5} size="1rem" style={{ marginTop: 'auto', marginBottom: 'auto' }} />
         )}
       </ListItemButton>
+      {console.log(open)}
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List
           component="div"

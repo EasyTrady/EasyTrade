@@ -11,6 +11,7 @@ import {
   Switch,
   Typography,
 } from "@mui/material";
+import Footer from "examples/Footer";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -977,8 +978,9 @@ useEffect(()=>{
            
           {Boolean(productId)?patchProductResponce.isPending?<CircularProgress />:"Save":AddProductResponce.isPending?<CircularProgress />:"Next"}
         </SoftButton>
-        
       </Box>
+      <Footer />
+
       {AddProductResponce.failAlert}
       {AddProductResponce.successAlert}
     </>

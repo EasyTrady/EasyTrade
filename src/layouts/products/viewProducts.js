@@ -9,6 +9,8 @@ import { CustomersTableData } from "layouts/tables/data/customerTabkeData";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../tables/datagrid.css";
+import Footer from "examples/Footer";
+
 import ProjectsTableData from "layouts/tables/data/projectsTableData";
 import { ProductTableData } from "layouts/tables/data/projecttableData";
 import ProductImageDialog from "components/common/product/productImageDialog";
@@ -206,6 +208,7 @@ function Products({ absolute, light, isMini }) {
         />
         </Box>
         <ProductImageDialog open={open} onClose={handleClose} />
+        <Footer />
       </DashboardLayout>
       {ResponseGetProducts.successAlert}
       {ResponseGetProducts.failAlert}

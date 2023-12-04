@@ -38,7 +38,7 @@ const PhoneField = ({
       customInput={TextField}
       variant="standard"
       disabled={requiredCode && !Boolean(country)}
-     sx={{fontSize:"15px","& .MuiInputBase-root": { justifyContent: "flex-end",paddingX:"0px !important"},"& .MuiInputBase-root::before":{borderBottom: "unset"},"& .MuiInputBase-root::after":{borderBottom: "unset"}}}
+     sx={{fontSize:"15px","& .MuiInputBase-root": { justifyContent: "flex-end",paddingX:"0px !important"},"& .MuiInputBase-root::before":{borderBottom: "unset"},"& .MuiInputBase-root::after":{borderBottom: "unset !important"}}}
       onValueChange={(e) =>
         onChange({ target: { value: e.value, valueAsNumber: e.floatValue } })
       }
@@ -54,8 +54,12 @@ const PhoneField = ({
                 "& .MuiInputBase-root": {
                   borderRadius: 0,
                   borderLeft: "none",
-                  padding:"0px !important"
+                  padding:"0px !important",
+                  border:"unset !important"
                 },
+                "& .MuiInputBase-root:hover": {borderBottom:"unset !important"},
+                "& .MuiInputBase-root::before":{borderBottom:"unset !important"},
+                "& .MuiInputBase-root::after":{borderBottom:"unset !important"},
                 "& .MuiSelect-standard": {
                   // width: 60,
                 },
