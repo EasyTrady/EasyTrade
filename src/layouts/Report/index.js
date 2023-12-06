@@ -6,6 +6,7 @@ import ReportsBarChart from 'examples/Charts/BarCharts/ReportsBarChart';
 import HorizontalBarChart from 'examples/Charts/BarCharts/HorizontalBarChart';
 import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
 import Chart from 'examples/Charts/VerticalChart.js';
+import Breadcrumbs from 'examples/Breadcrumbs'
 import Grid from "@mui/material/Grid";
 import SoftTypography from "components/SoftTypography";
 import SoftBox from 'components/SoftBox'
@@ -15,7 +16,9 @@ import DataGridCustom from 'components/common/DateGridCustomer'
 import DatePickerField from "components/common/DatePicker";
 import useControls from "hooks/useControls";
 import Switch from '@mui/material/Switch';
-
+import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
+import { useLocation, useNavigate } from 'react-router-dom'
+import PropTypes from "prop-types";
 import {
    Container,InputAdornment,Avatar,Icon
 } from '@mui/material'
@@ -26,7 +29,9 @@ import DateIcon from 'examples/Icons/DateIcon';
 import useRequest from "hooks/useRequest";
 import {  REPORT} from "data/api";
 import { BaseUrl } from 'data/api';
-function Report() {
+function Report({ absolute, light, isMini }) {
+  const route = useLocation().pathname.split("/").slice(1);
+
     const { chart, items } = reportsBarChartData;
     let[rows,setRows]=useState([])
     let[columns,setColumns]=useState([])
@@ -97,6 +102,9 @@ function Report() {
     <DashboardLayout >
     <DashboardNavbar />
     <Container sx={{marginY:2}}>
+    <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
+                    <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+                </SoftBox>
     {/* <ReportsBarChart title="active users"
                 description={
                   <>
@@ -186,3 +194,15 @@ border: "1px solid #D9D9D9",overflow:"hidden",alignItems:"center"}}>
 }
 
 export default Report
+Report.defaultProps = {
+  absolute: false,
+  light: false,
+  isMini: false,
+};
+
+// Typechecking props for the Report
+Report.propTypes = {
+  absolute: PropTypes.bool,
+  light: PropTypes.bool,
+  isMini: PropTypes.bool,
+};

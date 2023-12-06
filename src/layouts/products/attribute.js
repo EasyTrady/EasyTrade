@@ -424,24 +424,7 @@ function Attribute({ absolute, light, isMini }) {
     }
     function editValue(ele) {
         console.log(ele)
-        // let newValue=controls.values
-        // newValue.value_name=controls.value_name
-        // newValue.color_value=controls.color_value
-        // newValue.find((elem)=>{
-        //     if(elem.id==ele.id){
-        //         elem.value_name=controls.value_name
-        //         elem.color_value=controls.color_value
-
-        //     }
-        // })
-        // console.log(controls.values,ele)
-        // setControl("values",[...controls.newValue.find((elem)=>{
-        //     if(elem.id==ele.id){
-        //         elem.value_name=controls.value_name
-        //         elem.color_value=controls.color_value
-
-        //     }
-        // }),...controls.values])
+    
        
         editattributeValueRequest({
             id: controls.id + "/values/" + ele.id,

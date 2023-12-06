@@ -43,6 +43,8 @@ import Billing from "layouts/billing";
 import VirtualReality from "layouts/virtual-reality";
 import RTL from "layouts/rtl";
 import Profile from "layouts/profile";
+import  Rankinghome from "layouts/rankinghome";
+
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 
@@ -53,6 +55,8 @@ import Settings from "examples/Icons/Settings";
 import Document from "examples/Icons/Document";
 import SpaceShip from "examples/Icons/SpaceShip";
 import CustomerSupport from "examples/Icons/CustomerSupport";
+import RankingIcon from "examples/Icons/Rankinghome";
+
 import CreditCard from "examples/Icons/CreditCard";
 import Cube from "examples/Icons/Cube";
 import Customer from "layouts/customer";
@@ -344,7 +348,7 @@ const routes = [
     type: "title",
     name: "Employees",
     key: "employees",
-    route: `/:${sub_domain}/dashboard/employee`,
+    route: `/${sub_domain}/dashboard/employee`,
     icon: <Office size="12px" />,
     component: <Auth><Employee /></Auth>,
     noCollapse: false,
@@ -352,7 +356,7 @@ const routes = [
     type: "title",
     name: "values",
     key: "valuse",
-    route: `/:${sub_domain}/dashboard/employee/addNewEmployee`,
+    route: `/${sub_domain}/dashboard/employee/addNewEmployee`,
     icon: <Shop size="12px" />,
     component: <Auth><AddNewEmployee /></Auth>,
     noCollapse: false,
@@ -362,7 +366,7 @@ const routes = [
     type: "title",
     name: "Orders",
     key: "Orders",
-    route: `/:${sub_domain}/dashboard/order`,
+    route: `/${sub_domain}/dashboard/order`,
     icon: <Office size="12px" />,
     component: <Auth><Order /></Auth>,
     noCollapse: false,
@@ -370,7 +374,7 @@ const routes = [
     type: "title",
     name: "Orders",
     key: "Orders",
-    route: `/:${sub_domain}/dashboard/order/:id`,
+    route: `/${sub_domain}/dashboard/order/:id`,
     icon: <Office size="12px" />,
     component: <Auth><DetailOrder /></Auth>,
     noCollapse: false,
@@ -398,7 +402,7 @@ const routes = [
     type: "title",
     name: "abandonedbasket",
     key: "abandonedbasket",
-    route: `/:${sub_domain}/dashboard/abandonedbasket`,
+    route: `/${sub_domain}/dashboard/abandonedbasket`,
     icon: <Office size="12px" />,
     component: <Auth><Basket /></Auth>,
     noCollapse: false,
@@ -407,7 +411,7 @@ const routes = [
     type: "title",
     name: "Category",
     key: "category",
-    route: `/:${sub_domain}/dashboard/products/category`,
+    route: `/${sub_domain}/dashboard/products/category`,
     icon: <Shop size="12px" />,
     component: <Auth><Category /></Auth>,
     noCollapse: false,
@@ -416,7 +420,7 @@ const routes = [
     type: "title",
     name: "AddnewCategory",
     key: "addnewCategory",
-    route: `/:${sub_domain}/dashboard/products/category/addnewCategory`,
+    route: `/${sub_domain}/dashboard/products/category/addnewCategory`,
     icon: <Shop size="12px" />,
     component: <Auth><Addnewcategory /></Auth>,
     noCollapse: false,
@@ -434,7 +438,7 @@ const routes = [
     type: "title",
     name: "Jobs",
     key: "jobs",
-    route: `/:${sub_domain}/dashboard/jobs`,
+    route: `/${sub_domain}/dashboard/jobs`,
     icon: <Shop size="12px" />,
     component: <Auth><Job /></Auth>,
     noCollapse: false,
@@ -444,7 +448,7 @@ const routes = [
     type: "title",
     name: "Attribute",
     key: "Attribute",
-    route: `/:${sub_domain}/dashboard/attribute`,
+    route: `/${sub_domain}/dashboard/attribute`,
     icon: <Shop size="12px" />,
     component: <Auth><Attribute /></Auth>,
     noCollapse: false,
@@ -454,7 +458,7 @@ const routes = [
     type: "title",
     name: "values",
     key: "valuse",
-    route: `/:${sub_domain}/dashboard/attribute/:id`,
+    route: `/${sub_domain}/dashboard/attribute/:id`,
     icon: <Shop size="12px" />,
     component: <Auth><AttributeValue /></Auth>,
     noCollapse: false,
@@ -465,7 +469,7 @@ const routes = [
     type: "title",
     name: "values",
     key: "valuse",
-    route: `/:${sub_domain}/dashboard/jobs/addNewJob`,
+    route: `/${sub_domain}/dashboard/jobs/addNewJob`,
     icon: <Shop size="12px" />,
     component: <Auth><AddNewJob /></Auth>,
     noCollapse: false,
@@ -485,7 +489,7 @@ const routes = [
     type: "title",
     name: "Add new product",
     key: "Add new product",
-    route: `/:${sub_domain}/dashboard/products/addnewproduct`,
+    route: `/${sub_domain}/dashboard/products/addnewproduct`,
     icon: <Office size="12px" />,
     component:<Auth><AddProductPanel /></Auth> ,
      noCollapse: false,
@@ -494,7 +498,7 @@ const routes = [
     type: "title",
     name: "Add new offer",
     key: "Add new offer",
-    route: `/:${sub_domain}/dashboard/offers/addnewoffer`,
+    route: `/${sub_domain}/dashboard/offers/addnewoffer`,
     icon: <Office size="12px" />,
     component:<Auth><AddNewOffers /></Auth> ,
      noCollapse: false,
@@ -535,6 +539,16 @@ const routes = [
   //   component: <RTL />,
   //   noCollapse: false,
   // },
+  { type: "title", title: "Customize", key: "account-pages" },
+  {
+    type: "collapse",
+    name: "Ranking home",
+    key: "rankinghome",
+    route: `/${sub_domain}/dashboard/rankinghome`,
+    icon: <RankingIcon size="12px" />,
+    component:<Auth> <Rankinghome /></Auth>,
+    noCollapse: false,
+  },
   { type: "title", title: "Account Pages", key: "account-pages" },
   {
     type: "collapse",
