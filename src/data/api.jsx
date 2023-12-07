@@ -23,5 +23,6 @@ export const BANNERS= `${BaseUrl}shop/dashboard/banners/`
 export const SENDEMAILPRODUCT=`${BaseUrl}/shop/dashboard/notifycart/`
 export const EMPLOYEE= `${BaseUrl}shop/dashboard/employees/`
  export const PAGES= `${BaseUrl}shop/pages/`
+ export const CONTENTTYPES= `${BaseUrl}shop/content-types/`
 
 export const SHOP= `${BaseUrl}shop/accounts/shop/info/`

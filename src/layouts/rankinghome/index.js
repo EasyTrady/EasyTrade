@@ -22,26 +22,39 @@ import ViewIcon from 'examples/Icons/ViewIcon'
 import DeleteIcon from 'examples/Icons/DeleteIcon'
 import SpecialCategoryIcon from 'examples/Icons/SpecialCategoryIcon'
 import BrannerIcon from 'examples/Icons/BrannerIcon'
-
-
+import useRequest from 'hooks/useRequest'
 import CategoryIcon from 'examples/Icons/CategoryIcon'
 import StartIcon from 'examples/Icons/StartIcon'
 import HeartIcon from 'examples/Icons/heartIcon'
 import imageProduct from "assets/images/female.png"
 import imageGrid from "assets/images/grid.png"
 import imageScroll from "assets/images/scroll.png"
-
-
+import { CONTENTTYPES } from 'data/api'
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
+import { styled } from '@mui/system';
+import Slider from "react-slick";
 function index({ absolute, light, isMini }) {
     const route = useLocation().pathname.split("/").slice(1);
     let { t } = useTranslation("common")
+    const StyleSoftBox=styled(SoftBox)({
+        borderRadius: "50%", border: "1.5px solid #D3D3D3", width: "80px", height: "80px"
+    })
+    const settings = {
+        dots: true,
+      infinite: false,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      style:{overflow:"hidden"}
+      };
     let [open, setOpen] = useState(false)
     const handleCloseDialog = () => {
         setOpen(false)
     }
-    const TypeItem = [{ icon: <BrandIcon />, title: "Brand" }, { icon: <SpecialCategoryIcon />, title: "special category" }, { icon: <CategoryIcon />, title: "category" }, { icon: <BrannerIcon />, title: "Banner" }]
+    const TypeItem = [{ icon: <BrandIcon />, title: "brand" }, { icon: <SpecialCategoryIcon />, title: "specialcategory" }, { icon: <CategoryIcon />, title: "category" }, { icon: <BrannerIcon />, title: "banner" }]
     const brandfrom = [{ title: " top searched" }, { title: "top visited" }, { title: "last added " }]
-
+    let Token = localStorage.getItem('token')
     const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
         useControls([
             {
@@ -91,9 +104,40 @@ function index({ absolute, light, isMini }) {
                 isRequired: false,
 
             },
+            {
+                control: "categoryform",
+                value: "",
+                isRequired: false,
 
+            },{
+                control: "postion",
+                value: "",
+                isRequired: false,
 
+            },
+            {
+                control: "frame",
+                value: "",
+                isRequired: false,
+
+            },
+            { control:"typecategory",
+            value: "",
+            isRequired: false,}
         ]);
+        const [contentRequest, getcontentResponce] =
+        useRequest({
+            path: CONTENTTYPES,
+            method: "get",
+            Token: `Token ${Token}`
+        });
+    const getContentTypes=()=>{
+        contentRequest({
+            onSuccess:(res)=>{
+                console.log(res.data.map((ele)=>ele.type))
+            }
+        })
+    }
     return (
         <DashboardLayout >
             <DashboardNavbar />
@@ -134,20 +178,25 @@ function index({ absolute, light, isMini }) {
                             <SoftTypography component="div" sx={{ backgroundColor: (theme) => theme.palette.success.main, width: "12px", height: "12px", borderRadius: "50%", marginX: "5px" }}></SoftTypography>
 
                         </SoftBox>
-                        <SoftBox sx={{ padding: "10px" }}>
+                        <SoftBox sx={{ padding: "10px" ,width:"100%"}}>
                             <SoftTypography component="div">{t("Categories")}</SoftTypography>
+                            <Slider {...settings}>
+                                <div>
                             <SoftBox sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                                <SoftBox sx={{ borderRadius: "50%", border: "1.5px solid #D3D3D3", width: "80px", height: "80px" }}>
+                                <StyleSoftBox >
 
-                                </SoftBox>
+                                </StyleSoftBox>
                                 <SoftTypography component="div" sx={{ fontSize: "12px" }}>{t("Categories")}</SoftTypography>
 
                             </SoftBox>
-
+                            </div>
+                                
+                           
+                            </Slider>
                         </SoftBox>
                         <SoftBox sx={{ padding: "10px" }}>
                             <SoftTypography component="div">{t("Brands")}</SoftTypography>
-                            <SoftBox sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                            <Slider {...settings}>
                                 <SoftBox sx={{
                                     borderRadius: "8px", border: "1px solid #D3D3D3",
                                     width: "20%", backgroundColor: "#fff", display: "flex", flexDirection: "column"
@@ -175,7 +224,7 @@ function index({ absolute, light, isMini }) {
                                     ...
                                 </SoftBox>
 
-                            </SoftBox>
+                            </Slider>
                         </SoftBox>
                         <SoftBox sx={{ padding: "10px" }}>
                             <SoftTypography component="div">{t("Banner")}</SoftTypography>
@@ -282,7 +331,7 @@ function index({ absolute, light, isMini }) {
                         variant="outlined"
                         placeholder={"Export"}
 
-                        // onOpen={getProducts}
+                        onOpen={getContentTypes}
                         value={controls.type}
                         onChange={(e) => setControl("type", e.target.value)}
                         renderValue={(selected) => {
@@ -297,16 +346,16 @@ function index({ absolute, light, isMini }) {
                             ))
                         }
                     </SelectField>
-                    {controls.type.title == "Brand" && <>
+                    {controls?.type?.title == "brand" && <>
                         <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
                         >{t("Postion")}
 
                         </Typography>
                         <SoftBox sx={{ display: "flex", justifyContent: "space-between" }}>
-                            <SoftButton variant={"outlined"} sx={{ width: "49%", borderColor: ({ palette: { purple } }) => purple.middle, color: ({ palette: { purple } }) => purple.middle }}   >
+                            <SoftButton variant={"outlined"} onClick={(e)=>setControl("postion","fixed")}sx={{ width: "49%", borderColor: ({ palette: { purple } }) => purple.middle, color: ({ palette: { purple } }) => purple.middle }}   >
                                 {t("fixed")}
                             </SoftButton>
-                            <SoftButton variant={"outlined"} sx={{ width: "49%", borderColor: ({ palette: { purple } }) => purple.middle, color: ({ palette: { purple } }) => purple.middle }}>
+                            <SoftButton variant={"outlined"} onClick={(e)=>setControl("postion","scroll")}sx={{ width: "49%", borderColor: ({ palette: { purple } }) => purple.middle, color: ({ palette: { purple } }) => purple.middle }}>
                                 {t("Scroll")}
                             </SoftButton>
                         </SoftBox>
@@ -332,7 +381,7 @@ function index({ absolute, light, isMini }) {
                             variant="outlined"
                             placeholder={"Export"}
 
-                            // onOpen={getProducts}
+                            
                             value={controls.brandform}
                             onChange={(e) => setControl("brandform", e.target.value)}
                             renderValue={(selected) => {
@@ -348,16 +397,20 @@ function index({ absolute, light, isMini }) {
                             }
                         </SelectField>
                     </>}
-                    {controls.type.title == "Banner" && <> <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
+                    {controls.type.title == "banner" && <> <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
                     >{t("Section")}
 
                     </Typography>
                         <SoftBox sx={{ display: "flex", justifyContent: "space-between" }}>
-                            <SoftButton value={t("Single")} variant={"outlined"} onClick={(e) => setControl("section", e.target.value)} sx={{ width: "49%", borderColor: ({ palette: { grey } }) => grey[500], color: ({ palette: { grey } }) => grey[500] }}   >
+                            <SoftButton value={t("Single")} variant={"outlined"} onClick={(e) => setControl("section", e.target.value)} sx={{ width: "49%",
+                             borderColor: controls.section=="Single"?({ palette: { purple } }) => purple.middle :({ palette: { grey } }) => grey[500], 
+                             color:controls.section=="Single"?({ palette: { purple } }) => purple.middle: ({ palette: { grey } }) => grey[500] }}   >
                                 <SoftTypography component="div" sx={{ border: ({ palette: { grey } }) => "1px solid" + grey[500], width: "20px", height: "12px", marginX: "5px" }}></SoftTypography>
                                 {t("Single")}
                             </SoftButton>
-                            <SoftButton value={t("Multiple")} variant={"outlined"} onClick={(e) => setControl("section", e.target.value)} sx={{ width: "49%", borderColor: ({ palette: { grey } }) => grey[500], color: ({ palette: { grey } }) => grey[500] }}>
+                            <SoftButton value={t("Multiple")} variant={"outlined"} onClick={(e) => setControl("section", e.target.value)} sx={{ width: "49%",
+                             borderColor:controls.section=="Multiple"?({ palette: { purple } }) => purple.middle :({ palette: { grey } }) => grey[500],
+                              color:controls.section=="Multiple"?({ palette: { purple } }) => purple.middle: ({ palette: { grey } }) => grey[500] }}>
                                 <SoftBox sx={{ display: "flex", flexDirection: "column", gap: "1px" }}>
                                     <SoftTypography component="div" sx={{ border: ({ palette: { grey } }) => "1px solid" + grey[500], width: "20px", height: "5px", marginX: "5px" }}></SoftTypography>
                                     <SoftTypography component="div" sx={{ border: ({ palette: { grey } }) => "1px solid" + grey[500], width: "20px", height: "5px", marginX: "5px" }}></SoftTypography>
@@ -371,12 +424,16 @@ function index({ absolute, light, isMini }) {
                         >{t("Presentation")}
 
                         </Typography><SoftBox sx={{ display: "flex", justifyContent: "space-between" }}>
-                                <SoftButton variant={"outlined"} value={"Scroll"} onClick={(e) => setControl("presentation", e.target.value)} sx={{ width: "49%", borderColor: ({ palette: { grey } }) => grey[500], color: ({ palette: { grey } }) => grey[500] }}   >
+                                <SoftButton variant={"outlined"} value={"Scroll"} onClick={(e) => setControl("presentation", e.target.value)} sx={{ width: "49%", 
+                                borderColor:controls.presentation=="Scroll"? ({ palette: { purple } }) => purple.middle:({ palette: { grey } }) => grey[500], 
+                                color:controls.presentation=="Scroll"? ({ palette: { purple } }) => purple.middle: ({ palette: { grey } }) => grey[500] }}   >
                                     <SoftTypography component="img" src={imageScroll} sx={{ width: "20px", height: "10px", marginX: "5px" }}></SoftTypography>
 
                                     {t("Scroll")}
                                 </SoftButton>
-                                <SoftButton variant={"outlined"} value={"Grid"} onClick={(e) => setControl("presentation", e.target.value)} sx={{ width: "49%", borderColor: ({ palette: { grey } }) => grey[500], color: ({ palette: { grey } }) => grey[500] }}>
+                                <SoftButton variant={"outlined"} value={"Grid"} onClick={(e) => setControl("presentation", e.target.value)} sx={{ width: "49%",
+                                 borderColor:controls.presentation=="Grid"? ({ palette: { purple } }) => purple.middle: ({ palette: { grey } }) => grey[500], 
+                                 color:controls.presentation=="Grid"? ({ palette: { purple } }) => purple.middle: ({ palette: { grey } }) => grey[500] }}>
 
                                     <SoftTypography component="img" src={imageGrid} sx={{ width: "20px", height: "10px", marginX: "5px" }}></SoftTypography>
 
@@ -423,6 +480,68 @@ function index({ absolute, light, isMini }) {
                                 }
                             </SelectField>
                         </> : <></>}
+                    </>}
+                    {controls.type.title == "specialcategory" && <>
+                    <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
+                        >{t("AS")}
+
+                        </Typography>
+                        <SelectField
+                            variant="outlined"
+                            placeholder={"Export"}
+
+                            
+                            value={controls.categoryform}
+                            onChange={(e) => setControl("categoryform", e.target.value)}
+                            renderValue={(selected) => {
+                                console.log(selected)
+                                return <SoftBox sx={{ display: "flex" }}>{selected.title}</SoftBox>
+                            }}
+                            sx={{ width: "100% !important" }}
+                        >
+                            {
+                                brandfrom?.map((product, index) => (
+                                    <MenuItem key={index} value={product.title}>{product.title}</MenuItem>
+                                ))
+                            }
+                        </SelectField>
+                    </>}
+                    {controls.type.title == "category" &&<>
+                    <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
+                        >{t("type")}
+
+                        </Typography>
+                        <SoftBox sx={{ display: "flex", justifyContent: "space-between" }}>
+                            <SoftButton variant={"outlined"}
+                            onClick={()=>setControl("typecategory","secondary")} sx={{ width: "49%",
+                             borderColor:controls.typecategory=="secondary"? ({ palette: { purple } }) => purple.middle:  ({ palette: { grey } }) => grey[500],
+                              color:controls.typecategory=="secondary"? ({ palette: { purple } }) => purple.middle: ({ palette: { grey } }) => grey[500]  }}   >
+                                {t("Secondary")}
+                            </SoftButton>
+                            <SoftButton variant={"outlined"}onClick={()=>setControl("typecategory","third")} sx={{ width: "49%",
+                              borderColor:controls.typecategory=="third"? ({ palette: { purple } }) => purple.middle: ({ palette: { grey } }) => grey[500], 
+                              color: controls.typecategory=="third"? ({ palette: { purple } }) => purple.middle:({ palette: { grey } }) => grey[500]  }}>
+
+                                {t("Third")}
+                            </SoftButton>
+                        </SoftBox>
+                        
+                    <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
+                        >{t("Frame")}
+
+                        </Typography>
+                        <SoftBox sx={{ display: "flex", justifyContent: "space-between" }}>
+                            <SoftButton variant={"outlined"}onClick={()=>setControl("frame","secondary")} sx={{ width: "49%",  
+                            borderColor:controls.frame=="secondary"? ({ palette: { purple } }) => purple.middle:({ palette: { grey } }) => grey[500], 
+                            color:controls.frame=="secondary"? ({ palette: { purple } }) => purple.middle: ({ palette: { grey } }) => grey[500] }}   >
+                                {t("Square")}
+                            </SoftButton>
+                            <SoftButton variant={"outlined"}onClick={()=>setControl("frame","third")} sx={{ width: "49%", 
+                             borderColor:controls.frame=="third"? ({ palette: { purple } }) => purple.middle: ({ palette: { grey } }) => grey[500],
+                              color:controls.frame=="third"? ({ palette: { purple } }) => purple.middle: ({ palette: { grey } }) => grey[500] }}>
+                                {t("Circle")}
+                            </SoftButton>
+                        </SoftBox>
                     </>}
                 </Form>
             </Dialog>
