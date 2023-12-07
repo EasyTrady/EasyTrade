@@ -57,7 +57,7 @@ const slider = {
     },
 
     thumb: {
-      width: pxToRem(15),
+      // width: pxToRem(15),
       height: pxToRem(15),
       backgroundColor: white.main,
       zIndex: 10,

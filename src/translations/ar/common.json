@@ -182,5 +182,13 @@
 "Address":"عنوان",
 "country":"دولة",
 "PaymentMethod":"طريقة دفع",
-"Shippingdetails":"تفاصيل الشحن"
+"Shippingdetails":"تفاصيل الشحن",
+"Additem":"اضافة بند",
+"Categories":"تصنيفات",
+"Brands":"مركات",
+"Chooseitemtype":"اختار نوع بند",
+"brandsnumber":"عدد برندات",
+"Choosebrandsfrom":"",
+"brannernumber":"",
+"ChooseBanners":""
 }

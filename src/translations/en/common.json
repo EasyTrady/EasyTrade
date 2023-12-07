@@ -185,5 +185,13 @@
 "Address":"Address",
 "country":"country",
 "PaymentMethod":"Payment Method",
-"Shippingdetails":"Shipping details"
+"Shippingdetails":"Shipping details",
+"Additem":"Add item",
+"Categories":"Categories",
+"Brands":"Brands",
+"Chooseitemtype":"Choose item type",
+"brandsnumber":"Brands number",
+"Choosebrandsfrom":"Choose brands from",
+"brannernumber":"Branner number",
+"ChooseBanners":"Choose Banners"
 }

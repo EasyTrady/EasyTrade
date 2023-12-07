@@ -26,7 +26,8 @@ function Auth({children}) {
     },[
         currentTime
     ])
-   if(Boolean(localStorage.getItem("token"))===true) {
+    console.log(Boolean(localStorage.getItem("token")))
+   if(Boolean(localStorage.getItem("token"))==true) {
     console.log("hjhfyfyfyy")
     return (
         children

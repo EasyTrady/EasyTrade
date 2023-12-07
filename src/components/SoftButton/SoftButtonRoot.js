@@ -31,7 +31,7 @@ export default styled(Button)(({ theme, ownerState }) => {
     const backgroundValue = palette[color] ? palette[color].main : white.main;
 
     // backgroundColor value when button is focused
-    const focusedBackgroundValue = palette[color] ? palette[color].focus : white.focus;
+    const focusedBackgroundValue = palette[color] ? palette[color].focus : palette["purple"].middle;
 
     // boxShadow value
     const boxShadowValue = palette[color]
@@ -90,7 +90,7 @@ export default styled(Button)(({ theme, ownerState }) => {
       : boxShadow([0, 0], [0, 3.2], white.main, 0.5);
 
     // border color value
-    let borderColorValue = palette[color] ? palette[color].main : rgba(white.main, 0.75);
+    let borderColorValue = palette[color] ? palette[color].main : palette["purple"].middle;
 
     if (color === "white") {
       borderColorValue = rgba(white.main, 0.75);
@@ -103,7 +103,8 @@ export default styled(Button)(({ theme, ownerState }) => {
 
       "&:hover": {
         background: transparent.main,
-        borderColor: colorValue,
+        borderColor: palette["purple"].middle,
+        color:palette["purple"].middle
       },
 
       "&:focus:not(:hover)": {
