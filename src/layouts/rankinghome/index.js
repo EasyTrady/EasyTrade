@@ -30,7 +30,7 @@ import HeartIcon from 'examples/Icons/heartIcon'
 import imageProduct from "assets/images/female.png"
 import imageGrid from "assets/images/grid.png"
 import imageScroll from "assets/images/scroll.png"
-import { CONTENTTYPES,CREATEHOMECOMPONENTS,SPECIALCATEGORIES } from 'data/api'
+import { CONTENTTYPES,CREATEHOMECOMPONENTS,SPECIALCATEGORIES,BANNERS } from 'data/api'
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import { styled } from '@mui/system';
@@ -44,7 +44,7 @@ function index({ absolute, light, isMini }) {
 
     let dispatch=useDispatch()
     let { t } = useTranslation("common")
-    
+    const banners = useSelector((state) => state.banners.value);
     const [settings,setSetting] = useState({
         dots: true,
       infinite: false,
@@ -167,7 +167,20 @@ function index({ absolute, light, isMini }) {
             method: "get",
             Token: `Token ${Token}`
         });
-        
+        const [getBannerdRequest, getBannerdResponce] =
+        useRequest({
+            path: BANNERS,
+            method: "get",
+            Token: `Token ${Token}`
+        });
+        const getBanners=()=>{
+            getBannerdRequest({
+                onSuccess:(res)=>{
+                    dispatch({ type: "banners/set", payload: res?.data });
+                    console.log(res.data)
+                }
+            })
+        }
     const getContentTypes=()=>{
         contentRequest({
             onSuccess:(res)=>{
@@ -209,13 +222,15 @@ function index({ absolute, light, isMini }) {
                 body:controls?.content_type?.title == "brand"?{
                     title:controls?.title,
                     content_type:controls?.content_type?.id,
-                    // items:[controls?.brandform?.id|controls?.brannerform?.id|controls?.categoryform?.id],
+                    items:[],
                     max_number:controls?.max_number,
                     position:controls?.position?controls?.position:"fixed",
-                }:controls?.content_type?.title=="branner"?{
+                }:controls?.content_type?.title=="banner"?{
                     title:controls?.title,
                     content_type:controls?.content_type?.id,
-                    // items:[controls?.brandform?.id|controls?.brannerform?.id|controls?.categoryform?.id],
+                    items:[],
+
+                    
                     max_number:controls?.number|controls?.brannernumber,
                     display:controls?.display,
                     overflow_type:controls?.overflow_type,
@@ -224,7 +239,8 @@ function index({ absolute, light, isMini }) {
                 }:controls?.content_type?.title=="category"?{
                     title:controls?.title,
                     content_type:controls?.content_type?.id,
-                    // items:[controls?.brandform?.id|controls?.brannerform?.id|controls?.categoryform?.id],
+                    items:[],
+
                     max_number:controls?.max_number,
                    
                     position:controls?.position?controls?.position:"fixed",
@@ -233,13 +249,15 @@ function index({ absolute, light, isMini }) {
                 }:{
                     title:controls?.title,
                     content_type:controls?.content_type?.id,
-                    // items:[controls?.brandform?.id|controls?.brannerform?.id|controls?.categoryform?.id],
+                    items:[],
+
                    
                    
                     position:controls?.position?controls?.position:"fixed",
                     
                 },onSuccess:(res)=>{
                     dispatch({type:"home-component/addItem",payload:res.data})
+                    resetControls();
                     handleCloseDialog()
                     console.log(res.data)
                 }
@@ -254,8 +272,9 @@ function index({ absolute, light, isMini }) {
                     id:Edit.id,
                     body:result.array,
                     onSuccess:(res)=>{
-                    dispatch({type:"home-component/patchItem",payload:res.data})
-
+                    dispatch({type:"home-component/patchItem",payload:{id:res.data.id,item:res.data}})
+                    resetControls();
+                    handleCloseDialog()
                         console.log(res.data)
                     }
                 })
@@ -322,18 +341,13 @@ function index({ absolute, light, isMini }) {
                         </SoftBox>
                         {homeComponent.map((ele)=>{
                              let component=TypeItem.find((elem)=>elem.id==ele.content_type)
-                             useEffect(()=>{
-                                if(Boolean(ele?.max_number)){
-                                    setSetting((prevSettings)=>({...prevSettings,slidesToShow:ele?.max_number}))
-                                }
-
-                             },[ele?.max_number])
+                            
                              if(component?.title=="category"){
                              
                                 return(
                                     <SoftBox key={component.id} sx={{ padding: "10px" ,width:"100%"}}>
                             <SoftTypography component="div">{t("Categories")}</SoftTypography>
-                            <Slider {...settings} >
+                            <Slider {...settings} slidesToShow={ele?.max_number} >
                                 <div>
                             <SoftBox sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                                 <StyleSoftBox frame={ele.frame}>
@@ -635,18 +649,18 @@ function index({ absolute, light, isMini }) {
                                 variant="outlined"
                                 placeholder={"Export"}
 
-                                // onOpen={getProducts}
+                                onOpen={getBanners}
                                 value={controls?.items}
-                                onChange={(e) => setControl("items", e.target.value)}
+                                onChange={(e) => setControl("items", e?.target?.value)}
                                 renderValue={(selected) => {
                                     
-                                    return <SoftBox sx={{ display: "flex" }}>{selected?.name}</SoftBox>
+                                    return <SoftBox sx={{ display: "flex" }}>{selected?.banner_object?.name}</SoftBox>
                                 }}
                                 sx={{ width: "100% !important" }}
                             >
                                 {
-                                    brandfrom?.map((product, index) => (
-                                        <MenuItem key={index} value={product}>{product?.name}</MenuItem>
+                                    banners?.results?.map((product, index) => (
+                                        <MenuItem key={index} value={product}>{product?.banner_object?.name}</MenuItem>
                                     ))
                                 }
                             </SelectField>
@@ -675,19 +689,19 @@ function index({ absolute, light, isMini }) {
                             <SelectField
                                 variant="outlined"
                                 placeholder={"Export"}
-
+                                onOpen={getBanners}
                                 // onOpen={getProducts}
                                 value={controls?.items}
                                 onChange={(e) => setControl("items", e.target.value)}
                                 renderValue={(selected) => {
                                     
-                                    return <SoftBox sx={{ display: "flex" }}>{selected?.name}</SoftBox>
+                                    return <SoftBox sx={{ display: "flex" }}>{selected?.banner_object?.name}</SoftBox>
                                 }}
                                 sx={{ width: "100% !important" }}
                             >
                                 {
-                                    brandfrom?.map((product, index) => (
-                                        <MenuItem key={index} value={product}>{product?.name}</MenuItem>
+                                    banners?.results?.map((product, index) => (
+                                        <MenuItem key={index} value={product}>{product?.banner_object?.name}</MenuItem>
                                     ))
                                 }
                             </SelectField>
