@@ -21,6 +21,7 @@ import  PagesSlice   from './pages/pagesSlice';
 import  ContentTypeSlice   from './contentTypesSlice';
 import  SpecialCategorySlice   from './pages/specialCategorySlice';
 import  HomeComponentSlice   from './pages/homeComponentSlice';
+import  BrandSlice   from './pages/brandSlice';
 
 
 const store = configureStore({
@@ -45,7 +46,8 @@ const store = configureStore({
      pages:PagesSlice,
      content:ContentTypeSlice,
      specialCategory:SpecialCategorySlice,
-     homeComponent:HomeComponentSlice
+     homeComponent:HomeComponentSlice,
+     brand:BrandSlice
   }
 });
 export default store
