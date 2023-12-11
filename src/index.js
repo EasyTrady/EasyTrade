@@ -17,7 +17,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "App";
-
+import {HTML5Backend} from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
 // Soft UI Dashboard React Context Provider
 import { SoftUIControllerProvider } from "context";
 import { Provider } from "react-redux";
@@ -44,10 +45,11 @@ root.render(
     <SoftUIControllerProvider>
   
       <Provider store={store}>
-
+      <DndProvider backend={HTML5Backend}>
       <I18nextProvider i18n={i18next}>
         <App />
       </I18nextProvider>
+      </DndProvider>
       </Provider>
 
     </SoftUIControllerProvider>

@@ -30,19 +30,25 @@ import HeartIcon from 'examples/Icons/heartIcon'
 import imageProduct from "assets/images/female.png"
 import imageGrid from "assets/images/grid.png"
 import imageScroll from "assets/images/scroll.png"
-import { CONTENTTYPES,CREATEHOMECOMPONENTS,SPECIALCATEGORIES,BANNERS } from 'data/api'
+import { useDrop,useDrag } from 'react-dnd'
+import { CONTENTTYPES,CREATEHOMECOMPONENTS,SPECIALCATEGORIES,BANNERS,BRAND,CATEGORY ,SWAP,SWAPCOMPONENT} from 'data/api'
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import { styled } from '@mui/system';
 import Slider from "react-slick";
 import compare from 'utils/compare'
+import DragerItem from './DragerItem'
+
 function index({ absolute, light, isMini }) {
     const route = useLocation().pathname.split("/").slice(1);
    const contentTypes= useSelector((state)=>state.content.value)
    const specialCategorys= useSelector((state)=>state.specialCategory.value)
+   const Brands= useSelector((state)=>state.brand.value)
+   
    const homeComponent= useSelector((state)=>state.homeComponent.value)
-
+    let shop_id=localStorage.getItem("shop_id")
     let dispatch=useDispatch()
+    let categories = useSelector((state) => state.category.value)
     let { t } = useTranslation("common")
     const banners = useSelector((state) => state.banners.value);
     const [settings,setSetting] = useState({
@@ -55,6 +61,8 @@ function index({ absolute, light, isMini }) {
       });
     let [open, setOpen] = useState(false)
     let [Edit, setEdit] = useState(null)
+    let [drap, setDrap] = useState(0)
+    let [dropele, setDrop] = useState(0)
 
     const handleCloseDialog = () => {
         setOpen(false)
@@ -95,7 +103,7 @@ function index({ absolute, light, isMini }) {
             },
             {
                 control: "items",
-                value: "",
+                value: [],
                 isRequired: false,
 
             },
@@ -137,6 +145,12 @@ function index({ absolute, light, isMini }) {
             method: "get",
             Token: `Token ${Token}`
         });
+        const [swapRequest, getswapResponce] =
+        useRequest({
+            path: SWAPCOMPONENT,
+            method: "post",
+            Token: `Token ${Token}`
+        });
         const [deletecontentRequest, deletecontentResponce] =
         useRequest({
             path: CREATEHOMECOMPONENTS,
@@ -153,6 +167,18 @@ function index({ absolute, light, isMini }) {
         useRequest({
             path: CREATEHOMECOMPONENTS,
             method: "post",
+            Token: `Token ${Token}`
+        });
+        const [BrandgetRequest, getBrandResponce] =
+        useRequest({
+            path: BRAND,
+            method: "get",
+            Token: `Token ${Token}`
+        });
+        const [categorygetRequest, getcategoryResponce] =
+        useRequest({
+            path:  CATEGORY,
+            method: "get",
             Token: `Token ${Token}`
         });
         const [componentgetRequest, getcomponentResponce] =
@@ -173,6 +199,12 @@ function index({ absolute, light, isMini }) {
             method: "get",
             Token: `Token ${Token}`
         });
+        const [swaperRequest, swaperResponce] =
+        useRequest({
+            path: SWAP,
+            method: "post",
+            Token: `Token ${Token}`
+        });
         const getBanners=()=>{
             getBannerdRequest({
                 onSuccess:(res)=>{
@@ -181,6 +213,36 @@ function index({ absolute, light, isMini }) {
                 }
             })
         }
+        const [hasDropped, setHasDropped] = useState(false)
+        const [hasDroppedOnChild, setHasDroppedOnChild] = useState(false)
+     
+        const handleDrop = (item) => {
+        let indexDrop= homeComponent.find((ele,index)=>ele?.title==item?.nativeEvent?.toElement?.innerText)
+        let indexDrag= homeComponent.find((ele,index)=>ele?.id==drap?.id)
+
+        swapRequest({
+            body:{
+                
+                    "object_one":drap,
+                    "object_two":indexDrop?.id
+                
+            },onSuccess:(res)=>{
+                dispatch({type:"home-component/set",payload:res?.data?.data})
+                console.log(res.data)
+            }
+        })
+        console.log(drap,index)
+            // console.log('Item dropped:', item.nativeEvent.layerY,       item?.nativeEvent);
+          };
+         
+        const [{ isOver }, drop] = useDrop({
+            accept: 'box',
+            // drop: (item) => handleDrop(item),
+            collect: (monitor) => ({
+              isOver: !!monitor.isOver(),
+            }),
+          });
+        
     const getContentTypes=()=>{
         contentRequest({
             onSuccess:(res)=>{
@@ -213,6 +275,24 @@ function index({ absolute, light, isMini }) {
             }
         })
     }
+    const getBrandItems=()=>{
+        BrandgetRequest({
+            id:shop_id+"/brands/",
+            onSuccess:(res)=>{
+                dispatch({type:"brand/set",payload:res.data})
+                console.log(res.data)
+            }
+        })
+    }
+    const getCategory=()=>{
+        categorygetRequest({
+            
+            onSuccess:(res)=>{
+                dispatch({ type: "category/set", payload: res.data })
+
+            }
+        })
+    }
     const handlleSubmit=()=>{
         if(!Edit){
             validate().then((output) => {
@@ -222,13 +302,13 @@ function index({ absolute, light, isMini }) {
                 body:controls?.content_type?.title == "brand"?{
                     title:controls?.title,
                     content_type:controls?.content_type?.id,
-                    items:[],
+                    items:controls?.items,
                     max_number:controls?.max_number,
                     position:controls?.position?controls?.position:"fixed",
                 }:controls?.content_type?.title=="banner"?{
                     title:controls?.title,
                     content_type:controls?.content_type?.id,
-                    items:[],
+                    items:controls?.items,
 
                     
                     max_number:controls?.number|controls?.brannernumber,
@@ -239,7 +319,7 @@ function index({ absolute, light, isMini }) {
                 }:controls?.content_type?.title=="category"?{
                     title:controls?.title,
                     content_type:controls?.content_type?.id,
-                    items:[],
+                    items:controls?.items,
 
                     max_number:controls?.max_number,
                    
@@ -249,7 +329,7 @@ function index({ absolute, light, isMini }) {
                 }:{
                     title:controls?.title,
                     content_type:controls?.content_type?.id,
-                    items:[],
+                    items:controls?.items,
 
                    
                    
@@ -263,14 +343,17 @@ function index({ absolute, light, isMini }) {
                 }
             })})
         }else{
-            let result=compare(Object.entries(Edit).map(([key,value])=>key=="content_type"?[controls[key].id,value,key]:[controls[key],value,key]),false)
-            
-            console.log(Object.entries(Edit).map(([key,value])=>[controls[key],value,key]),result,"sort_number")
+           
+          
+            let result=compare(Object?.entries(Edit)?.map(([key,value])=>(key=="content_type"?
+            [controls[key]?.id,value,key]:key=="items"?[controls[key],value,key]:[controls[key],String(value),key])),false)
+            // console.log(controls.items.filter((ele)=>!Boolean(controls.items.find((elem)=>elem.id==ele.id))))
+            // console.log(compare(Object.entries(Edit).map(([key,value])=>key=="content_type"?[controls[key].id,value,key]:key=="items"?[controls[key],value,key]:[controls[key],String(value),key])),"sort_number")
             if(result.nochange){
                 delete result.array.sort_number
                 patchcontentRequest({
                     id:Edit.id,
-                    body:result.array,
+                    body:{...result.array,items:result?.array?.items?.map((ele)=>ele?.id?ele.id:ele)},
                     onSuccess:(res)=>{
                     dispatch({type:"home-component/patchItem",payload:{id:res.data.id,item:res.data}})
                     resetControls();
@@ -282,6 +365,16 @@ function index({ absolute, light, isMini }) {
             
         }
       
+    }
+    const Swapcomponent=(first,second)=>{
+        if(first&&second){
+            swaperRequest({
+                onSuccess:()=>{
+    
+                }
+            })
+        }
+  
     }
     useEffect(()=>{
         getContentTypes()
@@ -297,6 +390,53 @@ function index({ absolute, light, isMini }) {
     useEffect(()=>{
         setItems([...specialCategorys])
     },[specialCategorys])
+    useEffect(()=>{
+        
+            if (controls?.content_type?.title == "brand"){
+                setEdit({ title:controls?.title,
+                        content_type:controls?.content_type?.id,
+                        items:controls?.items,
+                        max_number:controls?.max_number,
+                        position:controls?.position})
+               }
+               if(controls?.content_type?.title=="banner"){
+                setEdit({
+                    title:controls?.title,
+                    content_type:controls?.content_type?.id,
+                    items:controls?.items,
+    
+                    
+                    max_number:controls?.number,
+                    display:controls?.display,
+                    overflow_type:controls?.overflow_type,
+                    position:controls?.position?controls?.position:"fixed",
+                  
+                })
+               }
+               if(controls?.content_type?.title=="category"){
+                setEdit({
+                    title:controls?.title,
+                    content_type:controls?.content_type?.id,
+                    items:controls?.items,
+
+                    max_number:controls?.max_number,
+                   
+                    position:controls?.position?controls?.position:"fixed",
+                    category_level:controls?.category_level,
+                    frame:controls?.frame
+                })}
+                if(controls?.content_type?.title=="specialcategory"){setEdit({
+                    title:controls?.title,
+                    content_type:controls?.content_type?.id,
+                    items:controls?.items,
+
+                   
+                   
+                    position:controls?.position?controls?.position:"fixed",
+                    
+                })}
+        
+    },[Edit])
     return (
         <DashboardLayout >
             <DashboardNavbar />
@@ -305,9 +445,9 @@ function index({ absolute, light, isMini }) {
                     <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
                 </SoftBox>
                 <Stack direction={{ lg: "row", md: "column", sm: "column", xs: "column" }} justifyContent={"space-between"}>
-                    <SoftBox sx={{ backgroundColor: "#fff", width: { lg: "40%", md: "100%", sm: "100%", xs: "100%" }, borderRadius: "8px", height: "100vh" }}>
+                    <SoftBox sx={{ backgroundColor: "#fff", width: { lg: "44%", md: "100%", sm: "100%", xs: "100%" }, borderRadius: "8px", height: "100vh" }}>
                         <SoftBox sx={{ width: "100%", borderBottom: "1px solid ", padding: "16px" }}>
-                            <SoftButton variant={"outlined"} onClick={() => {setOpen(true);setEdit(null)}}
+                            <SoftButton variant={"outlined"} onClick={() => {setOpen(true);setEdit(null);resetControls()}}
                                 sx={{ borderColor: ({ palette: { purple } }) => purple.middle, color: ({ palette: { purple } }) => purple.middle }}>
                                 <Icon fontSize="small" on sx={{ color: ({ palette: { purple } }) => purple.middle }}>
                                     add
@@ -317,20 +457,23 @@ function index({ absolute, light, isMini }) {
 
 
                         </SoftBox>
-                        {homeComponent.map((ele)=>
-                        <SoftBox key={ele.id} sx={{ width: "100%", backgroundColor: "#fff", padding: "16px", display: "flex", justifyContent: "space-around", alignItems: "center" }}>
+                        <SoftBox refence={drop} onDrop={handleDrop} >
+                        {homeComponent.map((ele,index,array)=>
+                        <DragerItem ele={ele} key={index} setDrap={()=>setDrap(ele?.id)}>
+                        {/* <SoftBox refence={drag}onDrag={()=>handleDrag(ele)} key={index} sx={{ width: "100%", backgroundColor: "#fff", padding: "16px", display: "flex", justifyContent: "space-around", alignItems: "center" }}> */}
                             <SoftBox sx={{ backgroundColor: "#F0F6FF", display: "flex", justifyContent: "space-between", alignItems: "center", paddingX: "24px", paddingY: "10px", borderRadius: "8px", width: "75%" }}>
                                 <SoftBox sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "60%" }}>
                                     <SwitchIcon />
-                                    {TypeItem.find((elem)=>elem.id==ele.content_type)?.icon}
-                                    
+                                    {TypeItem.find((elem)=>elem.id==ele.content_type)?.icon} 
                                     <Typography component="p" sx={{ fontSize: "14px", width: "100%" }}>{ele.title}</Typography>
                                 </SoftBox>
-                                <ViewIcon sx={{ width: "20%" }} onClick={()=>{Object.entries(ele).map(([key,value])=>key=="content_type"?setControl(key,TypeItem.find((elem)=>elem.id==value)):setControl(key,value));setOpen(true);setEdit(ele)}}/>
+                                
+                                <ViewIcon sx={{ width: "20%" }} onClick={()=>{Object.entries(ele).map(([key,value])=>key=="content_type"?setControl(key,TypeItem.find((elem)=>elem.id==value)):key=="items"?setControl(key,value):setControl(key,value));setOpen(true);setEdit(ele)}}/>
                             </SoftBox>
                             <DeleteIcon sx={{ width: "20%" }} onClick={()=>DeleteComponenet(ele)}/>
-                        </SoftBox>)}
-
+                        {/* </SoftBox> */}
+                        </DragerItem>)}
+                            </SoftBox>
                     </SoftBox>
                     <SoftBox sx={{ backgroundColor: "#fff", width: { lg: "55%", md: "100%", sm: "100%", xs: "100%" } , borderRadius: "8px", overflow: "auto", height: "436px" }}>
                         <SoftBox sx={{ backgroundColor: "#e7eced8f", width: "100%", borderBottom: "1px solid ", display: "flex", padding: "10px" }}>
@@ -341,22 +484,23 @@ function index({ absolute, light, isMini }) {
                         </SoftBox>
                         {homeComponent.map((ele)=>{
                              let component=TypeItem.find((elem)=>elem.id==ele.content_type)
-                            
+                            console.log(component,ele)
                              if(component?.title=="category"){
                              
                                 return(
                                     <SoftBox key={component.id} sx={{ padding: "10px" ,width:"100%"}}>
                             <SoftTypography component="div">{t("Categories")}</SoftTypography>
                             <Slider {...settings} slidesToShow={ele?.max_number} >
-                                <div>
+                                {ele?.items?.map((elem)=><div key={elem.id}>
                             <SoftBox sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                                 <StyleSoftBox frame={ele.frame}>
-
+                                    <img src={elem?.image} style={{width:"100%"}}/>
                                 </StyleSoftBox>
-                                <SoftTypography component="div" sx={{ fontSize: "12px" }}>{t("Categories")}</SoftTypography>
+                                <SoftTypography component="div" sx={{ fontSize: "12px" }}>{elem?.name}</SoftTypography>
 
                             </SoftBox>
-                            </div>
+                            </div>)}
+                                
                                 
                            
                             </Slider>
@@ -399,7 +543,7 @@ function index({ absolute, light, isMini }) {
                                 )
                                 )
                              }else if(component?.title=="banner"){
-                                console.log(component)
+                                
                                 return (<SoftBox key={component.id}  sx={{ padding: "10px" }}>
                                 <SoftTypography component="div">{t("Banner")}</SoftTypography>
                                 <SoftBox sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
@@ -563,18 +707,23 @@ function index({ absolute, light, isMini }) {
                         </Typography>
                         <SelectField
                             variant="outlined"
+                            onOpen={getBrandItems}
                             placeholder={"Export"}
                             value={controls?.items}
+                            multiple
                             onChange={(e) => setControl("items", e.target.value)}
                             renderValue={(selected) => {
-                                
-                                return <SoftBox sx={{ display: "flex" }}>{selected?.name}</SoftBox>
+                                if(Brands?.results?.length==0){
+                                    getBrandItems()
+                                }
+                            
+                                return <SoftBox sx={{ display: "flex" }}>{Brands?.results?.filter((ele)=>selected.map((ele)=>ele?.id?ele.id:ele)?.includes(ele?.id))?.map((elem)=>elem?.name)?.join(",")}</SoftBox>
                             }}
                             sx={{ width: "100% !important" }}
                         >
                             {
-                                brandfrom?.map((product, index) => (
-                                    <MenuItem key={index} value={product}>{product?.name}</MenuItem>
+                                Brands?.results?.map((product, index) => (
+                                    <MenuItem key={index} value={product?.id}>{product?.name}</MenuItem>
                                 ))
                             }
                         </SelectField>
@@ -648,19 +797,23 @@ function index({ absolute, light, isMini }) {
                             <SelectField
                                 variant="outlined"
                                 placeholder={"Export"}
-
+                                multiple
                                 onOpen={getBanners}
                                 value={controls?.items}
-                                onChange={(e) => setControl("items", e?.target?.value)}
+                            onChange={(e) => setControl("items",e.target.value)}
+                          
                                 renderValue={(selected) => {
-                                    
-                                    return <SoftBox sx={{ display: "flex" }}>{selected?.banner_object?.name}</SoftBox>
+                                   console.log(selected)
+                                   if(banners?.results?.length==0){
+                                    getBanners()  
+                                }
+                                    return <SoftBox sx={{ display: "flex" }}>{banners?.results?.filter((ele)=>selected?.map((ele)=>ele?.id?ele?.id:ele)?.includes(ele?.id)).map((elem)=>elem?.banner_object?.name)?.join(",")}</SoftBox>
                                 }}
                                 sx={{ width: "100% !important" }}
                             >
                                 {
                                     banners?.results?.map((product, index) => (
-                                        <MenuItem key={index} value={product}>{product?.banner_object?.name}</MenuItem>
+                                        <MenuItem key={index} value={product?.id}>{product?.banner_object?.name}</MenuItem>
                                     ))
                                 }
                             </SelectField>
@@ -690,18 +843,22 @@ function index({ absolute, light, isMini }) {
                                 variant="outlined"
                                 placeholder={"Export"}
                                 onOpen={getBanners}
+                                multiple
                                 // onOpen={getProducts}
                                 value={controls?.items}
                                 onChange={(e) => setControl("items", e.target.value)}
                                 renderValue={(selected) => {
-                                    
-                                    return <SoftBox sx={{ display: "flex" }}>{selected?.banner_object?.name}</SoftBox>
+                                console.log(selected)
+                                    if(banners?.results?.length==0){
+                                        getBanners()  
+                                    }
+                                    return <SoftBox sx={{ display: "flex" }}>{banners?.results?.filter((ele)=>selected?.map((ele)=>ele?.id?ele?.id:ele)?.includes(ele?.id)).map((elem)=>elem?.banner_object?.name)?.join(",")}</SoftBox>
                                 }}
                                 sx={{ width: "100% !important" }}
                             >
                                 {
                                     banners?.results?.map((product, index) => (
-                                        <MenuItem key={index} value={product}>{product?.banner_object?.name}</MenuItem>
+                                        <MenuItem key={index} value={product?.id}>{product?.banner_object?.name}</MenuItem>
                                     ))
                                 }
                             </SelectField>
@@ -715,19 +872,20 @@ function index({ absolute, light, isMini }) {
                         <SelectField
                             variant="outlined"
                             placeholder={"Export"}
-
                             
+                            multiple
                             value={controls?.items}
-                            onChange={(e) => setControl("items", e.target.value)}
+                            onChange={(e) => {setControl("items",e.target.value);}}
                             renderValue={(selected) => {
-                                
-                                return <SoftBox sx={{ display: "flex" }}>{selected?.name}</SoftBox>
+                                console.log(selected,"selected")
+                                return <SoftBox sx={{ display: "flex" }}>{brandfrom?.filter((ele)=>selected?.map((ele)=>ele?.id?ele.id:ele).includes(ele?.id)).map((elem)=>elem?.name)?.join(",")}</SoftBox>
                             }}
                             sx={{ width: "100% !important" }}
                         >
                             {
                                 brandfrom?.map((product, index) => (
-                                    <MenuItem key={index} value={product}>{product?.name}</MenuItem>
+                                   
+                                    <MenuItem key={index} value={product?.id}>{product?.name}</MenuItem>
                                 ))
                             }
                         </SelectField>
@@ -768,6 +926,33 @@ function index({ absolute, light, isMini }) {
                                 {t("Circle")}
                             </SoftButton>
                         </SoftBox>
+                        <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
+                        >{t("choose category")}
+
+                        </Typography>
+                        <SelectField
+                            variant="outlined"
+                            placeholder={"Export"}
+                            onOpen={getCategory}
+                            multiple
+                            value={controls?.items}
+                            onChange={(e) => {setControl("items",e.target.value);}}
+                            renderValue={(selected) => {
+                                if(categories.length==0){
+                                    getCategory() 
+                                }
+                                console.log(selected,"selected",categories)
+                                return <SoftBox sx={{ display: "flex" }}>{categories?.filter((ele)=>selected.map((ele)=>ele?.id?ele?.id:ele)?.includes(ele?.id))?.map((elem)=>elem?.name)?.join(",")}</SoftBox>
+                            }}
+                            sx={{ width: "100% !important" }}
+                        >
+                            {
+                                categories?.map((product, index) => (
+                                   
+                                    <MenuItem key={index} value={product?.id}>{product?.name}</MenuItem>
+                                ))
+                            }
+                        </SelectField>
                     </>}
                 </Form>
                 {postcontentResponce.failAlert}

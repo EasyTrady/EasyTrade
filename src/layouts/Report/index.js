@@ -10,7 +10,9 @@ import Breadcrumbs from 'examples/Breadcrumbs'
 import Grid from "@mui/material/Grid";
 import SoftTypography from "components/SoftTypography";
 import SoftBox from 'components/SoftBox'
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import SoftInput from 'components/SoftInput'
+import input from "assets/theme/components/form/input";
 import SelectField from "components/common/SelectField";
 import DataGridCustom from 'components/common/DateGridCustomer'
 import DatePickerField from "components/common/DatePicker";
@@ -18,20 +20,29 @@ import useControls from "hooks/useControls";
 import Switch from '@mui/material/Switch';
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { DateRangePicker } from "@mui/x-date-pickers-pro";
+import dayjs from 'dayjs';
+import { SingleInputDateRangeField } from '@mui/x-date-pickers-pro/SingleInputDateRangeField';
+// import  LocalizationProvider  from '@mui/lab/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import PropTypes from "prop-types";
 import {
-   Container,InputAdornment,Avatar,Icon
+   Container,InputAdornment,Avatar,Icon,TextField
 } from '@mui/material'
 import moment from 'moment';
 import Footer from "examples/Footer";
-
+// import DateRangePicker from '@mui/lab/DateRangePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import DateIcon from 'examples/Icons/DateIcon';
 import useRequest from "hooks/useRequest";
 import {  REPORT} from "data/api";
 import { BaseUrl } from 'data/api';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 function Report({ absolute, light, isMini }) {
   const route = useLocation().pathname.split("/").slice(1);
+  const [dateRange, setDateRange] = useState([null, null]);
 
+  
     const { chart, items } = reportsBarChartData;
     let[rows,setRows]=useState([])
     let[columns,setColumns]=useState([])
@@ -76,6 +87,11 @@ function Report({ absolute, light, isMini }) {
         isRequired: false,
       },
     ]);
+    const handleDateChange = (newDates) => {
+      setControl("start_date",dayjs(newDates[0]))
+      setControl("end_date",dayjs(newDates[1]))
+      setDateRange(newDates);
+    };
     function togetdataoftable(data){
       
         ReportRequest({
@@ -134,11 +150,33 @@ function Report({ absolute, light, isMini }) {
             <SoftBox sx={{display:"flex", justifyContent:"space-between", marginY:"24px",flexDirection:{lg:"row",md:"row",sm:"column",xs:"column"}}}>
             <SoftTypography variant="h5">Sales Report</SoftTypography>
             <SoftBox sx={{justifyContent: "flex-end",
-    display: "flex",alignItems:"center"}}>
+    display: "flex",alignItems:"center",width:"40%"}}>
             <SoftBox sx={{display:"flex",width:{lg:"50%",md:"50%",sm:"100%",xs:"100%"},borderRadius: '8px',
 border: "1px solid #D9D9D9",overflow:"hidden",alignItems:"center"}}>
-          
-            <DatePickerField
+   <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DateRangePicker
+          localeText={{start:"",end:""}}
+          // format='YYYY-MM-DDThh:mm[:ss[.uuuuuu]][+HH:MM|-HH:MM|Z]'
+        startText=""
+        endText=""
+        value={dateRange}
+        slots={{ field: SingleInputDateRangeField }}
+        sx={{".MuiInputBase-root":{width:"117% !important"}}}
+        onChange={handleDateChange}
+        label=""
+        
+        // renderInput={(startProps, endProps) => (
+        //   <React.Fragment>
+        //     {console.log(startProps.inputProps)}
+        //     {/* <TextField  /> */}
+        //     <SoftBox sx={{ mx: 2 }}> to </SoftBox>
+        //     <TextField InputLabelProps={{ shrink: true }}  />
+        //   </React.Fragment>
+        // )}
+      />
+      
+</LocalizationProvider>
+            {/* <DatePickerField
               value={controls.start_date}
               onChange={(newvalue) => {setControl("start_date",newvalue)}}
               icon={DateIcon}
@@ -150,7 +188,7 @@ border: "1px solid #D9D9D9",overflow:"hidden",alignItems:"center"}}>
               onChange={(newvalue) => {setControl("end_date",newvalue)}}
               icon={"to"}
               sx={{".MuiInputBase-root":{border:"unset !important",borderRadius:"unset !important"}}}
-            />                   
+            />                    */}
             </SoftBox>
             <SoftBox sx={{marginX:"10px"}}>
             <SelectField

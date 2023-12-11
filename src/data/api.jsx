@@ -19,6 +19,8 @@ export const OFFERS= `${BaseUrl}shop/dashboard/offers/`
 export const OFFERTYPES= `${BaseUrl}shop/dashboard/offer/types/`
 export const BannersTYPES= `${BaseUrl}shop/dashboard/banner/types/`
 export const BANNERS= `${BaseUrl}shop/dashboard/banners/`
+export const BRAND= `${BaseUrl}shop/`
+export const SWAP = `${BaseUrl}shop/dashboard/home-components/swap/`
 // /products/attributes/15/values/bulkupdate/
 export const SENDEMAILPRODUCT=`${BaseUrl}/shop/dashboard/notifycart/`
 export const EMPLOYEE= `${BaseUrl}shop/dashboard/employees/`
@@ -27,3 +29,4 @@ export const EMPLOYEE= `${BaseUrl}shop/dashboard/employees/`
 export const CREATEHOMECOMPONENTS=`${BaseUrl}shop/dashboard/home-components/`
 export const SHOP= `${BaseUrl}shop/accounts/shop/info/`
 export const SPECIALCATEGORIES=`${BaseUrl}shop/dashboard/special-categories/`
+export const SWAPCOMPONENT=`${BaseUrl}shop/dashboard/home-components/swap/`
