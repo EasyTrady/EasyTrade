@@ -40,12 +40,13 @@ import { StarBorder } from "@mui/icons-material";
 // Custom styles for the Sidenav
 import SidenavRoot from "examples/Sidenav/SidenavRoot";
 import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
-
+import imageEasy from "assets/images/easytrade2.png"
 // Soft UI Dashboard React context
 import { useSoftUIController, setMiniSidenav } from "context";
 import NavCollapse from "./CollapseNav";
 import NavItem from "./CollapseItem";
-
+import VisitSite from "examples/Icons/VisitSite";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, transparentSidenav,sidenavColor,makeIconOnly ,ColorSidenav} = controller;
@@ -190,10 +191,18 @@ console.log(active)
             
           </SoftBox>
         </SoftBox>
+        <SoftBox component={NavLink} to="/" sx={{display:"flex",alignItems:"center"}}>
+          <VisitSite/>
+          <SoftTypography component={"span"} sx={{fontSize:"12px",marginX:"5px"}}>Visit Site </SoftTypography>
+          <ArrowForwardIcon sx={{fontSize:"12px"}} />
+          </SoftBox>
       </SoftBox>
       <Divider />
       <List>{renderRoutes}</List>
-
+      <Divider />
+      <SoftBox sx={{px:1}}>
+    <SoftTypography component={"img"} src={imageEasy}/>
+    </SoftBox>
     </SidenavRoot>
   );
 }

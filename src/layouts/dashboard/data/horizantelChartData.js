@@ -13,16 +13,16 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-const gradientLineChartData = {
-  labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-  datasets: [
-    {
-      label: "Mobile apps",
-      color: ["info"],
-      data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-    },
-    
-  ],
-};
-
-export default gradientLineChartData;
+const horizantLineChartData = {
+    labels: ["Extra costs (shipping, taxes, fees)", "Required to create an account", "Didn't trust the site with credit card information", "Complicated checkout process"],
+    datasets: [
+      {
+        label: "Mobile apps",
+        backgroundColor:["#1FD071","#0097EC","#9852F0","#FF2727"],
+        data: [50, 40, 300, 220],
+      },
+      
+    ],
+  };
+  
+  export default horizantLineChartData;
