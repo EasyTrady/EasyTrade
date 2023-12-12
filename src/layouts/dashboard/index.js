@@ -17,7 +17,8 @@ Coded by www.creative-tim.com
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
 import Container from "@mui/material/Container";
-
+import MenuItem from "@mui/material/MenuItem"
+import SelectField from "components/common/SelectField";
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
@@ -38,7 +39,7 @@ import BuildByDevelopers from "layouts/dashboard/components/BuildByDevelopers";
 import WorkWithTheRockets from "layouts/dashboard/components/WorkWithTheRockets";
 import Projects from "layouts/dashboard/components/Projects";
 import OrderOverview from "layouts/dashboard/components/OrderOverview";
-
+import React from "react"
 // Data
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
@@ -48,6 +49,15 @@ import { useSoftUIController } from "context";
 import { PROFILE } from "data/api";
 import { useDispatch, useSelector } from "react-redux";
 import useRequest from "hooks/useRequest";
+import CardIcon from "examples/Icons/CardIcon";
+import UsersIcon from "examples/Icons/UsersIcon";
+import Employee from "examples/Icons/Employee";
+import VendorIcon from "examples/Icons/VendorIcon";
+import Chart from "examples/Charts/VerticalChart";
+import MixedChart from "examples/Charts/MixedChart";
+import HorizontalBarChart from "examples/Charts/BarCharts/HorizontalBarChart";
+import horizantLineChartData from "./data/horizantelChartData";
+// import Chart from "examples/Charts/VerticalChart/Chart";
 
 function Dashboard() {
   const { size } = typography;
@@ -55,7 +65,7 @@ function Dashboard() {
   const [, dispatch] = useSoftUIController();
   const profile=useSelector((state)=>state.profile)
   const Dispatch=useDispatch()
-  
+  let[filter,setFilter]=React.useState("")
   let Token = localStorage.getItem("token");
   const [profileRequest, getProfileResponce] = useRequest({
     path: PROFILE,
@@ -86,42 +96,39 @@ useEffect(() => {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "today's money" }}
-                count="$53,000"
-                percentage={{ color: "success", text: "+55%" }}
-                icon={{ color: "info", component: "paid" }}
+                title={{ text: "46,827" }}
+                count="Orders"
+                percentage={{ color: "text", text: "-0.91% this week" }}
+                icon={{ color: "white", component: <CardIcon/> }}
               />
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "today's users" }}
-                count="2,300"
-                percentage={{ color: "success", text: "+3%" }}
-                icon={{ color: "info", component: "public" }}
+                title={{ text: "23,283.5" }}
+                count="Users"
+                percentage={{ color: "text", text: "-0.91% this week" }}
+                icon={{ color: "white", component: <UsersIcon/> }}
               />
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "new clients" }}
-                count="+3,462"
-                percentage={{ color: "error", text: "-2%" }}
-                icon={{ color: "info", component: "emoji_events" }}
+                title={{ text: "23" }}
+                count="Employees"
+                percentage={{ color: "text", text: "-0.91% this week" }}
+                icon={{ color: "white", component: <Employee/> }}
               />
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "sales" }}
-                count="$103,430"
-                percentage={{ color: "success", text: "+5%" }}
-                icon={{
-                  color: "info",
-                  component: "shopping_cart",
-                }}
+               title={{ text: "23,283.5" }}
+               count="Vendors"
+               percentage={{ color: "text", text: "+0.49% this week" }}
+               icon={{ color: "white", component: <VendorIcon/> }}
               />
             </Grid>
           </Grid>
         </SoftBox>
-        <SoftBox mb={3}>
+        {/* <SoftBox mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} lg={7}>
               <BuildByDevelopers />
@@ -130,10 +137,10 @@ useEffect(() => {
               <WorkWithTheRockets />
             </Grid>
           </Grid>
-        </SoftBox>
+        </SoftBox> */}
         <SoftBox mb={3}>
           <Grid container spacing={3}>
-            <Grid item xs={12} lg={5}>
+            {/* <Grid item xs={12} lg={5}>
               <ReportsBarChart
                 title="active users"
                 description={
@@ -144,36 +151,59 @@ useEffect(() => {
                 chart={chart}
                 items={items}
               />
-            </Grid>
-            <Grid item xs={12} lg={7}>
+            </Grid> */}
+            <Grid item xs={12} lg={12}>
               <GradientLineChart
-                title="Sales Overview"
+                title="Total amount Orders Analytics"
                 description={
-                  <SoftBox display="flex" alignItems="center">
-                    <SoftBox fontSize={size.lg} color="success" mb={0.3} mr={0.5} lineHeight={0}>
-                      <Icon className="font-bold">arrow_upward</Icon>
-                    </SoftBox>
-                    <SoftTypography variant="button" color="text" fontWeight="medium">
-                      4% more{" "}
-                      <SoftTypography variant="button" color="text" fontWeight="regular">
-                        in 2021
-                      </SoftTypography>
-                    </SoftTypography>
-                  </SoftBox>
+                  <SelectField
+                  variant="outlined"
+                  placeholder={"Export"}
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                  renderValue={(selected) => {
+                      
+                      return <SoftBox sx={{ display: "flex" }}>{selected}</SoftBox>
+                  }}
+                  sx={{ width: "100% !important" }}
+              >
+                  {
+                     ["Monthly","Yearly"].map((product, index) => (
+
+                          <MenuItem key={index} value={product}>{product}</MenuItem>
+                      ))
+                  }
+              </SelectField>
                 }
                 height="20.25rem"
                 chart={gradientLineChartData}
               />
             </Grid>
+            <Grid item xs={12} lg={12}>
+              <HorizontalBarChart
+                title="Total amount Orders Analytics"
+                description={
+                <></>
+                }
+                height="20.25rem"
+                chart={horizantLineChartData}
+              />
+            </Grid>
           </Grid>
         </SoftBox>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={8}>
+          <Grid item xs={12} md={6} lg={4}>
             <Projects />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
-            <OrderOverview />
+            <Projects />
           </Grid>
+          <Grid item xs={12} md={6} lg={4}>
+            <Projects />
+          </Grid>
+          {/* <Grid item xs={12} md={6} lg={4}>
+            <OrderOverview />
+          </Grid> */}
         </Grid>
       </SoftBox>
       <Footer />

@@ -33,17 +33,22 @@ function configs(labels, datasets) {
       },
       scales: {
         y: {
+          barPercentage: 0.5,
           grid: {
             drawBorder: false,
             display: true,
+            
             drawOnChartArea: true,
             drawTicks: false,
             borderDash: [5, 5],
           },
+
           ticks: {
             display: true,
             padding: 10,
             color: "#9ca2b7",
+            textAlign:"left",
+           
             font: {
               size: 11,
               family: typography.fontFamily,
@@ -53,14 +58,17 @@ function configs(labels, datasets) {
           },
         },
         x: {
+          
           grid: {
             drawBorder: false,
             display: false,
+            
             drawOnChartArea: true,
             drawTicks: true,
           },
           ticks: {
             display: true,
+            
             color: "#9ca2b7",
             padding: 10,
             font: {

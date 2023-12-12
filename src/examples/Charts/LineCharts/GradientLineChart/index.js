@@ -67,7 +67,7 @@ function GradientLineChart({ title, description, height, chart }) {
   const renderChart = (
     <SoftBox p={2}>
       {title || description ? (
-        <SoftBox px={description ? 1 : 0} pt={description ? 1 : 0}>
+        <SoftBox px={description ? 1 : 0} pt={description ? 1 : 0} display={"flex"} justifyContent="space-between" alignItems="center">
           {title && (
             <SoftBox mb={1}>
               <SoftTypography variant="h6">{title}</SoftTypography>

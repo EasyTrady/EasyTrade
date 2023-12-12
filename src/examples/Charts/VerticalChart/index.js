@@ -46,6 +46,7 @@ function Chart({ color, title, description, chart, items, subDescription }) {
               width={800}height={300}
                 series={[{ data: uData, label: 'uv', type: 'bar' }]}
                 xAxis={[{ scaleType: 'band', data: xLabels }]}
+                
                 colors={[color]}
                 sx={{}}
               >

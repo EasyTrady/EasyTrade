@@ -52,26 +52,29 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
               </Grid>
             ) : null}
             <Grid item xs={8}>
-              <SoftBox ml={direction === "left" ? 2 : 0} lineHeight={1}>
+              <SoftBox ml={direction === "left" ? 2 : 0} lineHeight={1} display={"flex"} flexDirection="column">
                 <SoftTypography
                   variant="button"
-                  color={bgColor === "white" ? "text" : "white"}
+                  color={bgColor === "white" ? "dark" : "white"}
                   opacity={bgColor === "white" ? 1 : 0.7}
                   textTransform="capitalize"
                   fontWeight={title.fontWeight}
+                  sx={{fontSize:"20px"}}
                 >
                   {title.text}
                 </SoftTypography>
                 <SoftTypography
-                  variant="h5"
-                  fontWeight="bold"
+                  variant="p"
+                  fontWeight="normal"
                   color={bgColor === "white" ? "dark" : "white"}
+                  fontSize={"16px"}
                 >
                   {count}{" "}
-                  <SoftTypography variant="button" color={percentage.color} fontWeight="bold">
+                  
+                </SoftTypography>
+                <SoftTypography variant="button" color={percentage.color} fontWeight="bold" fontSize="12px">
                     {percentage.text}
                   </SoftTypography>
-                </SoftTypography>
               </SoftBox>
             </Grid>
             {direction === "right" ? (

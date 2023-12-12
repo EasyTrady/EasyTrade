@@ -40,10 +40,15 @@ function HorizontalBarChart({ title, description, height, chart }) {
         ...dataset,
         weight: 5,
         borderWidth: 0,
-        borderRadius: 4,
-        backgroundColor: colors[dataset.color]
-          ? colors[dataset.color || "dark"].main
-          : colors.dark.main,
+        borderRadius: 8,
+        height:1,
+        background:dataset.backgroundColor.map((ele)=>({chart: {ctx}}) => {
+          const bg = ctx.createLinearGradient(230, 0, 50, 0);
+          // More config for your gradient
+           bg.addColorStop(0, ele);
+           bg.addColorStop(1, "#fff");
+           return bg
+        }) ,
         fill: false,
         maxBarThickness: 35,
       }))
