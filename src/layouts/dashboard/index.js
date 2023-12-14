@@ -57,6 +57,7 @@ import Chart from "examples/Charts/VerticalChart";
 import MixedChart from "examples/Charts/MixedChart";
 import HorizontalBarChart from "examples/Charts/BarCharts/HorizontalBarChart";
 import horizantLineChartData from "./data/horizantelChartData";
+import gradientLinetDatas from "./data/gradientLineDatas";
 // import Chart from "examples/Charts/VerticalChart/Chart";
 
 function Dashboard() {
@@ -155,6 +156,7 @@ useEffect(() => {
             <Grid item xs={12} lg={12}>
               <GradientLineChart
                 title="Total amount Orders Analytics"
+                height="250px"
                 description={
                   <SelectField
                   variant="outlined"
@@ -165,7 +167,8 @@ useEffect(() => {
                       
                       return <SoftBox sx={{ display: "flex" }}>{selected}</SoftBox>
                   }}
-                  sx={{ width: "100% !important" }}
+                  
+                  sx={{ width: "100% !important"}}
               >
                   {
                      ["Monthly","Yearly"].map((product, index) => (
@@ -175,7 +178,7 @@ useEffect(() => {
                   }
               </SelectField>
                 }
-                height="20.25rem"
+                
                 chart={gradientLineChartData}
               />
             </Grid>
@@ -185,7 +188,7 @@ useEffect(() => {
                 description={
                 <></>
                 }
-                height="20.25rem"
+                height="186px"
                 chart={horizantLineChartData}
               />
             </Grid>
@@ -193,18 +196,47 @@ useEffect(() => {
         </SoftBox>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={4}>
-            <Projects />
+            <Projects title={" Products with low Qty of stock"}/>
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
-            <Projects />
+            <Projects title="Customer have cart 7 days"/>
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
-            <Projects />
+            <Projects title="Offers will expire"/>
           </Grid>
           {/* <Grid item xs={12} md={6} lg={4}>
             <OrderOverview />
           </Grid> */}
         </Grid>
+        <Grid item xs={12} lg={12}>
+              <GradientLineChart
+                title="Total amount Orders Analytics"
+                height="250px"
+                description={
+                  <SelectField
+                  variant="outlined"
+                  placeholder={"Export"}
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                  renderValue={(selected) => {
+                      
+                      return <SoftBox sx={{ display: "flex" }}>{selected}</SoftBox>
+                  }}
+                  
+                  sx={{ width: "100% !important"}}
+              >
+                  {
+                     ["Monthly","Yearly"].map((product, index) => (
+
+                          <MenuItem key={index} value={product}>{product}</MenuItem>
+                      ))
+                  }
+              </SelectField>
+                }
+               
+                chart={gradientLinetDatas}
+              />
+            </Grid>
       </SoftBox>
       <Footer />
       </Container >

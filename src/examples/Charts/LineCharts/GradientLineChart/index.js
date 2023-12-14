@@ -49,15 +49,17 @@ function GradientLineChart({ title, description, height, chart }) {
           tension: 0.4,
           pointRadius: 0,
           borderWidth: 3,
-          borderColor: colors[dataset.color]
-            ? colors[dataset.color || "dark"].main
+         
+          borderColor: dataset.color
+            ? dataset.color
             : colors.dark.main,
-          fill: true,
+          fill: false,
           maxBarThickness: 6,
-          backgroundColor: gradientChartLine(
-            chartRef.current.children[0],
-            colors[dataset.color] ? colors[dataset.color || "dark"].main : colors.dark.main
-          ),
+          
+          // backgroundColor: gradientChartLine(
+          //   chartRef.current,
+          //   colors[dataset.color] ? colors[dataset.color || "dark"].main : colors.dark.main
+          // ),
         }))
       : [];
 
@@ -82,7 +84,8 @@ function GradientLineChart({ title, description, height, chart }) {
       ) : null}
       {useMemo(
         () => (
-          <SoftBox ref={chartRef} sx={{ height }}>
+          <SoftBox ref={chartRef} height={height}>
+            
             <Line data={data} options={options} />
           </SoftBox>
         ),
@@ -98,7 +101,7 @@ function GradientLineChart({ title, description, height, chart }) {
 GradientLineChart.defaultProps = {
   title: "",
   description: "",
-  height: "19.125rem",
+  height: "250px",
 };
 
 // Typechecking props for the GradientLineChart

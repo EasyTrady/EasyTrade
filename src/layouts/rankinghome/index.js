@@ -94,7 +94,7 @@ function index({ absolute, light, isMini }) {
             {
                 control: "max_number",
                 value: 0,
-                isRequired: false,
+                isRequired: true,
                 validations: [
                     {
                         customValidation: (controls) => controls.max_number <= 6,
@@ -105,7 +105,7 @@ function index({ absolute, light, isMini }) {
             {
                 control: "items",
                 value: [],
-                isRequired: false,
+                isRequired: true,
 
             },
             {
@@ -447,7 +447,7 @@ function index({ absolute, light, isMini }) {
                                     <SoftBox sx={{ backgroundColor: "#F0F6FF", display: "flex", justifyContent: "space-between", alignItems: "center", paddingX: "24px", paddingY: "10px", borderRadius: "8px", width: "75%" }}>
                                         <SoftBox sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "60%" }}>
                                             <SwitchIcon />
-                                            {TypeItem.find((elem) => elem.id == ele.content_type)?.icon}
+                                            <Typography sx={{marginX:"8px"}}>  {TypeItem.find((elem) => elem.id == ele.content_type)?.icon}</Typography>
                                             <Typography component="p" sx={{ fontSize: "14px", width: "100%" }}>{ele.title}</Typography>
                                         </SoftBox>
 
@@ -676,8 +676,9 @@ function index({ absolute, light, isMini }) {
                             //   disabled={max_number && !Boolean(max_number)}
 
                             onChange={(e) =>
-
-                                Number(e.target.value) && setControl("max_number", e.target.value)
+                                {let tester=/^(?:\d+|)$/
+                                console.log(tester.test(e.target.value))
+                                tester.test(e.target.value) && setControl("max_number", e.target.value)}
                             }
                             required={required.includes("max_number")}
                             error={Boolean(invalid?.max_number)}
@@ -702,6 +703,9 @@ function index({ absolute, light, isMini }) {
                                 return <SoftBox sx={{ display: "flex" }}>{Brands?.results?.filter((ele) => selected.map((ele) => ele?.id ? ele.id : ele)?.includes(ele?.id))?.map((elem) => elem?.name)?.join(",")}</SoftBox>
                             }}
                             sx={{ width: "100% !important" }}
+                            required={required.includes("items")}
+                            error={Boolean(invalid?.items)}
+                            helperText={invalid?.items}
                         >
                             {
                                 Brands?.results?.map((product, index) => (
@@ -773,8 +777,9 @@ function index({ absolute, light, isMini }) {
                                 //   disabled={number && !Boolean(number)}
 
                                 onChange={(e) =>
-
-                                    Number(e.target.value) && setControl("max_number", e.target.value)
+                                    {let tester=/^(?:\d+|)$/
+                                    console.log(tester.test(e.target.value))
+                                    tester.test(e.target.value) && setControl("max_number", e.target.value)}
                                 }
                                 required={required.includes("max_number")}
                                 error={Boolean(invalid?.max_number)}
@@ -800,6 +805,9 @@ function index({ absolute, light, isMini }) {
                                     return <SoftBox sx={{ display: "flex" }}>{banners?.results?.filter((ele) => selected?.map((ele) => ele?.id ? ele?.id : ele)?.includes(ele?.id)).map((elem) => elem?.banner_object?.name)?.join(",")}</SoftBox>
                                 }}
                                 sx={{ width: "100% !important" }}
+                                required={required.includes("items")}
+                                error={Boolean(invalid?.items)}
+                                helperText={invalid?.items}
                             >
                                 {
                                     banners?.results?.map((product, index) => (
@@ -818,8 +826,9 @@ function index({ absolute, light, isMini }) {
                                 //   disabled={number && !Boolean(number)}
 
                                 onChange={(e) =>
-
-                                    Number(e.target.value) && setControl("max_number", e.target.value)
+                                    {let tester=/^(?:\d+|)$/
+                                    console.log(tester.test(e.target.value))
+                                    tester.test(e.target.value) && setControl("max_number", e.target.value)}
                                 }
                                 required={required?.includes("max_number")}
                                 error={Boolean(invalid?.max_number)}
@@ -845,6 +854,9 @@ function index({ absolute, light, isMini }) {
                                     return <SoftBox sx={{ display: "flex" }}>{banners?.results?.filter((ele) => selected?.map((ele) => ele?.id ? ele?.id : ele)?.includes(ele?.id)).map((elem) => elem?.banner_object?.name)?.join(",")}</SoftBox>
                                 }}
                                 sx={{ width: "100% !important" }}
+                                required={required.includes("items")}
+                                error={Boolean(invalid?.items)}
+                                helperText={invalid?.items}
                             >
                                 {
                                     banners?.results?.map((product, index) => (
@@ -943,6 +955,9 @@ function index({ absolute, light, isMini }) {
                                 return <SoftBox sx={{ display: "flex" }}>{categories?.filter((ele) => selected.map((ele) => ele?.id ? ele?.id : ele)?.includes(ele?.id))?.map((elem) => elem?.name)?.join(",")}</SoftBox>
                             }}
                             sx={{ width: "100% !important" }}
+                            required={required.includes("items")}
+                            error={Boolean(invalid?.items)}
+                            helperText={invalid?.items}
                         >
                             {
                                 categories?.map((product, index) => (
