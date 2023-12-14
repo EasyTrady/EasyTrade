@@ -27,11 +27,11 @@ import SoftTypography from "components/SoftTypography";
 
 // Soft UI Dashboard Materail-UI example components
 import Table from "examples/Tables/Table";
-
+import PropTypes from "prop-types";
 // Data
 import data from "layouts/dashboard/components/Projects/data";
 
-function Projects() {
+function Projects({title}) {
   const { columns, rows } = data();
   const [menu, setMenu] = useState(null);
 
@@ -64,20 +64,20 @@ function Projects() {
       <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
         <SoftBox>
           <SoftTypography variant="h6" gutterBottom>
-          Products with low Qty of stock
+          {title}
           </SoftTypography>
-          <SoftBox display="flex" alignItems="center" lineHeight={0}>
+          {/* <SoftBox display="flex" alignItems="center" lineHeight={0}>
             
             <SoftTypography variant="button" fontWeight="regular" color="text">
             5.987,34
             </SoftTypography>
-          </SoftBox>
+          </SoftBox> */}
         </SoftBox>
-        <SoftBox color="text" px={2}>
+        {/* <SoftBox color="text" px={2}>
           <Icon sx={{ cursor: "pointer", fontWeight: "bold" }} fontSize="small" onClick={openMenu}>
             more_vert
           </Icon>
-        </SoftBox>
+        </SoftBox> */}
         {renderMenu}
       </SoftBox>
       <SoftBox
@@ -98,3 +98,11 @@ function Projects() {
 }
 
 export default Projects;
+Projects.defaultProps = {
+  title:""
+};
+
+// Typechecking props for the Projects
+Projects.propTypes = {
+  title: PropTypes.string
+};

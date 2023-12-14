@@ -18,7 +18,7 @@ const gradientLineChartData = {
   datasets: [
     {
       label: "Mobile apps",
-      color: ["info"],
+      color: "#347AE2",
       data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
     },
     

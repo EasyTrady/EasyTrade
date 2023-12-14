@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useMemo } from "react";
+import { useMemo ,useRef} from "react";
 
 // porp-types is a library for typechecking of props
 import PropTypes from "prop-types";
@@ -33,8 +33,10 @@ import configs from "examples/Charts/BarCharts/HorizontalBarChart/configs";
 
 // Soft UI Dashboard React base styles
 import colors from "assets/theme/base/colors";
+import gradientChartLine from "assets/theme/functions/gradientChartLine";
 
 function HorizontalBarChart({ title, description, height, chart }) {
+  const chartRef = useRef(null);
   const chartDatasets = chart.datasets
     ? chart.datasets.map((dataset) => ({
         ...dataset,
@@ -42,13 +44,10 @@ function HorizontalBarChart({ title, description, height, chart }) {
         borderWidth: 0,
         borderRadius: 8,
         height:1,
-        background:dataset.backgroundColor.map((ele)=>({chart: {ctx}}) => {
-          const bg = ctx.createLinearGradient(230, 0, 50, 0);
-          // More config for your gradient
-           bg.addColorStop(0, ele);
-           bg.addColorStop(1, "#fff");
-           return bg
-        }) ,
+        // background: gradientChartLine(
+        //   chartRef.current.children[0],
+        //   colors[dataset.color] ? colors[dataset.color || "dark"].main : colors.dark.main
+        // ),
         fill: false,
         maxBarThickness: 35,
       }))
@@ -74,7 +73,7 @@ function HorizontalBarChart({ title, description, height, chart }) {
       ) : null}
       {useMemo(
         () => (
-          <SoftBox height={height}>
+          <SoftBox ref={chartRef} height={height}>
             <Bar data={data} options={options} />
           </SoftBox>
         ),

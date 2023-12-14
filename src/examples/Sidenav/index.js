@@ -191,7 +191,7 @@ console.log(active)
             
           </SoftBox>
         </SoftBox>
-        <SoftBox component={NavLink} to="/" sx={{display:"flex",alignItems:"center"}}>
+        <SoftBox component={NavLink} to="/"target={"_blank"} sx={{display:"flex",alignItems:"center"}}>
           <VisitSite/>
           <SoftTypography component={"span"} sx={{fontSize:"12px",marginX:"5px"}}>Visit Site </SoftTypography>
           <ArrowForwardIcon sx={{fontSize:"12px"}} />
