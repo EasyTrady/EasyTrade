@@ -1,4 +1,3 @@
-// @mui material components
 import Tooltip from "@mui/material/Tooltip";
 
 // Soft UI Dashboard React components
@@ -48,12 +47,12 @@ export default function data() {
 
   return {
     columns: [
-      { name: "product", align: "center" },
-      { name: "stock", align: "center" },
+      { name: "customer", align: "center" },
+      { name: "cartitems", align: "center" },
       
     ],
 
-    rows: totals?.low_stock_products?.map((ele)=>({product:[ele?.main_image,ele?.name],stock:ele?.quantity}))
+    rows: totals?.left_out_carts?.map((ele)=>({customer:ele?.customer_name,cartitems:ele?.items_number}))
     // [
     //   {
     //     product: [logoXD, "Soft UI XD Version"],

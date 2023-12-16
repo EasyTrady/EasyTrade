@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState } from "react";
 
 // @mui material components
@@ -29,9 +14,9 @@ import SoftTypography from "components/SoftTypography";
 import Table from "examples/Tables/Table";
 import PropTypes from "prop-types";
 // Data
-import data from "layouts/dashboard/components/Projects/data";
 
-function Projects({title}) {
+
+function Customer({title,data}) {
   const { columns, rows } = data();
   const [menu, setMenu] = useState(null);
 
@@ -53,8 +38,8 @@ function Projects({title}) {
       open={Boolean(menu)}
       onClose={closeMenu}
     >
-      <MenuItem onClick={closeMenu}>Product</MenuItem>
-      <MenuItem onClick={closeMenu}>Stock</MenuItem>
+      <MenuItem onClick={closeMenu}>Customer</MenuItem>
+      <MenuItem onClick={closeMenu}>Cart items</MenuItem>
      
     </Menu>
   );
@@ -98,12 +83,14 @@ function Projects({title}) {
   );
 }
 
-export default Projects;
-Projects.defaultProps = {
-  title:""
+export default Customer;
+Customer.defaultProps = {
+  title:"",
+  data:{}
 };
 
-// Typechecking props for the Projects
-Projects.propTypes = {
-  title: PropTypes.string
+// Typechecking props for the Customer
+Customer.propTypes = {
+  title: PropTypes?.string,
+  data:PropTypes?.any
 };

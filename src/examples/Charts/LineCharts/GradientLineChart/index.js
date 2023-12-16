@@ -43,13 +43,13 @@ function GradientLineChart({ title, description, height, chart }) {
   const { data, options } = chartData;
 
   useEffect(() => {
-    const chartDatasets = chart.datasets
-      ? chart.datasets.map((dataset) => ({
+    const chartDatasets = chart?.datasets
+      ? chart?.datasets?.map((dataset) => ({
           ...dataset,
           tension: 0.4,
           pointRadius: 0,
           borderWidth: 3,
-         
+          height:1,
           borderColor: dataset.color
             ? dataset.color
             : colors.dark.main,
@@ -63,11 +63,13 @@ function GradientLineChart({ title, description, height, chart }) {
         }))
       : [];
 
-    setChartData(configs(chart.labels || [], chartDatasets));
+    setChartData(configs(chart?.labels || [], chartDatasets));
   }, [chart]);
-
+useEffect(()=>{
+  console.log(chartData)
+},[chartData,height])
   const renderChart = (
-    <SoftBox p={2}>
+    <SoftBox p={2} height={height} sx={{display:"flex",flexDirection:"column"}}>
       {title || description ? (
         <SoftBox px={description ? 1 : 0} pt={description ? 1 : 0} display={"flex"} justifyContent="space-between" alignItems="center">
           {title && (
@@ -84,24 +86,24 @@ function GradientLineChart({ title, description, height, chart }) {
       ) : null}
       {useMemo(
         () => (
-          <SoftBox ref={chartRef} height={height}>
+         <SoftBox ref={chartRef} height={"80%"}>
             
             <Line data={data} options={options} />
           </SoftBox>
         ),
-        [chartData, height]
+        [chartData,height]
       )}
     </SoftBox>
   );
 
-  return title || description ? <Card>{renderChart}</Card> : renderChart;
+  return title || description ? <Card >{renderChart}</Card> : renderChart;
 }
 
 // Setting default values for the props of GradientLineChart
 GradientLineChart.defaultProps = {
   title: "",
   description: "",
-  height: "250px",
+  height: "19.125rem",
 };
 
 // Typechecking props for the GradientLineChart

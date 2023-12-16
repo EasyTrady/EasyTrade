@@ -61,14 +61,32 @@ import input from "assets/theme/components/form/input";
 import { InputAdornment } from "@mui/material";
 import InputField from "components/common/TextField";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { NOTIFICATIONS } from "data/api";
+import useRequest from "hooks/useRequest";
+import { useDispatch, useSelector } from "react-redux";
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
   const [openMenu, setOpenMenu] = useState(false);
-  
+  let dispatchRed=useDispatch()
   let Token = localStorage.getItem('token')
   const navigate = useNavigate();
+  const [notificationRequest, getNotificationResponce] =
+  useRequest({
+      path: NOTIFICATIONS,
+      method: "get",
+      Token: `Token ${Token}`,
+
+  });
+  function getNavigations(){
+    notificationRequest({
+      onSuccess:(res)=>{
+        dispatchRed({type:"notification/set",payload:res.data})
+       
+      }
+    })
+  }
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {
@@ -97,7 +115,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
-  const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
+  const handleOpenMenu = (event) => {setOpenMenu(event.currentTarget);getNavigations()};
   const handleCloseMenu = () => setOpenMenu(false);
 
   // Render the notifications menu
@@ -111,7 +129,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
       }}
       open={Boolean(openMenu)}
       onClose={handleCloseMenu}
-      sx={{ mt: 2 }}
+      sx={{ mt: 2,".MuiPaper-root":{backgroundColor:"white !important"} }}
     >
       <NotificationItem
         image={<img src={team2} alt="person" />}

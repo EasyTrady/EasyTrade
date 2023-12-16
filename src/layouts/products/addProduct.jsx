@@ -976,7 +976,7 @@ useEffect(()=>{
           onClick={handleSubmit}
         >
            
-          {Boolean(productId)?patchProductResponce.isPending?<CircularProgress />:"Save":AddProductResponce.isPending?<CircularProgress />:"Next"}
+          {Boolean(productId)?patchProductResponce.isPending?<><CircularProgress />loading</>:"Save":AddProductResponce.isPending?<><CircularProgress />loading</>:"Next"}
         </SoftButton>
       </Box>
       <Footer />
