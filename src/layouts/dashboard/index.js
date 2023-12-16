@@ -38,6 +38,8 @@ import typography from "assets/theme/base/typography";
 import BuildByDevelopers from "layouts/dashboard/components/BuildByDevelopers";
 import WorkWithTheRockets from "layouts/dashboard/components/WorkWithTheRockets";
 import Projects from "layouts/dashboard/components/Projects";
+import Customer from "layouts/dashboard/components/Customer";
+
 import OrderOverview from "layouts/dashboard/components/OrderOverview";
 import React from "react"
 // Data
@@ -46,7 +48,7 @@ import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData"
 import { setDirection } from "context";
 import { useEffect } from "react";
 import { useSoftUIController } from "context";
-import { PROFILE } from "data/api";
+import { PROFILE,STATISTICSTOTAL } from "data/api";
 import { useDispatch, useSelector } from "react-redux";
 import useRequest from "hooks/useRequest";
 import CardIcon from "examples/Icons/CardIcon";
@@ -56,16 +58,24 @@ import VendorIcon from "examples/Icons/VendorIcon";
 import Chart from "examples/Charts/VerticalChart";
 import MixedChart from "examples/Charts/MixedChart";
 import HorizontalBarChart from "examples/Charts/BarCharts/HorizontalBarChart";
+import data from "layouts/dashboard/components/Customer/data";
 import horizantLineChartData from "./data/horizantelChartData";
 import gradientLinetDatas from "./data/gradientLineDatas";
+import orderData from "./data/orderData";
+import { GradientLine } from "./data/gradientLineChartData";
+
 // import Chart from "examples/Charts/VerticalChart/Chart";
+// import useRequest from 'hooks/useRequest';
 
 function Dashboard() {
   const { size } = typography;
   const { chart, items } = reportsBarChartData;
   const [, dispatch] = useSoftUIController();
   const profile=useSelector((state)=>state.profile)
+  const totals=useSelector((state)=>state.totals.value)
+
   const Dispatch=useDispatch()
+  
   let[filter,setFilter]=React.useState("")
   let Token = localStorage.getItem("token");
   const [profileRequest, getProfileResponce] = useRequest({
@@ -73,21 +83,31 @@ function Dashboard() {
     method: "get",
     Token: `Token ${Token}`,
   });
+ let gradientLineChartData= GradientLine()
   useEffect(()=>{
     profileRequest({
       onSuccess: (res) => {
-
          Dispatch({ type: "profile/set", payload: { ...res.data } });
       },
     });
   },[])
 // Changing the direction to rtl
 useEffect(() => {
-  setDirection(dispatch, "ltr");
-
-  return () => setDirection(dispatch, "ltr");
+  // setDirection(dispatch, "ltr");
+  totalRequest({
+    onSuccess:(res)=>{
+      Dispatch({type:"totals/set",payload:res.data})
+     
+    }
+  })
+  // return () => setDirection(dispatch, "ltr");
 }, []);
-
+const [totalRequest, gettotalResponce] =
+    useRequest({
+      path: STATISTICSTOTAL,
+      method: "get",
+      Token: `Token ${Token}`
+    });
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -97,7 +117,7 @@ useEffect(() => {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "46,827" }}
+                title={{ text: totals?.total_orders }}
                 count="Orders"
                 percentage={{ color: "text", text: "-0.91% this week" }}
                 icon={{ color: "white", component: <CardIcon/> }}
@@ -105,7 +125,7 @@ useEffect(() => {
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "23,283.5" }}
+                title={{ text: totals?.total_users}}
                 count="Users"
                 percentage={{ color: "text", text: "-0.91% this week" }}
                 icon={{ color: "white", component: <UsersIcon/> }}
@@ -113,7 +133,7 @@ useEffect(() => {
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "23" }}
+                title={{ text: totals?.total_employees }}
                 count="Employees"
                 percentage={{ color: "text", text: "-0.91% this week" }}
                 icon={{ color: "white", component: <Employee/> }}
@@ -121,7 +141,7 @@ useEffect(() => {
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-               title={{ text: "23,283.5" }}
+               title={{ text: totals?.total_vendors }}
                count="Vendors"
                percentage={{ color: "text", text: "+0.49% this week" }}
                icon={{ color: "white", component: <VendorIcon/> }}
@@ -154,9 +174,10 @@ useEffect(() => {
               />
             </Grid> */}
             <Grid item xs={12} lg={12}>
+              <SoftBox>
               <GradientLineChart
                 title="Total amount Orders Analytics"
-                height="250px"
+                height="344px"
                 description={
                   <SelectField
                   variant="outlined"
@@ -181,6 +202,7 @@ useEffect(() => {
                 
                 chart={gradientLineChartData}
               />
+              </SoftBox>
             </Grid>
             <Grid item xs={12} lg={12}>
               <HorizontalBarChart
@@ -198,20 +220,20 @@ useEffect(() => {
           <Grid item xs={12} md={6} lg={4}>
             <Projects title={" Products with low Qty of stock"}/>
           </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <Projects title="Customer have cart 7 days"/>
+          <Grid item xs={12} md={6} lg={4} >
+            <Customer title="Customer have cart 7 days"data={data}/>
           </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <Projects title="Offers will expire"/>
+          <Grid item xs={12} md={6} lg={4} >
+            <Customer title="Offers will expire"data={orderData}/>
           </Grid>
           {/* <Grid item xs={12} md={6} lg={4}>
             <OrderOverview />
           </Grid> */}
         </Grid>
-        <Grid item xs={12} lg={12}>
+        <Grid item xs={12} lg={12} sx={{my:2}}>
               <GradientLineChart
                 title="Total amount Orders Analytics"
-                height="250px"
+                height="344px"
                 description={
                   <SelectField
                   variant="outlined"

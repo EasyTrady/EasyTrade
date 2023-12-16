@@ -10,6 +10,7 @@ import  JobSlice  from './pages/jobSlice';
 import ProfileSlice  from './pages/profileSlice';
 import  attributeSlice  from './pages/attributeSlice';
 import  OrdersSlice  from './pages/orderSlice';
+import  totalSlice  from './pages/ordersSlice';
 
 import CartSlice  from './pages/cartSlice';
 import ProductsSlice  from './pages/productSlice';
@@ -22,6 +23,7 @@ import  ContentTypeSlice   from './contentTypesSlice';
 import  SpecialCategorySlice   from './pages/specialCategorySlice';
 import  HomeComponentSlice   from './pages/homeComponentSlice';
 import  BrandSlice   from './pages/brandSlice';
+import  NotificationSlice  from './pages/notificationSlice';
 
 
 const store = configureStore({
@@ -47,7 +49,9 @@ const store = configureStore({
      content:ContentTypeSlice,
      specialCategory:SpecialCategorySlice,
      homeComponent:HomeComponentSlice,
-     brand:BrandSlice
+     brand:BrandSlice,
+     totals:totalSlice,
+     notification:NotificationSlice
   }
 });
 export default store

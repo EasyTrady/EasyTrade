@@ -30,3 +30,6 @@ export const CREATEHOMECOMPONENTS=`${BaseUrl}shop/dashboard/home-components/`
 export const SHOP= `${BaseUrl}shop/accounts/shop/info/`
 export const SPECIALCATEGORIES=`${BaseUrl}shop/dashboard/special-categories/`
 export const SWAPCOMPONENT=`${BaseUrl}shop/dashboard/home-components/swap/`
+export const STATISTICSTOTAL=`${BaseUrl}shop/dashboard/statistics/total/`
+export const ORDERANALYSIS=`${BaseUrl}shop/dashboard/statistics/order/analysis/`
+export const NOTIFICATIONS=`${BaseUrl}shop/dashboard/notifications/`

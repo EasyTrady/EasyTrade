@@ -19,6 +19,7 @@ import team2 from "assets/images/team-2.jpg";
 import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
 import { useSelector } from "react-redux";
+import moment from "moment"
 export default function data() {
   const totals=useSelector((state)=>state.totals.value)
   
@@ -48,12 +49,12 @@ export default function data() {
 
   return {
     columns: [
-      { name: "product", align: "center" },
-      { name: "stock", align: "center" },
+      { name: "offer_title", align: "center" },
+      { name: "offer_end_date", align: "center" },
       
     ],
 
-    rows: totals?.low_stock_products?.map((ele)=>({product:[ele?.main_image,ele?.name],stock:ele?.quantity}))
+    rows: totals?.nearly_expired_offers?.map((ele)=>({offer_title:ele?.offer_title,offer_end_date:moment(ele?.offer_end_date).format("YYYY/MM/DD")}))
     // [
     //   {
     //     product: [logoXD, "Soft UI XD Version"],

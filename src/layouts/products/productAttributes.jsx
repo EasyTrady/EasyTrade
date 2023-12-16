@@ -861,7 +861,7 @@ const ProductAttributes = ({ idProduct }) => {
           onClick={postGenerationAttributes}
         >
          {controls?.variants?.filter((ele)=>(Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin))&&!Boolean(ele.id)).length>0?
-         variantAttributeResponse.isPending?<CircularProgress />:"Finish":productvariantupdateResponce.isPending?<CircularProgress />:"Finish"}
+         variantAttributeResponse.isPending?<><CircularProgress />loading</>:"Finish":productvariantupdateResponce.isPending?<><CircularProgress />loading</>:"Finish"}
         </SoftButton>
       </Box>
       <Dialog

@@ -161,7 +161,7 @@ useEffect(()=>{
                         }}
                         onClick={handleSubmit}
                     >
-                       {AddProductImagesResponce.isPending?<CircularProgress />:"Next"}
+                       {AddProductImagesResponce.isPending?<><CircularProgress />loading</>:"Next"}
                     </SoftButton>
     </Box>
     <Footer />
