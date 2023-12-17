@@ -23,18 +23,22 @@ import Icon from "@mui/material/Icon";
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-
+import { useSoftUIController, setMiniSidenav } from "context";
 // Soft UI Dashboard React base styles
 import typography from "assets/theme/base/typography";
 
 function Footer({ company, links }) {
   const { href, name } = company;
   const { size } = typography;
+  const [controller, dispatch] = useSoftUIController();
+  let{footerDisplay}=controller
+
 
   const renderLinks = () =>
-    links.map((link) => (
-      <SoftBox key={link.name} component="li" px={2} lineHeight={1}>
-        <Link href={link.href} target="_blank">
+    links.map((link,index) => (
+      <SoftBox key={link.name} component="li" px={2} lineHeight={1} sx={{display:footerDisplay[index+1]?"block":"none"}}>
+        {console.log(link,index)}
+        <Link href={link.href} target="_blank" >
           <SoftTypography variant="button" fontWeight="regular" color="text">
             {link.name}
           </SoftTypography>
@@ -45,14 +49,14 @@ function Footer({ company, links }) {
   return (
     <SoftBox
       width="100%"
-      display="flex"
+      display={footerDisplay[0]?"none":"flex"}
       flexDirection={{ xs: "column", lg: "row" }}
       justifyContent="space-between"
       alignItems="center"
       px={1.5}
     >
       <SoftBox
-        display="flex"
+        display={footerDisplay[3]?"flex":"none"}
         justifyContent="center"
         alignItems="center"
         flexWrap="wrap"
