@@ -173,8 +173,8 @@ const [totalRequest, gettotalResponce] =
                 items={items}
               />
             </Grid> */}
-            <Grid item xs={12} lg={12}>
-              <SoftBox>
+            <Grid item xs={12} lg={12}md={12} sm={12}xl={12}>
+            
               <GradientLineChart
                 title="Total amount Orders Analytics"
                 height="344px"
@@ -202,7 +202,7 @@ const [totalRequest, gettotalResponce] =
                 
                 chart={gradientLineChartData}
               />
-              </SoftBox>
+             
             </Grid>
             <Grid item xs={12} lg={12}>
               <HorizontalBarChart
@@ -230,7 +230,7 @@ const [totalRequest, gettotalResponce] =
             <OrderOverview />
           </Grid> */}
         </Grid>
-        <Grid item xs={12} lg={12} sx={{my:2}}>
+        <Grid item  xs={12} lg={12}md={12} sm={12} xl={12} sx={{my:2}}>
               <GradientLineChart
                 title="Total amount Orders Analytics"
                 height="344px"
