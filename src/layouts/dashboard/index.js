@@ -44,7 +44,7 @@ import OrderOverview from "layouts/dashboard/components/OrderOverview";
 import React from "react"
 // Data
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
-import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
+// import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
 import { setDirection } from "context";
 import { useEffect } from "react";
 import { useSoftUIController } from "context";
@@ -70,7 +70,7 @@ import { GradientLine } from "./data/gradientLineChartData";
 function Dashboard() {
   const { size } = typography;
   const { chart, items } = reportsBarChartData;
-  const [, dispatch] = useSoftUIController();
+
   const profile=useSelector((state)=>state.profile)
   const totals=useSelector((state)=>state.totals.value)
 
@@ -160,7 +160,7 @@ const [totalRequest, gettotalResponce] =
           </Grid>
         </SoftBox> */}
         <SoftBox mb={3}>
-          <Grid container spacing={3}>
+          <Grid container spacing={3} >
             {/* <Grid item xs={12} lg={5}>
               <ReportsBarChart
                 title="active users"
@@ -177,7 +177,7 @@ const [totalRequest, gettotalResponce] =
             
               <GradientLineChart
                 title="Total amount Orders Analytics"
-                height="344px"
+                height="22rem"
                 description={
                   <SelectField
                   variant="outlined"
@@ -204,7 +204,7 @@ const [totalRequest, gettotalResponce] =
               />
              
             </Grid>
-            <Grid item xs={12} lg={12}>
+            {/* <Grid item xs={12} lg={12}>
               <HorizontalBarChart
                 title="Total amount Orders Analytics"
                 description={
@@ -213,7 +213,7 @@ const [totalRequest, gettotalResponce] =
                 height="186px"
                 chart={horizantLineChartData}
               />
-            </Grid>
+            </Grid> */}
           </Grid>
         </SoftBox>
         <Grid container spacing={3}>
@@ -233,7 +233,7 @@ const [totalRequest, gettotalResponce] =
         <Grid item  xs={12} lg={12}md={12} sm={12} xl={12} sx={{my:2}}>
               <GradientLineChart
                 title="Total amount Orders Analytics"
-                height="344px"
+                height="23rem"
                 description={
                   <SelectField
                   variant="outlined"

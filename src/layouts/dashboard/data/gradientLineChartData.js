@@ -19,8 +19,12 @@ let Token = localStorage.getItem("token");
 
 export function GradientLine(){
   let [gradientLineChartData,setGradient]=useState({
-    labels: [],
-    datasets: [],
+    labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    datasets: [{
+      
+      color: "#347AE2",
+      data: [50, 40, 800, 320, 900, 150, 400, 230, 500],
+    },],
   })
   const [orderAnalysisRequest, getorderAnalysisResponce] = useRequest({
     path: ORDERANALYSIS,
