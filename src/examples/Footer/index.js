@@ -37,7 +37,7 @@ function Footer({ company, links }) {
   const renderLinks = () =>
     links.map((link,index) => (
       <SoftBox key={link.name} component="li" px={2} lineHeight={1} sx={{display:footerDisplay[index+1]?"block":"none"}}>
-        {console.log(link,index)}
+      
         <Link href={link.href} target="_blank" >
           <SoftTypography variant="button" fontWeight="regular" color="text">
             {link.name}

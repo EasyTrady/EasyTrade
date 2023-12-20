@@ -95,6 +95,9 @@ import AddNewBanner from "layouts/banners/addNewBanner";
 import banner from "./assets/images/banner.svg"
 import Report from "layouts/Report";
 import ReportIcon from "examples/Icons/ReportIcon";
+import Coupon from "layouts/coupon";
+import CouponIcon from "examples/Icons/CouponIcon";
+import AddCoupon from "layouts/coupon/addCoupon";
 const sub_domain = localStorage.getItem('sub_domain')
 
 const routes = [
@@ -285,6 +288,43 @@ const routes = [
 
     }
     ]
+  },
+  {
+    type: "collapse",
+    name: "Coupons",
+    key: "Coupons",
+    route: `/${sub_domain}/dashboard/coupons`,
+    icon: <CouponIcon />,
+    noCollapse: false,
+    component: <Auth><Coupon /></Auth>,
+    // children: [{
+     
+    //   id: "Coupon",
+    //   path: `/${sub_domain}/dashboard/coupons`,
+    //   title: "Coupon",
+    //   element:  <Auth><Coupon /></Auth>,
+    //   type: "item"
+
+    // }
+    // ]
+  }, {
+    type: "title",
+    name: "Coupons",
+    key: "Coupons",
+    route: `/${sub_domain}/dashboard/addcoupons`,
+    icon: <CouponIcon />,
+    noCollapse: false,
+    component: <Auth><AddCoupon /></Auth>,
+    // children: [{
+     
+    //   id: "Coupon",
+    //   path: `/${sub_domain}/dashboard/coupons`,
+    //   title: "Coupon",
+    //   element:  <Auth><Coupon /></Auth>,
+    //   type: "item"
+
+    // }
+    // ]
   },
   { type: "title", title: "Members", key: "Members" },
   {

@@ -24,6 +24,7 @@ import  SpecialCategorySlice   from './pages/specialCategorySlice';
 import  HomeComponentSlice   from './pages/homeComponentSlice';
 import  BrandSlice   from './pages/brandSlice';
 import  NotificationSlice  from './pages/notificationSlice';
+import  CouponSlice  from './pages/couponSlice';
 
 
 const store = configureStore({
@@ -51,7 +52,8 @@ const store = configureStore({
      homeComponent:HomeComponentSlice,
      brand:BrandSlice,
      totals:totalSlice,
-     notification:NotificationSlice
+     notification:NotificationSlice,
+     coupon:CouponSlice
   }
 });
 export default store
