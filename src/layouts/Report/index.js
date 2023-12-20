@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
@@ -22,6 +22,9 @@ import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { DateRangePicker } from "@mui/x-date-pickers-pro";
 import dayjs from 'dayjs';
+import SoftButton from "components/SoftButton";
+import * as FileSaver from "file-saver"
+import XLSX from "sheetjs-style"
 import { SingleInputDateRangeField } from '@mui/x-date-pickers-pro/SingleInputDateRangeField';
 // import  LocalizationProvider  from '@mui/lab/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -35,7 +38,7 @@ import Footer from "examples/Footer";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import DateIcon from 'examples/Icons/DateIcon';
 import useRequest from "hooks/useRequest";
-import { REPORT } from "data/api";
+import { REPORT ,TOTALREPORT} from "data/api";
 import { BaseUrl } from 'data/api';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 function Report({ absolute, light, isMini }) {
@@ -45,6 +48,12 @@ function Report({ absolute, light, isMini }) {
 
   const { chart, items } = reportsBarChartData;
   let [rows, setRows] = useState([])
+  let [total, setTotal] = useState({total_orders: 0,
+  total_products: 0,
+  total_profit: 0,
+  total_customers: 0,
+  total_employees: 0})
+
   let [columns, setColumns] = useState([])
 
   let Token = localStorage.getItem("token");
@@ -54,6 +63,12 @@ function Report({ absolute, light, isMini }) {
     method: "get",
     Token: `Token ${Token}`,
   });
+  const [totalRequest, gettotalResponce] = useRequest({
+    path: TOTALREPORT,
+    method: "get",
+    Token: `Token ${Token}`,
+  });
+  
   const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] = useControls([
     {
       control: "start_date",
@@ -101,7 +116,7 @@ function Report({ absolute, light, isMini }) {
         end_date: controls?.end_date
       },
       onSuccess: (res) => {
-        setControl(`total_${data}`, res.data.count)
+        // setControl(`total_${data}`, res.data.count)
         setRows(res.data.results.map((ele) => ele))
         setColumns(res.data.results.length > 0 ? Object.keys(res.data.results[0]).map((elem) => (elem == "created_at" || elem == "date" ?
           { field: elem, renderCell: (params) => (moment(params.row.created_at).format('MMMM-DD-YYYY')), headerName: elem.replace("_", " "), width: 150 } : elem == "main_image" ?
@@ -111,9 +126,22 @@ function Report({ absolute, light, isMini }) {
       }
     })
   }
-  // useEffect(()=>{
-
-  // },[])
+  function ExportExcel(){
+    const ws=XLSX.utils.json_to_sheet(rows)
+    const wb={Sheets:{"data":ws},SheetNames:["data"]}
+    const excelBuffer=XLSX.write(wb,{bookType:"xlsx",type:"array"})
+    const data=new Blob([excelBuffer],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8"})
+    FileSaver.saveAs(data,"data.xlsx")
+  }
+  useEffect(()=>{
+    totalRequest({
+      onSuccess:(res)=>{
+        setTotal({...res.data})
+        console.log(res.data)
+      }
+    })
+    togetdataoftable("sales")
+  },[])
   return (
     <DashboardLayout >
       <DashboardNavbar />
@@ -131,19 +159,19 @@ function Report({ absolute, light, isMini }) {
                 items={items} /> */}
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} md={2.3} onClick={() => togetdataoftable("sales")}>
-            <Chart color={"red"} chart={gradientLineChartData} title={controls.total_sales} description={"sales"} subDescription={"-0.91% this week"} />
+            <Chart color={"red"} chart={gradientLineChartData} title={total.total_orders} description={"sales"} subDescription={"-0.91% this week"} />
 
           </Grid><Grid item xs={12} sm={6} md={2.3} onClick={() => togetdataoftable("products")}>
-            <Chart color={"#F9C74F"} chart={gradientLineChartData} title={controls.total_products} description={"products"} subDescription={"-0.91% this week"} />
+            <Chart color={"#F9C74F"} chart={gradientLineChartData} title={total.total_products} description={"products"} subDescription={"-0.91% this week"} />
 
           </Grid><Grid item xs={12} sm={6} md={2.3} onClick={() => togetdataoftable("profit")}>
-            <Chart color={"#F8961E"} chart={gradientLineChartData} title={controls.total_profit} description={"profit"} subDescription={"-0.91% this week"} />
+            <Chart color={"#F8961E"} chart={gradientLineChartData} title={total.total_profit} description={"profit"} subDescription={"-0.91% this week"} />
 
           </Grid><Grid item xs={12} sm={6} md={2.3} onClick={() => togetdataoftable("customers")}>
-            <Chart color={"#F3722C"} chart={gradientLineChartData} title={controls.total_customers} description={"customer"} subDescription={"-0.91% this week"} />
+            <Chart color={"#F3722C"} chart={gradientLineChartData} title={total.total_customers} description={"customer"} subDescription={"-0.91% this week"} />
 
           </Grid><Grid item xs={12} sm={6} md={2.3} onClick={() => togetdataoftable("employees")}>
-            <Chart color={"#52C41A"} chart={gradientLineChartData} title={controls.total_employees} description={"employee"} subDescription={"-0.91% this week"} />
+            <Chart color={"#52C41A"} chart={gradientLineChartData} title={total.total_employees} description={"employee"} subDescription={"-0.91% this week"} />
 
           </Grid>
         </Grid>
@@ -195,16 +223,14 @@ function Report({ absolute, light, isMini }) {
             />                    */}
             </SoftBox>
             <SoftBox sx={{ marginX: "10px" }}>
-              <SelectField
-                variant="outlined"
+              <SoftButton
+                variant="contained"
                 placeholder={"Export"}
-
+                onClick={ExportExcel}
                 // onOpen={getProducts}
                 value={"Export"}
                 // onChange={onChange}
-                renderValue={(selected) => {
-                  return "Export"
-                }}
+               
                 sx={{ width: "100% !important" }}
               >
                 {/* {
@@ -212,7 +238,8 @@ function Report({ absolute, light, isMini }) {
               <MenuItem key={product.id} value={product.id}>{product.name}</MenuItem>
             ))
           } */}
-              </SelectField>
+          Export
+              </SoftButton>
             </SoftBox>
           </SoftBox>
         </SoftBox>
