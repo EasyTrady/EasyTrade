@@ -645,7 +645,7 @@ function DetailOrder({ absolute, light, isMini }) {
                         }}>
                             {t("status")}
                         </SoftBox>
-                        {console.log(order?.status_name,Boolean(controls?.status),order?.status_name)}
+                        
                         <Container sx={{ m: 4 }}>
                             <SelectField
 

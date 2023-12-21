@@ -212,7 +212,7 @@ function index({ absolute, light, isMini }) {
         getBannerdRequest({
             onSuccess: (res) => {
                 dispatch({ type: "banners/set", payload: res?.data });
-                console.log(res.data)
+               
             }
         })
     }
@@ -231,10 +231,10 @@ function index({ absolute, light, isMini }) {
 
             }, onSuccess: (res) => {
                 dispatch({ type: "home-component/set", payload: res?.data?.data })
-                console.log(res.data)
+                
             }
         })
-        console.log(drap, index)
+       
         // console.log('Item dropped:', item.nativeEvent.layerY,       item?.nativeEvent);
     };
 
@@ -283,7 +283,7 @@ function index({ absolute, light, isMini }) {
             id: shop_id + "/brands/",
             onSuccess: (res) => {
                 dispatch({ type: "brand/set", payload: res.data })
-                console.log(res.data)
+                
             }
         })
     }
@@ -299,7 +299,7 @@ function index({ absolute, light, isMini }) {
     const handlleSubmit = () => {
         if (!Edit) {
             validate().then((output) => {
-                console.log(output)
+               
                 if (!output.isOk) return;
                 contentpostRequest({
                     body: controls?.content_type?.title == "brand" ? {
@@ -342,13 +342,12 @@ function index({ absolute, light, isMini }) {
                         dispatch({ type: "home-component/addItem", payload: res.data })
                         resetControls();
                         handleCloseDialog()
-                        console.log(res.data)
+                       
                     }
                 })
             })
         } else {
 
-            console.log(Edit?.id)
             let result = compare(Object?.entries(Edit)?.map(([key, value]) => (key == "content_type" ?
                 [controls[key]?.id, value, key] : key == "items" ? [controls[key], value, key] : [controls[key], String(value), key])), false)
 
@@ -387,7 +386,7 @@ function index({ absolute, light, isMini }) {
                         dispatch({ type: "home-component/patchItem", payload: { id: res.data.id, item: res.data } })
                         resetControls();
                         handleCloseDialog()
-                        console.log(res.data)
+                       
                     }
                 })
             }
@@ -412,7 +411,7 @@ function index({ absolute, light, isMini }) {
             onSuccess: (res) => {
 
                 dispatch({ type: "home-component/set", payload: res.data })
-                console.log(res.data)
+              
             }
         })
     }, [])
@@ -425,7 +424,7 @@ function index({ absolute, light, isMini }) {
             <DashboardNavbar />
             <Container sx={{ marginY: 2 }}>
                 <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-                    <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+                    <Breadcrumbs icon="home" title={"Ranking home"} route={route} light={light} />
                 </SoftBox>
                 <Stack direction={{ lg: "row", md: "column", sm: "column", xs: "column" }} justifyContent={"space-between"}>
                     <SoftBox sx={{ backgroundColor: "#fff", width: { lg: "44%", md: "100%", sm: "100%", xs: "100%" }, borderRadius: "8px", height: "100vh" }}>
@@ -677,7 +676,7 @@ function index({ absolute, light, isMini }) {
 
                             onChange={(e) =>
                                 {let tester=/^(?:\d+|)$/
-                                console.log(tester.test(e.target.value))
+                                
                                 tester.test(e.target.value) && setControl("max_number", e.target.value)}
                             }
                             required={required.includes("max_number")}
@@ -778,7 +777,7 @@ function index({ absolute, light, isMini }) {
 
                                 onChange={(e) =>
                                     {let tester=/^(?:\d+|)$/
-                                    console.log(tester.test(e.target.value))
+                                  
                                     tester.test(e.target.value) && setControl("max_number", e.target.value)}
                                 }
                                 required={required.includes("max_number")}
@@ -798,7 +797,7 @@ function index({ absolute, light, isMini }) {
                                 onChange={(e) => setControl("items", e.target.value)}
 
                                 renderValue={(selected) => {
-                                    console.log(selected)
+                                    
                                     if (banners?.results?.length == 0) {
                                         getBanners()
                                     }
@@ -827,7 +826,7 @@ function index({ absolute, light, isMini }) {
 
                                 onChange={(e) =>
                                     {let tester=/^(?:\d+|)$/
-                                    console.log(tester.test(e.target.value))
+
                                     tester.test(e.target.value) && setControl("max_number", e.target.value)}
                                 }
                                 required={required?.includes("max_number")}
@@ -847,7 +846,7 @@ function index({ absolute, light, isMini }) {
                                 value={controls?.items}
                                 onChange={(e) => setControl("items", e.target.value)}
                                 renderValue={(selected) => {
-                                    console.log(selected)
+                                   
                                     if (banners?.results?.length == 0) {
                                         getBanners()
                                     }
@@ -878,8 +877,7 @@ function index({ absolute, light, isMini }) {
 
                             value={controls?.items}
                             onChange={(e) => { setControl("items", [e.target.value]); }}
-                            renderValue={(selected) => {
-                                console.log(selected, "selected")
+                            renderValue={(selected) => { 
                                 return <SoftBox sx={{ display: "flex" }}>{brandfrom?.find((ele) => selected?.map((elem) => elem?.id ? elem?.id : elem)?.includes(ele?.id))?.name}</SoftBox>
                             }}
                             sx={{ width: "100% !important" }}
@@ -951,7 +949,7 @@ function index({ absolute, light, isMini }) {
                                 if (categories.length == 0) {
                                     getCategory()
                                 }
-                                console.log(selected, "selected", categories)
+                                
                                 return <SoftBox sx={{ display: "flex" }}>{categories?.filter((ele) => selected.map((ele) => ele?.id ? ele?.id : ele)?.includes(ele?.id))?.map((elem) => elem?.name)?.join(",")}</SoftBox>
                             }}
                             sx={{ width: "100% !important" }}

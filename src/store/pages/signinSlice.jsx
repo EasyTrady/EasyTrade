@@ -9,7 +9,7 @@ export const UserSignin = createAsyncThunk('userSignin', async (data, ThunkApi) 
     });
     const token = response.data.token;
     localStorage.setItem('token', token);
-    console.log(response);
+   
     return response.data;
   } catch (error) {
     return ThunkApi.rejectWithValue(error.response.data);
@@ -36,12 +36,12 @@ const authSlice = createSlice({
         state.loading = false;
         state.user = action.payload;
         toast.success(`Welcom Back`);
-        console.log(action.payload);
+       
       })
       .addCase(UserSignin.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.message;
-        console.log(action.payload);
+       
       });
 
   }

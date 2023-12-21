@@ -46,7 +46,7 @@ function PictureField({ accept, label, placeholder, onChange, value,productName,
     
   },[value])
   useEffect(()=>{
-    console.log(categories,"categories")
+   
   },[categories])
   return (
     <Box sx={{ display: "flex", flexDirection: "column", background: "#fff", borderRadius: "8px" }}>

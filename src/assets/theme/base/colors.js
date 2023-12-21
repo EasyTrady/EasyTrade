@@ -79,12 +79,14 @@ orange:{
   warning: {
     main: "#fbcf33",
     focus: "#fcd65224",
+    middle:"#7A6702"
   },
 
   error: {
     main: "#ea0606",
     focus: "#c70505",
-    hover:"#FDECEC"
+    hover:"#FDECEC",
+    middle:"#7A0243"
   },
 
   light: {

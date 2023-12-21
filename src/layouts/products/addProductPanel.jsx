@@ -19,7 +19,7 @@ export default function AddProductPanel() {
   const [IdProduct, setIdProduct] = React.useState(productId);
   
   const handleChange = (e,newValue,id) => {
-  console.log(newValue,id,productId,(newValue==1||newValue==2),(Boolean(IdProduct)||Boolean(productId)))
+ 
  
   if((newValue==1||newValue==2)&&(Boolean(id)||Boolean(productId)||Boolean(productIdEdit))){
     
@@ -86,7 +86,7 @@ width:{lg:"50%",md:"50%",sm:"100%",xs:"100%"},
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
-  console.log(index,value)
+
   return (
     <div
       role="tabpanel"

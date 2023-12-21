@@ -266,9 +266,9 @@ function Attribute({ absolute, light, isMini }) {
         setOpenDialog(false);
     };
     function handleSubmit() {
-        console.log("submit")
+       
         validate().then((output) => {
-            console.log(output)
+           
             if (!output.isOk) return;
             if (openDialogEdit) {
                 attributeEditRequest({
@@ -281,7 +281,7 @@ function Attribute({ absolute, light, isMini }) {
                             id: controls.id + "/values/bulkupdate",
                             body: controls.values.filter((ele) => Boolean(ele.id) == false),
                             onSuccess: (res) => {
-                                console.log(res.data)
+                                
                                 dispatch({ type: "attribute/addValues", payload: { idattribute: controls.id, values: res.data } })
                                 setControl("values", [...res.data])
                                 setOpenDialog(false)
@@ -294,7 +294,7 @@ function Attribute({ absolute, light, isMini }) {
                 })
 
             } else {
-                console.log(controls.values)
+                
                 attributepostRequest({
                     body: {
                         name: controls.name,
@@ -305,11 +305,11 @@ function Attribute({ absolute, light, isMini }) {
                         setOpenDialog(false)
 
 
-                        console.log(res.data, controls)
+
                     }
                 }).then((res) => {
                     let response = res?.response?.data;
-                    console.log(res)
+                    
                     setInvalid(response);
 
                 });
@@ -337,7 +337,7 @@ function Attribute({ absolute, light, isMini }) {
         })
     }
     function onDeleteNew(row) {
-        console.log(row)
+        
         setControl("values", controls.values.filter((ele,index) => index !== row))
         setEdit(null)
     }
@@ -351,7 +351,7 @@ function Attribute({ absolute, light, isMini }) {
         const rowfind = rows.find((row) => row.id === id)
 
         Object.keys(controls)?.map((ele) => rowfind[ele] ? setControl(ele, rowfind[ele]) : null)
-        console.log(rowfind, controls)
+       
 
     }
     useEffect(() => {
@@ -376,7 +376,7 @@ function Attribute({ absolute, light, isMini }) {
             setControl('values', attributes?.find((ele) => ele.id == controls.id)?.values)
         }
         // setColumns((prevs)=>console.log({...prevs,value:attributes.values}))
-        console.log(attributes)
+      
     }, [attributes])
     useEffect(() => {
         if (controls.values.length > 0) { setControl("iscolor", controls.values[0].iscolor) }
@@ -423,7 +423,7 @@ function Attribute({ absolute, light, isMini }) {
         setblurvalue(false)
     }
     function editValue(ele) {
-        console.log(ele)
+ 
     
        
         editattributeValueRequest({
@@ -438,23 +438,23 @@ function Attribute({ absolute, light, isMini }) {
                 setControl("color_value", "")
                 setEdit(null)
 
-                console.log(attributes.find((ele) => ele.id == controls.id))
+               
             }
         })
     }
     function editNew(element,ind){
         setControl("values",controls.values.map((element,index)=>index==ind?{...element,color_value:Boolean(controls.color_value)?controls.color_value:element.color_value,value_name:Boolean(controls.value_name)?controls.value_name:element.value_name}:element))
-        console.log(element,controls.values[ind],controls.value_name,controls.color_value)
+        
         setControl("value_name", "")
                 setControl("color_value", "")
                 setEdit(null)
     }
     useEffect(() => {
-        console.log(controls?.values)
+      
     }, [controls?.values])
 
     useEffect(() => {
-        console.log(edit)
+        
     }, [edit])
 
     return (

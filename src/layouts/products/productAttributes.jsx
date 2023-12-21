@@ -269,7 +269,7 @@ const ProductAttributes = ({ idProduct ,handleChange}) => {
       }
     }
     else if (Boolean(controls.value_name) && !controls.iscolor) {
-      console.log(Boolean(controls.iscolor))
+    
       setControl("values", [...controls.values, {
         value_name: controls.value_name,
         color_value: controls.color_value,
@@ -305,7 +305,7 @@ const ProductAttributes = ({ idProduct ,handleChange}) => {
       }
     }
     else if (Boolean(controls.value_name) && !controls.iscolor) {
-      console.log(Boolean(controls.iscolor))
+     
       setControl("attributenewvalues", [...controls.attributenewvalues, {
         value_name: controls.value_name,
         color_value: controls.color_value,
@@ -549,7 +549,7 @@ const ProductAttributes = ({ idProduct ,handleChange}) => {
   function getblurrow(ele, index, e) {
     // console.log(controls.variants,e.target.value,ele)
 
-    console.log(controls.variants, e.target, ele)
+
 
 
   }
@@ -993,7 +993,7 @@ const ProductAttributes = ({ idProduct ,handleChange}) => {
                 alignItems: "center"
               }}>
 
-                {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <SaveAsIcon onClick={() => editNew(ele, index)} /> : <EditIcon onClick={() => { setEdit(ele); setindexedit(index); setaddvalue(false); console.log(ele) }} />}
+                {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <SaveAsIcon onClick={() => editNew(ele, index)} /> : <EditIcon onClick={() => { setEdit(ele); setindexedit(index); setaddvalue(false);  }} />}
                 {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <CloseIcon onClick={() => setEdit(null)} /> : <DeleteIcon sx={{ color: (theme) => theme.palette.error.main, cursor: "pointer" }} onClick={() => onDeleteNew(index)} />}
 
               </TableCell>}
@@ -1040,7 +1040,7 @@ const ProductAttributes = ({ idProduct ,handleChange}) => {
                 alignItems: "center"
               }}>
 
-                {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <SaveAsIcon onClick={() => editNew(ele, index)} /> : <EditIcon onClick={() => { setEdit(ele); setindexedit(index); setaddvalue(false); console.log(ele) }} />}
+                {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <SaveAsIcon onClick={() => editNew(ele, index)} /> : <EditIcon onClick={() => { setEdit(ele); setindexedit(index); setaddvalue(false);  }} />}
                 {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <CloseIcon onClick={() => setEdit(null)} /> : <DeleteIcon sx={{ color: (theme) => theme.palette.error.main, cursor: "pointer" }} onClick={() => onDeleteNew(index)} />}
 
               </TableCell>}

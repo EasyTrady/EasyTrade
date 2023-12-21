@@ -287,7 +287,7 @@ function Dashboard() {
           <Grid item xs={12} lg={12} md={12} sm={12} xl={12} sx={{ my: 2 }}>
 
             <GradientLineChart
-              title="Total amount Orders Analytics"
+              title="Total numbers Order Analytics"
               height="22rem"
               description={
                 <SelectField

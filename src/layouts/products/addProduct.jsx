@@ -218,7 +218,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
         id: shop_id + "/brands/",
         onSuccess: (res) => {
             dispatch({ type: "brand/set", payload: res.data })
-            console.log(res.data)
+            
         }
     })
 }
@@ -226,7 +226,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
     
     categoryRequest({
       onSuccess: (res) => {
-        console.log(res.data);
+       
         dispatch({ type: "category/set", payload: res?.data });
       },
     });
@@ -424,7 +424,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
         id:productId+"/specifications/"+ele.id,
         onSuccess:(res)=>{
           setControl("specifications",controls?.specifications.filter((elem,ind)=>elem!=ele))
-           console.log(res.data)
+           
         }
       })
     }else{
@@ -443,9 +443,9 @@ const AddProduct = ({ light, isMini,handleChange }) => {
         id:productId,
         onSuccess:(res)=>{
           setProduct(res.data)
-          console.log(res.data)
+         
           Object.entries(res.data)?.forEach(([key,value])=> Object.keys(controls).includes(key)? setControl(key,value):null)
-          console.log(controls)
+          
         }
       })
     }
@@ -529,7 +529,7 @@ useEffect(()=>{
               helperText={invalid.quantity}
               sx={input}
             />
-            {console.log(controls.brand)}
+           
             <MultiSelect
             select
             
@@ -545,7 +545,7 @@ useEffect(()=>{
                 return resultcategory.map((ele)=>ele.name).join(" , ")
               }}
               value={controls.categories.map((ele)=>ele.id?ele.id:ele)}
-              onChange={(e) => {setControl("categories", e.target.value);console.log(e.target.value)}}
+              onChange={(e) => {setControl("categories", e.target.value);}}
               required={required.includes("categories")}
               textHelper={controls.categories}
               error={Boolean(invalid.categories)}
@@ -594,12 +594,12 @@ useEffect(()=>{
               onOpen={getBrandItems}
               renderValue={(selected) => {
                 // selected.map((ele)=>category.map((elem)=>elem.id).includes(ele))
-                console.log(selected)
+               
                 let resultcategory=Brands?.results?.filter((category) => category.id==selected)
                 return resultcategory.map((ele)=>ele.name).join(" , ")
               }}
               value={controls.brand}
-              onChange={(e) => {setControl("brand", e.target.value);console.log(e.target.value)}}
+              onChange={(e) => {setControl("brand", e.target.value);}}
               required={required.includes("brand")}
               textHelper={controls.brand}
               error={Boolean(invalid.brand)}
@@ -613,7 +613,7 @@ useEffect(()=>{
                 // onOpen: onOpen,
                 // onClose: onClose,
                 renderValue: (selected) => {
-                    console.log(selected)
+                    
                      let resultcategory=Brands?.results?.filter((category) => selected.includes(category.id))
                 return resultcategory.map((ele)=>ele.name).join(" , ")
                 },
@@ -938,7 +938,7 @@ useEffect(()=>{
             </Typography>
              <DatePickerField
               value={controls.discount_start_date}
-              onChange={(newvalue) => {setControl("discount_start_date", newvalue);console.log(newvalue)}}
+              onChange={(newvalue) => {setControl("discount_start_date", newvalue);}}
               icon={DateIcon}
             /> 
           </Box>

@@ -52,14 +52,14 @@ const AddProductFetures = ({handleChange}) => {
           }),
           onSuccess: (res) => {
             handleChange(undefined,2,res.data.id)
-            console.log(res.data, controls);
+            
             if(index===2){
               return value===index
             }
           }
         }).then((res) => {
           let response = res?.response?.data;
-          console.log(res);
+          
           // const responseBody = filter({
           //   obj: {
           //     name: response?.name?.join(""),
@@ -97,7 +97,7 @@ const AddProductFetures = ({handleChange}) => {
           // setProduct(res.data)
           // setControl("images",[...res.data.images])
           Object.entries(res.data)?.forEach(([key,value])=> Object.keys(controls).includes(key)? setControl(key,value):null)
-          console.log(controls,res.data)
+
         }
       })
         // Object.entries(state?.dataRow)?.forEach(([key,value])=>setControl(key,value))
@@ -107,7 +107,7 @@ const AddProductFetures = ({handleChange}) => {
    
 }, [idProduct])
 useEffect(()=>{
-  console.log(controls)
+ 
 },[controls.images])
 
   return (

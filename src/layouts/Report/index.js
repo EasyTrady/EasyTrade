@@ -137,7 +137,7 @@ function Report({ absolute, light, isMini }) {
     totalRequest({
       onSuccess:(res)=>{
         setTotal({...res.data})
-        console.log(res.data)
+     
       }
     })
     togetdataoftable("sales")
@@ -246,7 +246,7 @@ function Report({ absolute, light, isMini }) {
 
         <DataGridCustom rows={rows} columns={columns} checkboxSelection={true}
           onRowClick={(e, row) => {
-            console.log(e, row);
+           
             // setClick({ ...e.id });
           }}
           loading={getReportResponce.isPending}

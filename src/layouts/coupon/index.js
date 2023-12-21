@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react'
 import input from "assets/theme/components/form/input";
 import DataGridCustom from 'components/common/DateGridCustomer';
-import { Avatar, Container, Radio, FormControlLabel, RadioGroup, FormLabel, Paper, Box, Tooltip, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Icon, MenuItem, Select, TextField, Typography, Autocomplete, ListItemText, Chip } from '@mui/material';
+import { Avatar, Container, Radio,Switch ,FormControlLabel, RadioGroup, FormLabel, Paper, Box, Tooltip, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Icon, MenuItem, Select, TextField, Typography, Autocomplete, ListItemText, Chip } from '@mui/material';
 import SoftBox from "components/SoftBox";
 import PropTypes from "prop-types";
 import { useLocation,useNavigate } from 'react-router-dom';
@@ -31,15 +31,32 @@ function Coupon({ absolute, light, isMini }) {
             method: "get",
             Token: `Token ${Token}`
         });
+        const [couponpatchRequest, couponpatchResponce] =
+        useRequest({
+            path: COUPONS,
+            method: "patch",
+            Token: `Token ${Token}`
+        });
     useEffect(() => {
         couponRequest({
             onSuccess: (res) => {
                 dispatch({ type: "coupon/set", payload: res.data })
-                console.log(res.data)
+                
             }
         })
 
     }, [])
+    function updateStatus(ele,newResult){
+        couponpatchRequest({
+            id:ele.id,
+            body:{status:newResult},
+            onSuccess:(res)=>{
+                dispatch({ type: "coupon/patchItem", payload:{ id:ele.id,item:res.data} })
+
+              
+            }
+        })
+    }
     const columns = [
         {
             field: 'coupon_code',
@@ -58,7 +75,7 @@ function Coupon({ absolute, light, isMini }) {
             field: 'coupon_end_date',
             headerName: 'Expire date',
             type: 'text',
-            width: 200,
+            width: 250,
             align: 'left',
             headerAlign: 'left',
             renderCell: (params) => <Typography variant={"p"}
@@ -78,7 +95,7 @@ function Coupon({ absolute, light, isMini }) {
             field: 'coupon_start_date',
             headerName: 'Start date',
             type: 'text',
-            width: 200,
+            width: 250,
             align: 'left',
             headerAlign: 'left',
             // renderCell: renderImageCell,
@@ -93,7 +110,45 @@ function Coupon({ absolute, light, isMini }) {
             > {moment(params.row.coupon_start_date).format('MMMM Do YYYY')} </Typography>
 
             // renderEditCell:renderEditImageCell
-        },
+        },{
+            field: "type",
+            headerName: 'type',
+            type: 'text',
+            width: 200,
+            align: 'left',
+            headerAlign: 'left',
+            // renderCell: renderImageCell,
+            editable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            renderCell: (params) => <Typography variant={"p"}
+                sx={{
+                    fontSize: "14px",
+                    color:(theme)=>params.row.status=="active"?theme.palette.success.main:params.row.status=="paused"?theme.palette.warning.middle:params.row.status=="expired"?theme.palette.error.middle:theme.palette.success.main,
+                    backgroundColor:(theme)=>params.row.status=="active"?theme.palette.success.hover:
+                    params.row.status=="paused"?theme.palette.warning.focus:params.row.status=="expired"?theme.palette.error.hover:theme.palette.success.hover,
+                    padding:"10px",
+                    borderRadius:"20px"
+                }}
+            > {params.row.status} </Typography>
+
+            // renderEditCell:renderEditImageCell
+        },{
+            field: "status",
+            headerName: 'status',
+            type: 'text',
+            width: 200,
+            align: 'left',
+            headerAlign: 'left',
+            // renderCell: renderImageCell,
+            editable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            renderCell: (params) => (params.row.status=="active"||params.row.status=="paused")?<Switch checked={params.row.status=="active"} onClick={()=>updateStatus(params.row,params.row.status=="active"?"paused":"active")} inputProps={{ 'aria-label': 'uncontrolled' }} />:"Closed"
+
+            // renderEditCell:renderEditImageCell
+        }
+        
     ]
     useEffect(() => {
         setRows(coupons?.results)

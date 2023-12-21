@@ -62,7 +62,7 @@ const ImageBox = ({ main_image, onChange }) => {
         id:idProduct+"/images/"+idofimage?.id,
         onSuccess:(res)=>{
           onChange(main_image.filter((ele)=>ele.id!=idofimage?.id))
-          console.log(res.data)
+          
         }
       })
     }

@@ -37,7 +37,7 @@ export const CategorySlice = createSlice({
         ...action.payload.item,
       });
     },addSubCategory:(state,action)=>{
-        console.log(state.value)
+        
        state.value.find((ele)=>ele.id===action.payload.idCategory)["subCategory"]=action.payload.subCategory
     }
   },

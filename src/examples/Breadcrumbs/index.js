@@ -31,8 +31,6 @@ import SoftTypography from "components/SoftTypography";
 function Breadcrumbs({ icon, title, route, light }) {
   const routes = route.slice(0, -1);
   let {pathname}=useLocation()
-  console.log(pathname)
-
   return (
     <SoftBox mr={{ xs: 0, xl: 8,textAlign:"left"}}>
       <MuiBreadcrumbs
@@ -82,7 +80,7 @@ function Breadcrumbs({ icon, title, route, light }) {
           {title.replace("-", " ")}
         </SoftTypography>
       </MuiBreadcrumbs>
-      {console.log(title)}
+     
       <SoftTypography
         fontWeight="bold"
         textTransform="capitalize"
