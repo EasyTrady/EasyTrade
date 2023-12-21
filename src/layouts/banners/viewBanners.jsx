@@ -44,7 +44,7 @@ const ViewBanners = ({ absolute, light, isMini }) => {
     Token: `Token ${Token}`,
   });
   function onDelete(row) {
-  console.log(row);
+  
     BannerDeleteRequest({
         id: row,
         onSuccess: () => {
