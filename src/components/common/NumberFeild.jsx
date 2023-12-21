@@ -6,7 +6,7 @@ import { NumericFormat } from "react-number-format";
 // eslint-disable-next-line react/prop-types
 const NumberField = ({ variant, onChange,label, ...rest }) => {
   const handleValueChange = (values,sourceInfo) => {
-    console.log(values,sourceInfo)
+    
     onChange({ target: { ...values } });
   };
 

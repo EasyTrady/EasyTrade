@@ -107,7 +107,7 @@ const FirebaseRegister = ({ ...others }) => {
 
   useEffect(() => {
     // changePassword('123456');
-    console.log(others?.subscribtionId);
+ 
   }, []);
   // console.log(user);
   return (
@@ -143,7 +143,7 @@ const FirebaseRegister = ({ ...others }) => {
           // code: Yup.string().required('code is required'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          console.log(values, "on submit");
+      
           //  try {
           Object.entries(values).forEach(([key, value]) => formData.append(key, value));
 
@@ -153,7 +153,7 @@ const FirebaseRegister = ({ ...others }) => {
           signUpRequest({
             body: formData,
             onSuccess: async (res) => {
-              console.log(res, "rsjkdklsj");
+            
               // if(res?.type==='signupUser/fulfilled'){
               //   toast.success('welcome to EasyTrade')
               // navigate('/register/creatingshop')
@@ -199,7 +199,7 @@ const FirebaseRegister = ({ ...others }) => {
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
             <Box sx={{justifyContent:'center',alignItems:'center',textAlign:'center'}}>
           <form noValidate {...others}>
-            {console.log(errors)}
+         
             <Box sx={{display: "flex",justifyContent:'center'}}>
               
               <FormControl error={Boolean(touched?.logo && errors?.logo)}>

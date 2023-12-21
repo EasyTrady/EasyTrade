@@ -34,7 +34,7 @@ const Offers = ({ absolute, light, isMini }) => {
   const getOffers = () => {
     OffersGetRequest({
       onSuccess: (res) => {
-        console.log(res.data);
+      
         dispatch({ type: "offers/set", payload: res?.data });
       },
     });
@@ -45,7 +45,7 @@ const Offers = ({ absolute, light, isMini }) => {
     Token: `Token ${Token}`,
   });
   function onDelete(row) {
-    console.log(row)
+   
     OffersDeleyeRequest({
         id: row,
         onSuccess: () => {

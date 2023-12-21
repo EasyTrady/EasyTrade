@@ -40,7 +40,7 @@ const FakePege = () => {
       }
     };
   });
-  console.log(user, shop);
+  
   React.useEffect(() => {
     const timer = setInterval(() => {
       progressRef.current();

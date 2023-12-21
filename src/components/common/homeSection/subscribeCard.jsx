@@ -136,7 +136,7 @@ const SubscribeCard = ({ type }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log(subscribtion);
+    
     // console.log('run');
     if (subscribtion.length >= 1) {
       setIsLoading(false);

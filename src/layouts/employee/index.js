@@ -211,7 +211,7 @@ function Employee({ absolute, light, isMini }) {
                             </Typography>
                         );
                     } else {
-                        console.log(selected)
+                
                         return jobs?.results?.find((ele)=>ele.id===selected)?.title;
                     }
                 },
@@ -386,7 +386,7 @@ function Employee({ absolute, light, isMini }) {
             EmployeePostRequest({
                 body: controls,
                 onSuccess: (res) => {
-                    console.log(res.data, controls)
+                  
                 }
             }).then((res) => {
                 let response = res?.response?.data;
@@ -402,7 +402,7 @@ function Employee({ absolute, light, isMini }) {
         setOpenJob(true)
         jobRequest({
             onSuccess: (res) => {
-                console.log(res)
+               
                 dispatch({ type: "job/set", payload: res.data })
             }
         })
@@ -411,7 +411,7 @@ function Employee({ absolute, light, isMini }) {
     const handleCloseMenu = () => {
         setOpenJob(false)
         // Perform any necessary actions when the menu is closed
-        console.log('Menu closed');
+        
     };
     useEffect(() => {
         jobRequest({

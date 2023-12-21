@@ -66,7 +66,7 @@ function GradientLineChart({ title, description, height, chart }) {
       setChartData(configs(chart?.labels || [], chartDatasets));
   }, [chart,height]);
 useEffect(()=>{
-  console.log(chartData,height,chartRef.current.canvas)
+ 
 },[chartData])
   const renderChart = (
     <SoftBox p={2} >

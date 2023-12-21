@@ -130,7 +130,7 @@ function Category({ absolute, light, isMini }) {
             })
         }, [])
         useEffect(()=>{
-            console.log(categories)
+            
             setRows(categories)
         },[categories])
   return (

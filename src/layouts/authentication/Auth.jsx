@@ -8,7 +8,7 @@ function Auth({children}) {
    let navigate=useNavigate()
     useEffect(()=>{
          // 24 hours in milliseconds
-         console.log(currentTime)
+         
         if (currentTime  > tokenTimestamp) {
             // Token has expired, delete it from localStorage
             localStorage.removeItem('token');
@@ -26,9 +26,9 @@ function Auth({children}) {
     },[
         currentTime
     ])
-    console.log(Boolean(localStorage.getItem("token")))
+    
    if(Boolean(localStorage.getItem("token"))==true) {
-    console.log("hjhfyfyfyy")
+    
     return (
         children
         )

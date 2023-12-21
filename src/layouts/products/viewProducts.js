@@ -60,7 +60,7 @@ function Products({ absolute, light, isMini }) {
     method: "delete",
   });
   function onDelete(row) {
-    console.log(row);
+
     RequestDeleteProducts({
       id: row,
       onSuccess: () => {
@@ -69,7 +69,7 @@ function Products({ absolute, light, isMini }) {
     });
   }
   function onEdit(row,newRow) {
-    console.log(row,newRow);
+   
     localStorage.setItem('productId', row);
 
     navigate(`/${sub_domain}/dashboard/products/addnewproduct`,{state:{id:row}})
@@ -133,7 +133,7 @@ function Products({ absolute, light, isMini }) {
   // useEffect(() => {
   //     setRows(customers?.results);
   //   }, [customers])
-  console.log(products);
+
 
   return (
     <>
@@ -197,11 +197,11 @@ function Products({ absolute, light, isMini }) {
 
           checkboxSelection={true}
           onRowClick={(e,row) => {
-            console.log(e,row);
+           
             // setClick({ ...e.id });
           }}
           // notProduct={false}
-          // rowsPerPageOptions={[5, 10, 15, 20]}
+          
           // onPaginationModelChange={setPaginationModel}
           rowHeight={72}
           getRowSpacing={4}

@@ -145,7 +145,7 @@ function Order({ absolute, light, isMini }) {
 
         });
         function onDelete(row) {
-            console.log(row)
+            
             OrderDeleteRequest({
                 id: row,
                 onSuccess: () => {
@@ -156,7 +156,7 @@ function Order({ absolute, light, isMini }) {
     useEffect(() => {
         OrderRequest({
             onSuccess: (res) => {
-                console.log(res.data)
+               
                 
                 dispatch({ type: "orders/set", payload: res.data })
             }

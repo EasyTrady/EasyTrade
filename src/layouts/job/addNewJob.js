@@ -93,7 +93,7 @@ function AddNewJob({ absolute, light, isMini }) {
                 //    [controls.job,state?.dataRow?.job,"job"]
                 ],false
                 )
-                console.log(result)
+               
                 jobpatchRequest({
                             id: controls.id,
                             body: result.array,
@@ -112,7 +112,7 @@ function AddNewJob({ absolute, light, isMini }) {
 
                         resetControls()
                         navigate(`/${sub_domain}/dashboard/jobs`)
-                        console.log(res.data, controls)
+                        
                     }
                 }).then((res) => {
                     let response = res?.response?.data;
@@ -152,7 +152,7 @@ function AddNewJob({ absolute, light, isMini }) {
                 <DashboardNavbar />
                 <Container>
                     <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-                        <Breadcrumbs icon="home" title={Boolean(state?.dataRow)?t("EditJob"):route[route.length - 1]} route={route} light={light} />
+                        <Breadcrumbs icon="home" title={Boolean(state?.dataRow)?t("Edit Job"):"Add New Job"} route={route} light={light} />
                     </SoftBox>
                 </Container>
                 <Container sx={{ p: 2, display: "flex",gap:"6px" }}>

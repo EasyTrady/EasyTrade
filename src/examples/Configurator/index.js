@@ -64,7 +64,7 @@ function Configurator() {
   const backgroundColors = ["#FFFFFF", "#ECF4FA", "#FAEEEC", "#FAECF9", "#EDFAEC"];
   const [value, setValue] = React.useState(0);
   
-  console.log(footerDisplay)
+ 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };

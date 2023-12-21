@@ -67,7 +67,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
   };
   const handleDialogClick = (id,row) => () => {
     // setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-    console.log(id,row.row)
+   
     onDialog(id,row?.row)
   };
   const handleSaveClick = (id) => () => {
@@ -215,17 +215,17 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
             </SoftButton>
             
             <MenuCustom anchor={open} open={Boolean(open)}>
-              {onEdit && notProduct && <MenuItem onClick={() => setOpen(null)}>
+              {onEdit && <MenuItem onClick={() => setOpen(null)}>
                 <GridActionsCellItem
                   key={row.id}
-                  icon={<Box><EditIcon /> <span>edit</span></Box>}
+                  icon={<Box><EditIcon /><span>edit</span></Box>}
                   label="Edit"
                   className="textPrimary"
                   onClick={handleEditClick(row?.id, row)}
                   color="inherit"
                 />
               </MenuItem>}
-              {onDialog && notProduct && <MenuItem onClick={() => setOpen(null)}>
+              {onDialog  && <MenuItem onClick={() => setOpen(null)}>
                 <GridActionsCellItem
                   key={row.id}
                   icon={<Box sx={{display:"flex",alignItems:"center" }}><EditIcon /> <span>edit</span></Box>}
@@ -235,7 +235,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
                   color="inherit"
                 />
               </MenuItem>}
-              {onNotify && notProduct && <MenuItem onClick={() => setOpen(null)}>
+              {onNotify  && <MenuItem onClick={() => setOpen(null)}>
                 <GridActionsCellItem
                   key={row.id}
                   icon={<Box><NotificationsIcon /> <span>Notify client</span></Box>}
@@ -245,7 +245,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
                   color="inherit"
                 />
               </MenuItem>}
-              {onBlock&& notProduct && <MenuItem onClick={() => setOpen(null)}>
+              {onBlock && <MenuItem onClick={() => setOpen(null)}>
                 <GridActionsCellItem
                   key={row.id}
                   icon={<Box><BlockIcon /> <span>{t("Block")}</span></Box>}
@@ -255,7 +255,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
                   color="inherit"
                 />
               </MenuItem>}
-              {onDelete && notProduct && <MenuItem onClick={() => setOpen(null)} >
+              {onDelete  && <MenuItem onClick={() => setOpen(null)} >
                 <GridActionsCellItem
               
                   key={row.id}
@@ -275,7 +275,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
   ]:[...columns];
   const CustomRow = (props) => {
     const { className, selected, ...other } = props;
-  console.log(className, selected,props)
+
     // Add your custom styles for selected rows
     const customStyles = selected ? { backgroundColor: 'lightblue', fontWeight: 'bold' } : {};
   
@@ -402,8 +402,8 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
 
           // autoHeight={true}
         
-          // initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
-          pageSizeOptions={[5, 10, 15]}
+          initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
+          // pageSizeOptions={[5, 10, 15]}
           sx={{
             ...sx, "& .css-1ui3wbn-MuiInputBase-root-MuiTablePagination-select": {
               width: "15% !important"
@@ -435,9 +435,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
           //   toolbar: { setRows, setRowModesModel },
           // }}
           rowHeight={72}
-          // components={{
-          //   Row: CustomRow,
-          // }}
+         
           rowSpacingType='margin'
           getRowSpacing={(params) => params === 4}
 

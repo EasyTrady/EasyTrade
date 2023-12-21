@@ -114,8 +114,7 @@ function AddNewEmployee({ absolute, light, isMini }) {
         validate().then((output) => {
 
             if (!output.isOk) return;
-            console.log(controls.id,Boolean(state?.dataRow))
-
+           
             if(Boolean(state?.dataRow)){
                 let  result= compare(
                     [
@@ -125,12 +124,12 @@ function AddNewEmployee({ absolute, light, isMini }) {
                    [controls.job,state?.dataRow?.job,"job"]
                 ],false
                 )
-                console.log(result)
+                
                 EmployeePatchRequest({
                     id:controls.id,
                     body: result.array,
                     onSuccess: (res) => {
-                        console.log(res.data, controls.id)
+                       
 
                         dispatch({ type: "employee/patchItem", payload: { id: controls.id, item: res.data } })
                         resetControls()
@@ -145,7 +144,7 @@ function AddNewEmployee({ absolute, light, isMini }) {
                         dispatch({ type: "employee/addItem", payload:  res.data  })
                         navigate(`/${sub_domain}/dashboard/employee`)
                         resetControls()
-                        console.log(res.data, controls)
+                        
                     }
                 }).then((res) => {
                     let response = res?.response?.data;
@@ -181,7 +180,7 @@ function AddNewEmployee({ absolute, light, isMini }) {
        
     }, [state])
     useEffect(()=>{
-        console.log(jobs,controls.job)
+        
 
     },[jobs,controls.job])
     return (
@@ -190,7 +189,7 @@ function AddNewEmployee({ absolute, light, isMini }) {
                 <DashboardNavbar />
                 <Container>
                 <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-                    <Breadcrumbs icon="home" title={Boolean(state?.dataRow)?t("EditEmployee"):route[route.length - 1]} route={route} light={light} />
+                    <Breadcrumbs icon="home" title={Boolean(state?.dataRow)?t("Edit Employee"):"Add New Employee"} route={route} light={light} />
                 </SoftBox>
                 </Container>
                 <Container sx={{ p: 2, display: "flex", justifyContent: "space-between" }}>
@@ -268,7 +267,7 @@ function AddNewEmployee({ absolute, light, isMini }) {
                                                     </Typography>
                                                 );
                                             } else {
-                                                console.log(selected)
+                                            
                                                 return jobs?.results?.find((ele)=>ele.id===selected)?.title;
                                             }
                                         },

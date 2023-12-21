@@ -56,7 +56,7 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
   const getOfferTypes=()=>{
     OffersTypesGetRequest({
       onSuccess: (res) => {
-        console.log(res.data);
+        
         dispatch({ type: "offerstypes/set", payload: res?.data });
       },
     });
@@ -89,7 +89,7 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
 
   function handleSubmit() {
     validate().then((output) => {
-      console.log(output);
+      
       if (!output.isOk) return;  
       let obj = {
         type: controls.offer_type,
@@ -135,7 +135,7 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
         }
       }).then((res) => {
         let response = res?.response?.data;
-        console.log(res);
+        
         // const responseBody = filter({
         //   obj: {
         //     name: response?.name?.join(""),
@@ -149,7 +149,7 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
       });
     });
   }
-console.log(offerstypes);
+
   return (
     <DashboardLayout>
       <DashboardNavbar />

@@ -128,7 +128,7 @@ const NavCollapse = ({ menu }) => {
           <KeyboardArrowDownIcon stroke={1.5} size="1rem" style={{ marginTop: 'auto', marginBottom: 'auto' }} />
         )}
       </ListItemButton>
-      {console.log(open)}
+      
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List
           component="div"
