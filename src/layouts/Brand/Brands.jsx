@@ -1,0 +1,126 @@
+/* eslint-disable react/prop-types */
+import { Box, Button, Container, Grid, Icon } from '@mui/material'
+import SoftBox from 'components/SoftBox'
+import SoftButton from 'components/SoftButton'
+import DataGridCustom from 'components/common/DateGridCustomer'
+import Breadcrumbs from 'examples/Breadcrumbs'
+import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
+import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
+import React, { useEffect } from 'react'
+import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
+import { BRANDS } from 'data/api'
+import useRequest from 'hooks/useRequest'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
+import BrandBox from 'components/common/BrandBox'
+import { useTranslation } from 'react-i18next'
+const Brands = ({ absolute, light, isMini }) => {
+    const navigate = useNavigate();
+    const dispatch=useDispatch()
+    const route = useLocation().pathname.split("/").slice(1);
+    const sub_domain = localStorage.getItem("sub_domain");
+    let { t } = useTranslation("common");
+  
+    let Token = localStorage.getItem("token");
+    const brands = useSelector((state) => state.brand.value);
+  const [BrandsGetRequest, BrandsGetResponce] = useRequest({
+    path: BRANDS,
+    method: "get",
+    Token: `Token ${Token}`,
+  });
+
+  const getBrands = () => {
+    BrandsGetRequest({
+      onSuccess: (res) => {
+       
+        dispatch({ type: "brand/set", payload: res?.data });
+      },
+    });
+  };
+//   const [BannerDeleteRequest, BannerDeleteResponce] = useRequest({
+//     path: BANNERS,
+//     method: "DELETE",
+//     Token: `Token ${Token}`,
+//   });
+//   function onDelete(row) {
+  
+//     BannerDeleteRequest({
+//         id: row,
+//         onSuccess: () => {
+//             dispatch({ type: "banners/deleteItem", payload: { id: row } })
+//         }
+//     })
+  //}
+  
+  useEffect(()=>{
+    getBrands()
+  },[])
+
+  return (
+    <DashboardLayout>
+    <DashboardNavbar />
+    <Container sx={{ p: 2 }}>
+      <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
+        <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+      </SoftBox>
+      <SoftBox
+        mb={{
+          xs: 1,
+          md: 0,
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
+        sx={{ textAlign: "right" }}
+      >
+        <Button
+          onClick={() => window.print()}
+          sx={{
+            backgroundColor: "white !important",
+            color: "black !important",
+            marginX: "10px",
+            p: 1.5,
+          }}
+        >
+          <LocalPrintshopIcon /> Print
+        </Button>
+        <SoftButton
+          variant="gradient"
+          sx={{
+            backgroundColor: (theme) => theme.palette.purple.middle,
+            color: "white !important",
+            "&:hover": {
+              backgroundColor: (theme) => theme.palette.purple.middle,
+            },
+          }}
+          onClick={() => navigate(`/${sub_domain}/dashboard/additionalpage/addadditionalpage`)}
+        >
+          <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+          &nbsp;{t("addnewpage")}
+        </SoftButton>
+      </SoftBox>
+
+      <Box sx={{ background: "#FFFFFF", borderRadius: "8px", mt:3,pb:3 }}>
+        <Container>
+          
+            <Grid item>
+                <Grid container spacing={2}>
+          {brands.results.map((brand,index)=>(
+                    <Grid item md={2.4} key={index}>
+                        <BrandBox {...brand}/>
+                    </Grid>
+                    ))}
+                </Grid>
+            </Grid>
+          
+          </Container>
+          </Box>
+    </Container>
+    {/* {BannerDeleteResponce.failAlert}
+    {BannerDeleteResponce.successAlert} */}
+  </DashboardLayout>
+  )
+}
+
+export default Brands

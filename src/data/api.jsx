@@ -35,3 +35,5 @@ export const ORDERANALYSIS=`${BaseUrl}shop/dashboard/statistics/order/analysis/`
 export const NOTIFICATIONS=`${BaseUrl}shop/dashboard/notifications/`
 export const COUPONS=`${BaseUrl}shop/dashboard/coupons/`
 export const TOTALREPORT=`${BaseUrl}shop/dashboard/reports/total/`
+export const VIEWADDTIONPAGE=`${BaseUrl}shop/dashboard/pages/`
+export const BRANDS=`${BaseUrl}shop/dashboard/brands/`
