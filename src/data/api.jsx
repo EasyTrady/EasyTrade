@@ -33,3 +33,5 @@ export const SWAPCOMPONENT=`${BaseUrl}shop/dashboard/home-components/swap/`
 export const STATISTICSTOTAL=`${BaseUrl}shop/dashboard/statistics/total/`
 export const ORDERANALYSIS=`${BaseUrl}shop/dashboard/statistics/order/analysis/`
 export const NOTIFICATIONS=`${BaseUrl}shop/dashboard/notifications/`
+export const VIEWADDTIONPAGE=`${BaseUrl}shop/dashboard/pages/`
+export const BRANDS=`${BaseUrl}shop/dashboard/brands/`

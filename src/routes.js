@@ -95,6 +95,9 @@ import AddNewBanner from "layouts/banners/addNewBanner";
 import banner from "./assets/images/banner.svg"
 import Report from "layouts/Report";
 import ReportIcon from "examples/Icons/ReportIcon";
+import ViewAddtionalPage from "layouts/AdditionalPage/ViewAddtionalPage";
+import AddAddtionalPage from "layouts/AdditionalPage/AddAddtionalPage";
+import Brands from "layouts/Brand/Brands";
 const sub_domain = localStorage.getItem('sub_domain')
 
 const routes = [
@@ -245,6 +248,14 @@ const routes = [
 
     ]
   },
+  {
+    type: "collapse",
+    name: "Brands",
+    key: "brands",
+    route: `/${sub_domain}/dashboard/brands`,
+    icon: <Shop size="12px" />,
+    component:  <Auth><Brands /></Auth>,
+    noCollapse: true},
   { type: "title", title: "Discounts & Ads", key: "Discounts-&-Ads" },
   {
     type: "collapse",
@@ -549,6 +560,15 @@ const routes = [
     component:<Auth> <Rankinghome /></Auth>,
     noCollapse: false,
   },
+  {
+    type: "collapse",
+    name: "Additional Page",
+    key: "addtionalpage",
+    route: `/${sub_domain}/dashboard/additionalpage`,
+    icon: <RankingIcon size="12px" />,
+    component:<Auth> <ViewAddtionalPage /></Auth>,
+    noCollapse: false,
+  },
   { type: "title", title: "Account Pages", key: "account-pages" },
   {
     type: "collapse",
@@ -557,6 +577,14 @@ const routes = [
     route: `/${sub_domain}/dashboard/profile`,
     icon: <CustomerSupport size="12px" />,
     component:<Auth> <Profile /></Auth>,
+    noCollapse: false,
+  },
+  {
+    type: "title",
+    name: "Add New Page",
+    key: "Add New Page",
+    route: `/${sub_domain}/dashboard/additionalpage/addadditionalpage`,
+    component:<Auth> <AddAddtionalPage /></Auth>,
     noCollapse: false,
   },
   // {

@@ -148,7 +148,7 @@ function onDelete(row,data){
             },
             {
               field: 'is_active',
-              headerName: 'is_active',
+              headerName: 'active',
               type: 'text',
               width:122,
               align: 'left',
