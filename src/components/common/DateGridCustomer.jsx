@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 import input from "assets/theme/components/form/input";
 import PropTypes from "prop-types";
-
+import InventoryIcon from '@mui/icons-material/Inventory';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -38,7 +38,7 @@ import { Chip,  Stack } from "@mui/material";
 
 function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
   checkboxSelection, onEdit,onDialog, onDelete, onBlock,sx, rowsPerPageOptions, notProduct = true, onState,
-  onNotify,onFilter,
+  onNotify,onFilter,onArchive,
   onCopy, onPaginationModelChange, ...rest }) {
   const [, setRows] = React.useState(rows);
   let { t } = useTranslation("common")
@@ -67,7 +67,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
   };
   const handleDialogClick = (id,row) => () => {
     // setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-    console.log(id,row.row)
+   
     onDialog(id,row?.row)
   };
   const handleSaveClick = (id) => () => {
@@ -78,6 +78,10 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
   const handleDeleteClick = (id) => () => {
     setRows(rows.filter((row) => row.id !== id));
     onDelete(id)
+  };
+  const handleArchiveClick = (id) => () => {
+    setRows(rows.filter((row) => row.id !== id));
+    onArchive(id)
   };
 
   const handleCancelClick = (id) => () => {
@@ -111,7 +115,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
     setRowModesModel(newRowModesModel);
   };
 
-  const columnsResult =Boolean(onEdit||onNotify||onBlock||onDelete)?[
+  const columnsResult =Boolean(onEdit||onNotify||onBlock||onDelete||onArchive)?[
     ...columns,
     {
       field: 'actions',
@@ -215,17 +219,17 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
             </SoftButton>
             
             <MenuCustom anchor={open} open={Boolean(open)}>
-              {onEdit && notProduct && <MenuItem onClick={() => setOpen(null)}>
+              {onEdit && <MenuItem onClick={() => setOpen(null)}>
                 <GridActionsCellItem
                   key={row.id}
-                  icon={<Box><EditIcon /> <span>edit</span></Box>}
+                  icon={<Box><EditIcon /><span>edit</span></Box>}
                   label="Edit"
                   className="textPrimary"
                   onClick={handleEditClick(row?.id, row)}
                   color="inherit"
                 />
               </MenuItem>}
-              {onDialog && notProduct && <MenuItem onClick={() => setOpen(null)}>
+              {onDialog  && <MenuItem onClick={() => setOpen(null)}>
                 <GridActionsCellItem
                   key={row.id}
                   icon={<Box sx={{display:"flex",alignItems:"center" }}><EditIcon /> <span>edit</span></Box>}
@@ -235,7 +239,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
                   color="inherit"
                 />
               </MenuItem>}
-              {onNotify && notProduct && <MenuItem onClick={() => setOpen(null)}>
+              {onNotify  && <MenuItem onClick={() => setOpen(null)}>
                 <GridActionsCellItem
                   key={row.id}
                   icon={<Box><NotificationsIcon /> <span>Notify client</span></Box>}
@@ -245,7 +249,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
                   color="inherit"
                 />
               </MenuItem>}
-              {onBlock&& notProduct && <MenuItem onClick={() => setOpen(null)}>
+              {onBlock && <MenuItem onClick={() => setOpen(null)}>
                 <GridActionsCellItem
                   key={row.id}
                   icon={<Box><BlockIcon /> <span>{t("Block")}</span></Box>}
@@ -255,7 +259,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
                   color="inherit"
                 />
               </MenuItem>}
-              {onDelete && notProduct && <MenuItem onClick={() => setOpen(null)} >
+              {onDelete  && <MenuItem onClick={() => setOpen(null)} >
                 <GridActionsCellItem
               
                   key={row.id}
@@ -265,7 +269,16 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
                   color="inherit"
                 ></GridActionsCellItem>
               </MenuItem>}
-             
+              {onArchive  && <MenuItem onClick={() => setOpen(null)} >
+                <GridActionsCellItem
+              
+                  key={row.id}
+                  icon={<Box sx={{ color: (theme) => theme.palette.grey[600],display:"flex",alignItems:"center" }}><InventoryIcon sx={{ color: (theme) => theme.palette.grey[600] }} /><span>Archive</span></Box>}
+                  label="Delete"
+                  onClick={handleArchiveClick(row?.id)}
+                  color="inherit"
+                ></GridActionsCellItem>
+              </MenuItem>}
 
             </MenuCustom>
           </>
@@ -275,7 +288,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
   ]:[...columns];
   const CustomRow = (props) => {
     const { className, selected, ...other } = props;
-  console.log(className, selected,props)
+
     // Add your custom styles for selected rows
     const customStyles = selected ? { backgroundColor: 'lightblue', fontWeight: 'bold' } : {};
   
@@ -402,8 +415,8 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
 
           // autoHeight={true}
         
-          // initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
-          pageSizeOptions={[5, 10, 15]}
+          initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
+          // pageSizeOptions={[5, 10, 15]}
           sx={{
             ...sx, "& .css-1ui3wbn-MuiInputBase-root-MuiTablePagination-select": {
               width: "15% !important"
@@ -435,9 +448,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
           //   toolbar: { setRows, setRowModesModel },
           // }}
           rowHeight={72}
-          // components={{
-          //   Row: CustomRow,
-          // }}
+         
           rowSpacingType='margin'
           getRowSpacing={(params) => params === 4}
 
@@ -454,6 +465,7 @@ DataGridCustom.propTypes = {
   checkboxSelection: PropTypes.bool,
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
+  onArchive:PropTypes.func,
   sx: PropTypes.object,
   rowHeight: PropTypes.number,
   rowsPerPageOptions: PropTypes.array, onPaginationModelChange: PropTypes.func,

@@ -60,7 +60,7 @@ import { useLocation } from "react-router-dom";
 import { navbarRow } from "examples/Navbars/DashboardNavbar/styles";
 import { PRODUCTS } from "data/api";
 import {  useNavigate } from 'react-router-dom';
-import { CATEGORY } from "data/api";
+import { CATEGORY ,BRAND} from "data/api";
 import { useDispatch, useSelector } from "react-redux";
 import filter from "utils/ClearNull";
 import PictureField from "components/common/PictureField";
@@ -77,11 +77,13 @@ const AddProduct = ({ light, isMini,handleChange }) => {
   const location = useLocation();
   const { state } = location;
   let productId=localStorage.getItem('productId');
+  let shop_id = localStorage.getItem("shop_id")
   const category = useSelector((state) => state.category.value);
   const dispatch = useDispatch();
   const route = useLocation().pathname.split("/").slice(1);
   const { borderWidth, borderColor } = borders;
   const [Value, setValue] = useState("");
+  const Brands = useSelector((state) => state.brand.value)
   const[key,setKey]=useState(false)
   // const [Switch, setSwitch] = useState(true);
 
@@ -187,6 +189,8 @@ const AddProduct = ({ light, isMini,handleChange }) => {
 
     { control: "description", value: "", isRequired: false },
     { control: "categories", value: [], isRequired: false },
+    { control: "brand", value: 0, isRequired: false },
+
     // { control: "custom_shipping_price", value: "", isRequired: false },
     { control: "dimensions", value: "", isRequired: false },
     // { control: "weight", value: "", isRequired: false },
@@ -203,12 +207,26 @@ const AddProduct = ({ light, isMini,handleChange }) => {
     method: "get",
     Token: `Token ${Token}`,
   });
-
+  const [BrandgetRequest, getBrandResponce] =
+  useRequest({
+      path: BRAND,
+      method: "get",
+      Token: `Token ${Token}`
+  });
+  const getBrandItems = () => {
+    BrandgetRequest({
+        id: shop_id + "/brands/",
+        onSuccess: (res) => {
+            dispatch({ type: "brand/set", payload: res.data })
+            
+        }
+    })
+}
   const getCategory = () => {
     
     categoryRequest({
       onSuccess: (res) => {
-        console.log(res.data);
+       
         dispatch({ type: "category/set", payload: res?.data });
       },
     });
@@ -279,6 +297,8 @@ const AddProduct = ({ light, isMini,handleChange }) => {
         // // //  [controls.minimum_stock_quantity,product.minimum_stock_quantity,"minimum_stock_quantity"],
          [controls?.description,product?.description,"description"],
          [String(controls?.categories),String(product?.categories),"categories"],
+         [controls?.brand,product?.brand,"brand"],
+
         //  [controls.custom_shipping_price,product.custom_shipping_price,"custom_shipping_price"],
          [controls?.dimensions,product?.dimensions,"dimensions"],
          [controls?.weight,product?.weight,"weight"],
@@ -326,8 +346,9 @@ const AddProduct = ({ light, isMini,handleChange }) => {
               discount: controls?.discount,
               discount_start_date: controls?.discount_start_date&&controls?.discount_start_date?.toISOString(),
               discount_end_date:controls?.discount_start_date&&controls?.discount_end_date?.toISOString(),
-              is_percentage_discount: controls.is_percentage_discount,
-              purchase_price: controls.purchase_price,
+              is_percentage_discount: controls?.is_percentage_discount,
+              purchase_price: controls?.purchase_price,
+              brand:controls?.brand,
               //  custom_shipping_price: controls.custom_shipping_price,
               maximum_order_quanitity: controls.maximum_order_quanitity,
               is_published: controls.is_published,
@@ -365,6 +386,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
               discount_end_date: response?.discount_end_date,
               is_percentage_discount: response?.is_percentage_discount,
               purchase_price: response?.purchase_price,
+              brand:response?.brand,
               //  custom_shipping_price: response?.custom_shipping_price,
               maximum_order_quanitity: response?.maximum_order_quanitity,
               is_published: response?.is_published,
@@ -395,14 +417,14 @@ const AddProduct = ({ light, isMini,handleChange }) => {
       
     });
   }
-  console.log(controls?.in_taxes)
+
   function DeleteSpecification(ele){
     if(ele.id){
       specificationsdeleteRequest({
         id:productId+"/specifications/"+ele.id,
         onSuccess:(res)=>{
           setControl("specifications",controls?.specifications.filter((elem,ind)=>elem!=ele))
-           console.log(res.data)
+           
         }
       })
     }else{
@@ -421,8 +443,9 @@ const AddProduct = ({ light, isMini,handleChange }) => {
         id:productId,
         onSuccess:(res)=>{
           setProduct(res.data)
+         
           Object.entries(res.data)?.forEach(([key,value])=> Object.keys(controls).includes(key)? setControl(key,value):null)
-          console.log(controls)
+          
         }
       })
     }
@@ -431,7 +454,10 @@ useEffect(()=>{
   if(category.length==0){
     getCategory()
   }
-},[category])
+  if(Brands.results.length==0){
+    getBrandItems()
+  }
+},[category,Brands])
 useEffect(()=>{
   if(controls.specifications.length>0){
     setControl("switchSpecifications",true)
@@ -503,8 +529,10 @@ useEffect(()=>{
               helperText={invalid.quantity}
               sx={input}
             />
+           
             <MultiSelect
             select
+            
               variant="outlined"
               placeholder="category"
               label="Category"
@@ -517,7 +545,7 @@ useEffect(()=>{
                 return resultcategory.map((ele)=>ele.name).join(" , ")
               }}
               value={controls.categories.map((ele)=>ele.id?ele.id:ele)}
-              onChange={(e) => {setControl("categories", e.target.value);console.log(e.target.value)}}
+              onChange={(e) => {setControl("categories", e.target.value);}}
               required={required.includes("categories")}
               textHelper={controls.categories}
               error={Boolean(invalid.categories)}
@@ -556,7 +584,60 @@ useEffect(()=>{
                 </MenuItem>
               ))}
             </MultiSelect>
+            <MultiSelect
+            select
+            multiple={false}
+              variant="outlined"
+              placeholder="Brands"
+              label="Brands"
+              isPending={getBrandResponce.isPending}
+              onOpen={getBrandItems}
+              renderValue={(selected) => {
+                // selected.map((ele)=>category.map((elem)=>elem.id).includes(ele))
+               
+                let resultcategory=Brands?.results?.filter((category) => category.id==selected)
+                return resultcategory.map((ele)=>ele.name).join(" , ")
+              }}
+              value={controls.brand}
+              onChange={(e) => {setControl("brand", e.target.value);}}
+              required={required.includes("brand")}
+              textHelper={controls.brand}
+              error={Boolean(invalid.brand)}
+              helperText={invalid.brand}
+              sx={{ width: "100%", fontSize: "14px","& .MuiMenu-paper":{
+                backgroundColor:"white !important"
+              } }}
+              SelectProps={{
+                defaultValue: "",
+                displayEmpty: true,
+                // onOpen: onOpen,
+                // onClose: onClose,
+                renderValue: (selected) => {
+                    
+                     let resultcategory=Brands?.results?.filter((category) => selected.includes(category.id))
+                return resultcategory.map((ele)=>ele.name).join(" , ")
+                },
+                MenuProps: {
+                    PaperProps: {
+                        sx: {
+                            maxHeight: "200px",
+                            overflowY: "auto",
+                            backgroundColor: "white !important"
+                        },
+                    },
+                },
 
+                // IconComponent: <KeyboardArrowDownIcon></KeyboardArrowDownIcon>,
+
+            }}
+            >
+              {Brands?.results?.map((category, index) => (
+                <MenuItem key={`${category.id} ${index}`} value={category.id}>
+                  {category?.name}
+                  
+                </MenuItem>
+              ))}
+            </MultiSelect>
             <Box sx={{ mb: "20px" }}>
               <Typography
                 sx={{
@@ -857,7 +938,7 @@ useEffect(()=>{
             </Typography>
              <DatePickerField
               value={controls.discount_start_date}
-              onChange={(newvalue) => {setControl("discount_start_date", newvalue);console.log(newvalue)}}
+              onChange={(newvalue) => {setControl("discount_start_date", newvalue);}}
               icon={DateIcon}
             /> 
           </Box>

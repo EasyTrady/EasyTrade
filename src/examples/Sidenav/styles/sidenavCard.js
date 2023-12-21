@@ -33,7 +33,7 @@ function cardContent(theme, ownerState) {
   const { white, dark, gradients } = palette;
   const { linearGradient } = functions;
   const { borderRadius } = borders;
-console.log(sidenavColor,"sidenavColor")
+
   return {
     color: "#fff",
     position: "relative",

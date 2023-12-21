@@ -35,7 +35,7 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
               <Grid item>
                 <SoftBox
                   variant="gradient"
-                  bgColor={bgColor === "white" ? icon.color : "white"}
+                  bgColor={bgColor === "white" ? icon?.color : "white"}
                   color={bgColor === "white" ? "white" : "dark"}
                   width="3rem"
                   height="3rem"
@@ -46,7 +46,7 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
                   shadow="md"
                 >
                   <Icon fontSize="small" color="inherit">
-                    {icon.component}
+                    {icon?.component}
                   </Icon>
                 </SoftBox>
               </Grid>
@@ -58,10 +58,10 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
                   color={bgColor === "white" ? "dark" : "white"}
                   opacity={bgColor === "white" ? 1 : 0.7}
                   textTransform="capitalize"
-                  fontWeight={title.fontWeight}
+                  fontWeight={title?.fontWeight}
                   sx={{fontSize:"20px"}}
                 >
-                  {title.text}
+                  {title?.text}
                 </SoftTypography>
                 <SoftTypography
                   variant="p"
@@ -72,8 +72,8 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
                   {count}{" "}
                   
                 </SoftTypography>
-                <SoftTypography variant="button" color={percentage.color} fontWeight="bold" fontSize="12px">
-                    {percentage.text}
+                <SoftTypography variant="button" color={percentage?.color} fontWeight="bold" fontSize="12px">
+                    {percentage?.text}
                   </SoftTypography>
               </SoftBox>
             </Grid>
@@ -81,7 +81,7 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
               <Grid item xs={4}>
                 <SoftBox
                   variant="gradient"
-                  bgColor={bgColor === "white" ? icon.color : "white"}
+                  bgColor={bgColor === "white" ? icon?.color : "white"}
                   color={bgColor === "white" ? "white" : "dark"}
                   width="3rem"
                   height="3rem"
@@ -93,7 +93,7 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
                   shadow="md"
                 >
                   <Icon fontSize="small" color="inherit">
-                    {icon.component}
+                    {icon?.component}
                   </Icon>
                 </SoftBox>
               </Grid>

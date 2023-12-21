@@ -5,6 +5,8 @@ import SoftBox from 'components/SoftBox'
 import Breadcrumbs from 'examples/Breadcrumbs'
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import PropTypes from "prop-types";
+import usePermission from 'utils/usePermission';
+
 // import SoftBox from 'components/SoftBox'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -23,8 +25,10 @@ import {
 } from '@mui/material'
 function Category({ absolute, light, isMini }) {
     const route = useLocation().pathname.split("/").slice(1);
-  const sub_domain = localStorage.getItem('sub_domain')
+    let permissionYour = useSelector((state) => state.permissionYour.value)
 
+  const sub_domain = localStorage.getItem('sub_domain')
+  let {isPermitted}=usePermission()
    let navigate= useNavigate()
     let categories = useSelector((state) => state.category.value)
    let dispatch= useDispatch()
@@ -130,7 +134,7 @@ function Category({ absolute, light, isMini }) {
             })
         }, [])
         useEffect(()=>{
-            console.log(categories)
+            
             setRows(categories)
         },[categories])
   return (
@@ -153,8 +157,7 @@ function Category({ absolute, light, isMini }) {
                         Print
                     </Button>
                     <Divider orientation="vertical" sx={{ width: '1px', height: "72px" }} />
-
-                    <SoftButton variant="gradient"
+                        {permissionYour.map((ele)=>ele.codename).includes("add_shopcategory")&&<SoftButton variant="gradient"
                         sx={{
                             backgroundColor: (theme) => theme.palette.purple.middle,
                             color: "white !important", "&:hover": {
@@ -165,12 +168,13 @@ function Category({ absolute, light, isMini }) {
                     >
                         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                         &nbsp;{t("addnewcategory")}
-                    </SoftButton>
+                    </SoftButton>}
+                    
                 </SoftBox>
                 <DataGridCustom
                     rows={rows}
-                    onDelete={onDelete}
-                    onDialog={onEdit}
+                    onDelete={isPermitted(onDelete,["delete_shopcategory"])}
+                    onDialog={isPermitted(onEdit,["change_shopcategory"])}
                     columns={columns}
                     checkboxSelection={true}
                     loading={getcategoryResponce.isPending}

@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 import useControls from 'hooks/useControls';
 import Form from 'components/common/Form';
 import { useTranslation } from 'react-i18next';
-import { Avatar, Stack, Container, InputLabel, Radio, FormControlLabel, RadioGroup, FormLabel, Paper, Box, Tooltip, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Icon, MenuItem, Select, TextField, Typography, Autocomplete, ListItemText, Chip } from '@mui/material';
+import { Avatar, Stack, Switch, Divider, Container, InputLabel, Radio, FormControlLabel, RadioGroup, FormLabel, Paper, Box, Tooltip, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Icon, MenuItem, Select, TextField, Typography, Autocomplete, ListItemText, Chip } from '@mui/material';
 import SoftInput from "components/SoftInput";
 import PersonIcon from '@mui/icons-material/Person';
 import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
@@ -19,7 +19,7 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import PhoneField from 'components/common/PhoneField';
 import compare from 'utils/compare'
 import PasswordField from 'components/common/PasswordField';
-import { JOBS, EMPLOYEE } from 'data/api';
+import { JOBS, EMPLOYEE,PERMISSIONS } from 'data/api';
 import useRequest from 'hooks/useRequest';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,6 +31,7 @@ function AddNewEmployee({ absolute, light, isMini }) {
     let dispatch = useDispatch()
     let jobs = useSelector((state) => state.job.value)
     const navigate = useNavigate()
+    let permissions = useSelector((state) => state.permission.value)
 
     const location = useLocation();
     const { state } = location;
@@ -47,10 +48,10 @@ function AddNewEmployee({ absolute, light, isMini }) {
             method: "post",
             Token: `Token ${Token}`
         });
-        
+
     const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
         useControls([
-            {control: "id", value: "", isRequired: false},
+            { control: "id", value: "", isRequired: false },
             { control: "image", value: "", isRequired: false },
             {
                 control: "email",
@@ -77,11 +78,11 @@ function AddNewEmployee({ absolute, light, isMini }) {
             {
                 control: "password",
                 value: "",
-                isRequired:Boolean(state?.dataRow)?false:true,
+                isRequired: Boolean(state?.dataRow) ? false : true,
             }, {
                 control: "confirm",
                 value: "",
-                isRequired: Boolean(state?.dataRow)?false:true,
+                isRequired: Boolean(state?.dataRow) ? false : true,
                 validations: [
                     {
                         test: (controls) => new RegExp(`^${controls.password}$`),
@@ -101,12 +102,23 @@ function AddNewEmployee({ absolute, light, isMini }) {
                 control: "job",
                 value: "",
                 isRequired: true,
-            }
+            }, {
+                control: "job_permissions",
+                value: [],
+                isRequired: false,
+
+            },
         ]);
-        const [EmployeePatchRequest, PatchEmployeerResponce] =
+    const [EmployeePatchRequest, PatchEmployeerResponce] =
         useRequest({
             path: EMPLOYEE,
             method: "patch",
+            Token: `Token ${Token}`
+        });
+        const [permissionGetRequest, permissionGetResponce] =
+        useRequest({
+            path: PERMISSIONS,
+            method: "get",
             Token: `Token ${Token}`
         });
     function handleSubmit() {
@@ -114,49 +126,55 @@ function AddNewEmployee({ absolute, light, isMini }) {
         validate().then((output) => {
 
             if (!output.isOk) return;
-            console.log(controls.id,Boolean(state?.dataRow))
 
+
+            if (Boolean(state?.dataRow)) {
+                let result = compare(
+
+           
             if(Boolean(state?.dataRow)){
                 let  result= compare(
+
                     [
-                    [controls.email,state?.dataRow?.email,"email"],
-                    [controls.full_name,state?.dataRow?.full_name,"full_name"],
-                    [controls.phone,state?.dataRow?.phone,"phone"],
-                   [controls.job,state?.dataRow?.job,"job"]
-                ],false
+                        [controls.email, state?.dataRow?.email, "email"],
+                        [controls.full_name, state?.dataRow?.full_name, "full_name"],
+                        [controls.phone, state?.dataRow?.phone, "phone"],
+                        [controls.job, state?.dataRow?.job, "job"]
+                    ], false
                 )
-                console.log(result)
+
+
                 EmployeePatchRequest({
-                    id:controls.id,
+                    id: controls.id,
                     body: result.array,
                     onSuccess: (res) => {
-                        console.log(res.data, controls.id)
+
 
                         dispatch({ type: "employee/patchItem", payload: { id: controls.id, item: res.data } })
                         resetControls()
-                navigate(`/${sub_domain}/dashboard/employee`)
+                        navigate(`/${sub_domain}/dashboard/employee`)
 
                     }
                 })
-            }else{
+            } else {
                 EmployeePostRequest({
                     body: controls,
                     onSuccess: (res) => {
-                        dispatch({ type: "employee/addItem", payload:  res.data  })
+                        dispatch({ type: "employee/addItem", payload: res.data })
                         navigate(`/${sub_domain}/dashboard/employee`)
                         resetControls()
-                        console.log(res.data, controls)
+
                     }
                 }).then((res) => {
                     let response = res?.response?.data;
-    
-    
+
+
                     setInvalid(response);
-    
+
                 });
-             
+
             }
-            
+
         })
 
     }
@@ -173,32 +191,45 @@ function AddNewEmployee({ absolute, light, isMini }) {
         //         dispatch({ type: "job/set", payload: res.data })
         //     }
         // })
-        if(Boolean(state?.dataRow)){
-            Object.entries(state?.dataRow)?.forEach(([key,value])=>setControl(key,value))
+        if (Boolean(state?.dataRow)) {
+            Object.entries(state?.dataRow)?.forEach(([key, value]) => setControl(key, value))
 
         }
         // setControl()
-       
-    }, [state])
-    useEffect(()=>{
-        console.log(jobs,controls.job)
 
-    },[jobs,controls.job])
+    }, [state])
+
+    useEffect(() => {
+
+
+
+    }, [jobs, controls.job])
+    useEffect(()=>{
+        permissionGetRequest({
+            onSuccess:(res)=>{
+                dispatch({ type: "permission/set", payload:  res.data  })
+              
+            }
+        })
+    },[])
     return (
         <>
             <DashboardLayout>
                 <DashboardNavbar />
                 <Container>
-                <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-                    <Breadcrumbs icon="home" title={Boolean(state?.dataRow)?t("EditEmployee"):route[route.length - 1]} route={route} light={light} />
-                </SoftBox>
+
+                    <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
+                        <Breadcrumbs icon="home" title={Boolean(state?.dataRow) ? t("Edit Employee") : "Add New Employee"} route={route} light={light} />
+                    </SoftBox>
+
+               
                 </Container>
                 <Container sx={{ p: 2, display: "flex", justifyContent: "space-between" }}>
                     <Form component="form"
                         childrenProps={{
                             title: t("ContactInfo")
-                        }} sx={{ width:Boolean(state?.dataRow)?"100%":"47%" ,borderRadius:"8px",}} hideFooter={true}>
-                        <Box sx={{ display: "flex", flexDirection: "column" ,boxSizing: "border-box"}}>
+                        }} sx={{ width: Boolean(state?.dataRow) ? "100%" : "47%", borderRadius: "8px", }} hideFooter={true}>
+                        <Box sx={{ display: "flex", flexDirection: "column", boxSizing: "border-box" }}>
                             <Box sx={{ marginY: "6px" }}>
                                 <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("Fullname")}</InputLabel>
                                 <SoftInput
@@ -249,7 +280,7 @@ function AddNewEmployee({ absolute, light, isMini }) {
                                     select
                                     value={controls?.job}
                                     icon={{ component: <WorkOutlineIcon />, direction: "left" }}
-                                    sx={{ ".MuiInputBase-root": { border: "unset" }}}
+                                    sx={{ ".MuiInputBase-root": { border: "unset" } }}
                                     onChange={(e) => setControl("job", e.target.value)}
                                     required={required.includes("job")}
                                     error={Boolean(invalid?.job)}
@@ -263,13 +294,15 @@ function AddNewEmployee({ absolute, light, isMini }) {
                                         renderValue: (selected) => {
                                             if (!Boolean(selected)) {
                                                 return (
-                                                    <Typography sx={{  opacity: "0.42", fontSize: "14px" }} variant="p">
+                                                    <Typography sx={{ opacity: "0.42", fontSize: "14px" }} variant="p">
                                                         {"Vendor"}
                                                     </Typography>
                                                 );
                                             } else {
-                                                console.log(selected)
+
+                                            
                                                 return jobs?.results?.find((ele)=>ele.id===selected)?.title;
+
                                             }
                                         },
                                         MenuProps: {
@@ -294,11 +327,11 @@ function AddNewEmployee({ absolute, light, isMini }) {
                         </Box>
 
                     </Form>
-                    {Boolean(state?.dataRow)===false&& <Form component="form"
+                    {Boolean(state?.dataRow) === false && <Form component="form"
                         childrenProps={{
                             title: t("Account")
                         }} sx={{ width: "47%" }} hideFooter={true}>
-                        <Box sx={{ display: "flex", flexDirection: "column",boxSizing: "border-box" }}>
+                        <Box sx={{ display: "flex", flexDirection: "column", boxSizing: "border-box" }}>
                             <Box sx={{ marginY: "6px" }}>
                                 <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("password")}</InputLabel>
 
@@ -331,9 +364,28 @@ function AddNewEmployee({ absolute, light, isMini }) {
                         </Box>
 
                     </Form>}
-                   
+
 
                 </Container>
+                {/* {permissions?.results?.length>0&&<Form component="form"
+                    childrenProps={{
+                        title: t("AdvertisingCookies"),
+                        subtitle: t("Alwaysactive")
+                    }} hideFooter={true} sx={{margin:"20px"}}>
+                    <Box sx={{ display: "flex", flexDirection: "column" }}>
+                        {permissions?.results?.map((ele, index) => index <= 6 &&
+                            <Box key={index} sx={{ marginY: "6px", marginBottom: "20px", display: "flex", justifyContent: "space-between" }}>
+                                <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{ele?.name}</InputLabel>
+                                <SoftBox sx={{ display: "flex", alignItems: "center" }}>
+                                    <Divider sx={{ flexGrow: 1 }} orientation="vertical" />
+                                    <Switch checked={controls?.job_permissions?.includes(ele?.codename)} color="default" onChange={() => setControl("job_permissions", [...controls?.job_permissions, ele?.codename])} />
+                                </SoftBox>
+                            </Box>
+                        )}
+                    </Box>
+
+                </Form>} */}
+                
                 <Stack
                     direction="row"
                     justifyContent="flex-end"
@@ -343,7 +395,7 @@ function AddNewEmployee({ absolute, light, isMini }) {
                     className="container"
                 >
 
-                    <SoftButton variant="contained" color="white" onClick={() =>{resetControls(); navigate(`/${sub_domain}/dashboard/employee`)}}>
+                    <SoftButton variant="contained" color="white" onClick={() => { resetControls(); navigate(`/${sub_domain}/dashboard/employee`) }}>
                         {"cancel"}
                     </SoftButton>
                     <SoftButton

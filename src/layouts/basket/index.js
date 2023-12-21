@@ -80,7 +80,7 @@ function Basket({ absolute, light, isMini }) {
 
     ]);
   const handleMouseEnter = () => {
-    console.log(isHovered)
+    
     setIsHovered(true);
   };
 
@@ -109,7 +109,7 @@ function Basket({ absolute, light, isMini }) {
                 backgroundPosition: "center",
                 backgroundSize: "cover",
               }} >
-                {console.log(ele?.name)}
+              
               </Paper>
             </Tooltip>
             </>
@@ -279,7 +279,7 @@ function Basket({ absolute, light, isMini }) {
     formDate?.append("banner", e.target.files[0])
 
     setControl("banner", e.target.files[0])
-    console.log(e.target.files[0])
+   
     if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -294,7 +294,7 @@ function Basket({ absolute, light, isMini }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     validate().then((isOk) => {
-      console.log(controls.banner)
+     
       if (!isOk) return;
 
       controls?.Products?.map((ele) => formDate.append("products[]", ele.id))
@@ -309,7 +309,7 @@ function Basket({ absolute, light, isMini }) {
       SendEmailProductRequest({
         body: formDate
         , onSuccess: (res) => {
-          console.log(res.data)
+         
           resetControls()
           setOpenDialog(null)
         }
@@ -328,7 +328,7 @@ function Basket({ absolute, light, isMini }) {
     })
     productRequest({
       onSuccess: (res) => {
-        console.log(res.data)
+       
         dispatch({ type: "products/set", payload: res.data })
       }
     })
@@ -336,7 +336,7 @@ function Basket({ absolute, light, isMini }) {
   }, [])
   useEffect(() => {
     setRows(carts?.results)
-    console.log(products)
+    
     setProducts(products?.results)
   }, [carts, products])
   useEffect(() => { }, [imageData])
@@ -358,7 +358,7 @@ function Basket({ absolute, light, isMini }) {
           columns={columns} checkboxSelection={true}
           // onDelete={() => { }}
           sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
-          onNotify={(ele) => { setOpenDialog(ele); console.log(ele, "row") }}
+          onNotify={(ele) => { setOpenDialog(ele); }}
           rowsPerPageOptions={[5, 10, 15, 20]}
           loading={getCartResponce.isPending}
           //  onState={onDelete}
@@ -533,7 +533,7 @@ function Basket({ absolute, light, isMini }) {
                             </Typography>
                           );
                         } else {
-                          console.log(selected)
+                      
                           return products?.results?.find((ele) => ele.id === selected)?.name;
                         }
                       },
@@ -552,7 +552,7 @@ function Basket({ absolute, light, isMini }) {
                     }}
 
                   >
-                    {console.log(controls.Products)}
+                    
                     {/* {controls.Products.map((ele)=>products?.results.find((elem)=>elem.id===ele))} */}
                     {products?.results?.map((ele) => <MenuItem value={ele.id} key={ele.id}>{ele.name}</MenuItem>)}
                   </SoftInput>

@@ -65,11 +65,11 @@ useRequest({
 
 });
 function onDelete(row,data){
-  console.log(row,data)
+  
     customerDeleteRequest({
       id:row+"/activation",
       onSuccess:(res)=>{
-        console.log(row,data,res)
+       
         dispatch({ type: "custom/patchItem", payload: {id:row,item:{...data,is_active:res.data.active}} })
       }
     })
@@ -84,7 +84,7 @@ function onDelete(row,data){
 //   })
 // }
     useEffect(()=>{
-        console.log( customers)
+        
     },[customers])
     return{ columns : [
       {
@@ -107,7 +107,7 @@ function onDelete(row,data){
               headerAlign: 'left',
               renderCell: (params) =><Box sx={{display:"flex",justifyContent: "space-evenly",
               }}>
-                {console.log(params.row.gender)}
+                
                  <Avatar src={params.row.gender==="F"?imageFemale:imageMen} />
                  <Box sx={{marginX:"10px"}}>
                  <Typography variant={"h5"} sx={{fontSize:"14px"}}>{params.row.full_name}</Typography>

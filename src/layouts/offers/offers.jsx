@@ -15,14 +15,15 @@ import useRequest from "hooks/useRequest";
 import { OFFERS } from "data/api";
 import DataGridCustom from "components/common/DateGridCustomer";
 import moment from "moment";
-
+import usePermission from 'utils/usePermission';
 const Offers = ({ absolute, light, isMini }) => {
   const navigate = useNavigate();
   const dispatch=useDispatch()
+  let {isPermitted}=usePermission()
   const route = useLocation().pathname.split("/").slice(1);
   const sub_domain = localStorage.getItem("sub_domain");
   let { t } = useTranslation("common");
-
+  let permissionYour = useSelector((state) => state.permissionYour.value)
   let Token = localStorage.getItem("token");
   const offers = useSelector((state) => state.offers.value);
   const [OffersGetRequest, OffersGetResponce] = useRequest({
@@ -34,7 +35,7 @@ const Offers = ({ absolute, light, isMini }) => {
   const getOffers = () => {
     OffersGetRequest({
       onSuccess: (res) => {
-        console.log(res.data);
+      
         dispatch({ type: "offers/set", payload: res?.data });
       },
     });
@@ -45,7 +46,7 @@ const Offers = ({ absolute, light, isMini }) => {
     Token: `Token ${Token}`,
   });
   function onDelete(row) {
-    console.log(row)
+   
     OffersDeleyeRequest({
         id: row,
         onSuccess: () => {
@@ -171,7 +172,7 @@ color:row.offer_type_id===1?'#027A48':row.offer_type_id===2?"#7A0243":row.offer_
           >
             <LocalPrintshopIcon /> Print
           </Button>
-          <SoftButton
+         { permissionYour.map((ele)=>ele.codename).includes("add_offer")&&<SoftButton
             variant="gradient"
             sx={{
               backgroundColor: (theme) => theme.palette.purple.middle,
@@ -184,13 +185,14 @@ color:row.offer_type_id===1?'#027A48':row.offer_type_id===2?"#7A0243":row.offer_
           >
             <Icon sx={{ fontWeight: "bold" }}>add</Icon>
             &nbsp;{t("addnewoffer")}
-          </SoftButton>
+          </SoftButton>}
+          
         </SoftBox>
         <DataGridCustom
           rows={offers?.results}
           columns={columns}
           // onEdit={()=>{}}
-          onDelete={onDelete}
+          onDelete={isPermitted(onDelete,["delete_offer"])}
           onCopy={() => {}}
           checkboxSelection={true}
           loading={OffersGetResponce.isPending}

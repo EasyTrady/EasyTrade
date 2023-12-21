@@ -52,7 +52,7 @@ export default function Price() {
 
   const pricetTypeBtnTapped = (e) => {
     setType(e.target.getAttribute("aria-data-type"));
-    console.log(type);
+   
   };
 
   return (

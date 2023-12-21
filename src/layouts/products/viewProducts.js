@@ -21,17 +21,23 @@ import Breadcrumbs from 'examples/Breadcrumbs'
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import PropTypes from "prop-types";
 import { PRODUCTS } from "data/api";
+import usePermission from 'utils/usePermission';
+
 import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 import { MainButton } from "styles/productStyle";
 import { PrintButton } from "styles/productStyle";
 function Products({ absolute, light, isMini }) {
   const { columns, rows } = ProductTableData();
+  let permissionYour = useSelector((state) => state.permissionYour.value)
+
   const [open, setOpen] = React.useState(false);
   const products=useSelector((state)=>state.products.value)
   const navigate =useNavigate()
   const route = useLocation().pathname.split("/").slice(1);
   const sub_domain = localStorage.getItem('sub_domain')
   const handleClose = () => setOpen(false);
+  let {isPermitted}=usePermission()
+
   const handleClick = () => {
     console.info('You clicked the Chip.');
   };
@@ -60,7 +66,7 @@ function Products({ absolute, light, isMini }) {
     method: "delete",
   });
   function onDelete(row) {
-    console.log(row);
+
     RequestDeleteProducts({
       id: row,
       onSuccess: () => {
@@ -69,7 +75,7 @@ function Products({ absolute, light, isMini }) {
     });
   }
   function onEdit(row,newRow) {
-    console.log(row,newRow);
+   
     localStorage.setItem('productId', row);
 
     navigate(`/${sub_domain}/dashboard/products/addnewproduct`,{state:{id:row}})
@@ -133,7 +139,7 @@ function Products({ absolute, light, isMini }) {
   // useEffect(() => {
   //     setRows(customers?.results);
   //   }, [customers])
-  console.log(products);
+
 
   return (
     <>
@@ -156,8 +162,7 @@ function Products({ absolute, light, isMini }) {
                         Print
                     </Button>
                     <Divider orientation="vertical" sx={{ width: '1px', height: "72px" }} />
-
-                    <SoftButton variant="gradient"
+                   {permissionYour.map((ele)=>ele.codename).includes("add_product")&& <SoftButton variant="gradient"
                         sx={{
                             backgroundColor: (theme) => theme.palette.purple.middle,
                             color: "white !important", "&:hover": {
@@ -168,7 +173,8 @@ function Products({ absolute, light, isMini }) {
                     >
                         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                         &nbsp;Add new product
-                    </SoftButton>
+                    </SoftButton>} 
+                   
                 </SoftBox>
             {/* <Box sx={{p:'16px',bgcolor:'#fff',mt:'24px'}}>
               <TextField sx={{height:'41px',borderRadius:'4px',width:'100%'}} placeholder="Search product name,SKU..."/>
@@ -191,17 +197,17 @@ function Products({ absolute, light, isMini }) {
           columns={columns}
           loading={ResponseGetProducts.isPending}
 
-          onDialog={onEdit}
+          onDialog={isPermitted(onEdit,["change_product"])}
 
-          onDelete={onDelete}
+          onDelete={isPermitted(onDelete,["delete_product"])}
 
           checkboxSelection={true}
           onRowClick={(e,row) => {
-            console.log(e,row);
+           
             // setClick({ ...e.id });
           }}
           // notProduct={false}
-          // rowsPerPageOptions={[5, 10, 15, 20]}
+          
           // onPaginationModelChange={setPaginationModel}
           rowHeight={72}
           getRowSpacing={4}

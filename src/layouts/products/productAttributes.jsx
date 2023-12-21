@@ -58,7 +58,7 @@ const rows = [
   createData("Cupcake", 305, 3.7, 67, 4.3),
   createData("Gingerbread", 356, 16.0, 49, 3.9),
 ];
-const ProductAttributes = ({ idProduct }) => {
+const ProductAttributes = ({ idProduct ,handleChange}) => {
   let Token = localStorage.getItem('token')
   let attributes = useSelector((state) => state.attribute.value)
   const dispatch = useDispatch()
@@ -269,7 +269,7 @@ const ProductAttributes = ({ idProduct }) => {
       }
     }
     else if (Boolean(controls.value_name) && !controls.iscolor) {
-      console.log(Boolean(controls.iscolor))
+    
       setControl("values", [...controls.values, {
         value_name: controls.value_name,
         color_value: controls.color_value,
@@ -305,7 +305,7 @@ const ProductAttributes = ({ idProduct }) => {
       }
     }
     else if (Boolean(controls.value_name) && !controls.iscolor) {
-      console.log(Boolean(controls.iscolor))
+     
       setControl("attributenewvalues", [...controls.attributenewvalues, {
         value_name: controls.value_name,
         color_value: controls.color_value,
@@ -343,7 +343,7 @@ const ProductAttributes = ({ idProduct }) => {
     });
   const [GenerationAttributesRequest, GenerationAttributeResponse] =
     useRequest({
-      path: PRODUCTS + "/generate/attributes/",
+      path:  "/products/generate/attributes/",
       method: "POST",
       Token: `Token ${Token}`
     });
@@ -549,7 +549,7 @@ const ProductAttributes = ({ idProduct }) => {
   function getblurrow(ele, index, e) {
     // console.log(controls.variants,e.target.value,ele)
 
-    console.log(controls.variants, e.target, ele)
+
 
 
   }
@@ -849,6 +849,9 @@ const ProductAttributes = ({ idProduct }) => {
 
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginY: "14px" }}>
+      <SoftButton variant="contained" color="white"sx={{mx:"20px"}} onClick={() =>{resetControls(); navigate(`/${sub_domain}/dashboard/products`)}}>
+                        {"skip"}
+                    </SoftButton>
         <SoftButton variant="gradient"
             disabled={controls?.variants?.filter((ele)=>(Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin))&&!Boolean(ele.id)).length>0?
               variantAttributeResponse.isPending:productvariantupdateResponce.isPending}
@@ -990,7 +993,7 @@ const ProductAttributes = ({ idProduct }) => {
                 alignItems: "center"
               }}>
 
-                {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <SaveAsIcon onClick={() => editNew(ele, index)} /> : <EditIcon onClick={() => { setEdit(ele); setindexedit(index); setaddvalue(false); console.log(ele) }} />}
+                {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <SaveAsIcon onClick={() => editNew(ele, index)} /> : <EditIcon onClick={() => { setEdit(ele); setindexedit(index); setaddvalue(false);  }} />}
                 {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <CloseIcon onClick={() => setEdit(null)} /> : <DeleteIcon sx={{ color: (theme) => theme.palette.error.main, cursor: "pointer" }} onClick={() => onDeleteNew(index)} />}
 
               </TableCell>}
@@ -1037,7 +1040,7 @@ const ProductAttributes = ({ idProduct }) => {
                 alignItems: "center"
               }}>
 
-                {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <SaveAsIcon onClick={() => editNew(ele, index)} /> : <EditIcon onClick={() => { setEdit(ele); setindexedit(index); setaddvalue(false); console.log(ele) }} />}
+                {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <SaveAsIcon onClick={() => editNew(ele, index)} /> : <EditIcon onClick={() => { setEdit(ele); setindexedit(index); setaddvalue(false);  }} />}
                 {Boolean(edit) && edit?.id == ele?.id && index == indexedit ? <CloseIcon onClick={() => setEdit(null)} /> : <DeleteIcon sx={{ color: (theme) => theme.palette.error.main, cursor: "pointer" }} onClick={() => onDeleteNew(index)} />}
 
               </TableCell>}
@@ -1163,5 +1166,5 @@ const ProductAttributes = ({ idProduct }) => {
 
 export default ProductAttributes;
 ProductAttributes.propTypes = {
-  idProduct: PropTypes.number
+  idProduct: PropTypes.number,handleChange: PropTypes.func
 };

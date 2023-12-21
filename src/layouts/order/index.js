@@ -27,6 +27,7 @@ import {
 
 function Order({ absolute, light, isMini }) {
     const route = useLocation().pathname.split("/").slice(1);
+    let permissionYour = useSelector((state) => state.permissionYour.value)
     const sub_domain = localStorage.getItem('sub_domain')
     let navigate=useNavigate()
     let orders = useSelector((state) => state.orders.value)
@@ -145,7 +146,7 @@ function Order({ absolute, light, isMini }) {
 
         });
         function onDelete(row) {
-            console.log(row)
+            
             OrderDeleteRequest({
                 id: row,
                 onSuccess: () => {
@@ -156,7 +157,7 @@ function Order({ absolute, light, isMini }) {
     useEffect(() => {
         OrderRequest({
             onSuccess: (res) => {
-                console.log(res.data)
+               
                 
                 dispatch({ type: "orders/set", payload: res.data })
             }
@@ -179,7 +180,7 @@ function Order({ absolute, light, isMini }) {
                     // onDialog={onEdit}
                     columns={columns}
                     checkboxSelection={true}
-                    onRowClick={(e) => navigate(`/${sub_domain}/dashboard/order/${e?.row.id}`)}
+                    onRowClick={(e) =>permissionYour.map((ele)=>ele.codename).includes("view_orderitem") &&navigate(`/${sub_domain}/dashboard/order/${e?.row.id}`)}
                     // sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
                     // onEdit={onEdit}
                     rowHeight={100}

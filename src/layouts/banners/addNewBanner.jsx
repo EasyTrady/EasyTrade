@@ -59,7 +59,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
       const getBannersTypes=()=>{
         BannersTypesGetRequest({
           onSuccess: (res) => {
-            console.log(res.data);
+
             dispatch({ type: "bannerstypes/set", payload: res?.data });
           },
         });
@@ -72,7 +72,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
       const getPages=()=>{
         PagesGetRequest({
           onSuccess: (res) => {
-            console.log(res.data);
+         
             dispatch({ type: "pages/set", payload: res?.data });
           },
         });
@@ -88,7 +88,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
         
         OffersTypesGetRequest({
           onSuccess: (res) => {
-            console.log(res.data);
+           
             dispatch({ type: "offerstypes/set", payload: res?.data });
           },
         });
@@ -103,7 +103,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
    
       function handleSubmit() {
         validate().then((output) => {
-          console.log(output);
+        
           if (!output.isOk) return;  
           let obj = {
             banner_type: controls.banner_type,
@@ -140,7 +140,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
             }
           }).then((res) => {
             let response = res?.response?.data;
-            console.log(res);
+           
             // const responseBody = filter({
             //   obj: {
             //     name: response?.name?.join(""),

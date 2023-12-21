@@ -10,6 +10,7 @@ import React, { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, } from 'react-router';
 import SoftButton from "components/SoftButton";
+import usePermission from 'utils/usePermission';
 import { useEffect } from 'react';
 import DataGridCustom from 'components/common/DateGridCustomer';
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
@@ -45,6 +46,9 @@ function Employee({ absolute, light, isMini }) {
     let [click, setClick] = useState({})
     let [openJob, setOpenJob] = useState(false)
     let jobs = useSelector((state) => state.job.value)
+  let permissionYour = useSelector((state) => state.permissionYour.value)
+  let {isPermitted}=usePermission()
+
     const route = useLocation().pathname.split("/").slice(1);
     let { results } = useSelector((state) => state.job.value)
     const [selectedImage, setSelectedImage] = useState(null);
@@ -211,7 +215,7 @@ function Employee({ absolute, light, isMini }) {
                             </Typography>
                         );
                     } else {
-                        console.log(selected)
+                
                         return jobs?.results?.find((ele)=>ele.id===selected)?.title;
                     }
                 },
@@ -386,7 +390,7 @@ function Employee({ absolute, light, isMini }) {
             EmployeePostRequest({
                 body: controls,
                 onSuccess: (res) => {
-                    console.log(res.data, controls)
+                  
                 }
             }).then((res) => {
                 let response = res?.response?.data;
@@ -402,7 +406,7 @@ function Employee({ absolute, light, isMini }) {
         setOpenJob(true)
         jobRequest({
             onSuccess: (res) => {
-                console.log(res)
+               
                 dispatch({ type: "job/set", payload: res.data })
             }
         })
@@ -411,7 +415,7 @@ function Employee({ absolute, light, isMini }) {
     const handleCloseMenu = () => {
         setOpenJob(false)
         // Perform any necessary actions when the menu is closed
-        console.log('Menu closed');
+        
     };
     useEffect(() => {
         jobRequest({
@@ -437,7 +441,7 @@ function Employee({ absolute, light, isMini }) {
                         backgroundColor: "white !important",
                         color: "black !important", marginX: "10px", p: 1.5
                     }}><LocalPrintshopIcon /> Print</Button>
-                    <SoftButton variant="gradient"
+                    {permissionYour.map((ele)=>ele.codename).includes("add_employee")&&<SoftButton variant="gradient"
                         sx={{
                             backgroundColor: (theme) => theme.palette.purple.middle,
                             color: "white !important", "&:hover": {
@@ -448,17 +452,18 @@ function Employee({ absolute, light, isMini }) {
                     >
                         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                         &nbsp;{t("addnewemployee")}
-                    </SoftButton>
+                    </SoftButton>}
+                    
                 </SoftBox>
                 <DataGridCustom
                     rows={rows}
-                    onDelete={onDelete}
+                    onDelete={isPermitted(onDelete,["delete_employee"])}
                     columns={columns}
                     checkboxSelection={true}
                     loading={getemployeeResponce.isPending}
                     // onRowClic/k={(e) => { setClick({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
                     sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
-                    onDialog={onEdit}
+                    onDialog={isPermitted(onEdit,["change_employee"])}
                     style={{
                         ".MuiTablePagination-toolbar .MuiInputBase-root": {
                             width: "15% !important"

@@ -11,7 +11,7 @@ const ImagesAlbums = ({product_images,onChange}) => {
     };
   
     const handleFileChange = (e) => {
-      console.log(e.target.files);
+     
       const selectedFiles = Array.from(e.target.files);
     setImages(selectedFiles);
     //   setImages(e.target.files)

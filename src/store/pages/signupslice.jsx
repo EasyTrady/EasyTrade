@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 export const SignupUser = createAsyncThunk('signupUser', async (formData, ThunkApi) => {
-  console.log(formData);
+  
   try {
     const response = await axios.post(`https://easytradyapi.shop/accounts/shop/create/`, formData);
 
@@ -48,7 +48,7 @@ export const registrationSlice = createSlice({
       .addCase(SignupUser.fulfilled, (state, action) => {
         state.signUploading = false;
         state.user = action.payload;
-        console.log(action.payload);
+        
       })
       .addCase(SignupUser.rejected, (state, action) => {
         state.loading = false;

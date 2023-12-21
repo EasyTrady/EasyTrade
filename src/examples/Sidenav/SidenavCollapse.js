@@ -42,7 +42,7 @@ import { StarBorder } from "@mui/icons-material";
 function SidenavCollapse({ color, icon, name, children, active, noCollapse,  open,setOpen,onClick,...rest }) {
   const [controller] = useSoftUIController();
   const { miniSidenav, transparentSidenav,makeIconOnly,ColorSidenav } = controller;
-  console.log(active,open)
+ 
   return (
     <>
       <ListItem component="li" onClick={onClick}>
