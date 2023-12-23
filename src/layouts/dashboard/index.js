@@ -58,7 +58,7 @@ import CardDevice from "./components/CardDevice";
 import { Box, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
-function Dashboard() {
+function Dashboard(amountLineChartData) {
   const { size } = typography;
   const { chart, items } = reportsBarChartData;
   const [, dispatch] = useSoftUIController();
