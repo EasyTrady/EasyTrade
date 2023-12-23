@@ -45,7 +45,9 @@ import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
 import { useSoftUIController, setMiniSidenav } from "context";
 import NavCollapse from "./CollapseNav";
 import NavItem from "./CollapseItem";
-
+import VisitSite from "examples/Icons/VisitSite";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import Permissition from "components/common/Permissition";
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, transparentSidenav,sidenavColor,makeIconOnly ,ColorSidenav} = controller;
@@ -76,17 +78,17 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   let [active,setActive]=useState("")
 console.log(active)
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
-  const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, route, path, children,color }) => {
+  const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, route, path, children,color,permission }) => {
     let returnValue;
     let [open,setOpen]=useState(false)
     // console.log(key,active)
     const menus = children?.map((item) => {
-  
+  console.log(permission,item)
       switch (item.type) {
         case 'collapse':
           return <NavCollapse key={item.id} menu={item}  />;
         case 'item':
-          return <NavItem key={item.id} item={item} color={sidenavColor}/>;
+          return <Permissition permission={item.permission}type={item.type}><NavItem key={item.id} item={item} color={sidenavColor}/></Permissition>;
         default:
           return (
             <Typography key={item.id} variant="h6" color="error" align="center">
@@ -98,7 +100,7 @@ console.log(active)
    
     if (type === "collapse") {
       returnValue = path ? (
-        <Link
+        <Permissition permission={permission}type={type}> <Link
           href={path}
           key={key}
           target="_blank"
@@ -119,9 +121,9 @@ console.log(active)
           >
             {menus}
           </SidenavCollapse>
-        </Link>
+        </Link></Permissition>
       ) : (
-        <NavLink to={!noCollapse&&route} key={key} onClick={(e)=>setActive((previous)=>previous===key?previous:key)}>
+        <Permissition permission={permission}type={type}> <NavLink to={!noCollapse&&route} key={key} onClick={(e)=>setActive((previous)=>previous===key?previous:key)}>
           <SidenavCollapse
             color={sidenavColor}
             key={key}
@@ -135,7 +137,8 @@ console.log(active)
           >
              {menus}
           </SidenavCollapse>
-        </NavLink>
+          
+        </NavLink></Permissition>
       );
     } else if (type === "title") {
       returnValue = (

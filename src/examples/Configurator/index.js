@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 // @mui material components
 import Divider from "@mui/material/Divider";
@@ -59,6 +59,12 @@ function Configurator() {
   const [disabled, setDisabled] = useState(false);
   const sidenavColors = ["primary", "dark", "info", "success", "warning", "error"];
   const backgroundColors = ["#FFFFFF", "#ECF4FA", "#FAEEEC", "#FAECF9", "#EDFAEC"];
+  const [value, setValue] = React.useState(0);
+  
+ 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
   // Use the useEffect hook to change the button state for the sidenav type based on window size.
   useEffect(() => {
     // A function that sets the disabled state of the buttons for the sidenav type.

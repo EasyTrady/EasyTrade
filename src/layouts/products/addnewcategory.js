@@ -104,7 +104,7 @@ function Addnewcategory({ absolute, light, isMini }) {
 
         ]);
     const handleChangeImage = (e) => {
-       console.log(Object.keys(e.target.files).map((key) => e.target.files[key]))
+      
         formDate?.append("image", e.target.files[0]);
         setControl("image", e?.target?.files[0])
         setavater(URL?.createObjectURL(e.target.files[0]))
@@ -115,7 +115,7 @@ function Addnewcategory({ absolute, light, isMini }) {
                 parent:controls.parent
             },onSuccess:(res)=>{
                 setControl("numberChilds",res.data.length)
-                console.log(res.data)
+               
             }
         })
     },[controls.parent])

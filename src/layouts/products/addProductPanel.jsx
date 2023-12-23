@@ -11,19 +11,25 @@ import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
 import { Container } from '@mui/material';
 import ProductAttributes from './productAttributes';
 import {useEffect}from "react"
+import usePermission from 'utils/usePermission';
 export default function AddProductPanel() {
   const [value, setValue] = React.useState(0);
   let productIdEdit=localStorage.getItem('productIdEdit');
   let productId=localStorage.getItem('productId');
 
   const [IdProduct, setIdProduct] = React.useState(productId);
-  
+  let {isPermitted}=usePermission()
   const handleChange = (e,newValue,id) => {
-  console.log(newValue,id,productId,(newValue==1||newValue==2),(Boolean(IdProduct)||Boolean(productId)))
+ 
  
   if((newValue==1||newValue==2)&&(Boolean(id)||Boolean(productId)||Boolean(productIdEdit))){
-    
-      setValue(newValue);
+    if(newValue==1&&Boolean(isPermitted(true,["add_productvariantimage","change_productvariantimage","change_productvariantimages","add_productvariantimages"]))){
+      setValue(newValue); 
+    }
+    if(newValue==2&&Boolean(isPermitted(true,["change_productvariant","add_productvariant"]))){
+      setValue(newValue); 
+
+    }
     
   }else if(newValue==0) {
     setValue(newValue);
@@ -56,9 +62,10 @@ width:{lg:"50%",md:"50%",sm:"100%",xs:"100%"},
   color:"#5D449B !important"
 }
 }}>
+  
           <Tab label="Product details  (1st step)" {...a11yProps(0)}sx={{color:value==0&&"#5D449B !important"}} />
-          <Tab label="Product images (2nd step)" {...a11yProps(1)}sx={{color:value==1&&"#5D449B !important"}} />
-          <Tab label="Attributes (3rd step)" {...a11yProps(2)}sx={{color:value==2&&"#5D449B !important"}} />
+          <Tab label="Product images (2nd step)" {...a11yProps(1)}sx={{color:value==1&&"#5D449B !important"}} disabled={Boolean(!isPermitted(true,["add_productvariantimage","change_productvariantimage","change_productvariantimages","add_productvariantimages"]))} />
+          <Tab label="Attributes (3rd step)" {...a11yProps(2)}sx={{color:value==2&&"#5D449B !important"}} disabled={Boolean(!isPermitted(true,["change_productvariant","add_productvariant"]))}/>
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -86,7 +93,7 @@ width:{lg:"50%",md:"50%",sm:"100%",xs:"100%"},
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
-  console.log(index,value)
+
   return (
     <div
       role="tabpanel"

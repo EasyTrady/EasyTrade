@@ -95,6 +95,9 @@ import AddNewBanner from "layouts/banners/addNewBanner";
 import banner from "./assets/images/banner.svg"
 import Report from "layouts/Report";
 import ReportIcon from "examples/Icons/ReportIcon";
+import AddCoupon from "layouts/coupon/addCoupon";
+import CouponIcon from "examples/Icons/CouponIcon";
+import Coupon from "layouts/coupon";
 const sub_domain = localStorage.getItem('sub_domain')
 
 const routes = [
@@ -130,13 +133,7 @@ const routes = [
     icon: <Shop size="12px" />,
     component: <Auth><Dashboard /></Auth>,
     noCollapse: false,
-    // children: [
-    //   {
-    //     path: `/${sub_domain}`,
-    //     title: "shop",
-    //     element: <Auth><Dashboard /></Auth>,
-    //     type:"title"
-    //   }]
+    permission:[]
   }, 
   { type: "title", title: "Pages", key: "pages" },
   {
@@ -147,13 +144,7 @@ const routes = [
     icon: <AlignHorizontalLeftIcon size="12px" />,
     component: <Auth><Dashboard /></Auth>,
     noCollapse: false,
-    // children: [
-    //   {
-    //     path: `/${sub_domain}`,
-    //     title: "shop",
-    //     element: <Auth><Dashboard /></Auth>,
-    //     type:"title"
-    //   }]
+    permission:["view_statistics"]
   }, 
   {
     type: "collapse",
@@ -163,13 +154,8 @@ const routes = [
     icon: <ReportIcon size="12px" />,
     component: <Auth><Report /></Auth>,
     noCollapse: false,
-    // children: [
-    //   {
-    //     path: `/${sub_domain}`,
-    //     title: "shop",
-    //     element: <Auth><Dashboard /></Auth>,
-    //     type:"title"
-    //   }]
+    permission:["view_reports"]
+    
   }, 
   {
     type: "collapse",
@@ -179,6 +165,7 @@ const routes = [
     icon: <InventoryIcon size="12px" />,
     component: <Auth><Products /></Auth>,
     noCollapse: true,
+    permission:["view_productattribute","view_product"],
     children: [
       {
         key: "products",
@@ -186,8 +173,8 @@ const routes = [
         path: `/${sub_domain}/dashboard/attribute`,
         title: "Attribute",
         element: <Auth><Attribute /></Auth>,
-        type: "item"
-
+        type: "item",
+        permission:["view_productattribute"]
       },
       {
         key: "products",
@@ -195,16 +182,9 @@ const routes = [
         path: `/${sub_domain}/dashboard/products`,
         title: "products",
         element: <Auth><Products /></Auth>,
-        type: "item"
+        type: "item",
+        permission:["view_product"]
       },
-
-      //  {
-      //   id: "newproduct",
-      //   title: "Add new product",
-      //   path: `/${sub_domain}/dashboard/products/addnewproduct`,
-      //   element: <Auth><AddProductPanel /></Auth>,
-      //   type: 'item',
-      // },
       {
         key: "products",
         id: "category",
@@ -212,6 +192,7 @@ const routes = [
         path: `/${sub_domain}/dashboard/products/category`,
         element: <Auth><Category /></Auth>,
         type: 'item',
+        permission:["view_category"]
       },
     ]
   },
@@ -223,6 +204,7 @@ const routes = [
     icon: <Shop size="12px" />,
     component:  <Auth><Basket /></Auth>,
     noCollapse: true,
+    permission:["view_order","view_historicalorder"],
     children: [
       {
         key: "order",
@@ -230,7 +212,8 @@ const routes = [
         path: `/${sub_domain}/dashboard/order`,
         title: "order",
         element:  <Auth><Order /></Auth>,
-        type: "item"
+        type: "item",
+        permission:["view_order"]
 
       },
       {
@@ -240,9 +223,8 @@ const routes = [
         title: "abandoned basket",
         element: <Auth><Basket /></Auth>,
         type: "item",
+        permission:["view_abandonedcart"]
       },
-
-
     ]
   },
   { type: "title", title: "Discounts & Ads", key: "Discounts-&-Ads" },
@@ -254,19 +236,17 @@ const routes = [
     icon: <img src={offers} size="12px" />,
     noCollapse: true,
     component: <Auth><Offers /></Auth>,
+    permission:["view_offer"],
     children: [{
-    
       id: "Offers",
       path: `/${sub_domain}/dashboard/offers`,
       title: "offers",
       element: <Auth><Offers /></Auth>,
-      type: "item"
-
+      type: "item",
+      permission:["view_offer"],
     }
     ]
   },
- 
-  
   {
     type: "collapse",
     name: "Banners",
@@ -275,16 +255,37 @@ const routes = [
     icon: <img src={banner} size="12px" />,
     noCollapse: true,
     component: <Auth><ViewBanners /></Auth>,
+    permission:["view_banner"],
+
     children: [{
-     
       id: "Banners",
       path: `/${sub_domain}/dashboard/banners`,
       title: "Banners",
       element: <Auth><ViewBanners /></Auth>,
-      type: "item"
+      type: "item",
+      permission:["view_banner"]
 
     }
     ]
+  },
+  {
+    type: "collapse",
+    name: "Coupons",
+    key: "Coupons",
+    route: `/${sub_domain}/dashboard/coupons`,
+    icon: <CouponIcon />,
+    noCollapse: false,
+    component: <Auth><Coupon /></Auth>,
+    permission:["view_coupon"]
+
+  }, {
+    type: "title",
+    name: "Coupons",
+    key: "Coupons",
+    route: `/${sub_domain}/dashboard/addcoupons`,
+    icon: <CouponIcon />,
+    noCollapse: false,
+    component: <Auth><AddCoupon /></Auth>
   },
   { type: "title", title: "Members", key: "Members" },
   {
@@ -295,27 +296,17 @@ const routes = [
     icon: <GroupIcon size="12px" />,
     noCollapse: true,
     component: <Auth><Customer /></Auth>,
+    permission:["view_customeraddress"],
     children: [{
-    
       id: "Customer",
       path: `/${sub_domain}/dashboard/customer`,
       title: "Customer",
       element: <Auth><Customer /></Auth>,
-      type: "item"
-
+      type: "item",
+      permission:["view_customeraddress"]
     },
     ]
   },
-  // {
-  //   type: "title",
-  //   name: "Dashboard",
-  //   key: "dashboard",
-  //   route: `/${sub_domain}`,
-  //   icon: <Shop size="12px" />,
-  //   component: <Auth><Dashboard /></Auth>,
-  //   noCollapse: true,
-  // },
-
   {
     type: "collapse",
     name: "Employees",
@@ -324,26 +315,25 @@ const routes = [
     icon: <ManageAccountsIcon size="12px" />,
     noCollapse: true,
     component: <Auth><Employee /></Auth>,
+    permission:["view_employee","view_employeejob"],
     children: [{
-     
       id: "Employees",
       path: `/${sub_domain}/dashboard/employee`,
       title: "employee",
       element: <Auth><Employee /></Auth>,
-      type: "item"
+      type: "item",
+    permission:["view_employee"],
 
     }, {
-     
       id: "Employees",
       path: `/${sub_domain}/dashboard/jobs`,
       title: "Jobs",
       element: <Auth><Job /></Auth>,
-      type: "item"
-
+      type: "item",
+      permission:["view_employeejob"]
     }
     ]
   },
-
   {
     type: "title",
     name: "Employees",
@@ -351,7 +341,7 @@ const routes = [
     route: `/${sub_domain}/dashboard/employee`,
     icon: <Office size="12px" />,
     component: <Auth><Employee /></Auth>,
-    noCollapse: false,
+    noCollapse: false
   }, {
     type: "title",
     name: "values",
@@ -359,8 +349,7 @@ const routes = [
     route: `/${sub_domain}/dashboard/employee/addNewEmployee`,
     icon: <Shop size="12px" />,
     component: <Auth><AddNewEmployee /></Auth>,
-    noCollapse: false,
-
+    noCollapse: false
   },
   {
     type: "title",
@@ -441,7 +430,7 @@ const routes = [
     route: `/${sub_domain}/dashboard/jobs`,
     icon: <Shop size="12px" />,
     component: <Auth><Job /></Auth>,
-    noCollapse: false,
+    noCollapse: false
   },
  
   {
@@ -472,8 +461,7 @@ const routes = [
     route: `/${sub_domain}/dashboard/jobs/addNewJob`,
     icon: <Shop size="12px" />,
     component: <Auth><AddNewJob /></Auth>,
-    noCollapse: false,
-
+    noCollapse: false
   },
   
   // {
@@ -510,7 +498,7 @@ const routes = [
     route: `/${sub_domain}/dashboard/banners/addnewbanner`,
     icon: <Office size="12px" />,
     component:<AddNewBanner /> ,
-     noCollapse: false,
+     noCollapse: false
   },
   // {
   //   type: "collapse",
@@ -548,6 +536,7 @@ const routes = [
     icon: <RankingIcon size="12px" />,
     component:<Auth> <Rankinghome /></Auth>,
     noCollapse: false,
+    permission:["view_homecomponent"]
   },
   { type: "title", title: "Account Pages", key: "account-pages" },
   {

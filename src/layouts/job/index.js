@@ -9,6 +9,7 @@ import CustomPagination from 'components/common/Pagination'
 import PasswordField from 'components/common/PasswordField'
 import PhoneField from 'components/common/PhoneField'
 import { JOBS } from 'data/api'
+import usePermission from 'utils/usePermission';
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import useControls from 'hooks/useControls'
@@ -33,6 +34,8 @@ function Job({ absolute, light, isMini }) {
     const navigate = useNavigate()
     let jobs = useSelector((state) => state.job.value)
     let [rows, setRows] = useState([])
+    let permissionYour = useSelector((state) => state.permissionYour.value)
+    let {isPermitted}=usePermission()
     let Token = localStorage.getItem('token')
     const [jobRequest, getjobResponce] =
         useRequest({
@@ -200,7 +203,7 @@ function Job({ absolute, light, isMini }) {
                         backgroundColor: "white !important",
                         color: "black !important", marginX: "10px", p: 1.5
                     }}><LocalPrintshopIcon /> Print</Button>
-                    <SoftButton variant="gradient"
+                    {permissionYour.map((ele)=>ele.codename).includes("add_employeejob")&&<SoftButton variant="gradient"
                         sx={{
                             backgroundColor: (theme) => theme.palette.purple.middle,
                             color: "white !important", "&:hover": {
@@ -211,7 +214,8 @@ function Job({ absolute, light, isMini }) {
                     >
                         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                         &nbsp;{t("addnewjob")}
-                    </SoftButton>
+                    </SoftButton>}
+                    
                 </SoftBox>
                 <Dialog open={open} onClose={handleClose}>
                     <Form component="form"
@@ -255,12 +259,12 @@ function Job({ absolute, light, isMini }) {
                 </Dialog>
                 <DataGridCustom
                     rows={rows}
-                    onDelete={onDelete}
+                    onDelete={isPermitted(onDelete,["delete_employeejob"])}
                     columns={columns}
                     checkboxSelection={true}
                     // onRowClick={(e) => { setClick({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
                     sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
-                    onDialog={onEdit}
+                    onDialog={isPermitted(onEdit,["change_employeejob"])}
 
                     slots={{
                         noRowsOverlay: MyCustomNoRowsOverlay

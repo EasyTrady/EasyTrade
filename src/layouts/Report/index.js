@@ -97,7 +97,25 @@ function Report({ absolute, light, isMini }) {
       }
     // useEffect(()=>{
 
-    // },[])
+      
+    
+  function ExportExcel(){
+    const ws=XLSX.utils.json_to_sheet(rows)
+    const wb={Sheets:{"data":ws},SheetNames:["data"]}
+    const excelBuffer=XLSX.write(wb,{bookType:"xlsx",type:"array"})
+    const data=new Blob([excelBuffer],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8"})
+    FileSaver.saveAs(data,"data.xlsx")
+  }
+  useEffect(()=>{
+    totalRequest({
+      onSuccess:(res)=>{
+        setTotal({...res.data})
+     
+      }
+    })
+    togetdataoftable("sales")
+  },[])
+
   return (
     <DashboardLayout >
     <DashboardNavbar />
@@ -175,9 +193,9 @@ border: "1px solid #D9D9D9",overflow:"hidden",alignItems:"center"}}>
         </SoftBox>
             </SoftBox>
 
-            <DataGridCustom  rows={rows}  columns={columns}   checkboxSelection={true}
-          onRowClick={(e,row) => {
-            console.log(e,row);
+        <DataGridCustom rows={rows} columns={columns} checkboxSelection={true}
+          onRowClick={(e, row) => {
+           
             // setClick({ ...e.id });
           }}
           loading={getReportResponce.isPending}

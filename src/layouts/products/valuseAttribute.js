@@ -90,7 +90,7 @@ function AttributeValue() {
     function handleSubmit() {
         validate().then((output) => {
             if (!output.isOk) return;
-            console.log(controls)
+           
             Object.entries(controls).map(([key, value])=>formData.append(key,value))
             
             attributeValuepostRequest({
@@ -103,7 +103,7 @@ function AttributeValue() {
                 }
             }).then((res) => {
                 let response = res?.response?.data;
-                console.log(res)
+          
 
                 setInvalid(response);
 
@@ -115,7 +115,7 @@ function AttributeValue() {
         attributeDeleteRequest({
             id: row,
             onSuccess: () => {
-                console.log(row)
+                
                 dispatch({ type: "attribute/deleteValueofAttribute", payload: { idattribute: id, idValue: row } })
             }
         })
@@ -163,7 +163,7 @@ function AttributeValue() {
     useEffect(() => {
         attributeValueRequest({
             onSuccess: (res) => {
-                console.log(res.data, id, getattributeValueResponce.failAlert)
+                
                 dispatch({ type: "attribute/addValues", payload: { idattribute: id, values: res.data } })
             }
         })
@@ -171,7 +171,7 @@ function AttributeValue() {
     useEffect(() => {
         if (attributes?.find((ele) => ele.id == id)?.values?.length > 0) {
             setRows(attributes?.find((ele) => ele.id == id)?.values)
-            console.log(Object.keys(attributes?.find((ele) => ele.id == id)?.values[0]),columns.map((ele)=>ele.field))
+            
         }
     }, [attributes])
 
@@ -224,7 +224,7 @@ function AttributeValue() {
                         placeholder={"image"}
                         // value={controls.image}
                         onChange={(e) => {
-                           console.log(e.target.files[0])
+                          
                             setControl("image",e.target.files[0])
                         }}
                         required={required.includes("image")}

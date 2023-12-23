@@ -28,7 +28,7 @@ const OfferBoxCategory = ({ title,discount,value,onChange,type,typeChange,handle
  const getCategories=()=>{
     RequestGetCategories({
     onSuccess: (res) => {
-       console.log(res.data)
+      
       dispatch({ type: "category/set", payload: res?.data  });
     },
   });

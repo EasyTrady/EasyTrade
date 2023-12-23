@@ -37,7 +37,7 @@ export const attributeSlice = createSlice({
       });
     },
     addValues:(state,action)=>{
-      console.log(action?.payload?.values?.map((elem)=>elem))
+      
       state.value.find((ele)=>ele.id==action.payload.idattribute)["values"]=action?.payload?.values?.map((elem)=>elem)
     },
     deleteValueofAttribute:(state,action)=>{
@@ -45,7 +45,7 @@ export const attributeSlice = createSlice({
     },addValue:(state,action)=>{
       state.value.find((ele)=>ele.id==action.payload.idvalue)["values"]?state.value.find((ele)=>ele.id==action.payload.idvalue)["values"].push(action.payload.value):state.value.find((ele)=>ele.id==action.payload.idvalue)["values"]=[action.payload.value]
     },editValue:(state,action)=>{
-      console.log(action.payload)
+     
       state.value=state.value.map((ele)=>ele.id==action.payload.id?{...ele,values:ele.values.map((elem)=>elem.id==action.payload.idvalue?action.payload.item:elem)}:ele)
     }
   },

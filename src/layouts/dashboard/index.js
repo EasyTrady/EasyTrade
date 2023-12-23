@@ -43,11 +43,20 @@ import OrderOverview from "layouts/dashboard/components/OrderOverview";
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
 import { setDirection } from "context";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSoftUIController } from "context";
 import { PROFILE } from "data/api";
 import { useDispatch, useSelector } from "react-redux";
 import useRequest from "hooks/useRequest";
+import SelectField from "components/common/SelectField";
+import { MenuItem } from "react-pro-sidebar";
+import ComputerIcon from "examples/Icons/ComputerIcon";
+import LaptopIcon from "examples/Icons/LaptopIcon";
+import TabletIcon from "examples/Icons/TabletIcon";
+import MobileIcon from "examples/Icons/MobileIcon";
+import CardDevice from "./components/CardDevice";
+import { Box, Stack } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 function Dashboard() {
   const { size } = typography;
@@ -55,7 +64,8 @@ function Dashboard() {
   const [, dispatch] = useSoftUIController();
   const profile=useSelector((state)=>state.profile)
   const Dispatch=useDispatch()
-  
+  const {t} = useTranslation()
+  const [filter, setFilter] = useState()
   let Token = localStorage.getItem("token");
   const [profileRequest, getProfileResponce] = useRequest({
     path: PROFILE,
@@ -174,9 +184,57 @@ useEffect(() => {
           <Grid item xs={12} md={6} lg={4}>
             <OrderOverview />
           </Grid>
-        </Grid>
-      </SoftBox>
-      <Footer />
+          <Grid item xs={12} lg={12} md={12} sm={12} xl={12} sx={{ my: 2 }}>
+          <Box sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%"}}>
+            <SoftTypography component={"p"} sx={{borderBottom:"1px solid #E5E7E8", padding: "12px 24px 12px 24px"}}>
+           {t("Devices Overview")}
+            </SoftTypography>
+            <Stack flexDirection={"row"} sx={{padding:"24px",gap:"24px",flexWrap:"wrap",justifyContent:"center"}}>
+              
+                <CardDevice icon={<ComputerIcon/>} title={"Computer"}range={"54%"}user={"5,761,687 Users"}/>
+             
+                <CardDevice icon={<LaptopIcon/>} title={"Laptop"}range={"23%"}user={"698,723 Users"}/>
+                <CardDevice icon={<TabletIcon/>} title={"Tablet"}range={"19%"}user={"+68,412 Users"}/>
+                <CardDevice icon={<MobileIcon/>} title={"Mobile"}range={"19%"}user={"+68,412 Users"}/>
+            
+              
+              
+             
+            </Stack>
+            </Box>
+          </Grid>
+          <Grid item xs={12} lg={12} md={12} sm={12} xl={12} sx={{ my: 2 }}>
+
+            <GradientLineChart
+              title="Total numbers Order Analytics"
+              height="22rem"
+              description={
+                <SelectField
+                  variant="outlined"
+                  placeholder={"Export"}
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                  renderValue={(selected) => {
+
+                    return <SoftBox sx={{ display: "flex" }}>{selected}</SoftBox>
+                  }}
+
+                  sx={{ width: "100% !important" }}
+                >
+                  {
+                    ["Monthly", "Yearly"].map((product, index) => (
+
+                      <MenuItem key={index} value={product}>{product}</MenuItem>
+                    ))
+                  }
+                </SelectField>
+              }
+
+              chart={amountLineChartData}
+            /></Grid>
+          </Grid>
+        </SoftBox>
+        <Footer />
       </Container >
     </DashboardLayout>
   );

@@ -36,13 +36,18 @@ import "slick-carousel/slick/slick-theme.css";
 import { styled } from '@mui/system';
 import Slider from "react-slick";
 import compare from 'utils/compare'
+import DragerItem from './DragerItem'
+import image1 from "assets/images/Avatar.png"
 function index({ absolute, light, isMini }) {
     const route = useLocation().pathname.split("/").slice(1);
-   const contentTypes= useSelector((state)=>state.content.value)
-   const specialCategorys= useSelector((state)=>state.specialCategory.value)
-   const homeComponent= useSelector((state)=>state.homeComponent.value)
-
-    let dispatch=useDispatch()
+    const contentTypes = useSelector((state) => state.content.value)
+    const specialCategorys = useSelector((state) => state.specialCategory.value)
+    const Brands = useSelector((state) => state.brand.value)
+    let permissionYour = useSelector((state) => state.permissionYour.value)
+    const homeComponent = useSelector((state) => state.homeComponent.value)
+    let shop_id = localStorage.getItem("shop_id")
+    let dispatch = useDispatch()
+    let categories = useSelector((state) => state.category.value)
     let { t } = useTranslation("common")
     
     const [settings,setSetting] = useState({
@@ -167,8 +172,57 @@ function index({ absolute, light, isMini }) {
             method: "get",
             Token: `Token ${Token}`
         });
-        
-    const getContentTypes=()=>{
+    const [getBannerdRequest, getBannerdResponce] =
+        useRequest({
+            path: BANNERS,
+            method: "get",
+            Token: `Token ${Token}`
+        });
+    const [swaperRequest, swaperResponce] =
+        useRequest({
+            path: SWAP,
+            method: "post",
+            Token: `Token ${Token}`
+        });
+    const getBanners = () => {
+        getBannerdRequest({
+            onSuccess: (res) => {
+                dispatch({ type: "banners/set", payload: res?.data });
+               
+            }
+        })
+    }
+    const [hasDropped, setHasDropped] = useState(false)
+    const [hasDroppedOnChild, setHasDroppedOnChild] = useState(false)
+
+    const handleDrop = (item) => {
+        let indexDrop = homeComponent.find((ele, index) => ele?.title == item?.nativeEvent?.toElement?.innerText)
+        let indexDrag = homeComponent.find((ele, index) => ele?.id == drap?.id)
+
+        swapRequest({
+            body: {
+
+                "object_one": drap,
+                "object_two": indexDrop?.id
+
+            }, onSuccess: (res) => {
+                dispatch({ type: "home-component/set", payload: res?.data?.data })
+                
+            }
+        })
+       
+        // console.log('Item dropped:', item.nativeEvent.layerY,       item?.nativeEvent);
+    };
+
+    const [{ isOver }, drop] = useDrop({
+        accept: 'box',
+        // drop: (item) => handleDrop(item),
+        collect: (monitor) => ({
+            isOver: !!monitor.isOver(),
+        }),
+    });
+
+    const getContentTypes = () => {
         contentRequest({
             onSuccess:(res)=>{
                 
@@ -200,50 +254,107 @@ function index({ absolute, light, isMini }) {
             }
         })
     }
-    const handlleSubmit=()=>{
-        if(!Edit){
+    const getBrandItems = () => {
+        BrandgetRequest({
+            id: shop_id + "/brands/",
+            onSuccess: (res) => {
+                dispatch({ type: "brand/set", payload: res.data })
+                
+            }
+        })
+    }
+    const getCategory = () => {
+        categorygetRequest({
+
+            onSuccess: (res) => {
+                dispatch({ type: "category/set", payload: res.data })
+
+            }
+        })
+    }
+    const handlleSubmit = () => {
+        if (!Edit) {
             validate().then((output) => {
-                console.log(output)
-                if(!output.isOk) return;
-            contentpostRequest({
-                body:controls?.content_type?.title == "brand"?{
-                    title:controls?.title,
-                    content_type:controls?.content_type?.id,
-                    // items:[controls?.brandform?.id|controls?.brannerform?.id|controls?.categoryform?.id],
-                    max_number:controls?.max_number,
-                    position:controls?.position?controls?.position:"fixed",
-                }:controls?.content_type?.title=="branner"?{
-                    title:controls?.title,
-                    content_type:controls?.content_type?.id,
-                    // items:[controls?.brandform?.id|controls?.brannerform?.id|controls?.categoryform?.id],
-                    max_number:controls?.number|controls?.brannernumber,
-                    display:controls?.display,
-                    overflow_type:controls?.overflow_type,
-                    position:controls?.position?controls?.position:"fixed",
-                  
-                }:controls?.content_type?.title=="category"?{
-                    title:controls?.title,
-                    content_type:controls?.content_type?.id,
-                    // items:[controls?.brandform?.id|controls?.brannerform?.id|controls?.categoryform?.id],
-                    max_number:controls?.max_number,
-                   
-                    position:controls?.position?controls?.position:"fixed",
-                    category_level:controls?.category_level,
-                    frame:controls?.frame
-                }:{
-                    title:controls?.title,
-                    content_type:controls?.content_type?.id,
-                    // items:[controls?.brandform?.id|controls?.brannerform?.id|controls?.categoryform?.id],
-                   
-                   
-                    position:controls?.position?controls?.position:"fixed",
-                    
-                },onSuccess:(res)=>{
-                    dispatch({type:"home-component/addItem",payload:res.data})
-                    handleCloseDialog()
-                    console.log(res.data)
+               
+                if (!output.isOk) return;
+                contentpostRequest({
+                    body: controls?.content_type?.title == "brand" ? {
+                        title: controls?.title,
+                        content_type: controls?.content_type?.id,
+                        items: controls?.items,
+                        max_number: controls?.max_number,
+                        position: controls?.position ? controls?.position : "fixed",
+                    } : controls?.content_type?.title == "banner" ? {
+                        title: controls?.title,
+                        content_type: controls?.content_type?.id,
+                        items: controls?.items,
+
+
+                        max_number: controls?.number | controls?.brannernumber,
+                        display: controls?.display,
+                        overflow_type: controls?.overflow_type,
+                        position: controls?.position ? controls?.position : "fixed",
+
+                    } : controls?.content_type?.title == "category" ? {
+                        title: controls?.title,
+                        content_type: controls?.content_type?.id,
+                        items: controls?.items,
+
+                        max_number: controls?.max_number,
+
+                        position: controls?.position ? controls?.position : "fixed",
+                        category_level: controls?.category_level,
+                        frame: controls?.frame
+                    } : {
+                        title: controls?.title,
+                        content_type: controls?.content_type?.id,
+                        items: controls?.items,
+
+
+
+                        position: controls?.position ? controls?.position : "fixed",
+
+                    }, onSuccess: (res) => {
+                        dispatch({ type: "home-component/addItem", payload: res.data })
+                        resetControls();
+                        handleCloseDialog()
+                       
+                    }
+                })
+            })
+        } else {
+
+            let result = compare(Object?.entries(Edit)?.map(([key, value]) => (key == "content_type" ?
+                [controls[key]?.id, value, key] : key == "items" ? [controls[key], value, key] : [controls[key], String(value), key])), false)
+
+
+            // console.log(controls.items.filter((ele)=>!Boolean(controls.items.find((elem)=>elem.id==ele.id))))
+            // console.log(compare(Object.entries(Edit).map(([key,value])=>key=="content_type"?[controls[key].id,value,key]:key=="items"?[controls[key],value,key]:[controls[key],String(value),key])),"sort_number")
+            if (result.nochange) {
+                if (controls?.content_type?.title == "brand") {
+                    delete result.array.sort_number
+                    delete result.array.frame
+                    delete result.array.category_level
+
+                    delete result.array.display
+                    delete result.array.overflow_type
+                } else if (controls?.content_type?.title == "banner") {
+                    delete result.array.sort_number
+                    delete result.array.frame
+                    delete result.array.category_level
+                } else if (controls?.content_type?.title == "category") {
+                    delete result.array.sort_number
+                    delete result.array.display
+                    delete result.array.overflow_type
+                } else if (controls?.content_type?.title == "specialcategory") {
+                    delete result.array.sort_number
+                    delete result.array.frame
+                    delete result.array.category_level
+                    delete result.array.max_number
+                    delete result.array.display
+                    delete result.array.overflow_type
                 }
-            })})
+            
         }else{
             let result=compare(Object.entries(Edit).map(([key,value])=>key=="content_type"?[controls[key].id,value,key]:[controls[key],value,key]),false)
             
@@ -251,12 +362,13 @@ function index({ absolute, light, isMini }) {
             if(result.nochange){
                 delete result.array.sort_number
                 patchcontentRequest({
-                    id:Edit.id,
-                    body:result.array,
-                    onSuccess:(res)=>{
-                    dispatch({type:"home-component/patchItem",payload:res.data})
-
-                        console.log(res.data)
+                    id: Edit?.id,
+                    body: { ...result.array, items: result?.array?.items?.map((ele) => ele?.id ? ele.id : ele) },
+                    onSuccess: (res) => {
+                        dispatch({ type: "home-component/patchItem", payload: { id: res.data.id, item: res.data } })
+                        resetControls();
+                        handleCloseDialog()
+                       
                     }
                 })
             }
@@ -268,34 +380,36 @@ function index({ absolute, light, isMini }) {
         getContentTypes()
         getSpecialCategorys()
         componentgetRequest({
-            onSuccess:(res)=>{
-                
-                dispatch({type:"home-component/set",payload:res.data})
-                console.log(res.data)
+            onSuccess: (res) => {
+
+                dispatch({ type: "home-component/set", payload: res.data })
+              
             }
         })
     },[])
     useEffect(()=>{
         setItems([...specialCategorys])
     },[specialCategorys])
+}
     return (
         <DashboardLayout >
             <DashboardNavbar />
             <Container sx={{ marginY: 2 }}>
                 <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-                    <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+                    <Breadcrumbs icon="home" title={"Ranking home"} route={route} light={light} />
                 </SoftBox>
                 <Stack direction={{ lg: "row", md: "column", sm: "column", xs: "column" }} justifyContent={"space-between"}>
                     <SoftBox sx={{ backgroundColor: "#fff", width: { lg: "40%", md: "100%", sm: "100%", xs: "100%" }, borderRadius: "8px", height: "100vh" }}>
                         <SoftBox sx={{ width: "100%", borderBottom: "1px solid ", padding: "16px" }}>
-                            <SoftButton variant={"outlined"} onClick={() => {setOpen(true);setEdit(null)}}
+                            {permissionYour.map((ele)=>ele.codename).includes("add_homecomponent")&& <SoftButton variant={"outlined"} onClick={() => { setOpen(true); setEdit(null); resetControls() }}
                                 sx={{ borderColor: ({ palette: { purple } }) => purple.middle, color: ({ palette: { purple } }) => purple.middle }}>
                                 <Icon fontSize="small" on sx={{ color: ({ palette: { purple } }) => purple.middle }}>
                                     add
                                 </Icon>
                                 {t("Additem")}
                             </SoftButton>
-
+}
+                           
 
                         </SoftBox>
                         {homeComponent.map((ele)=>
@@ -312,7 +426,12 @@ function index({ absolute, light, isMini }) {
                             <DeleteIcon sx={{ width: "20%" }} onClick={()=>DeleteComponenet(ele)}/>
                         </SoftBox>)}
 
+                                        {permissionYour.map((ele)=>ele.codename).includes("change_homecomponent")&&<ViewIcon sx={{ width: "20%" }} onClick={() => { Object.entries(ele).map(([key, value]) => key == "content_type" ? setControl(key, TypeItem.find((elem) => elem.id == value)) : key == "items" ? setControl(key, value) : setControl(key, value)); setOpen(true); setEdit(ele) }} />}
                     </SoftBox>
+                    <DragerItem>
+                    {permissionYour.map((ele)=>ele.codename).includes("delete_homecomponent")&&<DeleteIcon sx={{ width: "20%" }} onClick={() => DeleteComponenet(ele)} />}
+                    {/* </SoftBox> */}
+                    </DragerItem>
                     <SoftBox sx={{ backgroundColor: "#fff", width: { lg: "55%", md: "100%", sm: "100%", xs: "100%" } , borderRadius: "8px", overflow: "auto", height: "436px" }}>
                         <SoftBox sx={{ backgroundColor: "#e7eced8f", width: "100%", borderBottom: "1px solid ", display: "flex", padding: "10px" }}>
                             <SoftTypography component="div" sx={{ backgroundColor: (theme) => theme.palette.error.main, width: "12px", height: "12px", borderRadius: "50%", marginX: "5px" }}></SoftTypography>
@@ -536,8 +655,9 @@ function index({ absolute, light, isMini }) {
                             //   disabled={max_number && !Boolean(max_number)}
 
                             onChange={(e) =>
-
-                                Number(e.target.value) && setControl("max_number", e.target.value)
+                                {let tester=/^(?:\d+|)$/
+                                
+                                tester.test(e.target.value) && setControl("max_number", e.target.value)}
                             }
                             required={required.includes("max_number")}
                             error={Boolean(invalid?.max_number)}
@@ -609,6 +729,62 @@ function index({ absolute, light, isMini }) {
                                     {t("Grid")}
                                 </SoftButton>
                             </SoftBox></>}
+                            {controls?.display == "single"&&<><Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
+                            >{t("brannernumber")}
+
+                            </Typography>
+                            <SoftInput
+
+                                value={controls?.max_number}
+                                //   disabled={number && !Boolean(number)}
+
+                                onChange={(e) =>
+                                    {let tester=/^(?:\d+|)$/
+                                  
+                                    tester.test(e.target.value) && setControl("max_number", e.target.value)}
+                                }
+                                required={required.includes("max_number")}
+                                error={Boolean(invalid?.max_number)}
+                                helperText={invalid?.max_number}
+                            />
+                            <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
+                            >{t("ChooseBanners")}
+
+                            </Typography>
+                            <SelectField
+                                variant="outlined"
+                                placeholder={"Export"}
+                                
+                                onOpen={getBanners}
+                                value={controls?.items}
+                                onChange={(e) => setControl("items", e.target.value)}
+
+                                renderValue={(selected) => {
+                                    
+                                    if (banners?.results?.length == 0) {
+                                        getBanners()
+                                    }
+                                    return <SoftBox sx={{ display: "flex" }}>{ selected?.banner_object?.name}</SoftBox>
+                                }}
+                                sx={{ width: "100% !important" }}
+                                required={required.includes("items")}
+                                error={Boolean(invalid?.items)}
+                                helperText={invalid?.items}
+                            >
+                                {
+                                    banners?.results?.map((product, index) => (
+                                        <MenuItem key={index} value={product}>{product?.banner_object?.name}</MenuItem>
+                                    ))
+                                }
+                            </SelectField>
+                            {Boolean(controls?.items?.image)&&<SoftBox sx={{display: "flex",justifyContent: "space-around"}}>
+                            <SwitchIcon />
+                            <img src={controls?.items?.image}/>
+                            <DeleteIcon sx={{ width: "20%" }} onClick={() => DeleteComponenet(ele)} />
+                            
+                            </SoftBox>}
+                            
+                            </>}
                         {controls?.overflow_type == "scroll" ? <>
                             <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
                             >{t("brannernumber")}
@@ -620,8 +796,9 @@ function index({ absolute, light, isMini }) {
                                 //   disabled={number && !Boolean(number)}
 
                                 onChange={(e) =>
-
-                                    Number(e.target.value) && setControl("max_number", e.target.value)
+                                    {let tester=/^(?:\d+|)$/
+                                  
+                                    tester.test(e.target.value) && setControl("max_number", e.target.value)}
                                 }
                                 required={required.includes("max_number")}
                                 error={Boolean(invalid?.max_number)}
@@ -640,7 +817,10 @@ function index({ absolute, light, isMini }) {
                                 onChange={(e) => setControl("items", e.target.value)}
                                 renderValue={(selected) => {
                                     
-                                    return <SoftBox sx={{ display: "flex" }}>{selected?.name}</SoftBox>
+                                    if (banners?.results?.length == 0) {
+                                        getBanners()
+                                    }
+                                    return <SoftBox sx={{ display: "flex" }}>{banners?.results?.filter((ele) => selected?.map((ele) => ele?.id ? ele?.id : ele)?.includes(ele?.id)).map((elem) => elem?.banner_object?.name)?.join(",")}</SoftBox>
                                 }}
                                 sx={{ width: "100% !important" }}
                             >
@@ -661,8 +841,9 @@ function index({ absolute, light, isMini }) {
                                 //   disabled={number && !Boolean(number)}
 
                                 onChange={(e) =>
+                                    {let tester=/^(?:\d+|)$/
 
-                                    Number(e.target.value) && setControl("max_number", e.target.value)
+                                    tester.test(e.target.value) && setControl("max_number", e.target.value)}
                                 }
                                 required={required?.includes("max_number")}
                                 error={Boolean(invalid?.max_number)}
@@ -680,8 +861,11 @@ function index({ absolute, light, isMini }) {
                                 value={controls?.items}
                                 onChange={(e) => setControl("items", e.target.value)}
                                 renderValue={(selected) => {
-                                    
-                                    return <SoftBox sx={{ display: "flex" }}>{selected?.name}</SoftBox>
+                                   
+                                    if (banners?.results?.length == 0) {
+                                        getBanners()
+                                    }
+                                    return <SoftBox sx={{ display: "flex" }}>{banners?.results?.filter((ele) => selected?.map((ele) => ele?.id ? ele?.id : ele)?.includes(ele?.id)).map((elem) => elem?.banner_object?.name)?.join(",")}</SoftBox>
                                 }}
                                 sx={{ width: "100% !important" }}
                             >
@@ -691,7 +875,14 @@ function index({ absolute, light, isMini }) {
                                     ))
                                 }
                             </SelectField>
-                        </>:<></>}
+                        </> : <></>}
+                        {( controls?.overflow_type == "wrap" ||controls?.overflow_type == "scroll")&&Boolean(controls?.items?.length>0)&&<SoftBox sx={{display: "flex",justifyContent: "space-around"}}>
+                            <SwitchIcon />
+                           
+                            {controls?.items?.map((ele)=> <img key={ele.id} src={ele?.image}/>)}
+                            <DeleteIcon sx={{ width: "20%" }} onClick={() => DeleteComponenet(ele)} />
+                            
+                            </SoftBox>}
                     </>}
                     {controls?.content_type?.title == "specialcategory" && <>
                     <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
@@ -704,10 +895,9 @@ function index({ absolute, light, isMini }) {
 
                             
                             value={controls?.items}
-                            onChange={(e) => setControl("items", e.target.value)}
-                            renderValue={(selected) => {
-                                
-                                return <SoftBox sx={{ display: "flex" }}>{selected?.name}</SoftBox>
+                            onChange={(e) => { setControl("items", [e.target.value]); }}
+                            renderValue={(selected) => { 
+                                return <SoftBox sx={{ display: "flex" }}>{brandfrom?.find((ele) => selected?.map((elem) => elem?.id ? elem?.id : elem)?.includes(ele?.id))?.name}</SoftBox>
                             }}
                             sx={{ width: "100% !important" }}
                         >
@@ -754,6 +944,36 @@ function index({ absolute, light, isMini }) {
                                 {t("Circle")}
                             </SoftButton>
                         </SoftBox>
+                        <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
+                        >{t("choose category")}
+
+                        </Typography>
+                        <SelectField
+                            variant="outlined"
+                            placeholder={"Export"}
+                            onOpen={getCategory}
+                            multiple
+                            value={controls?.items}
+                            onChange={(e) => { setControl("items", e.target.value); }}
+                            renderValue={(selected) => {
+                                if (categories.length == 0) {
+                                    getCategory()
+                                }
+                                
+                                return <SoftBox sx={{ display: "flex" }}>{categories?.filter((ele) => selected.map((ele) => ele?.id ? ele?.id : ele)?.includes(ele?.id))?.map((elem) => elem?.name)?.join(",")}</SoftBox>
+                            }}
+                            sx={{ width: "100% !important" }}
+                            required={required.includes("items")}
+                            error={Boolean(invalid?.items)}
+                            helperText={invalid?.items}
+                        >
+                            {
+                                categories?.map((product, index) => (
+
+                                    <MenuItem key={index} value={product?.id}>{product?.name}</MenuItem>
+                                ))
+                            }
+                        </SelectField>
                     </>}
                 </Form>
                 {postcontentResponce.failAlert}
