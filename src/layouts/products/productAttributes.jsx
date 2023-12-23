@@ -343,7 +343,7 @@ const ProductAttributes = ({ idProduct ,handleChange}) => {
     });
   const [GenerationAttributesRequest, GenerationAttributeResponse] =
     useRequest({
-      path: PRODUCTS + "/generate/attributes/",
+      path:  "/products/generate/attributes/",
       method: "POST",
       Token: `Token ${Token}`
     });

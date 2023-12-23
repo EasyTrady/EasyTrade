@@ -6,6 +6,7 @@ function Auth({children}) {
     const currentTime = new Date().getTime();
     const tokenTimestamp = localStorage.getItem('tokenTimestamp');
    let navigate=useNavigate()
+  
     useEffect(()=>{
          // 24 hours in milliseconds
          

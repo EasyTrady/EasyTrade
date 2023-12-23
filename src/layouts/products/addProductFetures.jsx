@@ -7,6 +7,7 @@ import React,{useEffect} from "react";
 import DnsOutlinedIcon from "@mui/icons-material/DnsOutlined";
 import DatePickerField from "components/common/DatePicker";
 import ImageBox from "components/common/imageBox";
+
 import PictureField from "components/common/PictureField";
 import ImagesAlbums from "components/common/ImagesAlbums";
 import AddIcon from "@mui/icons-material/Add";
@@ -17,11 +18,12 @@ import { PRODUCTS } from "data/api";
 import { useDispatch, useSelector } from "react-redux";
 import CircularProgress from '@mui/material/CircularProgress';
 import filter from "utils/ClearNull";
+import usePermission from 'utils/usePermission';
 const AddProductFetures = ({handleChange}) => {
   let Token = localStorage.getItem("token");
  let idProduct= localStorage.getItem('productId');
 //  let productIdEdit= localStorage.getItem('productIdEdit');
-
+let {isPermitted}=usePermission()
  let products=useSelector((state)=>state.products.value)
   const [AddProductImagesRequest, AddProductImagesResponce] = useRequest({
     path: PRODUCTS,
@@ -137,7 +139,7 @@ useEffect(()=>{
         </Typography>
         <Box sx={{ borderRadius: "100px", background: "#F0F6FF",padding: '5px',display:'flex',alignItem:'center',justifyContent:'center' }}
         onClick={() => {
-          document.getElementById("profile_image").click();
+          isPermitted(document.getElementById("profile_image").click(),["add_productvariantimage","add_productvariantimages",'change_productvariantimage',"change_productvariantimages"]);
         }}
         >
           <AddIcon />

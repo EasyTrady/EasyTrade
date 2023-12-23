@@ -19,7 +19,7 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import PhoneField from 'components/common/PhoneField';
 import compare from 'utils/compare'
 import PasswordField from 'components/common/PasswordField';
-import { JOBS } from 'data/api';
+import { JOBS,PERMISSIONS } from 'data/api';
 import useRequest from 'hooks/useRequest';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,6 +31,8 @@ function AddNewJob({ absolute, light, isMini }) {
 
     let dispatch = useDispatch()
     let jobs = useSelector((state) => state.job.value)
+    let permissions = useSelector((state) => state.permission.value)
+
     let navigate=useNavigate()
     const location = useLocation();
     const { state } = location;
@@ -53,6 +55,13 @@ function AddNewJob({ absolute, light, isMini }) {
             method: "patch",
             Token: `Token ${Token}`
         });
+        const [permissionGetRequest, permissionGetResponce] =
+        useRequest({
+            path: PERMISSIONS,
+            method: "get",
+            Token: `Token ${Token}`
+        });
+        
         const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
         useControls([
             {
@@ -76,6 +85,11 @@ function AddNewJob({ absolute, light, isMini }) {
                         message: "not valid name"
                     }
                 ]
+            },{
+                control: "job_permissions",
+                value: [],
+                isRequired: false,
+               
             },
 
         ]);
@@ -88,7 +102,7 @@ function AddNewJob({ absolute, light, isMini }) {
                 let  result= compare(
                     [
                     [controls.title,state?.dataRow?.title,"title"],
-                //     [controls.full_name,state?.dataRow?.full_name,"full_name"],
+                    [controls.job_permissions,String(state?.dataRow?.job_permissions),"job_permissions"],
                 //     [controls.phone,state?.dataRow?.phone,"phone"],
                 //    [controls.job,state?.dataRow?.job,"job"]
                 ],false
@@ -105,7 +119,8 @@ function AddNewJob({ absolute, light, isMini }) {
             }else{
                 JobPostRequest({
                     body: {
-                        title:controls.title
+                        title:controls.title,
+                        job_permissions:controls?.job_permissions
                     },
                     onSuccess: (res) => {
                         dispatch({ type: "job/addItem", payload: res.data })
@@ -139,13 +154,24 @@ function AddNewJob({ absolute, light, isMini }) {
         //         dispatch({ type: "job/set", payload: res.data })
         //     }
         // })
+       
         if(Boolean(state?.dataRow)){
-            Object.entries(state?.dataRow)?.forEach(([key,value])=>setControl(key,value))
-
+            Object.entries(state?.dataRow)?.forEach(([key,value])=>key=="permissions"?setControl("job_permissions",value?.map((ele)=>ele?.codename)):setControl(key,value))
         }
         // setControl()
        
     }, [state])
+    useEffect(()=>{
+        permissionGetRequest({
+            onSuccess:(res)=>{
+                dispatch({ type: "permission/set", payload:  res.data  })
+              
+            }
+        })
+    },[])
+    useEffect(()=>{
+        console.log(controls.job_permissions)
+    },[controls?.job_permissions])
     return (
         <>
             <DashboardLayout>
@@ -155,9 +181,8 @@ function AddNewJob({ absolute, light, isMini }) {
                         <Breadcrumbs icon="home" title={Boolean(state?.dataRow)?t("Edit Job"):"Add New Job"} route={route} light={light} />
                     </SoftBox>
                 </Container>
-                <Container sx={{ p: 2, display: "flex",gap:"6px" }}>
-                    <SoftBox sx={{width:"50%"}}>
-                    <Box sx={{ marginY: "6px" ,marginBottom:"20px"}}>
+                <Container sx={{ p: 2,gap:"6px" }}>
+                <Box sx={{ marginY: "6px" ,marginBottom:"20px"}}>
                                 <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("JobName")}</InputLabel>
                                 <SoftInput
                                     placeholder={t("JobName")}
@@ -173,88 +198,52 @@ function AddNewJob({ absolute, light, isMini }) {
                                     // error
                                 />
                             </Box>
+                            <SoftBox sx={{display:"flex",justifyContent:"space-between"}}>
+                    <SoftBox sx={{width:"47%"}}>
+                  
                     <Form component="form"
                         childrenProps={{
                             title: t("AdvertisingCookies"),
                             subtitle:t("Alwaysactive")
                         }}hideFooter={true}>
                         <Box sx={{ display: "flex", flexDirection: "column" }}>
-                            <Box sx={{ marginY: "6px",marginBottom:"20px",display:"flex",justifyContent:"space-between" }}>
-                                <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("Fullname")}</InputLabel>
-                                <SoftBox sx={{display:"flex" ,alignItems:"center"}}> 
-                                      <Divider sx={{ flexGrow: 1 }} orientation="vertical"/>
-                                      <Switch  defaultChecked color="default" />
-                                      </SoftBox>
-                            </Box>
+                        {permissions?.results?.map((ele,index)=>index<=6&&
+                             <Box key={index} sx={{ marginY: "6px",marginBottom:"20px",display:"flex",justifyContent:"space-between" }}>
+                             <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{ele?.name}</InputLabel>
+                             <SoftBox sx={{display:"flex" ,alignItems:"center"}}> 
+                                   <Divider sx={{ flexGrow: 1 }} orientation="vertical"/>
+                                   <Switch  checked={controls?.job_permissions?.includes(ele?.codename)} color="default"onChange={()=>setControl("job_permissions",controls?.job_permissions?.includes(ele?.codename)?controls?.job_permissions.filter((elem)=>elem!=ele?.codename):[...controls?.job_permissions,ele?.codename])} />
+                                   </SoftBox>
+                         </Box>
+                            )}
                         </Box>
 
                     </Form>
                     </SoftBox>
-                    <SoftBox sx={{width:"50%",display:"flex",flexDirection:"column", alignSelf: "flex-end"}}>
-                    {/* <Box sx={{ marginY: "6px",marginBottom:"14px"}}>
-                                <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("parent")}</InputLabel>
-                                <SoftInput
-                                    select
-                                    value={controls.job}
-                                    // icon={{ component: <WorkOutlineIcon />, direction: "left" }}
-                                    sx={{ ".MuiInputBase-root": { border: "unset"  } }}
-                                    onChange={(e) => setControl("job", e.target.value)}
-                                    required={required.includes("job")}
-                                    error={Boolean(invalid?.job)}
-                                    helperText={invalid?.job}
-                                    onOpen={() => { }}
-                                    SelectProps={{
-                                        defaultValue: "",
-                                        displayEmpty: true,
-                                        // onOpen: onOpen,
-                                        // onClose: onClose,
-                                        renderValue: (selected) => {
-                                            if (!Boolean(selected)) {
-                                                return (
-                                                    <Typography sx={{ color: "currentColor", opacity: "0.42", fontSize: "14px" }}>
-                                                        {t("parent")}
-                                                    </Typography>
-                                                );
-                                            } else {
-                                                console.log(selected)
-                                                return jobs?.results?.find((ele) => ele.id === selected).title;
-                                            }
-                                        },
-                                        MenuProps: {
-                                            PaperProps: {
-                                                sx: {
-                                                    maxHeight: "200px",
-                                                    overflowY: "auto",
-                                                    backgroundColor: "white !important"
-                                                },
-                                            },
-                                        },
-
-                                        // IconComponent: <KeyboardArrowDownIcon></KeyboardArrowDownIcon>,
-
-                                    }}
-
-                                >
-                                    {jobs?.results?.map((ele) => <MenuItem value={ele.id} key={ele.id}>{ele.title}</MenuItem>)}
-                                </SoftInput>
-                            </Box> */}
+                    <SoftBox sx={{width:"47%",display:"flex",flexDirection:"column", alignSelf: "flex-start"}}>
+                 
                             <Form component="form"
                         childrenProps={{
                             title: t("AdvertisingCookies"),
                             subtitle:t("Alwaysactive")
                         }}hideFooter={true}>
                         <Box sx={{ display: "flex", flexDirection: "column" }}>
-                            <Box sx={{ marginY: "6px",marginBottom:"20px",display:"flex",justifyContent:"space-between" }}>
-                                <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("JobName")}</InputLabel>
-                                <SoftBox sx={{display:"flex" ,alignItems:"center"}}> 
-                                      <Divider sx={{ flexGrow: 1 }} orientation="vertical"/>
-                                      <Switch  defaultChecked color="default" />
-                                      </SoftBox>
-                            </Box>
+                            {permissions?.results?.map((ele,index)=>index>6&&
+                             <Box key={index} sx={{ marginY: "6px",marginBottom:"20px",display:"flex",justifyContent:"space-between" }}>
+                             <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{ele?.name}</InputLabel>
+                             <SoftBox sx={{display:"flex" ,alignItems:"center"}}> 
+                                   <Divider sx={{ flexGrow: 1 }} orientation="vertical"/>
+                                   <Switch  checked={controls?.job_permissions?.includes(ele?.codename)} color="default"onChange={()=>setControl("job_permissions",[...controls?.job_permissions,ele?.codename])} />
+                                   </SoftBox>
+                         </Box>
+                            )}
+                           
                         </Box>
 
-                    </Form>
+                    </Form> 
                     </SoftBox>
+                    </SoftBox>
+
                 </Container>
                 <Stack
                     direction="row"

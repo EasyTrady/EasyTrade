@@ -15,12 +15,16 @@ import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import useRequest from 'hooks/useRequest'
 import { BANNERS } from 'data/api'
 import moment from 'moment'
+import usePermission from 'utils/usePermission';
+
 const ViewBanners = ({ absolute, light, isMini }) => {
     const navigate = useNavigate();
     const dispatch=useDispatch()
     const route = useLocation().pathname.split("/").slice(1);
     const sub_domain = localStorage.getItem("sub_domain");
     let { t } = useTranslation("common");
+    let {isPermitted}=usePermission()
+    let permissionYour = useSelector((state) => state.permissionYour.value)
   
     let Token = localStorage.getItem("token");
     const banners = useSelector((state) => state.banners.value);
@@ -169,7 +173,7 @@ color:row?.banner_type===1?'#027A48':row?.banner_type===2?"#7A0243":row?.banner_
           >
             <LocalPrintshopIcon /> Print
           </Button>
-          <SoftButton
+          {permissionYour.map((ele)=>ele.codename).includes("add_banner")&&<SoftButton
             variant="gradient"
             sx={{
               backgroundColor: (theme) => theme.palette.purple.middle,
@@ -182,13 +186,14 @@ color:row?.banner_type===1?'#027A48':row?.banner_type===2?"#7A0243":row?.banner_
           >
             <Icon sx={{ fontWeight: "bold" }}>add</Icon>
             &nbsp;{t("addnewbanner")}
-          </SoftButton>
+          </SoftButton>}
+          
         </SoftBox>
         <DataGridCustom
           rows={banners?.results}
           columns={columns}
-          onEdit={()=>{}}
-          onDelete={onDelete}
+          onEdit={isPermitted(()=>{},["change_banner"])}
+          onDelete={isPermitted(onDelete,["delete_banner"])}
           onCopy={() => {}}
           checkboxSelection={true}
           onRowClick={(e, row) => {

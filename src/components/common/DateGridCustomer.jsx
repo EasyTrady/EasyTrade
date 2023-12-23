@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 import input from "assets/theme/components/form/input";
 import PropTypes from "prop-types";
-
+import InventoryIcon from '@mui/icons-material/Inventory';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -38,7 +38,7 @@ import { Chip,  Stack } from "@mui/material";
 
 function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
   checkboxSelection, onEdit,onDialog, onDelete, onBlock,sx, rowsPerPageOptions, notProduct = true, onState,
-  onNotify,onFilter,
+  onNotify,onFilter,onArchive,
   onCopy, onPaginationModelChange, ...rest }) {
   const [, setRows] = React.useState(rows);
   let { t } = useTranslation("common")
@@ -79,6 +79,10 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
     setRows(rows.filter((row) => row.id !== id));
     onDelete(id)
   };
+  const handleArchiveClick = (id) => () => {
+    setRows(rows.filter((row) => row.id !== id));
+    onArchive(id)
+  };
 
   const handleCancelClick = (id) => () => {
     setRowModesModel({
@@ -111,7 +115,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
     setRowModesModel(newRowModesModel);
   };
 
-  const columnsResult =Boolean(onEdit||onNotify||onBlock||onDelete)?[
+  const columnsResult =Boolean(onEdit||onNotify||onBlock||onDelete||onArchive)?[
     ...columns,
     {
       field: 'actions',
@@ -265,7 +269,16 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
                   color="inherit"
                 ></GridActionsCellItem>
               </MenuItem>}
-             
+              {onArchive  && <MenuItem onClick={() => setOpen(null)} >
+                <GridActionsCellItem
+              
+                  key={row.id}
+                  icon={<Box sx={{ color: (theme) => theme.palette.grey[600],display:"flex",alignItems:"center" }}><InventoryIcon sx={{ color: (theme) => theme.palette.grey[600] }} /><span>Archive</span></Box>}
+                  label="Delete"
+                  onClick={handleArchiveClick(row?.id)}
+                  color="inherit"
+                ></GridActionsCellItem>
+              </MenuItem>}
 
             </MenuCustom>
           </>
@@ -452,6 +465,7 @@ DataGridCustom.propTypes = {
   checkboxSelection: PropTypes.bool,
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
+  onArchive:PropTypes.func,
   sx: PropTypes.object,
   rowHeight: PropTypes.number,
   rowsPerPageOptions: PropTypes.array, onPaginationModelChange: PropTypes.func,
