@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import BrandBox from 'components/common/BrandBox'
 import { useTranslation } from 'react-i18next'
+import BrandModel from 'components/common/BrandModel'
 const Brands = ({ absolute, light, isMini }) => {
     const navigate = useNavigate();
     const dispatch=useDispatch()
@@ -24,6 +25,15 @@ const Brands = ({ absolute, light, isMini }) => {
   
     let Token = localStorage.getItem("token");
     const brands = useSelector((state) => state.brand.value);
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
   const [BrandsGetRequest, BrandsGetResponce] = useRequest({
     path: BRANDS,
     method: "get",
@@ -38,25 +48,14 @@ const Brands = ({ absolute, light, isMini }) => {
       },
     });
   };
-//   const [BannerDeleteRequest, BannerDeleteResponce] = useRequest({
-//     path: BANNERS,
-//     method: "DELETE",
-//     Token: `Token ${Token}`,
-//   });
-//   function onDelete(row) {
-  
-//     BannerDeleteRequest({
-//         id: row,
-//         onSuccess: () => {
-//             dispatch({ type: "banners/deleteItem", payload: { id: row } })
-//         }
-//     })
-  //}
+ 
   
   useEffect(()=>{
     getBrands()
   },[])
-
+  useEffect(()=>{
+    
+  },[brands])
   return (
     <DashboardLayout>
     <DashboardNavbar />
@@ -94,7 +93,7 @@ const Brands = ({ absolute, light, isMini }) => {
               backgroundColor: (theme) => theme.palette.purple.middle,
             },
           }}
-          onClick={() => navigate(`/${sub_domain}/dashboard/additionalpage/addadditionalpage`)}
+          onClick={() => handleClickOpen()}
         >
           <Icon sx={{ fontWeight: "bold" }}>add</Icon>
           &nbsp;{t("addnewpage")}
@@ -116,9 +115,10 @@ const Brands = ({ absolute, light, isMini }) => {
           
           </Container>
           </Box>
+          <BrandModel open={open} handleClose={handleClose}/>
     </Container>
     {/* {BannerDeleteResponce.failAlert}
-    {BannerDeleteResponce.successAlert} */}
+    {BannerDeleteResponce.successAlert}  */}
   </DashboardLayout>
   )
 }

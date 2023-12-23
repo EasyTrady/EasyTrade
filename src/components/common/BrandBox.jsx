@@ -2,19 +2,37 @@
 import { Box, Typography } from '@mui/material'
 import React from 'react'
 import deletebrand from '../../assets/images/deletebrand.svg'
-const BrandBox = ({website,name,image}) => {
+import useRequest from 'hooks/useRequest';
+import { BRANDS } from 'data/api';
+import { RowingOutlined } from '@mui/icons-material';
+const BrandBox = ({website,name,logo,id}) => {
+  let Token = localStorage.getItem("token");
+  const [BannerDeleteRequest, BannerDeleteResponce] = useRequest({
+    path: BRANDS,
+    method: "DELETE",
+    Token: `Token ${Token}`,
+  });
+  function onDelete(row) {
+  console.log(row);
+    BannerDeleteRequest({
+        id: id,
+        onSuccess: () => {
+            dispatch({ type: "brand/deleteItem", payload: { id: id } })
+        }
+    })
+  }
   return (
     <Box sx={{width: '100%',
     height: '187px',borderRadius: '8px',
     border: '1px solid  #D3D3D3'
     }}>
-        <Box sx={{display:'flex',justifyContent:'flex-end',padding:'8px 14.6px'}}>
-            <img src={deletebrand} alt=''/>
+        <Box sx={{display:'flex',justifyContent:'flex-end',padding:'8px 14.6px'}} onClick={(e)=>onDelete(id)}>
+            <img src={deletebrand} alt='delete' />
         </Box>
         <Box sx={{width: '102px',
 height: '64px',
 m:'auto'}}>
-            <img src={image} alt={name} style={{height:'100%',width:'100%'}}/>
+            <img src={logo} alt={name} style={{height:'100%',width:'100%'}}/>
         </Box>
         <Box sx={{mt:'12px'}}>
             <Typography sx={{color: '#7F7F7F',

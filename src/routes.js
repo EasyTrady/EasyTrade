@@ -101,6 +101,10 @@ import AddCoupon from "layouts/coupon/addCoupon";
 import ViewAddtionalPage from "layouts/AdditionalPage/ViewAddtionalPage";
 import AddAddtionalPage from "layouts/AdditionalPage/AddAddtionalPage";
 import Brands from "layouts/Brand/Brands";
+import MobileSubscription from "layouts/Mobile/MobileSubscription";
+import mobile from './assets/images/mobile.svg'
+import addpage from './assets/images/addpage.svg'
+import ViewSubscription from "layouts/Mobile/ViewSubscription";
 const sub_domain = localStorage.getItem('sub_domain')
 
 const routes = [
@@ -605,8 +609,26 @@ const routes = [
     name: "Additional Page",
     key: "addtionalpage",
     route: `/${sub_domain}/dashboard/additionalpage`,
-    icon: <RankingIcon size="12px" />,
+    icon: <img src={addpage} alt='addpage' size="12px" />,
     component:<Auth> <ViewAddtionalPage /></Auth>,
+    noCollapse: false,
+  },
+  {
+    type: "collapse",
+    name: "Mobile subscription",
+    key: "Mobile subscription",
+    route: `/${sub_domain}/dashboard/mobilesubscription`,
+    icon: <img src={mobile} alt='mobile' size="12px" />,
+    component:<Auth> <MobileSubscription /></Auth>,
+    noCollapse: false,
+  },
+  {
+    type: "title",
+    name: "Mobile subscription",
+    key: "Mobile subscription",
+    route: `/${sub_domain}/dashboard/mobilesubscription/viewsubscription`,
+    icon: <img src={mobile} alt='mobile' size="12px" />,
+    component:<Auth> <ViewSubscription /></Auth>,
     noCollapse: false,
   },
   { type: "title", title: "Account Pages", key: "account-pages" },

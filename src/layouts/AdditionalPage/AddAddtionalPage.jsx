@@ -44,6 +44,7 @@ const AddAddtionalPage = ({ absolute, light, isMini }) => {
         { control: "description", value: '', isRequired: false },
       ])
       const pageTypes=[{id:1,title:"general"},{id:2,title:"Privacy policy"},{id:3,title:"About us"},{id:4,title:"Size guide"}]
+     
       const [AddtionPageGetRequest, AddtionPageGetResponce] = useRequest({
         path: VIEWADDTIONPAGE,
         method: "POST",
