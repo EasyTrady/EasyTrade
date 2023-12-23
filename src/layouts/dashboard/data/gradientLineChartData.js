@@ -12,54 +12,21 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import useRequest from "hooks/useRequest";
-import { ORDERANALYSIS } from "data/api";
-import React, { useEffect, useState } from 'react'
-let Token = localStorage.getItem("token");
 
-export function GradientLine(){
-  let [gradientLineChartData,setGradient]=useState({
-    labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    datasets: [{
-      
-      color: "#347AE2",
-      data: [50, 40, 800, 320, 900, 150, 400, 230, 500],
-    },],
-  })
-  let [amountLineChartData,setamountGradient]=useState({
-    labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    datasets: [{
-      
-      color: "#FF9500",
-      data: [50, 40, 800, 320, 900, 150, 400, 230, 500],
-    },],
-  })
-  const [orderAnalysisRequest, getorderAnalysisResponce] = useRequest({
-    path: ORDERANALYSIS,
-    method: "get",
-    Token: `Token ${Token}`,
-  });
-  useEffect(()=>{
-    orderAnalysisRequest({
-      onSuccess:(res)=>{
-        setGradient({labels:res.data.map((ele)=>ele?.month),datasets:[{
-          
-          color: "#347AE2",
-          data:res.data.map((ele)=>ele?.total_amount) ,
-        }]})
-        setamountGradient({labels:res.data.map((ele)=>ele?.month),datasets:[{
-          
-          color: "#FF9500",
-          data:res.data.map((ele)=>ele?.total_orders) ,
-        }]})
-        
-      }
-    })
-  },[])
-  return {gradientLineChartData,amountLineChartData}
-}
+const gradientLineChartData = {
+  labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  datasets: [
+    {
+      label: "Mobile apps",
+      color: "info",
+      data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+    },
+    {
+      label: "Websites",
+      color: "dark",
+      data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
+    },
+  ],
+};
 
-
-
-
-export default GradientLine;
+export default gradientLineChartData;

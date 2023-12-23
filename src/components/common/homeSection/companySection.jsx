@@ -20,8 +20,8 @@ const CompanySection = () => {
       alignItems: 'center'
 
     }}>
-      <Typography sx={{ fontFamily: 'Cairo', fontSize: '42px', fontWeight: 500, textAlign: 'center', color: '#3D2D66' }}>قدم لعملائك تجربة دفع وشحن مريحة</Typography>
-      <Typography sx={{ fontFamily: 'Cairo', fontSize: '18px', fontWeight: 400, textAlign: 'center', color: '#505050' }}>(الكروت - المحافظ - التقسيط - الدفع عند الاستلام)</Typography>
+      <Typography sx={{ fontFamily: 'Cairo', fontSize: '42px', fontWeight: 500, textAlign: 'center', color: '#3D2D66', lineHeight:'52.5px' }}>قدم لعملائك تجربة دفع وشحن مريحة</Typography>
+      <Typography sx={{ fontFamily: 'Cairo', fontSize: '18px', fontWeight: 400, textAlign: 'center', color: '#505050',lineHeight:'30px' }}>(الكروت - المحافظ - التقسيط - الدفع عند الاستلام)</Typography>
       <Grid container justifyContent="center" alignItems="center" spacing={7} >
 
         <Grid item sx={{ width: '150px', height: '150px' }} >

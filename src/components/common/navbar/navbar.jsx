@@ -17,7 +17,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import home from '../../../assets/images/icons/Social Media Icon Square/logo.svg';
-
+import './navbar.css'
 
 
 
@@ -68,8 +68,27 @@ const Navbar = () => {
     setAnchorElNav(null);
   };
 
+  const handleMenuItemClick = (index) => {
+    if (index === 0) {
+      navigate('/contactus');
+    } else if (index === 2) {
+      navigate('/price');
+    } else if (index === 4) {
+      navigate('/');
+    }
+
+    handleCloseNavMenu();
+  };
+
   return (
-    <AppBar position="fixed" sx={{ background: '#cde3f3', boxShadow }}>
+    <AppBar 
+      position="fixed" 
+      sx={{ 
+        background: '#cde3f3', 
+        boxShadow,
+        '@media (max-width: 776px)': {
+          backgroundColor: '#cde3f3'
+        } }}>
       <Container maxWidth="xl">
         <Toolbar
           sx={{
@@ -117,33 +136,50 @@ const Navbar = () => {
                   padding:{md: '10px',xs:"15px"},
                   backgroundColor: '#5D449B',
                   borderRadius: {md:'12px',xs:'8px'},
-                  fontSize: {md:'16px',xs:'12px'},
+                  fontSize: '16px',
+                  lineHeight:'29.98px',
                   textAlign: 'center',
                   fontWeight: 600,
                   fontFamily:'Cairo',
                   // lineHeight: "29.98px",
-                  height:{md:"40px",xs:'24px'},
+                  height:'40px',
                   color: '#FFFFFF',
-                  width:{sm:'20%',lg:'80%',xl:'80%',md:'100%'}
+                  width:'130px',
+                  padding: {md:'0', sm: '16px'},
+                  mr: {md: '10px'}
                 }}
               >
                 {t('تسجيل الدخول', { framework: 'React' })}
               </ButtonBase>
             </Box>
 
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'end' }}>
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'none', lg:'flex' }, justifyContent: 'end' }}>
               {pages.map((page,index) => (
+                // const pages = [
+                //   t('تواصل معنا', { framework: 'React' }),
+                //   t('الصفات'),
+                //   t('الباقات والأسعار'),
+                //   t('الخدمات'),
+                //   t('الرئيسية')
+                // ];
                 <Button
                   key={index}
                   onClick={(e) => {
-                    if (index===4) {
-                      navigate('/')
-                    } else if (index===0) {
+                    if (index===0) {
                       navigate('/contactus')
-                    } else if (index===2) {
+                    } 
+                    // else if (index===1) {
+                    //   navigate('/price');
+                    // } 
+                    else if (index===2) {
                       navigate('/price');
+                    } 
+                    // else if (index===3) {
+                    //   navigate('/price');
+                    // } 
+                    else if (index===4) {
+                      navigate('/')
                     }
-                   
                   }}
                   sx={{
                     my: 2,
@@ -153,11 +189,10 @@ const Navbar = () => {
                     fontWeight: 500,
                     fontFamily:'Cairo',
                     textTransform: 'none',
+                    lineHeight: '28.11px',
                     ':hover': {
                       color: '#272C2E',
-                    
                     },
-
                   }}
                 >
                   {page}
@@ -168,7 +203,7 @@ const Navbar = () => {
           </Box>
           <Box component="img" src={home} sx={{width:{xs:'30%',sm:'30%',lg:'20%',xl:'20%',md:'20%'},}}/>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex', lg: 'none' } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -176,10 +211,12 @@ const Navbar = () => {
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               // sx={{bgcolor:'#f5f5f5'}}
+              
             >
               <MenuIcon />
             </IconButton>
             <Menu
+            
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
@@ -193,12 +230,18 @@ const Navbar = () => {
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
+              PaperProps={{
+                style: {
+                  background: '#f8f9fa',
+                  
+                },
+              }}
               sx={{
-                display: { xs: 'block', md: 'none' }
+                display: { xs: 'block', md: 'block',top: '2px !important' }
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+              {pages.map((page, index) => (
+                <MenuItem key={page} onClick={() => handleMenuItemClick(index)}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}

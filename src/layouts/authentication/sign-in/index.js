@@ -59,6 +59,7 @@ import AuthCardWrapper from "../AuthCardWrapper";
 import { useTheme } from "@emotion/react";
 import AuthLogin from "../../authentication/auth-forms/AuthLogin";
 import Card from "@mui/material/Card";
+import LanguageIcon from '@mui/icons-material/Language';
 
 function SignIn() {
   const theme = useTheme();
@@ -77,17 +78,17 @@ function SignIn() {
   };
   return (
     <PageLayout>
-      <Box sx={{height:'100vh'}}>
-      <Grid item>
+      <Box>
+      <Grid item sx={{overflow:"hidden"}}>
         <Grid container>
-          <Grid item md={6} xs={12}  height={{md:"100vh",xs:"100%"}}>
+          <Grid item md={6} xs={12}  height={{ md:"100vh",xs:"100%"}}>
             <Box
               sx={{
                 backgroundImage: `URL(${dots})`,
                 backgroundSize: "30px",
                 backgroundRepeat: "repeat",
                 backgroundPosition: "center center",
-                height: { md: "30vh", sm: "30vh", xs: "30vh", lg: "100%" },
+                height: { md: "100vh", sm: "30vh", xs: "30vh", lg: "100%" },
                 width: "100%",
                 display: "flex",
                 justifyContent: "center",
@@ -109,31 +110,51 @@ function SignIn() {
               ></Box>
             </Box>
           </Grid>
-          <Grid item md={6} xs={12}  height="100vh" >
-            <Container>
-            <Box  sx={{alignItems:"flex-end",justifyContent:"center", height:"100vh",display:'flex',flexDirection:'column',width:{md:'60%',xs:'100%'},margin:'auto',}} >
-              <Typography
-                sx={{ fontFamily: "Cairo", fontWeight: 600, fontSize: "36px", color: "#3D2D66" ,mb:"12px"}}
-                color={theme.palette.secondary.main}
-                gutterBottom
-                variant={matchDownSM ? "h3" : "h2"}
-              >
-                تسجيل الدخول
-              </Typography>
-              <Typography
-                sx={{ fontFamily: "Cairo", fontWeight: 400, fontSize: "16px", color: "#667085",mb:'32px' }}
-                
-                fontSize="16px"
-                textAlign={matchDownSM ? "center" : "inherit"}
-              >
-                مرحبًا بعودتك! برجاء ادخال التفاصيل الخاصة بك
-              </Typography>
-              <AuthLogin/>
-            </Box>
+          <Grid item md={6} xs={12}  sx={{display: 'flex', alignItems: 'center'}} >
+            <Container sx={{justifyContent:'center', display: 'flex', flexDirection:'column'}}>
+              <Box  sx={{alignItems:"flex-end",justifyContent:"center",display:'flex',flexDirection:'column',width: '75%', margin: '30px 30px'}} >
+                <Typography
+                  sx={{ fontFamily: "Cairo", fontWeight: 600, fontSize: "36px", color: "#3D2D66" ,mb:"12px",textAlign:'right'}}
+                  color={theme.palette.secondary.main}
+                  gutterBottom
+                  variant={matchDownSM ? "h3" : "h2"}
+                >
+                  تسجيل الدخول
+                </Typography>
+                <Typography
+                  sx={{ fontFamily: "Cairo", fontWeight: 400, fontSize: "16px", color: "#667085" }}
+                  
+                  fontSize="16px"
+                  textAlign={matchDownSM ? "center" : "right"}
+                >
+                  مرحبًا بعودتك! برجاء ادخال التفاصيل الخاصة بك
+                </Typography>
+                <AuthLogin/>
+              </Box>
+              <Box>
+                <Divider sx={{ alignSelf: "center", width: "100%", margin:'0.7rem 0'}} orientation="horizontal" flexItem />
+
+                <Box sx={{ display: "flex", justifyContent: "space-between"}}>
+                  <Typography
+                    sx={{
+                      color: "#9795B5",
+                      fontFamily:'Cairo',
+                      fontWeight: 400,
+                      fontSize: '14px'
+                    }}
+                  >
+                    Copyright © 2023 Easytrade | All Rights Reserved
+                  </Typography>
+                  <LanguageIcon />
+                </Box>
+              </Box> 
             </Container>
+            
           </Grid>
+          
         </Grid>
       </Grid>
+      
       </Box>
     </PageLayout>
   );

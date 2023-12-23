@@ -44,11 +44,11 @@ function Customer({ absolute, light, isMini }) {
 
     });
   function onBlock(row, data) {
-    
+    console.log(row, data)
     customerDeleteRequest({
       id: row + "/activation",
       onSuccess: (res) => {
-        
+        console.log(row, data, res)
         dispatch({ type: "custom/patchItem", payload: { id: row, item: { ...data, is_active: res.data.active } } })
       }
     })

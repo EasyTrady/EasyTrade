@@ -76,19 +76,20 @@ function Job({ absolute, light, isMini }) {
         setOpen(false);
     };
     function handleSubmit() {
-       
+        console.log("submit")
         validate().then((output) => {
-           
+            console.log(output)
             if (!output.isOk) return;
             jobpostRequest({
                 body: controls,
                 onSuccess: (res) => {
                     dispatch({ type: "job/addItem", payload: res.data })
-                    
+                    console.log(res.data, controls)
                 }
             }).then((res) => {
                 let response = res?.response?.data;
-              
+                console.log(res)
+
                 setInvalid(response);
 
             });

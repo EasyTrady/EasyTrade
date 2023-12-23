@@ -50,7 +50,8 @@ export default function CarouselComponent() {
           marginTop: "60px",
           paddingTop: "100px",
           fontFamily:'Cairo',
-          color:'#3D2D66'
+          color:'#3D2D66',
+          lineHeight:'52.5px'
         }}
       >
         تجربة مطور سهلة
@@ -63,7 +64,8 @@ export default function CarouselComponent() {
           marginTop: "18px",
           marginBottom: "30px",
           fontFamily:'Cairo',
-          color:'#505050'
+          color:'#505050',
+          lineHeight:'27px'
         }}
       >
         لقت جعلت EASYTRADE من السهل على المطورين من اي مستوى مهارة استخدام منتجاتهم

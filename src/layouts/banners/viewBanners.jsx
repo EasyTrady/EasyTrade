@@ -33,7 +33,7 @@ const ViewBanners = ({ absolute, light, isMini }) => {
   const getBanners = () => {
     BannersGetRequest({
       onSuccess: (res) => {
-       
+        console.log(res.data);
         dispatch({ type: "banners/set", payload: res?.data });
       },
     });
@@ -44,7 +44,7 @@ const ViewBanners = ({ absolute, light, isMini }) => {
     Token: `Token ${Token}`,
   });
   function onDelete(row) {
-  
+    console.log(row)
     BannerDeleteRequest({
         id: row,
         onSuccess: () => {
@@ -192,7 +192,7 @@ color:row?.banner_type===1?'#027A48':row?.banner_type===2?"#7A0243":row?.banner_
           onCopy={() => {}}
           checkboxSelection={true}
           onRowClick={(e, row) => {
-           
+            console.log(e, row);
             //  setClick({ ...e.id });
           }}
           notProduct={false}

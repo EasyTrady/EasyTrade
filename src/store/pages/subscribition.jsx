@@ -38,4 +38,14 @@ const subscriptionSlice = createSlice({
       });
   }
 });
+
+export const SubscribtionFeatures = createAsyncThunk('Subscribtion', async (features, ThunkApi) => {
+  
+  try {
+    const response = await axios.get(`https://easytradyapi.shop/subscriptions/features/`);
+    return response.data;
+  } catch (error) {
+    return ThunkApi.rejectWithValue(error.response.data);
+  }
+});
 export default subscriptionSlice.reducer;

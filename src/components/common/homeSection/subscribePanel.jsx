@@ -1,7 +1,7 @@
 import { Box, Tab, Tabs } from "@mui/material";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-
+import { Container } from '@mui/system';
 import SubscribeCard from "./subscribeCard";
 import { useTranslation } from "react-i18next";
 
@@ -44,86 +44,95 @@ const SubscribePanel = () => {
     setValue(newValue);
   };
   return (
-    <Box>
-      <Box
-        sx={{
-          
+    <Container sx={{padding:'0 !important', margin:'0 !important'}}>
+      <Box sx={{
+          mb: "50px",
           mx: "auto",
           justifyContent: "center",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+        }}>
+      <Tabs
+        textColor="inherit"
+        value={value}
+        onChange={handelChange}
+        centered
+        sx={{
+          border: "2px solid #5D449B",
+          borderRadius: "11px",
+          width: "fit-content",
+          '.MuiTabs-indicator': {
+            position:'unset !important',
+            width:'0px !important'
+            
+          },
         }}
       >
-        <Tabs
-          textColor="inherit"
-          value={value}
-          onChange={handelChange}
-          centered
-          sx={{
-            border: "2px solid #5D449B",
-            borderRadius: "10px",
-            padding: "5px 40px",
-            my: "30px",
-            width: "fit-content",
-            '.MuiTabs-indicator': {
-              position:'unset !important',
-              width:'0px !important'
-              
-            },
-          }}
-        >
-         
-          <Tab
+        <Tab
             sx={{
-              margin: "0 20px",
+              margin: "0 30px 0 0",
               padding: "10px 30px",
               border: "none !important",
-                 
+              fontFamily:'Cairo',
+              fontSize:'16px',
+              fontWeight:500,
+              lineHeight:'19.2px',
               "&.Mui-selected, &.Mui-selected:hover": {
                 color: "white !important",
                 backgroundColor: "#5D449B",
-                borderRadius: "12px",
+                borderRadius: "0 10px 10px 0",
                 border: "none !important",
               },
+              margin:{md:'0'}
             }}
             label={t("yearly.title", { framwork: "react" })}
-            {...a11yProps(0)}
-          />
+            {...a11yProps(0)}/>
           <Tab
             sx={{
-              margin: "0 20px",
+              margin: "0 30px",
               padding: "10px 30px",
-              // border: "none !important",
               "&.Mui-selected, &.Mui-selected:hover": {
                 color: "white !important",
                 backgroundColor: "#5D449B",
-                borderRadius: "12px",
-                // border: "none !important",
+                borderRadius: "11px",
               },
+              fontFamily:'Cairo',
+              fontSize:'16px',
+              fontWeight:500,
+              lineHeight:'19.2px',
+              margin:{md:'0'}
+            }}
+            
+            label={t("كل 3 شهور")}/>
+          <Tab
+            sx={{
+              margin: "0 0 0 30px",
+              padding: "10px 30px",
+              "&.Mui-selected, &.Mui-selected:hover": {
+                color: "white !important",
+                backgroundColor: "#5D449B",
+                borderRadius: "10px 0 0 10px",
+              },
+              fontFamily:'Cairo',
+              fontSize:'16px',
+              fontWeight:500,
+              lineHeight:'19.2px',
+              margin:{md:'0'}
             }}
             label={t("monthly.title", { framwork: "react" })}
-            {...a11yProps(1)}
-          />
-            <Tab
-            sx={{
-              margin: "0 20px",
-              padding: "10px 30px",
-              // border: "none !important",
-              "&.Mui-selected, &.Mui-selected:hover": {
-                color: "white !important",
-                backgroundColor: "#5D449B",
-                borderRadius: "12px",
-                // border: "none !important",
-              },
-            }}
-            label={t("كل 3 شهور")}
-          
-          />
-          
-        </Tabs>
-      </Box>
-      <Box sx={{}}>
+            {...a11yProps(1)}/>
+      </Tabs>
+    </Box>
+      <Box sx={{
+          '@media only screen and (min-width: 600px)': 
+          {
+            flexDirection: 'row !important',
+          },
+          '@media only screen and (max-width: 992px)': 
+          {
+            flexDirection: 'row !important',
+          },}}>
         <TabPanel value={value} index={0}>
           <SubscribeCard type="annual" />
         </TabPanel>
@@ -131,7 +140,8 @@ const SubscribePanel = () => {
           <SubscribeCard type="monthly" />
         </TabPanel>
       </Box>
-    </Box>
+    </Container>
+    
   );
 };
 

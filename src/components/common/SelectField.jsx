@@ -127,7 +127,6 @@ mb:'6px'
                  {Boolean(isPending) ? (
         <Stack justifyContent="center" alignItems="center" sx={{ p: 1 }}>
           <CircularProgress size="30px" sx={{ color: "gray" }} />
-          loading
         </Stack>
       ) : children?.length ? (
         children

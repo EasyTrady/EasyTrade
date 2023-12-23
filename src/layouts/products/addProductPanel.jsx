@@ -76,7 +76,7 @@ width:{lg:"50%",md:"50%",sm:"100%",xs:"100%"},
 
       <CustomTabPanel value={value} index={2}>
      
-       <ProductAttributes  idProduct={IdProduct} handleChange={handleChange}/>
+       <ProductAttributes  idProduct={IdProduct}/>
        
       </CustomTabPanel>
       </DashboardLayout>

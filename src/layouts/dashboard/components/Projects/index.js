@@ -27,11 +27,11 @@ import SoftTypography from "components/SoftTypography";
 
 // Soft UI Dashboard Materail-UI example components
 import Table from "examples/Tables/Table";
-import PropTypes from "prop-types";
+
 // Data
 import data from "layouts/dashboard/components/Projects/data";
 
-function Projects({title}) {
+function Projects() {
   const { columns, rows } = data();
   const [menu, setMenu] = useState(null);
 
@@ -53,32 +53,39 @@ function Projects({title}) {
       open={Boolean(menu)}
       onClose={closeMenu}
     >
-      <MenuItem onClick={closeMenu}>Product</MenuItem>
-      <MenuItem onClick={closeMenu}>Stock</MenuItem>
-     
+      <MenuItem onClick={closeMenu}>Action</MenuItem>
+      <MenuItem onClick={closeMenu}>Another action</MenuItem>
+      <MenuItem onClick={closeMenu}>Something else</MenuItem>
     </Menu>
   );
 
   return (
-    <Card sx={{height:"276px",overflow:"auto"}}
-    >
+    <Card>
       <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
         <SoftBox>
           <SoftTypography variant="h6" gutterBottom>
-          {title}
+            Projects
           </SoftTypography>
-          {/* <SoftBox display="flex" alignItems="center" lineHeight={0}>
-            
+          <SoftBox display="flex" alignItems="center" lineHeight={0}>
+            <Icon
+              sx={{
+                fontWeight: "bold",
+                color: ({ palette: { info } }) => info.main,
+                mt: -0.5,
+              }}
+            >
+              done
+            </Icon>
             <SoftTypography variant="button" fontWeight="regular" color="text">
-            5.987,34
+              &nbsp;<strong>30 done</strong> this month
             </SoftTypography>
-          </SoftBox> */}
+          </SoftBox>
         </SoftBox>
-        {/* <SoftBox color="text" px={2}>
+        <SoftBox color="text" px={2}>
           <Icon sx={{ cursor: "pointer", fontWeight: "bold" }} fontSize="small" onClick={openMenu}>
             more_vert
           </Icon>
-        </SoftBox> */}
+        </SoftBox>
         {renderMenu}
       </SoftBox>
       <SoftBox
@@ -92,18 +99,9 @@ function Projects({title}) {
         }}
       >
         <Table columns={columns} rows={rows} />
-
       </SoftBox>
     </Card>
   );
 }
 
 export default Projects;
-Projects.defaultProps = {
-  title:""
-};
-
-// Typechecking props for the Projects
-Projects.propTypes = {
-  title: PropTypes.string
-};

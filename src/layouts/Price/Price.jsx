@@ -24,6 +24,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Subscribtion } from "store/pages/subscribition";
+import './Price.css'
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -41,9 +42,8 @@ export default function Price() {
   const { subscribtion } = useSelector((state) => state.subscribtion);
   const [type, setType] = useState("monthly");
 
-
   const featureIsPresent = (feature) => {
-    return feature === 'desiredFeature';
+    return feature === "desiredFeature";
   };
 
   useEffect(() => {
@@ -55,6 +55,22 @@ export default function Price() {
     console.log(type);
   };
 
+  const staticFeatures = [
+    "سيرفرات امنة",
+    "دومين فرعي امن مجانا",
+    "دعم فني على مدار الساعة",
+    "صفحات هبوط احترافية",
+    "تخطي صفحة السلة",
+    "عد تنازلي للعروض",
+    "خدمات اضافية في صفحة الدفع",
+    "استيراد/تصدير الطلبات",
+    "اسعار البيع بالجملة",
+    "دردشة حية مع العملاء",
+    "Full Control of mobile theme",
+  ];
+
+  
+
   return (
     <>
       <Navbar />
@@ -63,6 +79,7 @@ export default function Price() {
           background:
             "linear-gradient(180deg, #cde3f3 -0%, rgba(74, 153, 211, 0.00) 54.91%),#d4d2e300",
           paddingTop: "60px",
+          paddingBottom: "60px",
         }}
       >
         <Typography
@@ -105,237 +122,255 @@ export default function Price() {
           صممت خصيصًا لتناسب جميع أنواع التجار قارن بين الميزات
         </Typography>
 
-        <Container>
-          <Box sx={{ justifyContent: "center" }}>
-            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-              <TableContainer
-                component={Paper}
-                sx={{ direction: "rtl", boxShadow: "none", bgcolor: "#f8f9fa" }}
-              >
-                <Table>
-                  <TableBody>
-                    {[
-                      <Box
-                        item
-                        // position="fixed"
-                        xs={2}
+        <Container
+          sx={{
+            direction: "rtl",
+            boxShadow: "none",
+            overflowX: "auto",
+          }}
+        >
+          <Box sx={{display:'flex'}}>
+            <Grid container sx={{ marginTop:'45px' }}>
+            <Grid lg={4} sx={{ justifyContent: "center", maxWidth:'100% !important' }}>
+                  <Box >
+                    <Item
+                      sx={{
+                        boxShadow: "none",
+                        fontSize: "16px",
+                        fontWeight: 600,
+                        color: "#272C2E",
+                        fontFamily: "Cairo",
+                        textAlign: "center",
+                      }}
+                    >
+                      قارن بين الخطط
+                    </Item>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        border: "2px solid #5D449B",
+                        borderRadius: "12px",
+                        fontWeight: "Cairo",
+                        fontWeight: 500,
+                        lineHeight: "19.2px",
+                        fontSize: "12px",
+                      }}
+                    >
+                      <ButtonBase
+                        aria-data-type="monthly"
+                        onClick={pricetTypeBtnTapped}
                         sx={{
-                          padding: "16px",
-                          borderColor: "#5D449B",
-                          display: "block",
-                          width: { xl: "90%", lg: "100%", md: "100%", xs: "100%", sm: "100%" },
-                          // background: '#e2eff8'
+                          borderRadius: "10px",
+                          padding: "5px 10px",
+                          // my: "30px",
+                          width: "fit-content",
+                          fontFamily: "Cairo",
+                          fontWeight: 500,
+                          lineHeight: "19.2px",
+                          fontSize: "12px",
+                          ".MuiTabs-indicator": {
+                            position: "unset !important",
+                            width: "0px !important",
+                          },
                         }}
                       >
-                        <Box sx={{ display: "flex", alignItems: "center"  }}>
-                          <Box
+                        شهري
+                      </ButtonBase>
+                      <ButtonBase
+                        sx={{
+                          // margin: "0 20px",
+                          // padding: "10px 30px",
+                          padding: "5px 10px",
+                          border: "none !important",
+                          fontFamily: "Cairo",
+                          fontWeight: 500,
+                          lineHeight: "19.2px",
+                          fontSize: "12px",
+                          "&.Mui-selected, &.Mui-selected:hover": {
+                            color: "white !important",
+                            backgroundColor: "#5D449B",
+                            borderRadius: "12px",
+                            border: "none !important",
+                          },
+                        }}
+                      >
+                        كل 3 شهور
+                      </ButtonBase>
+                      <ButtonBase
+                        aria-data-type="annual"
+                        onClick={pricetTypeBtnTapped}
+                        sx={{
+                          // margin: "0 20px",
+                          // padding: "10px 30px",
+                          padding: "5px 10px",
+                          fontFamily: "Cairo",
+                          fontWeight: 500,
+                          lineHeight: "19.2px",
+                          fontSize: "12px",
+                          // border: "none !important",
+                          "&.Mui-selected &.Mui-selected:hover": {
+                            color: "white !important",
+                            background: "#5D449B !important",
+                            borderRadius: "12px",
+                            // border: "none !important",
+                          },
+                        }}
+                      >
+                        سنوي
+                        <Typography
+                          aria-data-type="annual"
+                          onClick={pricetTypeBtnTapped}
+                          sx={{
+                            fontSize: "12px",
+                            fontWeight: 200,
+                            color: "#C02431",
+                            padding: "5px 5px",
+                            fontFamily: "Cairo",
+                          }}
+                        >
+                          %وفر 14
+                        </Typography>
+                      </ButtonBase>
+                    </Box>
+                  </Box>
+                  <Grid sx={{ marginTop: "70px", display:'flex',flexDirection:'column' }}>
+                    <Box sx={{ justifyContent: "center", textWrap:'nowrap' }}>
+                      <Box>
+                        <Typography
+                          sx={{
+                            color: "#272C2E",
+                            textAlign: "right",
+                            display: "bolck",
+                            fontSize: "20px",
+                            fontWeight: 700,
+                            padding: "16px",
+                            fontFamily: "Cairo",
+                          }}
+                        >
+                          المميزات الأساسية
+                        </Typography>
+                      </Box>
+                      <Box>
+                        {staticFeatures.map((feature) => (
+                          <Typography
                             sx={{
-                              display: "flex",
-                              gap: "7px",
-                              // border: "1px solid #5D449B",
-                              borderRadius: "12px",
-                              padding: "5px",
-                              bgcolor: "#f8f9fa",
-                              width: "fit-content",
-                              flexDirection: 'column'
+                              textAlign: "right",
+                              borderBottom: "1px solid #D4D2E3",
+                              fontFamily: "Cairo",
+                              fontSize: "16px",
+                              fontWeight: 500,
+                              lineHeight: "18.4px",
+                              color: "#272C2E",
+                              padding: "16px 0px 16px 16px",
                             }}
                           >
+                            {feature}
+                          </Typography>
+                        ))}
+                      </Box>
+                    </Box>
+                  </Grid>
+                </Grid>
+            </Grid>
+            <Grid lg={8} sx={{}}>
+              <Grid container sx={{ display: "flex", flexWrap: "nowrap" }}>
+                <Grid item sx={{ display: "flex", margin: "16px 0" }}>
+                  {subscribtion.map(({ type, price, name, features }, index) => (
+                    <Grid
+                      key={index}
+                      sx={{ display: "flex", flexDirection: "column", marginRight: "16px" }}
+                    >
+                      <Grid item xs={2} sx={{ }}>
                             <Item
                               sx={{
-                                boxShadow: "none",
-                                fontSize: "16px",
+                                fontSize: "14px",
                                 fontWeight: 600,
                                 color: "#272C2E",
-                                bgcolor: "#f8f9fa",
+                                boxShadow: "none",
                                 fontFamily: "Cairo",
-                                textAlign: 'center'
+                                textWrap: "nowrap",
+                                padding: "0",
+                                lineHeight: "33px",
                               }}
                             >
-                              قارن بين الخطط
+                              {name}
                             </Item>
-                            <Box sx={{display: 'flex', border: "2px solid #5D449B",borderRadius:'12px'}}>
-                              <ButtonBase
-                                aria-data-type="monthly"
-                                onClick={pricetTypeBtnTapped}
+                            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+                              <Item
                                 sx={{
-                                  borderRadius: "10px",
-                                  padding: "5px 10px",
-                                  // my: "30px",
-                                  width: "fit-content",
-                                  '.MuiTabs-indicator': {
-                                    position:'unset !important',
-                                    width:'0px !important'
-                                    
-                                      }}}
-                              >
-                                شهري
-                              </ButtonBase>
-                              <ButtonBase
-                               
-                                sx={{
-                                  // margin: "0 20px",
-                                  // padding: "10px 30px",
-                                  padding: "5px 10px",
-                                  border: "none !important",
-                                     
-                                  "&.Mui-selected, &.Mui-selected:hover": {
-                                    color: "white !important",
-                                    backgroundColor: "#5D449B",
-                                    borderRadius: "12px",
-                                    border: "none !important",
-                                  },
+                                  fontSize: "40px",
+                                  fontWeight: 700,
+                                  boxShadow: "none",
+                                  fontFamily: "Cairo",
+                                  lineHeight: "54px",
                                 }}
                               >
-                                كل 3 شهور
-                                
-                              </ButtonBase>
-                              <ButtonBase
-                                aria-data-type="annual"
-                                onClick={pricetTypeBtnTapped}
+                                ${price}
+                              </Item>
+                              <Item
                                 sx={{
-                                  // margin: "0 20px",
-                                  // padding: "10px 30px",
-                                  padding: "5px 10px",
-                                  // border: "none !important",
-                                  "&.Mui-selected &.Mui-selected:hover": {
-                                    color: "white !important",
-                                    background: "#5D449B !important",
-                                    borderRadius: "12px",
-                                    // border: "none !important",
-                                  },
+                                  fontSize: "14px",
+                                  fontWeight: 600,
+                                  boxShadow: "none",
+                                  fontFamily: "Inter",
+                                  padding: "0 0 13px 8px",
+                                  lineHeight: "21px",
                                 }}
                               >
-                               
-                                سنوي
-                                <Typography
-                                aria-data-type="annual"
-                                onClick={pricetTypeBtnTapped}
-                                  sx={{
-                                    fontSize: "12px",
-                                    fontWeight: 200,
-                                    color: "#C02431",
-                                    padding: "5px 5px",
-                                    fontFamily: "Cairo",
-                                  }}
-                                >
-                                  %وفر 14
-                                </Typography>
-                                
-                              </ButtonBase>
+                                /{type}
+                              </Item>
                             </Box>
+                            <ButtonBase
+                              sx={{
+                                bgcolor: "#5D449B",
+                                borderRadius: "12px",
+                                width: "150px",
+                                boxShadow: "none",
+                                padding: "10px",
+                                fontFamily: "Cairo",
+                                fontWeight: 600,
+                                fontSize: "16px",
+                                lineHeight: "29.98px",
+                                color:'#fff'
+                              }}
+                            >
+                              ابدأ تجربتك
+                            </ButtonBase>
+                      </Grid>
+                      <Grid item sx={{ marginTop: "115px" }}>
+                        {staticFeatures.map((feature, featureIndex) => (
+                          <Box
+                            key={featureIndex}
+                            sx={{
+                              textAlign: "center",
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "center",
+                              fontSize: "16px",
+                              fontWeight: 500,
+                              lineHeight: "50px"
+                            }}
+                          >
+                            {features.includes(feature) ? (
+                              <Box sx={{ color: "#6495ed",borderBottom: "1px solid #D4D2E3",width:'100%' }}>
+                                <CheckCircleIcon  />
+                              </Box>
+                            ) : (
+                              "-"
+                            )}
                           </Box>
-                          <Box sx={{ display: "flex" ,marginRight:'auto'}}>
-                            {subscribtion.map(({  type, price, name}) => (
-                              <Grid>
-                                <Grid item xs={2} sx={{ padding: "16px", bgcolor: "#f8f9fa" }}>
-                                  <Item
-                                    sx={{
-                                      fontSize: "16px",
-                                      fontWeight: 600,
-                                      color: "#272C2E",
-                                      boxShadow: "none",
-                                      bgcolor: "#f8f9fa",
-                                      fontFamily: "Cairo",
-                                    }}
-                                  >
-                                    {name}
-                                  </Item>
-                                  <Item
-                                    sx={{
-                                      fontSize: "25px",
-                                      fontWeight: 800,
-                                      boxShadow: "none",
-                                      bgcolor: "#f8f9fa",
-                                      fontFamily: "Cairo",
-                                    }}
-                                  >
-                                    ${price}
-                                  </Item>
-                                  <Item
-                                    sx={{
-                                      fontSize: "14px",
-                                      fontWeight: 400,
-                                      boxShadow: "none",
-                                      fontFamily: "Inter",
-                                      bgcolor: "#f8f9fa",
-                                      fontFamily: "Cairo",
-                                    }}
-                                  >
-                                    {type}/
-                                  </Item>
-                                  <ButtonBase
-                                    sx={{
-                                      bgcolor: "#5D449B",
-                                      borderRadius: "12px",
-                                      width: "150px",
-                                      boxShadow: "none",
-                                      color: "#faf8f9",
-                                      padding: "10px",
-                                      fontFamily: "Cairo",
-                                    }}
-                                  >
-                                    ابدأ تجربتك
-                                  </ButtonBase>
-                                </Grid>
-                              </Grid>
-                              // </TableRow>
-                            ))}
-                          </Box>
-                        </Box>
-                      </Box>,
-                    ]}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+                        ))}
+                      </Grid>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Grid>
             </Grid>
-            <Typography
-              sx={{
-                color: "#272C2E",
-                textAlign: "right",
-                display: "bolck",
-                fontSize: "20px",
-                fontWeight: 700,
-                py:'16px',
-                fontFamily: "Cairo",
-              }}
-            >
-              المميزات الأساسية
-            </Typography>
-            {subscribtion.map(({ features }) => (
-
-<TableContainer component={Paper} sx={{ direction: "rtl", width: "100%" }}>
-<Table>
-  <TableBody>
-  {features.map((feature) => (
-    
-    <React.Fragment key={feature}>
-      <TableRow key={feature} sx={{ textAlign: 'right', bgcolor: '#f8f9fa'}}>
-       <TableCell sx={{textAlign: "right",width:'30%'}}>
-        {feature}
-        </TableCell>
-        {subscribtion?.map((feat,index)=>(
-          <TableCell key={feat} alignItems='center'><CheckCircleIcon sx={{ color: "#6495ed" }} /></TableCell>
-        ))}
-      </TableRow>
-      {/* {featureIsPresent(feature) ? (
-        <TableCell>
-          
-        </TableCell>
-      ) : null} */}
-    </React.Fragment>
-  ))}
-</TableBody>
-         </Table>
-         </TableContainer>
-
-            ))}
-
-        
           </Box>
         </Container>
-      </Box>
 
-      <Footer/>
+      </Box>
+      <Footer />
     </>
   );
 }

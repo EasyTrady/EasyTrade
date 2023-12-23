@@ -22,10 +22,10 @@ import PropTypes from "prop-types";
 import SoftBoxRoot from "components/SoftBox/SoftBoxRoot";
 
 const SoftBox = forwardRef(
-  ({ variant, bgColor, color, opacity, borderRadius, shadow,refence ,...rest }, ref) => (
+  ({ variant, bgColor, color, opacity, borderRadius, shadow, ...rest }, ref) => (
     <SoftBoxRoot
       {...rest}
-      ref={refence?refence:ref}
+      ref={ref}
       ownerState={{ variant, bgColor, color, opacity, borderRadius, shadow }}
     />
   )
@@ -45,7 +45,6 @@ SoftBox.defaultProps = {
 SoftBox.propTypes = {
   variant: PropTypes.oneOf(["contained", "gradient"]),
   bgColor: PropTypes.string,
-  refence: PropTypes?.string,
   color: PropTypes.string,
   opacity: PropTypes.number,
   borderRadius: PropTypes.string,

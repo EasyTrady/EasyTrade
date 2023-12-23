@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 // material-ui
 import { useTheme } from "@mui/material/styles";
+
 import {
   Box,
   Button,
@@ -46,6 +47,7 @@ import "react-toastify/dist/ReactToastify.css";
 import SoftInput from "components/SoftInput";
 import { SIGNUP, SHOP } from "data/api";
 import SoftButton from "components/SoftButton";
+import './auth.css';
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
 const FirebaseRegister = ({ ...others }) => {
@@ -197,60 +199,78 @@ const FirebaseRegister = ({ ...others }) => {
         }}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-            <Box sx={{justifyContent:'center',alignItems:'center',textAlign:'center'}}>
+        <Box 
+          sx={{
+            justifyContent:'center',
+            alignItems:'center',
+            textAlign:'end'
+            }}>
           <form noValidate {...others}>
             {console.log(errors)}
-            <Box sx={{display: "flex",justifyContent:'center'}}>
+
+            {/* upload stor logo */}
+            <Box sx={{display: "flex",justifyContent:'end'}}>
               
               <FormControl error={Boolean(touched?.logo && errors?.logo)}>
-                <Box sx={{ width: "360px",display: "flex",justifyContent:'flex-end'}}>
-                  <label htmlFor="profile_image" style={{ position: "relative" }}>
-                    <IconButton
-                      onClick={() => {
-                        document.getElementById("profile_image").click();
-                      }}
-                      sx={{
-                        position: "absolute",
-                        zIndex: 1,
-                        right: 0,
-                        bottom: 0,
-                        boxShadow: 3,
-                        alignItems: "center",
-                        bgcolor: "#fff",
-                      }}
-                    >
-                      <CameraAltIcon sx={{ zIndex: 1 }} />
-                    </IconButton>
-                    {avatarUrl ? (
-                      <img
-                        src={avatarUrl}
-                        alt="profile_image"
-                        style={{
-                          width: "80px",
-                          height: "80px",
-                          borderRadius: "50%",
-                        }}
-                      />
-                    ) : (
-                      <Avatar
-                        src={avatarUrl}
-                        alt="image"
-                        sx={{ width: "80px", height: "80px", marginBottom: "10px" }}
-                        // sx={{ height: "50%", width: "60%" }}
-                      />
-                    )}
-                  </label>
-                  <input
-                    id="profile_image"
-                    name="logo"
-                    type="file"
-                    accept="image/*"
-                    onBlur={handleBlur}
-                    onChange={(e) => handleAvatarChange(e, handleChange)}
-                    style={{ display: "none" }}
-                  />
-                </Box>
-
+                  <Box sx={{display: "flex", flexDirection: 'row-reverse', p: '16px 0'}}>
+                    <label htmlFor="profile_image" style={{ position: "relative" }}>
+                      
+                      {avatarUrl ? (
+                        <img
+                          src={avatarUrl}
+                          alt="profile_image"
+                          style={{
+                            width: "80px",
+                            height: "80px",
+                            borderRadius: "50%",
+                          }}
+                        />
+                      ) : (
+                        <Avatar
+                          src={avatarUrl}
+                          alt="image"
+                          sx={{ width: "80px", height: "80px", marginBottom: "10px" }}
+                          // sx={{ height: "50%", width: "60%" }}
+                        />
+                      )}
+                    </label>
+                    <input
+                      id="profile_image"
+                      name="logo"
+                      type="file"
+                      accept="image/*"
+                      onBlur={handleBlur}
+                      onChange={(e) => handleAvatarChange(e, handleChange)}
+                      style={{ display: "none" }}
+                    />
+                    <Box sx={{ padding: '15px 15px 0'}}>
+                      <Typography 
+                        sx={{
+                          fontSize:'18px', 
+                          margin: '0',
+                          fontFamily:'Semibold', lineHeight: '28px', fontWeight:600
+                        }} variant="h6" 
+                        gutterBottom
+                      >شعار المتجر</Typography>
+                      <Typography
+                        onClick={() => {
+                          document.getElementById("profile_image").click();
+                        }} 
+                        sx={{
+                          lineHeight: '24px', 
+                          color: '#5D449B', 
+                          textDecoration:'underline',
+                          fontFamily:'Cairo',
+                          cursor:'pointer',
+                          fontWeight:600,
+                          fontSize:'16px'
+                        }} 
+                        variant="overline" 
+                        gutterBottom
+                      >رفع الصورة</Typography>
+                    </Box>
+                  </Box>
+                     
                 {touched?.logo && errors?.logo && (
                   <FormHelperText error id="standard-weight-helper-text--register">
                     {errors.logo}
@@ -258,160 +278,174 @@ const FirebaseRegister = ({ ...others }) => {
                 )}
               </FormControl>
             </Box>
+            {/* end upload store logo */}
             
-            <FormControl
-            
-              error={Boolean(touched?.full_name && errors?.full_name)}
-              sx={{ ...theme.typography.customInput }}
-            >
-              <TextField
-                variant="outlined"
-                sx={{
-                  direction: "rtl",
-                  width:'360px',
-                  marginRight: 'auto',
-
-                }}
-                name="email"
-                value={values.email}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                placeholder=" الاسم بالكامل"
-              ></TextField>
-              {touched?.full_name && errors?.full_name && (
-                <FormHelperText error id="standard-weight-helper-text--register">
-                  {errors.full_name}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl
-             
-              error={Boolean(touched?.email && errors?.email)}
-              sx={{ ...theme.typography.customInput }}
-            >
-              <TextField
-                variant="outlined"
-                sx={{
-                  direction: "rtl",
-                  marginTop: "10px",
-                  width:'360px',
-                  marginRight: 'auto',
-                }}
-                name="email"
-                value={values.email}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                placeholder="البريد الالكتروني"
-              ></TextField>
-              {touched?.email && errors?.email && (
-                <FormHelperText error id="standard-weight-helper-text--register">
-                  {errors.email}
-                </FormHelperText>
-              )}
-            </FormControl>
-
-            <FormControl
-            
-            
-              error={Boolean(touched?.password && errors?.password)}
-              sx={{ ...theme.typography.customInput , marginRight: 'auto',}}
-            >
-              {/* <InputLabel htmlFor="outlined-adornment-password-register">كلمة المرور</InputLabel> */}
-              <TextField
-                variant="outlined"
-                sx={{
-                  direction: "rtl",
-                  paddingTop: "10px",
-                  width:'360px',
-                  marginRight: 'auto',
-                }}
-                name="password"
-                value={values.password}
-                type={showPassword ? "text" : "password"}
-                placeholder="كلمة المرور"
-                onBlur={handleBlur}
-                onChange={handleChange}
-              ></TextField>
-              {touched?.password && errors?.password && (
-                <FormHelperText error id="standard-weight-helper-text-password-register">
-                  {errors.password}
-                </FormHelperText>
-              )}
-            </FormControl>
-            {strength !== 0 && (
-              <FormControl fullWidth>
-                <Box sx={{ mb: 2 }}>
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item>
-                      <Box
-                        style={{ backgroundColor: level?.color }}
-                        sx={{ width: 85, height: 8, borderRadius: "7px" }}
-                      />
-                    </Grid>
-                    <Grid item>
-                      <Typography variant="subtitle1" fontSize="0.75rem">
-                        {level?.label}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </FormControl>
-            )}
-            <FormControl
-              error={Boolean(touched?.phone && errors?.phone)}
-              sx={{ ...theme.typography.customInput }}
-            >
-              <MuiPhoneNumber
-                sx={{
-                  paddingTop: "10px",
-                  marginRight: 'auto',
-                  width:'360px'
-                }}
-                defaultCountry={"eg"}
-                id="outlined-adornment-phone-register"
-                type="text"
-                value={values.phone}
-                name="phone"
-                onBlur={handleBlur}
-                onChange={(e) => {
-                  handleChange({ target: { name: "phone", value: e } });
-                }}
-                inputProps={{
-                  "aria-label": "phone",
-                }}
-                variant="outlined"
-                placeholder="Phone number"
-              />
-              {touched?.phone && errors?.phone && (
-                <FormHelperText error id="standard-weight-helper-text--register">
-                  {errors.phone}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl
+            <Box sx={{display: 'flex', flexDirection: 'column'}}>
               
-              error={Boolean(touched?.shop_name && errors?.shop_name)}
-              sx={{ ...theme.typography.customInput ,  marginRight: 'auto',
-              width:'360px'}}
-            >
-              {/* <InputLabel htmlFor="outlined-adornment-storename-register">اسم المتجر</InputLabel> */}
-              <SoftInput
-                placeholder="اسم المتجر"
-                id="outlined-adornment-storename-register"
-                type="text"
-                value={values.shop_name}
-                name="shop_name"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                inputProps={{}}
-                sx={{ ".MuiInputBase-root": { marginY: "10px" }, direction: "rtl" ,  }}
-              />
-              {touched?.shop_name && errors?.shop_name && (
-                <FormHelperText error id="standard-weight-helper-text--register">
-                  {errors.shop_name}
-                </FormHelperText>
+              <FormControl
+                error={Boolean(touched?.full_name && errors?.full_name)}
+                sx={{ ...theme.typography.customInput, width: '100%' }}
+              >
+                <Typography sx={{fontSize:'14px', fontWeight:500, fontFamily: "Cairo", pb:'16px', pt:'16px', color:'#344054'}}>الإسم بالكامل</Typography>
+                <TextField
+                  variant="outlined"
+                  name="email"
+                  value={values.email}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  InputProps={{
+                    placeholder:"الإسم بالكامل",
+                    style: {direction: 'rtl',
+                    width:'100%',
+                    fontWeight: 400,
+                    fontSize: '16px',
+                    fontFamily: 'Cairo',
+                    color: '#667085'}
+                  }}
+                ></TextField>
+                {touched?.full_name && errors?.full_name && (
+                  <FormHelperText error id="standard-weight-helper-text--register">
+                    {errors.full_name}
+                  </FormHelperText>
+                )}
+              </FormControl>
+              <FormControl
+                error={Boolean(touched?.email && errors?.email)}
+                sx={{ ...theme.typography.customInput, width: '100%'  }}
+              >
+                <Typography sx={{fontSize:'14px', fontWeight:500, fontFamily: "Cairo", pb:'16px', pt:'16px', color:'#344054'}}>البريد الإلكتروني</Typography>
+                <TextField
+                  variant="outlined"
+                  name="email"
+                  value={values.email}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  InputProps={{
+                    placeholder:"البريد الالكتروني",
+                    style: {direction: 'rtl',
+                    width:'100%',
+                    fontWeight: 400,
+                    fontSize: '16px',
+                    fontFamily: 'Cairo',
+                    color: '#667085'}
+                  }}
+                ></TextField>
+                {touched?.email && errors?.email && (
+                  <FormHelperText error id="standard-weight-helper-text--register">
+                    {errors.email}
+                  </FormHelperText>
+                )}
+              </FormControl>
+              <FormControl
+                error={Boolean(touched?.password && errors?.password)}
+                sx={{ ...theme.typography.customInput, width: '100%' }}
+              >
+                <Typography sx={{fontSize:'14px', fontWeight:500, fontFamily: "Cairo", pb:'16px', pt:'16px', color:'#344054'}}>كلمة المرور</Typography>
+                <TextField
+                  variant="outlined"
+                  name="password"
+                  value={values.password}
+                  type={showPassword ? "text" : "password"}
+                  InputProps={{
+                    placeholder:"كلمة المرور",
+                    style: {direction: 'rtl',
+                    width:'100%',
+                    fontWeight: 400,
+                    fontSize: '16px',
+                    fontFamily: 'Cairo',
+                    color: '#667085'}
+                  }}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                ></TextField>
+                {touched?.password && errors?.password && (
+                  <FormHelperText error id="standard-weight-helper-text-password-register">
+                    {errors.password}
+                  </FormHelperText>
+                )}
+              </FormControl>
+              {strength !== 0 && (
+                <FormControl fullWidth>
+                  <Box sx={{ mb: 2 }}>
+                    <Grid container spacing={2} alignItems="center">
+                      <Grid item>
+                        <Box
+                          style={{ backgroundColor: level?.color }}
+                          sx={{ width: 85, height: 8, borderRadius: "7px" }}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <Typography variant="subtitle1" fontSize="0.75rem">
+                          {level?.label}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </FormControl>
               )}
-            </FormControl>
+              <FormControl
+                error={Boolean(touched?.phone && errors?.phone)}
+                sx={{ ...theme.typography.customInput, width: '100%' }}
+              >
+                <Typography sx={{fontSize:'14px', fontWeight:500, fontFamily: "Cairo", pb:'16px', pt:'16px', color:'#344054'}}>الهاتف المحمول</Typography>
+                <MuiPhoneNumber
+                  defaultCountry={"eg"}
+                  id="outlined-adornment-phone-register"
+                  type="text"
+                  value={values.phone}
+                  name="phone"
+                  onBlur={handleBlur}
+                  onChange={(e) => {
+                    handleChange({ target: { name: "phone", value: e } });
+                  }}
+                  variant="outlined"
+                  InputProps={{
+                    placeholder:"الهاتف المحمول",
+                    style: {
+                    direction:'rtl',
+                    width:'100%',
+                    fontWeight: 400,
+                    fontSize: '16px',
+                    fontFamily: 'Cairo',
+                    color: '#667085'
+                  }
+                  }}
+                  sx={{bgcolor: '#fff'}}
+                />
+                {touched?.phone && errors?.phone && (
+                  <FormHelperText error id="standard-weight-helper-text--register">
+                    {errors.phone}
+                  </FormHelperText>
+                )}
+              </FormControl>
+              <FormControl
+                error={Boolean(touched?.shop_name && errors?.shop_name)}
+                sx={{ ...theme.typography.customInput , width: '100%'}}
+              >
+                <Typography sx={{fontSize:'14px', fontWeight:500, fontFamily: "Cairo", pb:'16px', pt:'16px'}}>اسم المتجر</Typography>
+                <SoftInput
+                  InputProps={{
+                    placeholder:"اسم المتجر",
+                    style: {direction: 'rtl',
+                    width:'100%',
+                    fontWeight: 400,
+                    fontSize: '16px',
+                    fontFamily: 'Cairo'}
+                  }}
+                  id="outlined-adornment-storename-register"
+                  type="text"
+                  value={values.shop_name}
+                  name="shop_name"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                />
+                {touched?.shop_name && errors?.shop_name && (
+                  <FormHelperText error id="standard-weight-helper-text--register">
+                    {errors.shop_name}
+                  </FormHelperText>
+                )}
+              </FormControl>
+            </Box>
 
             
             {/* <FormControl
@@ -457,13 +491,17 @@ const FirebaseRegister = ({ ...others }) => {
                   sx={{
                     borderRadius: "12PX",
                     marginRight: 'auto',
-                    width:'360px',
+                    width:'100%',
                     padding: "10px, 18px, 10px, 18px",
                     backgroundColor: "#5D449B",
                     color: "#FFFFFF",
                     "&:hover": {
                       backgroundColor: "#5D449B",
                     },
+                    fontFamily:'Cairo',
+                    fontSize:'16px',
+                    fontWeight:600,
+                    lineHeight: '24px'
                   }}
                   onSubmit={(e) => handleSubmit(e)}
                 >
@@ -471,7 +509,7 @@ const FirebaseRegister = ({ ...others }) => {
                 </SoftButton>
               </AnimateButton>
             </Box>
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ maxWidth: '75%' }}>
               <Box sx={{ alignItems: "center", display: "flex" }}>
                 <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
                 {/* <Button
@@ -503,7 +541,7 @@ const FirebaseRegister = ({ ...others }) => {
                   sx={{
                     color: "grey.700",
                     marginRight: 'auto',
-                    width:'360px',
+                    width:'100%',
                     backgroundColor: theme.palette.grey[50],
                     borderColor: theme.palette.grey[100],
                     marginTop: "20px",
@@ -512,6 +550,11 @@ const FirebaseRegister = ({ ...others }) => {
                       backgroundColor: theme.palette.grey[50],
                       borderColor: "#D0D5DD",
                     },
+                    fontFamily:'Cairo',
+                    fontSize:'16px',
+                    fontWeight:600,
+                    lineHeight: '24px',
+                    color:'#344054'
                   }}
                 >
                   <Box sx={{ mr: { xs: 1, sm: 2, width: 20 } }}>
@@ -528,7 +571,7 @@ const FirebaseRegister = ({ ...others }) => {
               </AnimateButton>
             </Grid>
           </form>
-          </Box>
+        </Box>
         )}
       </Formik>
 

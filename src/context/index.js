@@ -35,9 +35,6 @@ function reducer(state, action) {
     case "MINI_SIDENAV": {
       return { ...state, miniSidenav: action.value };
     }
-    case "FOOTER": {
-      return { ...state, footerDisplay: action.value };
-    }
     case "TRANSPARENT_SIDENAV": {
       return { ...state, transparentSidenav: action.value };
     }
@@ -87,8 +84,7 @@ function SoftUIControllerProvider({ children }) {
     layout: "dashboard",
     makeIconOnly:false,
     ColorSidenav:"white",
-    backgroundColor:"#ecf4fa",
-    footerDisplay:[true,true,true,true]
+    backgroundColor:"#ecf4fa"
   };
 
   const [controller, dispatch] = useReducer(reducer, initialState);
@@ -125,7 +121,6 @@ const setDirection = (dispatch, value) => dispatch({ type: "DIRECTION", value })
 const setLayout = (dispatch, value) => dispatch({ type: "LAYOUT", value });
 const setIconOnly = (dispatch, value) => dispatch({ type: "ICONONLY", value });
 const setColorSideBar = (dispatch, value) => dispatch({ type: "COLOR_SIDENAV", value });
-const setFOOTER = (dispatch, value) => dispatch({ type: "FOOTER", value });
 
 const setColorBackground = (dispatch, value) => dispatch({ type: "BACKGROUNDCOLOR", value });
 
@@ -142,6 +137,5 @@ export {
   setLayout,
   setIconOnly,
   setColorSideBar,
-  setColorBackground,
-  setFOOTER
+  setColorBackground
 };

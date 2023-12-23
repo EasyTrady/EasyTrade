@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useMemo ,useRef} from "react";
+import { useMemo } from "react";
 
 // porp-types is a library for typechecking of props
 import PropTypes from "prop-types";
@@ -33,21 +33,17 @@ import configs from "examples/Charts/BarCharts/HorizontalBarChart/configs";
 
 // Soft UI Dashboard React base styles
 import colors from "assets/theme/base/colors";
-import gradientChartLine from "assets/theme/functions/gradientChartLine";
 
 function HorizontalBarChart({ title, description, height, chart }) {
-  const chartRef = useRef(null);
   const chartDatasets = chart.datasets
     ? chart.datasets.map((dataset) => ({
         ...dataset,
         weight: 5,
         borderWidth: 0,
-        borderRadius: 8,
-        height:1,
-        // background: gradientChartLine(
-        //   chartRef.current.children[0],
-        //   colors[dataset.color] ? colors[dataset.color || "dark"].main : colors.dark.main
-        // ),
+        borderRadius: 4,
+        backgroundColor: colors[dataset.color]
+          ? colors[dataset.color || "dark"].main
+          : colors.dark.main,
         fill: false,
         maxBarThickness: 35,
       }))
@@ -73,7 +69,7 @@ function HorizontalBarChart({ title, description, height, chart }) {
       ) : null}
       {useMemo(
         () => (
-          <SoftBox ref={chartRef} height={height}>
+          <SoftBox height={height}>
             <Bar data={data} options={options} />
           </SoftBox>
         ),
@@ -97,7 +93,7 @@ HorizontalBarChart.propTypes = {
   title: PropTypes.string,
   description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  chart: PropTypes.objectOf(PropTypes.array),
+  chart: PropTypes.objectOf(PropTypes.array).isRequired,
 };
 
 export default HorizontalBarChart;

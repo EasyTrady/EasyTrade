@@ -151,9 +151,6 @@ useEffect(()=>{
       /> */}
     </Box>
     <Box sx={{display:'flex',justifyContent:'flex-end',alignItems:'center'}}>
-    <SoftButton variant="contained" color="white"sx={{mx:"20px"}} onClick={() =>{resetControls(); handleChange(undefined,2,idProduct)}}>
-                        {"skip"}
-                    </SoftButton>
       <SoftButton variant="gradient"
         disabled={AddProductImagesResponce.isPending}
                         sx={{
@@ -164,9 +161,8 @@ useEffect(()=>{
                         }}
                         onClick={handleSubmit}
                     >
-                       {AddProductImagesResponce.isPending?<><CircularProgress />loading</>:"Next"}
+                       {AddProductImagesResponce.isPending?<CircularProgress />:"Next"}
                     </SoftButton>
-
     </Box>
     <Footer />
 

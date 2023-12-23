@@ -23,7 +23,6 @@ const MultiSelect = ({
   children,
   placeholder = "",
   SelectProps = {},
-  multiple=true,
   ...rest
 }) => {
   const MenuProps = {
@@ -64,7 +63,6 @@ const MultiSelect = ({
     //   },}}
      sx={{display:'flex',flexDirection:'column',alignItems:'start',width:'100%',}}
     >
-      {console.log(multiple)}
     <Typography sx={{
 fontSize: '14px',
 fontWeight: 400,
@@ -74,7 +72,7 @@ textAlign: 'left',
 mb:'6px'
 }}>{label}</Typography>
  <Select 
- multiple={multiple}
+ multiple
     defaultValue= ""
     displayEmpty= {true}
     onOpen={onOpen}
@@ -122,7 +120,6 @@ mb:'6px'
                  {Boolean(isPending) ? (
         <Stack justifyContent="center" alignItems="center" sx={{ p: 1 }}>
           <CircularProgress size="30px" sx={{ color: "gray" }} />
-          loading
         </Stack>
       ) : children?.length ? (
         children

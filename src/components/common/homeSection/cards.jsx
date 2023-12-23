@@ -29,8 +29,9 @@ export function Card ({ title, desc, img, bgcolor, className}) {
       }}
     >
 
-
+        
           <Container>
+            
       <Box
         sx={{
           position: 'absolute',
@@ -71,26 +72,27 @@ export function Card ({ title, desc, img, bgcolor, className}) {
             display: 'block',
             fontSize: '20px',
             textAlign: 'right',
-            fontWeight: 900,
+            fontWeight: 600,
             fontFamily: 'Cairo',
             padding: '5px 10px',
             flexDirection: 'column',
-            fontFamily:'Cairo'
+            fontFamily:'Cairo',
+            lineHeight:'37.48px'
           }}
         >
           {title}
         </Typography>
         <Typography
           sx={{
-            fontSize: '18px',
+            fontSize: '16px',
             textAlign: 'right',
             display: 'block',
-            fontWeight: 50,
+            fontWeight: 400,
             fontFamily: 'Cairo',
             padding: '10px',
             flexDirection: 'column',
-            fontFamily:'Cairo'
-        
+            fontFamily:'Cairo',
+            lineHeight:'28px'
           }}
         >
           {desc}
@@ -144,25 +146,33 @@ export default function ResponsiveGrid () {
     }
   ];
   return (
-    <Grid
-      container
-      sx={{ padding: '50px', justifyContent: 'shrink', display: 'flex' }}
-      spacing={{ xs: 2, md: 3 }}
-      columns={{ xs: 4, sm: 8, md: 12 }}
-    >
-      {data.map((card, index) => {
-        return (
-          <Card
-            key={index}
-            title={card.title}
-            desc={card.desc}
-            img={card.img}
-            bgcolor={card.bgcolor}
-            className="mohamed"
-          />
-        );
-      })}
-    </Grid>
+    <>
+      <Typography sx={{ fontFamily: 'Cairo', fontSize: '42px', fontWeight: 500, textAlign: 'center', color: '#3D2D66', lineHeight:'52.5px'}}>
+        الخدمات المقدمه
+      </Typography>
+      <Typography sx={{ fontFamily: 'Cairo', fontSize: '18px', fontWeight: 400, textAlign: 'center', color: '#505050',lineHeight:'30px' }}>
+        Lorem Ipsum is simplyLorem Ipsum is simply dummy text of dummy text of
+      </Typography>
+      <Grid
+        container
+        sx={{ padding: '50px', justifyContent: 'shrink', display: 'flex' }}
+        spacing={{ xs: 2, md: 3 }}
+        columns={{ xs: 4, sm: 8, md: 12 }}
+      >
+        {data.map((card, index) => {
+          return (
+            <Card
+              key={index}
+              title={card.title}
+              desc={card.desc}
+              img={card.img}
+              bgcolor={card.bgcolor}
+              className="mohamed"
+            />
+          );
+        })}
+      </Grid>
+    </>
 
   );
 }

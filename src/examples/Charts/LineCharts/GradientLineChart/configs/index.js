@@ -17,7 +17,6 @@ Coded by www.creative-tim.com
 import typography from "assets/theme/base/typography";
 
 function configs(labels, datasets) {
-
   return {
     data: {
       labels,
@@ -26,7 +25,6 @@ function configs(labels, datasets) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-    
       plugins: {
         legend: {
           display: false,
@@ -42,7 +40,7 @@ function configs(labels, datasets) {
             drawBorder: false,
             display: true,
             drawOnChartArea: true,
-            drawTicks: true,
+            drawTicks: false,
             borderDash: [5, 5],
           },
           ticks: {
@@ -61,8 +59,8 @@ function configs(labels, datasets) {
           grid: {
             drawBorder: false,
             display: false,
-            drawOnChartArea: true,
-            drawTicks: true,
+            drawOnChartArea: false,
+            drawTicks: false,
             borderDash: [5, 5],
           },
           ticks: {
@@ -78,7 +76,6 @@ function configs(labels, datasets) {
           },
         },
       },
-     
     },
   };
 }

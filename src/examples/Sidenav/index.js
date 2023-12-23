@@ -40,13 +40,12 @@ import { StarBorder } from "@mui/icons-material";
 // Custom styles for the Sidenav
 import SidenavRoot from "examples/Sidenav/SidenavRoot";
 import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
-import imageEasy from "assets/images/easytrade2.png"
+
 // Soft UI Dashboard React context
 import { useSoftUIController, setMiniSidenav } from "context";
 import NavCollapse from "./CollapseNav";
 import NavItem from "./CollapseItem";
-import VisitSite from "examples/Icons/VisitSite";
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, transparentSidenav,sidenavColor,makeIconOnly ,ColorSidenav} = controller;
@@ -75,7 +74,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     return () => window.removeEventListener("resize", handleMiniSidenav);
   }, [dispatch, location]);
   let [active,setActive]=useState("")
-
+console.log(active)
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
   const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, route, path, children,color }) => {
     let returnValue;
@@ -191,18 +190,10 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             
           </SoftBox>
         </SoftBox>
-        <SoftBox component={NavLink} to="/"target={"_blank"} sx={{display:"flex",alignItems:"center",":hover,:active,:visited,:focus":{color:(theme)=>theme.palette.purple.middle}}} >
-          <VisitSite color={(theme)=>theme.palette.purple.middle}/>
-          <SoftTypography component={"span"} sx={{fontSize:"12px",marginX:"5px"}}>Visit Site </SoftTypography>
-          <ArrowForwardIcon sx={{fontSize:"12px"}} />
-          </SoftBox>
       </SoftBox>
       <Divider />
       <List>{renderRoutes}</List>
-      <Divider />
-      <SoftBox sx={{px:1}}>
-    <SoftTypography component={"img"} src={imageEasy}/>
-    </SoftBox>
+
     </SidenavRoot>
   );
 }

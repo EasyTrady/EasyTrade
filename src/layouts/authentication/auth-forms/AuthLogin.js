@@ -43,6 +43,7 @@ import { UserSignin } from 'store/pages/signinSlice';
 import { useNavigate } from 'react-router';
 import { GetShopInfo } from 'store/pages/signupslice';
 
+
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const FirebaseLogin = ({ ...others }) => {
@@ -75,11 +76,8 @@ const FirebaseLogin = ({ ...others }) => {
     event.preventDefault();
   };
 
-  
- 
   return (
     <>
-     
       <Formik
         initialValues={{
           email: '',
@@ -174,22 +172,24 @@ const FirebaseLogin = ({ ...others }) => {
            <FormControl
               
               error={Boolean(touched.email && errors.email)}
-              sx={{ ...theme.typography.customInput, marginY: '15px', 
+              sx={{ ...theme.typography.customInput 
             }}
             >
+              <Typography sx={{fontSize:'14px', fontWeight:500, fontFamily: "Cairo", pb:'16px', pt:'16px'}}>البريد الإلكتروني</Typography>
               <TextField
               variant='outlined'
-                sx={{
-                  direction: 'rtl',
-                  width:'100%',
-                  
-                  
-                }}
+              InputProps={{
+                placeholder:"البريد الالكتروني",
+                style: {direction: 'rtl',
+                width:'100%',
+                fontWeight: 400,
+                fontSize: '16px',
+                fontFamily: 'Cairo'}
+              }}
                 name="email"
                 value={values.email}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                placeholder="البريد الالكتروني"
               ></TextField>
               {/* <InputLabel htmlFor="outlined-adornment-email-login">البريد الالكتروني</InputLabel>
               <OutlinedInput
@@ -243,8 +243,16 @@ const FirebaseLogin = ({ ...others }) => {
 
                 }}
               >
+                <Typography sx={{fontSize:'14px', fontWeight:500, fontFamily: "Cairo", pb:'16px'}}>كلمة المرور</Typography>
                 <TextField
                 variant='outlined'
+                InputProps={{
+                  placeholder:"كلمة المرور",
+                  style: {
+                  fontWeight: 400,
+                  fontSize: '16px',
+                  fontFamily: 'Cairo'}
+                }}
                   sx={{
                     direction: 'rtl',
                     minWidth:'100%',
@@ -253,7 +261,6 @@ const FirebaseLogin = ({ ...others }) => {
                   name="password"
                   value={values.password}
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="كلمة المرور"
                   
                   onBlur={handleBlur}
                 onChange={handleChange}
@@ -261,7 +268,7 @@ const FirebaseLogin = ({ ...others }) => {
                 ></TextField>
                 <InputAdornment sx={{
                   position: 'absolute',
-                  top: '50%',
+                  top: '75%',
                   left: '0',
                   padding: '0',
                   transform: 'translate(5px, -50%)'
@@ -285,24 +292,29 @@ const FirebaseLogin = ({ ...others }) => {
               )}
             </FormControl>
             </Box>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1} >
-              <FormControlLabel
-              
+            <Stack direction="row-reverse" alignItems="center" justifyContent="space-between" spacing={1} >
+              <Typography sx={{ 
+                fontFamily: 'Cairo',
+                fontSize: '14px',
+                fontWeight: 400, 
+                direction:'rtl',
+                display:'flex',
+                justifyContent:'end'}}>
+                <FormControlLabel
+                sx={{padding:"0 0 0 20px",
+                marginRight:'0 !important' }}
                 control={
-                  <Checkbox
-                    checked={checked}
-                    onChange={(event) => setChecked(event.target.checked)}
-                    name="checked"
-                    color="primary"
+                  <Checkbox variant="outlined" onChange={(event) => setChecked(event.target.checked)}
+                  name="checked"
+                  color="primary"
                   />
-              
                 }
-                label="تذكرني"
-              />
+              /> تذكرني؟
+              </Typography>
               <Typography
                 variant="subtitle1"
                 color="secondary"
-                sx={{  cursor: 'pointer',color:'#5D449B',fontFamily:'Cairo',fontSize:'14px',fontWeight:500 }}
+                sx={{  cursor: 'pointer',color:'#6941C6',fontFamily:'Cairo',fontSize:{xs:'12px', md:'14px'},fontWeight:600 }}
               >
                 هل نسيت كلمة المرور ؟
               </Typography>
@@ -320,9 +332,7 @@ const FirebaseLogin = ({ ...others }) => {
                   backgroundColor:'#5D449B',color:'#FFFFFF', width:'100%',
                   '&:hover': {
                     backgroundColor: '#5D449B',
-                  },
-                
-                
+                  }, fontFamily:'Cairo', fontSize:'16px', fontWeight: 600
                 }}
                   disableElevation
                   disabled={isSubmitting}
@@ -343,10 +353,8 @@ const FirebaseLogin = ({ ...others }) => {
 
         )}
       </Formik>
-      
-        
-          <Divider  />
-     <Box width={'100%'}>
+      <Divider  />
+      <Box width={'100%'}>
         <AnimateButton >
           <Button  
             onClick={googleHandler}
@@ -357,14 +365,12 @@ const FirebaseLogin = ({ ...others }) => {
               backgroundColor: theme.palette.grey[50],
               borderColor: '#D0D5DD',
               padding: '10px 16px 10px 16px',
-              marginTop: '20px',
               width:'100%',
               borderRadius: '12px',
               '&:hover': {
                 backgroundColor: theme.palette.grey[50] ,
                 borderColor: '#D0D5DD',
-              },
-              
+              }, fontFamily:'Cairo', fontSize:'16px', fontWeight: 600
             }}
           >
             <Box sx={{ mr: { xs: 1, sm: 2, width: 20 } }}>
@@ -379,8 +385,10 @@ const FirebaseLogin = ({ ...others }) => {
             تسجيل الدخول بحساب جوجل
           </Button>
         </AnimateButton>
-      
+        
         </Box>
+        
+        
       <ToastContainer />
       {signInResponse.failAlert}
       {ShopInfoResponse.failAlert}

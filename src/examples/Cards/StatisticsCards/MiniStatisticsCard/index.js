@@ -27,15 +27,15 @@ import SoftTypography from "components/SoftTypography";
 
 function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction }) {
   return (
-    <Card >
+    <Card>
       <SoftBox bgColor={bgColor} variant="gradient">
-        <SoftBox p={2} >
+        <SoftBox p={2}>
           <Grid container alignItems="center">
             {direction === "left" ? (
               <Grid item>
                 <SoftBox
                   variant="gradient"
-                  bgColor={bgColor === "white" ? icon?.color : "white"}
+                  bgColor={bgColor === "white" ? icon.color : "white"}
                   color={bgColor === "white" ? "white" : "dark"}
                   width="3rem"
                   height="3rem"
@@ -46,42 +46,39 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
                   shadow="md"
                 >
                   <Icon fontSize="small" color="inherit">
-                    {icon?.component}
+                    {icon.component}
                   </Icon>
                 </SoftBox>
               </Grid>
             ) : null}
             <Grid item xs={8}>
-              <SoftBox ml={direction === "left" ? 2 : 0} lineHeight={1} display={"flex"} flexDirection="column">
+              <SoftBox ml={direction === "left" ? 2 : 0} lineHeight={1}>
                 <SoftTypography
                   variant="button"
-                  color={bgColor === "white" ? "dark" : "white"}
+                  color={bgColor === "white" ? "text" : "white"}
                   opacity={bgColor === "white" ? 1 : 0.7}
                   textTransform="capitalize"
-                  fontWeight={title?.fontWeight}
-                  sx={{fontSize:"20px"}}
+                  fontWeight={title.fontWeight}
                 >
-                  {title?.text}
+                  {title.text}
                 </SoftTypography>
                 <SoftTypography
-                  variant="p"
-                  fontWeight="normal"
+                  variant="h5"
+                  fontWeight="bold"
                   color={bgColor === "white" ? "dark" : "white"}
-                  fontSize={"16px"}
                 >
                   {count}{" "}
-                  
-                </SoftTypography>
-                <SoftTypography variant="button" color={percentage?.color} fontWeight="bold" fontSize="12px">
-                    {percentage?.text}
+                  <SoftTypography variant="button" color={percentage.color} fontWeight="bold">
+                    {percentage.text}
                   </SoftTypography>
+                </SoftTypography>
               </SoftBox>
             </Grid>
             {direction === "right" ? (
               <Grid item xs={4}>
                 <SoftBox
                   variant="gradient"
-                  bgColor={bgColor === "white" ? icon?.color : "white"}
+                  bgColor={bgColor === "white" ? icon.color : "white"}
                   color={bgColor === "white" ? "white" : "dark"}
                   width="3rem"
                   height="3rem"
@@ -93,7 +90,7 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
                   shadow="md"
                 >
                   <Icon fontSize="small" color="inherit">
-                    {icon?.component}
+                    {icon.component}
                   </Icon>
                 </SoftBox>
               </Grid>

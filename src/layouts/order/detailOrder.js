@@ -690,7 +690,7 @@ function DetailOrder({ absolute, light, isMini }) {
                     onClick={handleSubmit}
                 >
 
-                    {patchOrderResponce.isPending ? <><CircularProgress />loading</>: "Save"}
+                    {patchOrderResponce.isPending ? <CircularProgress /> : "Save"}
                 </SoftButton>  </SoftBox>}
 
             </Container>

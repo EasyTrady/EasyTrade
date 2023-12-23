@@ -48,8 +48,8 @@ function PlaceholderCard({ icon, title, hasBorder, outlined }) {
             {icon}
           </Icon>
         </SoftBox>
-        <SoftTypography variant={title?.variant} color="secondary">
-          {title?.text}
+        <SoftTypography variant={title.variant} color="secondary">
+          {title.text}
         </SoftTypography>
       </SoftBox>
     </Card>
