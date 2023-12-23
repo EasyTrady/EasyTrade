@@ -39,13 +39,13 @@ import { styled } from '@mui/system';
 import Slider from "react-slick";
 import compare from 'utils/compare'
 import DragerItem from './DragerItem'
-
+import image1 from "assets/images/Avatar.png"
 function index({ absolute, light, isMini }) {
     const route = useLocation().pathname.split("/").slice(1);
     const contentTypes = useSelector((state) => state.content.value)
     const specialCategorys = useSelector((state) => state.specialCategory.value)
     const Brands = useSelector((state) => state.brand.value)
-
+    let permissionYour = useSelector((state) => state.permissionYour.value)
     const homeComponent = useSelector((state) => state.homeComponent.value)
     let shop_id = localStorage.getItem("shop_id")
     let dispatch = useDispatch()
@@ -429,14 +429,15 @@ function index({ absolute, light, isMini }) {
                 <Stack direction={{ lg: "row", md: "column", sm: "column", xs: "column" }} justifyContent={"space-between"}>
                     <SoftBox sx={{ backgroundColor: "#fff", width: { lg: "44%", md: "100%", sm: "100%", xs: "100%" }, borderRadius: "8px", height: "100vh" }}>
                         <SoftBox sx={{ width: "100%", borderBottom: "1px solid ", padding: "16px" }}>
-                            <SoftButton variant={"outlined"} onClick={() => { setOpen(true); setEdit(null); resetControls() }}
+                            {permissionYour.map((ele)=>ele.codename).includes("add_homecomponent")&& <SoftButton variant={"outlined"} onClick={() => { setOpen(true); setEdit(null); resetControls() }}
                                 sx={{ borderColor: ({ palette: { purple } }) => purple.middle, color: ({ palette: { purple } }) => purple.middle }}>
                                 <Icon fontSize="small" on sx={{ color: ({ palette: { purple } }) => purple.middle }}>
                                     add
                                 </Icon>
                                 {t("Additem")}
                             </SoftButton>
-
+}
+                           
 
                         </SoftBox>
                         <SoftBox refence={drop} onDrop={handleDrop} >
@@ -450,9 +451,9 @@ function index({ absolute, light, isMini }) {
                                             <Typography component="p" sx={{ fontSize: "14px", width: "100%" }}>{ele.title}</Typography>
                                         </SoftBox>
 
-                                        <ViewIcon sx={{ width: "20%" }} onClick={() => { Object.entries(ele).map(([key, value]) => key == "content_type" ? setControl(key, TypeItem.find((elem) => elem.id == value)) : key == "items" ? setControl(key, value) : setControl(key, value)); setOpen(true); setEdit(ele) }} />
+                                        {permissionYour.map((ele)=>ele.codename).includes("change_homecomponent")&&<ViewIcon sx={{ width: "20%" }} onClick={() => { Object.entries(ele).map(([key, value]) => key == "content_type" ? setControl(key, TypeItem.find((elem) => elem.id == value)) : key == "items" ? setControl(key, value) : setControl(key, value)); setOpen(true); setEdit(ele) }} />}
                                     </SoftBox>
-                                    <DeleteIcon sx={{ width: "20%" }} onClick={() => DeleteComponenet(ele)} />
+                                    {permissionYour.map((ele)=>ele.codename).includes("delete_homecomponent")&&<DeleteIcon sx={{ width: "20%" }} onClick={() => DeleteComponenet(ele)} />}
                                     {/* </SoftBox> */}
                                 </DragerItem>)}
                         </SoftBox>
@@ -765,6 +766,62 @@ function index({ absolute, light, isMini }) {
                                     {t("Grid")}
                                 </SoftButton>
                             </SoftBox></>}
+                            {controls?.display == "single"&&<><Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
+                            >{t("brannernumber")}
+
+                            </Typography>
+                            <SoftInput
+
+                                value={controls?.max_number}
+                                //   disabled={number && !Boolean(number)}
+
+                                onChange={(e) =>
+                                    {let tester=/^(?:\d+|)$/
+                                  
+                                    tester.test(e.target.value) && setControl("max_number", e.target.value)}
+                                }
+                                required={required.includes("max_number")}
+                                error={Boolean(invalid?.max_number)}
+                                helperText={invalid?.max_number}
+                            />
+                            <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
+                            >{t("ChooseBanners")}
+
+                            </Typography>
+                            <SelectField
+                                variant="outlined"
+                                placeholder={"Export"}
+                                
+                                onOpen={getBanners}
+                                value={controls?.items}
+                                onChange={(e) => setControl("items", e.target.value)}
+
+                                renderValue={(selected) => {
+                                    
+                                    if (banners?.results?.length == 0) {
+                                        getBanners()
+                                    }
+                                    return <SoftBox sx={{ display: "flex" }}>{ selected?.banner_object?.name}</SoftBox>
+                                }}
+                                sx={{ width: "100% !important" }}
+                                required={required.includes("items")}
+                                error={Boolean(invalid?.items)}
+                                helperText={invalid?.items}
+                            >
+                                {
+                                    banners?.results?.map((product, index) => (
+                                        <MenuItem key={index} value={product}>{product?.banner_object?.name}</MenuItem>
+                                    ))
+                                }
+                            </SelectField>
+                            {Boolean(controls?.items?.image)&&<SoftBox sx={{display: "flex",justifyContent: "space-around"}}>
+                            <SwitchIcon />
+                            <img src={controls?.items?.image}/>
+                            <DeleteIcon sx={{ width: "20%" }} onClick={() => DeleteComponenet(ele)} />
+                            
+                            </SoftBox>}
+                            
+                            </>}
                         {controls?.overflow_type == "scroll" ? <>
                             <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
                             >{t("brannernumber")}
@@ -864,6 +921,13 @@ function index({ absolute, light, isMini }) {
                                 }
                             </SelectField>
                         </> : <></>}
+                        {( controls?.overflow_type == "wrap" ||controls?.overflow_type == "scroll")&&Boolean(controls?.items?.length>0)&&<SoftBox sx={{display: "flex",justifyContent: "space-around"}}>
+                            <SwitchIcon />
+                           
+                            {controls?.items?.map((ele)=> <img key={ele.id} src={ele?.image}/>)}
+                            <DeleteIcon sx={{ width: "20%" }} onClick={() => DeleteComponenet(ele)} />
+                            
+                            </SoftBox>}
                     </>}
                     {controls?.content_type?.title == "specialcategory" && <>
                         <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}

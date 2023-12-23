@@ -10,7 +10,7 @@ import { PrintButton } from "styles/productStyle";
 import { useTranslation } from 'react-i18next';
 import SyncIcon from '@mui/icons-material/Sync';
 // import TwoArrow from ""
-
+import Permissition from "components/common/Permissition";
 import DataGridCustom from 'components/common/DateGridCustomer'
 import Form from 'components/common/Form'
 import CustomPagination from 'components/common/Pagination'
@@ -43,6 +43,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import TwoArrow from 'examples/Icons/TwoArrow';
 import DeleteIcon from 'examples/Icons/DeleteIcon';
 import EditIcon from 'examples/Icons/EditIcon';
+import usePermission from 'utils/usePermission';
 function Attribute({ absolute, light, isMini }) {
     const [open, setOpen] = React.useState(false);
     const [edit, setEdit] = React.useState(null);
@@ -51,7 +52,8 @@ function Attribute({ absolute, light, isMini }) {
     let [addvalue, setaddvalue] = React.useState(false);
     let [Blurvalue, setblurvalue] = React.useState(false);
     let [indexedit, setindexedit] = React.useState(0);
-
+    let permissionYour = useSelector((state) => state.permissionYour.value)
+    let {isPermitted}=usePermission()
     let dispatch = useDispatch()
     let { t } = useTranslation("common")
 
@@ -478,8 +480,7 @@ function Attribute({ absolute, light, isMini }) {
                         Print
                     </Button>
                     <Divider orientation="vertical" sx={{ width: '1px', height: "72px" }} />
-
-                    <SoftButton variant="gradient"
+                   {permissionYour.map((ele)=>ele.codename).includes("add_productattribute")&&<SoftButton variant="gradient"
                         sx={{
                             backgroundColor: (theme) => theme.palette.purple.middle,
                             color: "white !important", "&:hover": {
@@ -490,14 +491,16 @@ function Attribute({ absolute, light, isMini }) {
                     >
                         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                         &nbsp;{t("addnewattribute")}
-                    </SoftButton>
+                    </SoftButton>} 
+                    
+                   
                 </SoftBox>
 
 
                 <DataGridCustom
                     rows={rows}
-                    onDelete={onDelete}
-                    onDialog={onEdit}
+                    onDelete={isPermitted(onDelete,["delete_productattribute"])}
+                    onDialog={isPermitted(onEdit,["change_productattribute"])}
                     columns={columns}
                     checkboxSelection={true}
                     loading={getattributeResponce.isPending}

@@ -16,11 +16,16 @@ import moment from 'moment';
 import Breadcrumbs from 'examples/Breadcrumbs'
 import SoftButton from "components/SoftButton";
 import { useTranslation } from 'react-i18next';
+import usePermission from 'utils/usePermission';
+
 function Coupon({ absolute, light, isMini }) {
     const route = useLocation().pathname.split("/").slice(1);
+    let permissionYour = useSelector((state) => state.permissionYour.value)
     let {t}= useTranslation("common")
     let [rows, setRows] = useState([])
     let navigate=useNavigate()
+    let {isPermitted}=usePermission()
+
     let coupons = useSelector((state) => state.coupon.value)
   const sub_domain = localStorage.getItem('sub_domain')
     let Token = localStorage.getItem('token')
@@ -37,6 +42,15 @@ function Coupon({ absolute, light, isMini }) {
             method: "patch",
             Token: `Token ${Token}`
         });
+
+        const [coupondeleteRequest, coupondeleteResponce] =
+        useRequest({
+            path: COUPONS,
+            method: "delete",
+            Token: `Token ${Token}`
+        });
+       
+
     useEffect(() => {
         couponRequest({
             onSuccess: (res) => {
@@ -46,6 +60,7 @@ function Coupon({ absolute, light, isMini }) {
         })
 
     }, [])
+
     function updateStatus(ele,newResult){
         couponpatchRequest({
             id:ele.id,
@@ -57,6 +72,19 @@ function Coupon({ absolute, light, isMini }) {
             }
         })
     }
+
+    function onDelete(row){
+        console.log(row)
+        coupondeleteRequest({
+            id:row,
+            onSuccess:(res)=>{
+                dispatch({ type: "coupon/deleteItem", payload:{ id:row} })
+
+              
+            }
+        })
+    }
+
     const columns = [
         {
             field: 'coupon_code',
@@ -164,7 +192,7 @@ function Coupon({ absolute, light, isMini }) {
                     xs: 1, md: 0, display: "flex", justifyContent: "flex-end",
                     alignItems: "center"
                 }} sx={{ textAlign: "right" }}>
-                <SoftButton variant="gradient"
+                    {permissionYour.map((ele)=>ele.codename).includes("add_coupon")&&<SoftButton variant="gradient"
                         sx={{
                             backgroundColor: (theme) => theme.palette.purple.middle,
                             color: "white !important", "&:hover": {
@@ -175,7 +203,8 @@ function Coupon({ absolute, light, isMini }) {
                     >
                         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                         &nbsp;{t("Add New Coupon")}
-                    </SoftButton>
+                    </SoftButton>}
+                
                     </SoftBox>
                 <DataGridCustom
                     rows={rows}
@@ -184,7 +213,7 @@ function Coupon({ absolute, light, isMini }) {
 
                     //   onDialog={onEdit}
 
-                    //   onDelete={onDelete}
+                    onArchive={(onDelete,["delete_coupon"])}
 
                     checkboxSelection={true}
                     //   onRowClick={(e,row) => {

@@ -25,6 +25,8 @@ import  HomeComponentSlice   from './pages/homeComponentSlice';
 import  BrandSlice   from './pages/brandSlice';
 import  NotificationSlice  from './pages/notificationSlice';
 import  CouponSlice  from './pages/couponSlice';
+import  PermissionSlice  from './pages/permissionSlice';
+import  PermissionYourSlice  from './pages/yourPermissionSlice';
 
 
 const store = configureStore({
@@ -53,7 +55,9 @@ const store = configureStore({
      brand:BrandSlice,
      totals:totalSlice,
      notification:NotificationSlice,
-     coupon:CouponSlice
+     coupon:CouponSlice,
+     permission:PermissionSlice,
+     permissionYour:PermissionYourSlice
   }
 });
 export default store

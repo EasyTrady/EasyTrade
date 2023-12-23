@@ -8,11 +8,12 @@ import image from '../../assets/images/icons/image.svg'
 import useRequest from "hooks/useRequest";
 import { PRODUCTS } from "data/api";
 import { Alert } from "@mui/material";
+import usePermission from 'utils/usePermission';
 // eslint-disable-next-line react/prop-types
 const ImageBox = ({ main_image, onChange }) => {
   const [mainImages, setMainImages] = React.useState([]);
   const [alert, setAlert] = React.useState("");
-
+  let {isPermitted}=usePermission()
   let idProduct= localStorage.getItem('productId');
   let Token = localStorage.getItem("token");
   const [deleteProductImagesRequest,deleteProductImagesResponce] = useRequest({
@@ -36,12 +37,10 @@ const ImageBox = ({ main_image, onChange }) => {
         img.src = imageDataUrl;
         img.onload = function () {
        
-        if (img.width === 700 && img.height === 700) {
+       
           setMainImages((prevImages) => [...prevImages, imageDataUrl]);
           setAlert("")
-        }else{
-          setAlert("image width should be 700px and hight should be 700px also")
-        }
+       
   
       }}
 
@@ -135,7 +134,7 @@ const ImageBox = ({ main_image, onChange }) => {
               name="profile_image"
               type="file"
               accept="image/*"
-              onChange={handleAvatarChange}
+              onChange={isPermitted(handleAvatarChange,["change_productvariantimages","change_productvariantimage","add_productvariantimages","add_productvariantimage"])}
               style={{ display: "none" }}
             />
             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -160,7 +159,7 @@ const ImageBox = ({ main_image, onChange }) => {
                   },
                 }}
                 onClick={() => {
-                  handelDeleteImage(index)
+                  isPermitted(handelDeleteImage(index),["delete_productvariantimages","delete_productvariantimage"])
                 }}
               >
                 Remove image
@@ -182,7 +181,7 @@ const ImageBox = ({ main_image, onChange }) => {
             name="profile_image"
             type="file"
             accept="image/*"
-            onChange={handleAvatarChange}
+            onChange={isPermitted(handleAvatarChange,["change_productvariantimages","change_productvariantimage","add_productvariantimages","add_productvariantimage"])}
             style={{ display: "none" }}
           />
         {/* <Box
@@ -276,7 +275,7 @@ const ImageBox = ({ main_image, onChange }) => {
            fontWeight: 500,
            lineHeight: '20px'}}
            onClick={() => {
-            document.getElementById("profile_image").click();
+            isPermitted(document.getElementById("profile_image").click(),["change_productvariantimages","change_productvariantimage","add_productvariantimages","add_productvariantimage"])
           }}
            >select click to browse</Typography>
                </Typography>
