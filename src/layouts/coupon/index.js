@@ -42,6 +42,7 @@ function Coupon({ absolute, light, isMini }) {
             method: "patch",
             Token: `Token ${Token}`
         });
+
         const [coupondeleteRequest, coupondeleteResponce] =
         useRequest({
             path: COUPONS,
@@ -49,6 +50,7 @@ function Coupon({ absolute, light, isMini }) {
             Token: `Token ${Token}`
         });
        
+
     useEffect(() => {
         couponRequest({
             onSuccess: (res) => {
@@ -70,6 +72,7 @@ function Coupon({ absolute, light, isMini }) {
             }
         })
     }
+
     function onDelete(row){
         console.log(row)
         coupondeleteRequest({
@@ -81,6 +84,7 @@ function Coupon({ absolute, light, isMini }) {
             }
         })
     }
+
     const columns = [
         {
             field: 'coupon_code',

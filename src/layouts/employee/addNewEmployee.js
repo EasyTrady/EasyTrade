@@ -127,8 +127,14 @@ function AddNewEmployee({ absolute, light, isMini }) {
 
             if (!output.isOk) return;
 
+
             if (Boolean(state?.dataRow)) {
                 let result = compare(
+
+           
+            if(Boolean(state?.dataRow)){
+                let  result= compare(
+
                     [
                         [controls.email, state?.dataRow?.email, "email"],
                         [controls.full_name, state?.dataRow?.full_name, "full_name"],
@@ -136,6 +142,7 @@ function AddNewEmployee({ absolute, light, isMini }) {
                         [controls.job, state?.dataRow?.job, "job"]
                     ], false
                 )
+
 
                 EmployeePatchRequest({
                     id: controls.id,
@@ -191,7 +198,9 @@ function AddNewEmployee({ absolute, light, isMini }) {
         // setControl()
 
     }, [state])
+
     useEffect(() => {
+
 
 
     }, [jobs, controls.job])
@@ -208,9 +217,12 @@ function AddNewEmployee({ absolute, light, isMini }) {
             <DashboardLayout>
                 <DashboardNavbar />
                 <Container>
+
                     <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
                         <Breadcrumbs icon="home" title={Boolean(state?.dataRow) ? t("Edit Employee") : "Add New Employee"} route={route} light={light} />
                     </SoftBox>
+
+               
                 </Container>
                 <Container sx={{ p: 2, display: "flex", justifyContent: "space-between" }}>
                     <Form component="form"
@@ -288,7 +300,9 @@ function AddNewEmployee({ absolute, light, isMini }) {
                                                 );
                                             } else {
 
-                                                return jobs?.results?.find((ele) => ele.id === selected)?.title;
+                                            
+                                                return jobs?.results?.find((ele)=>ele.id===selected)?.title;
+
                                             }
                                         },
                                         MenuProps: {
