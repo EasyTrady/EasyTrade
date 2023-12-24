@@ -78,7 +78,7 @@ const ViewBanners = ({ absolute, light, isMini }) => {
         </Stack>
         );
     },
-      editable: true,
+      editable: false,
       filterable: false,
       sortable: false,disableColumnMenu: true
     }
@@ -90,7 +90,7 @@ const ViewBanners = ({ absolute, light, isMini }) => {
       align: 'center',
       color:'#1B53C5',
       headerAlign: 'center',
-      editable: true,
+      editable: false,
       filterable: true,
       sortable: false,disableColumnMenu: true,
       renderCell: (params) => {
@@ -108,7 +108,7 @@ const ViewBanners = ({ absolute, light, isMini }) => {
       width: 220,
       align: 'center',
       headerAlign: 'center',
-      editable: true,
+      editable: false,
       renderCell: (params) => {
         const { row } = params;
         return (<Stack direction={"row"} justifyContent={'flex-start'} alignItems={'center'}>
@@ -131,7 +131,7 @@ color:row?.banner_type===1?'#027A48':row?.banner_type===2?"#7A0243":row?.banner_
       width: 186,
       align: 'center',
       headerAlign: 'center',
-      // editable: true,
+      editable: false,
       renderCell:(params)=>{
         const { row } = params;
         row?.categories?.map((cat)=>(

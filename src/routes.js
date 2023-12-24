@@ -234,18 +234,18 @@ const routes = [
     key: "Offers",
     route: `/${sub_domain}/dashboard/offers`,
     icon: <img src={offers} size="12px" />,
-    noCollapse: true,
+    noCollapse: false,
     component: <Auth><Offers /></Auth>,
-    permission:["view_offer"],
-    children: [{
-      id: "Offers",
-      path: `/${sub_domain}/dashboard/offers`,
-      title: "offers",
-      element: <Auth><Offers /></Auth>,
-      type: "item",
-      permission:["view_offer"],
-    }
-    ]
+    permission:["view_productoffer"],
+    // children: [{
+    //   id: "Offers",
+    //   path: `/${sub_domain}/dashboard/offers`,
+    //   title: "offers",
+    //   element: <Auth><Offers /></Auth>,
+    //   type: "item",
+    //   permission:["view_productoffer"],
+    // }
+    // ]
   },
   {
     type: "collapse",
@@ -253,20 +253,20 @@ const routes = [
     key: "Banners",
     route: `/${sub_domain}/dashboard/banners`,
     icon: <img src={banner} size="12px" />,
-    noCollapse: true,
+    noCollapse: false,
     component: <Auth><ViewBanners /></Auth>,
     permission:["view_banner"],
 
-    children: [{
-      id: "Banners",
-      path: `/${sub_domain}/dashboard/banners`,
-      title: "Banners",
-      element: <Auth><ViewBanners /></Auth>,
-      type: "item",
-      permission:["view_banner"]
+    // children: [{
+    //   id: "Banners",
+    //   path: `/${sub_domain}/dashboard/banners`,
+    //   title: "Banners",
+    //   element: <Auth><ViewBanners /></Auth>,
+    //   type: "item",
+    //   permission:["view_banner"]
 
-    }
-    ]
+    // }
+    // ]
   },
   {
     type: "collapse",
@@ -296,14 +296,14 @@ const routes = [
     icon: <GroupIcon size="12px" />,
     noCollapse: true,
     component: <Auth><Customer /></Auth>,
-    permission:["view_customeraddress"],
+    permission:["view_customer"],
     children: [{
       id: "Customer",
       path: `/${sub_domain}/dashboard/customer`,
       title: "Customer",
       element: <Auth><Customer /></Auth>,
       type: "item",
-      permission:["view_customeraddress"]
+      permission:["view_customer"]
     },
     ]
   },
@@ -547,6 +547,8 @@ const routes = [
     icon: <CustomerSupport size="12px" />,
     component:<Auth> <Profile /></Auth>,
     noCollapse: false,
+    permission:[]
+
   },
   // {
   //   type: "collapse",

@@ -45,7 +45,7 @@ const NavItem = ({ item }) => {
 
  
 
-
+  
   let listItemProps = {
     component: forwardRef((props, ref) => <Link ref={ref} {...props} to={item.url} target={'_self'} />)
   };
