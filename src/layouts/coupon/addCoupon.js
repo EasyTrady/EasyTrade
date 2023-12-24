@@ -333,18 +333,18 @@ function AddCoupon({ absolute, light, isMini }) {
                                 aria-labelledby="demo-row-radio-buttons-group-label"
                                 name="row-radio-buttons-group"
                                 value={controls.minimumrequirement}
-                                sx={{ marginX: "20px" }}
+                                sx={{ marginX: "20px",mb:"6px" }}
                                 onChange={(e) => { setControl("minimumrequirement", e.target.value); }}
                             >
-                                <FormControlLabel value={t("None")} control={<Radio />} label={t("None")} sx={{ ".MuiFormControlLabel-label": { fontWeight: "400", fontSize: "12px" } }} />
-                                <FormControlLabel value={t("minimumpurchaseamount")} control={<Radio />} label={t("Minimum purchase amount")} sx={{ ".MuiFormControlLabel-label": { fontWeight: "400", fontSize: "12px" } }} />
-                                <FormControlLabel value={t("minimumquantityofitems")} control={<Radio />} label={t("Minimum quantity of items")} sx={{ ".MuiFormControlLabel-label": { fontWeight: "400", fontSize: "12px" } }} />
+                                <FormControlLabel value={t("None")} control={<Radio />} label={t("None")} sx={{ ".MuiFormControlLabel-label": { fontWeight: "400", fontSize: "12px" },marginLeft:"unset !important" }} />
+                                <FormControlLabel value={t("minimumpurchaseamount")} control={<Radio />} label={t("Minimum purchase amount")} sx={{ ".MuiFormControlLabel-label": { fontWeight: "400", fontSize: "12px" },marginLeft:"unset !important"} }/>
+                                <FormControlLabel value={t("minimumquantityofitems")} control={<Radio />} label={t("Minimum quantity of items")} sx={{ ".MuiFormControlLabel-label": { fontWeight: "400", fontSize: "12px"} ,marginLeft:"unset !important"} } />
                             </RadioGroup>
                             {(controls.minimumrequirement=="minimumpurchaseamount"||controls.minimumrequirement=="minimumquantityofitems")&&
                             <SoftInput
                             id="outlined-adornment-password"
                             type={'text'}
-                            placeholder={"Minimum quantity..."}
+                            placeholder={controls.minimumrequirement=="minimumpurchaseamount"?"Minimum amount...":"Minimum quantity..."}
                             value={controls.minimumrequirement=="minimumpurchaseamount"?controls?.minimum_items_quantity:controls?.minimum_purchase_amount}
                             sx={{ ".MuiInputBase-root": { overflow: "hidden !important"} }}
                             onChange={(e) => {
@@ -360,13 +360,26 @@ function AddCoupon({ absolute, light, isMini }) {
                                 aria-labelledby="demo-row-radio-buttons-group-label"
                                 name="row-radio-buttons-group"
                                 value={controls.customerSelect}
-                                sx={{ marginX: "20px" }}
+                                sx={{ marginX: "20px",mb:"6px" }}
                                 onChange={(e) => { setControl("customerSelect", e.target.value); }}
                             >
-                                <FormControlLabel value={t("everyone")} control={<Radio />} label={t("Everyone")} sx={{ ".MuiFormControlLabel-label": { fontWeight: "400", fontSize: "12px" } }} />
-                                <FormControlLabel value={t("specificCustomer")} control={<Radio />} label={t("Specific customer")} sx={{ ".MuiFormControlLabel-label": { fontWeight: "400", fontSize: "12px" } }} />
+                                <FormControlLabel value={t("everyone")} control={<Radio />} label={t("Everyone")} sx={{ ".MuiFormControlLabel-label": { fontWeight: "400", fontSize: "12px" },marginLeft:"unset !important" }} />
+                                <FormControlLabel value={t("specificCustomer")} control={<Radio />} label={t("Specific customer")} sx={{ ".MuiFormControlLabel-label": { fontWeight: "400", fontSize: "12px" },marginLeft:"unset !important" }} />
                                 
                             </RadioGroup>
+                            { controls.customerSelect=="specificCustomer"&&<SoftInput
+                            id="outlined-adornment-password"
+                            type={'text'}
+                            placeholder={"Search for customer"}
+                            value={controls.customerSelect}
+                            sx={{ ".MuiInputBase-root": { overflow: "hidden !important"} }}
+                            onChange={(e) => {
+                               setControl("customerSelect", e.target.value)
+                            }}
+                            InputProps={{
+                                startAdornment: (<SearchOutlinedIcon sx={{height:'16px',width:'16px'}}/>)
+                                }}
+                           />}
                         </Box>
                     </Box>
                 </Form>
@@ -379,6 +392,7 @@ function AddCoupon({ absolute, light, isMini }) {
                         color="dark"
                         sx={{ backgroundColor: "#510ab3", ":hover": { backgroundColor: (theme) => theme.palette.purple.middle } }}
                         onClick={() => handleSubmit()}
+
                     >
                         {"Add Coupon"}
                     </SoftButton></SoftBox>

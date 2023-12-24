@@ -15,15 +15,18 @@ import PersonIcon from '@mui/icons-material/Person';
 import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
+import DatePickerField from "components/common/DatePicker";
 import LockOpenIcon from '@mui/icons-material/LockOpen';
-import PhoneField from 'components/common/PhoneField';
 import compare from 'utils/compare'
 import PasswordField from 'components/common/PasswordField';
 import { JOBS, EMPLOYEE,PERMISSIONS } from 'data/api';
 import useRequest from 'hooks/useRequest';
 import { useEffect } from 'react';
+import DateIcon2 from 'examples/Icons/DateIcon2';
 import { useDispatch, useSelector } from 'react-redux';
 import SoftButton from 'components/SoftButton';
+import PhoneField from 'components/common/PhoneField'
+import moment from 'moment';
 function AddNewEmployee({ absolute, light, isMini }) {
     const route = useLocation().pathname.split("/").slice(1);
     const sub_domain = localStorage.getItem('sub_domain')
@@ -107,7 +110,11 @@ function AddNewEmployee({ absolute, light, isMini }) {
                 value: [],
                 isRequired: false,
 
-            },
+            },{
+                control: "birth_date",
+                value: "",
+                isRequired: true,
+            }
         ]);
     const [EmployeePatchRequest, PatchEmployeerResponce] =
         useRequest({
@@ -121,39 +128,54 @@ function AddNewEmployee({ absolute, light, isMini }) {
             method: "get",
             Token: `Token ${Token}`
         });
-        function handleSubmit() {
-            validate().then((output) => {
-              if (!output.isOk) return;
-          
-              if (Boolean(state?.dataRow)) {
-                let result = compare([
-                  [controls.email, state?.dataRow?.email, "email"],
-                  [controls.full_name, state?.dataRow?.full_name, "full_name"],
-                  [controls.phone, state?.dataRow?.phone, "phone"],
-                  [controls.job, state?.dataRow?.job, "job"]
-                ], false);
-          
+    function handleSubmit() {
+
+        validate().then((output) => {
+
+            if (!output.isOk) return;
+            if(Boolean(state?.dataRow)){
+                let  result= compare(
+                    [
+                        [controls.email, state?.dataRow?.email, "email"],
+                        [controls.full_name, state?.dataRow?.full_name, "full_name"],
+                        [controls.phone, state?.dataRow?.phone, "phone"],
+                        [controls.job, state?.dataRow?.job, "job"]
+                    ], false
+                )
                 EmployeePatchRequest({
-                  id: controls.id,
-                  body: result.array,
-                  onSuccess: (res) => {
-                    dispatch({ type: "employee/patchItem", payload: { id: controls.id, item: res.data } });
-                    resetControls();
-                    navigate(`/${sub_domain}/dashboard/employee`);
-                  }
-                });
-              } else {
+                    id: controls.id,
+                    body: result.array,
+                    onSuccess: (res) => {
+
+
+                        dispatch({ type: "employee/patchItem", payload: { id: controls.id, item: res.data } })
+                        resetControls()
+                        navigate(`/${sub_domain}/dashboard/employee`)
+
+                    }
+                })
+            } else {
                 EmployeePostRequest({
-                  body: controls,
-                  onSuccess: (res) => {
-                    dispatch({ type: "employee/addItem", payload: res.data });
-                    navigate(`/${sub_domain}/dashboard/employee`);
-                    resetControls();
-                  }
+                    body: {birth_date:controls?.birth_date,
+                        email:controls?.email,
+                        full_name: controls?.full_name,
+                        job: controls?.job,
+                        password: controls?.password,
+                        phone: controls?.code+controls?.phone},
+                    onSuccess: (res) => {
+                        dispatch({ type: "employee/addItem", payload: res.data })
+                        navigate(`/${sub_domain}/dashboard/employee`)
+                        resetControls()
+
+                    }
                 }).then((res) => {
-                  let response = res?.response?.data;
-                  setInvalid(response);
-                });
+                    let response = res?.response?.data;
+
+
+                    setInvalid(response);
+
+                })
+              
               }
             });
           }
@@ -227,17 +249,21 @@ function AddNewEmployee({ absolute, light, isMini }) {
                             </Box>
                             <Box sx={{ marginY: "6px" }}>
                                 <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("Phone")}</InputLabel>
-                                <SoftInput
-
-                                    placeholder="Phone"
-                                    icon={{ component: <PhoneInTalkIcon />, direction: "left" }}
-                                    sx={{ ".MuiInputBase-root": { border: "unset" } }}
-                                    value={controls.phone}
-                                    onChange={(e) => setControl("phone", e.target.value)}
-                                    error={Boolean(invalid?.phone)}
-                                    helperText={invalid?.phone}
-                                >
-                                </SoftInput>
+                                <PhoneField
+                                            selectProps={{
+                                                value: controls.code,
+                                                onChange: (e) => {
+                                                    setControl("code", e.target.value);
+                                                },
+                                            }}
+                                            requiredCode
+                                            required={required.includes("phone")}
+                                            value={controls.phone}
+                                            onChange={(e) => setControl("phone", e.target.value)}
+                                            error={Boolean(invalid.phone)}
+                                            helperText={invalid.phone}
+                                            sx={{ width: "100%" }} />
+                              
                             </Box>
                             <Box sx={{ marginY: "6px" }}>
                                 <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{t("Email")}</InputLabel>
@@ -303,7 +329,7 @@ function AddNewEmployee({ absolute, light, isMini }) {
                                     {jobs?.results?.map((ele) => <MenuItem value={ele.id} key={ele.id}>{ele.title}</MenuItem>)}
                                 </SoftInput>
                             </Box>
-
+                           
                         </Box>
 
                     </Form>
@@ -340,7 +366,25 @@ function AddNewEmployee({ absolute, light, isMini }) {
                                     sx={{ ".MuiInputBase-root input": { minWidth: "95% !important" }, ".MuiInputBase-root": { border: "unset" }, ".MuiInputBase-root::before": { content: "none" } }}
                                     icon={{ component: <LockOpenIcon />, direction: "left" }}
                                 /></Box>
-
+ <Box>
+                            <Typography
+                                sx={{
+                                    fontSize: "14px",
+                                    fontWeight: 400,
+                                    lineHeight: "20px",
+                                    letterSpacing: "0em",
+                                    textAlign: "left",
+                                    mb: '6px'
+                                }}
+                            >
+                                birth date
+                            </Typography>
+                            <DatePickerField
+                                value={controls?.birth_date}
+                                onChange={(newvalue) => { setControl("birth_date", moment(newvalue).format("YYYY-MM-DD")); console.log(newvalue) }}
+                                icon={DateIcon2}
+                            />
+                        </Box>
                         </Box>
 
                     </Form>}

@@ -139,7 +139,7 @@ useEffect(()=>{
         </Typography>
         <Box sx={{ borderRadius: "100px", background: "#F0F6FF",padding: '5px',display:'flex',alignItem:'center',justifyContent:'center' }}
         onClick={() => {
-          isPermitted(document.getElementById("profile_image").click(),["add_productvariantimage","add_productvariantimages",'change_productvariantimage',"change_productvariantimages"]);
+          document.getElementById("profile_image").click();
         }}
         >
           <AddIcon />
