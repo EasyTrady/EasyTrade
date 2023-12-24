@@ -166,6 +166,7 @@ const ViewAddtionalPage = ({ absolute, light, isMini }) => {
       <DataGridCustom
         rows={banners?.results}
         columns={columns}
+        loading={AddtionPageGetResponce.pinding}
         onEdit={()=>{}}
         onDelete={()=>{}}
         onCopy={() => {}}
