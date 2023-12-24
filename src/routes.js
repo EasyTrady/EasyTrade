@@ -234,7 +234,7 @@ const routes = [
     type: "collapse",
     name: "Brands",
     key: "brands",
-    route: `/${sub_domain}/dashboard/brands`,
+    path: `/${sub_domain}/dashboard/brands`,
     icon: <Shop size="12px" />,
     component:  <Auth><Brands /></Auth>,
     noCollapse: true},
