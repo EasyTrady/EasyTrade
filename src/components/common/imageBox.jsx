@@ -134,7 +134,7 @@ const ImageBox = ({ main_image, onChange }) => {
               name="profile_image"
               type="file"
               accept="image/*"
-              onChange={isPermitted(handleAvatarChange,["change_productvariantimages","change_productvariantimage","add_productvariantimages","add_productvariantimage"])}
+              onChange={handleAvatarChange}
               style={{ display: "none" }}
             />
             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -159,7 +159,7 @@ const ImageBox = ({ main_image, onChange }) => {
                   },
                 }}
                 onClick={() => {
-                  isPermitted(handelDeleteImage(index),["delete_productvariantimages","delete_productvariantimage"])
+                  handelDeleteImage(index)
                 }}
               >
                 Remove image
@@ -181,7 +181,7 @@ const ImageBox = ({ main_image, onChange }) => {
             name="profile_image"
             type="file"
             accept="image/*"
-            onChange={isPermitted(handleAvatarChange,["change_productvariantimages","change_productvariantimage","add_productvariantimages","add_productvariantimage"])}
+            onChange={handleAvatarChange}
             style={{ display: "none" }}
           />
         {/* <Box
@@ -275,7 +275,7 @@ const ImageBox = ({ main_image, onChange }) => {
            fontWeight: 500,
            lineHeight: '20px'}}
            onClick={() => {
-            isPermitted(document.getElementById("profile_image").click(),["change_productvariantimages","change_productvariantimage","add_productvariantimages","add_productvariantimage"])
+            document.getElementById("profile_image").click()
           }}
            >select click to browse</Typography>
                </Typography>
