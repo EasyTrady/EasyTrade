@@ -121,63 +121,43 @@ function AddNewEmployee({ absolute, light, isMini }) {
             method: "get",
             Token: `Token ${Token}`
         });
-    function handleSubmit() {
-
-        validate().then((output) => {
-
-            if (!output.isOk) return;
-
-
-            if (Boolean(state?.dataRow)) {
-                let result = compare(
-
-           
-            if(Boolean(state?.dataRow)){
-                let  result= compare(
-
-                    [
-                        [controls.email, state?.dataRow?.email, "email"],
-                        [controls.full_name, state?.dataRow?.full_name, "full_name"],
-                        [controls.phone, state?.dataRow?.phone, "phone"],
-                        [controls.job, state?.dataRow?.job, "job"]
-                    ], false
-                )
-
-
+        function handleSubmit() {
+            validate().then((output) => {
+              if (!output.isOk) return;
+          
+              if (Boolean(state?.dataRow)) {
+                let result = compare([
+                  [controls.email, state?.dataRow?.email, "email"],
+                  [controls.full_name, state?.dataRow?.full_name, "full_name"],
+                  [controls.phone, state?.dataRow?.phone, "phone"],
+                  [controls.job, state?.dataRow?.job, "job"]
+                ], false);
+          
                 EmployeePatchRequest({
-                    id: controls.id,
-                    body: result.array,
-                    onSuccess: (res) => {
-
-
-                        dispatch({ type: "employee/patchItem", payload: { id: controls.id, item: res.data } })
-                        resetControls()
-                        navigate(`/${sub_domain}/dashboard/employee`)
-
-                    }
-                })
-            } else {
-                EmployeePostRequest({
-                    body: controls,
-                    onSuccess: (res) => {
-                        dispatch({ type: "employee/addItem", payload: res.data })
-                        navigate(`/${sub_domain}/dashboard/employee`)
-                        resetControls()
-
-                    }
-                }).then((res) => {
-                    let response = res?.response?.data;
-
-
-                    setInvalid(response);
-
+                  id: controls.id,
+                  body: result.array,
+                  onSuccess: (res) => {
+                    dispatch({ type: "employee/patchItem", payload: { id: controls.id, item: res.data } });
+                    resetControls();
+                    navigate(`/${sub_domain}/dashboard/employee`);
+                  }
                 });
-
-            }
-
-        })
-
-    }
+              } else {
+                EmployeePostRequest({
+                  body: controls,
+                  onSuccess: (res) => {
+                    dispatch({ type: "employee/addItem", payload: res.data });
+                    navigate(`/${sub_domain}/dashboard/employee`);
+                    resetControls();
+                  }
+                }).then((res) => {
+                  let response = res?.response?.data;
+                  setInvalid(response);
+                });
+              }
+            });
+          }
+          
     useEffect(() => {
         jobRequest({
             onSuccess: (res) => {
