@@ -22,7 +22,7 @@ function Permissition({children,permission,type}) {
     },[])
 
   return (
-    ((type=="collapse"? permission?.some((ele)=>permissionYour.map((elem)=>elem?.codename).includes(ele)):permission?.map((ele)=>permissionYour.map((elem)=>elem?.codename).includes(ele)))||permission.length==0) &&children
+    ((type=="collapse"? permission?.some((ele)=>permissionYour.map((elem)=>elem?.codename).includes(ele)):permission?.map((ele)=>permissionYour.map((elem)=>elem?.codename).includes(ele)))||permission?.length==0) &&children
   )
 }
 export default Permissition
