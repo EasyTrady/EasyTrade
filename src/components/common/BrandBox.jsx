@@ -2,7 +2,7 @@
 import { Box, Typography } from '@mui/material'
 import React from 'react'
 import deletebrand from '../../assets/images/deletebrand.svg'
-const BrandBox = ({website,name,image}) => {
+const BrandBox = ({website,name,logo}) => {
   return (
     <Box sx={{width: '100%',
     height: '187px',borderRadius: '8px',
@@ -14,7 +14,7 @@ const BrandBox = ({website,name,image}) => {
         <Box sx={{width: '102px',
 height: '64px',
 m:'auto'}}>
-            <img src={image} alt={name} style={{height:'100%',width:'100%'}}/>
+            <img src={logo} alt={name} style={{height:'100%',width:'100%'}}/>
         </Box>
         <Box sx={{mt:'12px'}}>
             <Typography sx={{color: '#7F7F7F',
