@@ -28,6 +28,7 @@ import MultiSelect from "./MultiSelect";
 import { POPULARBRANDS } from "data/api";
 import Delete from '../../assets/images/deletebrand.svg'
 import { BRANDS } from "data/api";
+import filter from "utils/ClearNull";
 const AddBrandDialog = ({ open, handleClose }) => {
   const category = useSelector((state) => state.category.value);
   const popularbrand = useSelector((state) => state.brand.value);
@@ -37,6 +38,7 @@ const AddBrandDialog = ({ open, handleClose }) => {
   const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
     { control: "brand_type", value: "", isRequired: false },
     { control: "name", value: "", isRequired: false },
+    { control: "logo", value:{} , isRequired: false },
     { control: "category", value: "", isRequired: false },
     { control: "popular_brands", value: [], isRequired: false },
   ]);
@@ -68,6 +70,12 @@ const AddBrandDialog = ({ open, handleClose }) => {
     path: BRANDS,
     method: "POST",
     Token: `Token ${Token}`,
+    contentType: "multipart/form-data",
+  });
+  const [RequestPostPopularBrand, ResponsePostPopularBrand] = useRequest({
+    path: BRANDS,
+    method: "POST",
+    Token: `Token ${Token}`,
   });
   const handleAvatarChange = (event) => {
     const file = event.target.files[0];
@@ -83,43 +91,68 @@ const AddBrandDialog = ({ open, handleClose }) => {
     validate().then((output) => {
       
       if (!output.isOk) return;  
-      let obj = {
-        name: controls.name,
-        offer_title: controls.offer_title,
-        banner: controls.banner,
-        published_on: controls.published_on,
-      };
+      let obj = {};
   
-      if(controls.offer_type === 1||2){
-        obj.productX= controls.productX
-        obj.productY= controls.productY
+      if(controls.brand_type === 'Local brand'){
+        RequestPostBrand({
+          body: filter({
+            obj: {
+              name:controls.name,
+              logo:controls.logo
+            },
+            output: "formData",
+          }),
+          onSuccess: (res) => {
+            resetControls("");
+            
+          }
+        }).then((res) => {
+          let response = res?.response?.data;
+          
+          // const responseBody = filter({
+          //   obj: {
+          //     name: response?.name?.join(""),
+          //     quantity: response?.quantity?.join(" "),
+          //    
+          //   },
+          //   output: "object",
+          // });
+    
+          // setInvalid(responseBody);
+        });
       }
-      
+      if(controls.brand_type === 'Popular brand'){
+        RequestPostPopularBrand({
+          body: filter({
+            obj: {
+              popular_brands:[...controls.popular_brands]
+            },
+            output: "object",
+          }),
+          onSuccess: (res) => {
+            resetControls("");
+            
+          }
+        }).then((res) => {
+          let response = res?.response?.data;
+          
+          // const responseBody = filter({
+          //   obj: {
+          //     name: response?.name?.join(""),
+          //     quantity: response?.quantity?.join(" "),
+          //    
+          //   },
+          //   output: "object",
+          // });
+    
+          // setInvalid(responseBody);
+        });
+      }
      
-      RequestPostBrand({
-        body: filter({
-          obj: obj,
-          output: "formData",
-        }),
-        onSuccess: (res) => {
-          resetControls("");
-        }
-      }).then((res) => {
-        let response = res?.response?.data;
-        
-        // const responseBody = filter({
-        //   obj: {
-        //     name: response?.name?.join(""),
-        //     quantity: response?.quantity?.join(" "),
-        //    
-        //   },
-        //   output: "object",
-        // });
-  
-        // setInvalid(responseBody);
-      });
+     
     });
   }
+  
   return (
     <Dialog
       open={open}
@@ -344,6 +377,8 @@ color:'#7F7F7F'
           </SoftButton>
         </Box>
       </DialogActions>
+      {ResponsePostBrand.failAlert}
+      {ResponsePostBrand.successAllert}
     </Dialog>
   );
 };

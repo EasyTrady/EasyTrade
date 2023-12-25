@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Box, Button, Container, Grid, Icon } from '@mui/material'
+import { Box, Button, Container, Grid, Icon, Skeleton } from '@mui/material'
 import SoftBox from 'components/SoftBox'
 import SoftButton from 'components/SoftButton'
 import DataGridCustom from 'components/common/DateGridCustomer'
@@ -116,7 +116,13 @@ const Brands = ({ absolute, light, isMini }) => {
           
             <Grid item>
                 <Grid container spacing={2}>
-          {brands.results.map((brand,index)=>(
+          {BrandsGetResponce.isPinding?
+         Array.from({ length: 5 }, (_, index) => (
+          <Grid item md={2.4} key={index}>
+            <Skeleton variant="rectangular" width={210} height={118} animation="wave" />
+          </Grid>
+          )):
+          brands.results.map((brand,index)=>(
                     <Grid item md={2.4} key={index}>
                         <BrandBox {...brand}/>
                     </Grid>

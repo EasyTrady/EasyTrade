@@ -24,7 +24,7 @@ export const BrandSlice = createSlice({
     },
     deleteItem: (state, action) => {
       state.value.results = state.value.results.filter(
-        (item) => item.id !== action.payload.id
+        (item) => item.id !== action.payload
       );
       state.value.count = state.value.count - 1;
     },
