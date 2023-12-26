@@ -56,6 +56,10 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const collapseName = pathname.split("/").pop();
   const image = localStorage.getItem('logo')
   const shop_name = localStorage.getItem('shop_name')
+  const shop_url = localStorage.getItem("shop_url")
+  const sub_domain = localStorage.getItem("sub_domain")
+
+  
   const closeSidenav = () => setMiniSidenav(dispatch, true);
 
   useEffect(() => {
@@ -194,9 +198,9 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             
           </SoftBox>
         </SoftBox>
-        <SoftBox component={NavLink} to="/"target={"_blank"} sx={{display:"flex",alignItems:"center",":hover,:active,:visited,:focus":{color:(theme)=>theme.palette.purple.middle}}} >
+        <SoftBox component={NavLink} to={`/${sub_domain}`}target={"_blank"} sx={{display:"flex",alignItems:"center",":hover,:active,:visited,:focus":{color:(theme)=>theme.palette.purple.middle}}} >
           <VisitSite color={(theme)=>theme.palette.purple.middle}/>
-          <SoftTypography component={"span"} sx={{fontSize:"12px",marginX:"5px"}}>Visit Site </SoftTypography>
+          <SoftTypography component={"span"} sx={{fontSize:"12px",marginX:"5px"}}>Visit Site</SoftTypography>
           <ArrowForwardIcon sx={{fontSize:"12px"}} />
           </SoftBox>
       </SoftBox>

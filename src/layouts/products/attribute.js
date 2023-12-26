@@ -381,7 +381,7 @@ function Attribute({ absolute, light, isMini }) {
       
     }, [attributes])
     useEffect(() => {
-        if (controls.values.length > 0) { setControl("iscolor", controls.values[0].iscolor) }
+        if (controls?.values?.length > 0) { setControl("iscolor", controls?.values[0]?.iscolor) }
     }, [controls.values])
     function AddValue() {
         // if(!openDialogEdit){

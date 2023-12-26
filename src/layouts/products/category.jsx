@@ -26,7 +26,10 @@ import {
 function Category({ absolute, light, isMini }) {
     const route = useLocation().pathname.split("/").slice(1);
     let permissionYour = useSelector((state) => state.permissionYour.value)
-
+    const [paginationModel, setPaginationModel] = React.useState({
+        page: 0,
+        pageSize: 8,
+      });
   const sub_domain = localStorage.getItem('sub_domain')
   let {isPermitted}=usePermission()
    let navigate= useNavigate()
@@ -126,16 +129,17 @@ function Category({ absolute, light, isMini }) {
         }
         useEffect(() => {
             categoryRequest({
+                params:{page:paginationModel?.page+1},
                 onSuccess: (res) => {
                     dispatch({ type: "category/set", payload: res.data })
                    
     
                 }
             })
-        }, [])
+        }, [paginationModel?.page])
         useEffect(()=>{
             
-            setRows(categories)
+            setRows(categories?.results)
         },[categories])
   return (
     <DashboardLayout >
@@ -157,7 +161,7 @@ function Category({ absolute, light, isMini }) {
                         Print
                     </Button>
                     <Divider orientation="vertical" sx={{ width: '1px', height: "72px" }} />
-                        {permissionYour.map((ele)=>ele.codename).includes("add_shopcategory")&&<SoftButton variant="gradient"
+                        {permissionYour.map((ele)=>ele.codename).includes("add_category")&&<SoftButton variant="gradient"
                         sx={{
                             backgroundColor: (theme) => theme.palette.purple.middle,
                             color: "white !important", "&:hover": {
@@ -173,8 +177,9 @@ function Category({ absolute, light, isMini }) {
                 </SoftBox>
                 <DataGridCustom
                     rows={rows}
-                    onDelete={isPermitted(onDelete,["delete_shopcategory"])}
-                    onDialog={isPermitted(onEdit,["change_shopcategory"])}
+                    rowCount={categories?.count}
+                    onDelete={isPermitted(onDelete,["delete_category"])}
+                    onDialog={isPermitted(onEdit,["change_category"])}
                     columns={columns}
                     checkboxSelection={true}
                     loading={getcategoryResponce.isPending}
@@ -182,6 +187,8 @@ function Category({ absolute, light, isMini }) {
                     // sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
                     // onEdit={onEdit}
                     rowHeight={100}
+                    paginationModel={paginationModel}
+          onPaginationModelChange={setPaginationModel}
                 // slots={{
                 //     noRowsOverlay: MyCustomNoRowsOverlay
                 // }}

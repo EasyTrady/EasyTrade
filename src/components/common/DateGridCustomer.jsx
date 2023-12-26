@@ -37,9 +37,9 @@ import EditIcon from "examples/Icons/EditIcon";
 import { Chip,  Stack } from "@mui/material";
 
 function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
-  checkboxSelection, onEdit,onDialog, onDelete, onBlock,sx, rowsPerPageOptions, notProduct = true, onState,
+  checkboxSelection, onEdit,onDialog, onDelete, onBlock,sx, rowsPerPageOptions, notProduct = true, onState,rowCount,
   onNotify,onFilter,onArchive,
-  onCopy, onPaginationModelChange, ...rest }) {
+  onCopy, onPaginationModelChange,onRestore, ...rest }) {
   const [, setRows] = React.useState(rows);
   let { t } = useTranslation("common")
 
@@ -83,7 +83,10 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
     setRows(rows.filter((row) => row.id !== id));
     onArchive(id)
   };
-
+  const handleRestoreClick = (id) => () => {
+    setRows(rows.filter((row) => row.id !== id));
+    onRestore(id)
+  };
   const handleCancelClick = (id) => () => {
     setRowModesModel({
       ...rowModesModel,
@@ -115,7 +118,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
     setRowModesModel(newRowModesModel);
   };
 
-  const columnsResult =Boolean(onEdit||onNotify||onBlock||onDelete||onArchive)?[
+  const columnsResult =Boolean(onEdit||onNotify||onBlock||onDelete||onArchive||onRestore)?[
     ...columns,
     {
       field: 'actions',
@@ -229,6 +232,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
                   color="inherit"
                 />
               </MenuItem>}
+              
               {onDialog  && <MenuItem onClick={() => setOpen(null)}>
                 <GridActionsCellItem
                   key={row.id}
@@ -276,6 +280,16 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
                   icon={<Box sx={{ color: (theme) => theme.palette.grey[600],display:"flex",alignItems:"center" }}><InventoryIcon sx={{ color: (theme) => theme.palette.grey[600] }} /><span>Archive</span></Box>}
                   label="Delete"
                   onClick={handleArchiveClick(row?.id)}
+                  color="inherit"
+                ></GridActionsCellItem>
+              </MenuItem>}
+              {onRestore&&<MenuItem onClick={() => setOpen(null)} >
+                <GridActionsCellItem
+              
+                  key={row.id}
+                  icon={<Box sx={{ color: (theme) => theme.palette.grey[600],display:"flex",alignItems:"center" }}><InventoryIcon sx={{ color: (theme) => theme.palette.grey[600] }} /><span>restore</span></Box>}
+                  label="Delete"
+                  onClick={handleRestoreClick(row?.id)}
                   color="inherit"
                 ></GridActionsCellItem>
               </MenuItem>}
@@ -400,8 +414,9 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
 
         {/* {console.log(isRowSelectable, onRowClick, checkboxSelection)} */}
         <DataGrid
+        rowCount={rowCount}
           rows={rows}
-
+          paginationMode="server"
           columns={columnsResult}
           editMode="row"
           rowModesModel={rowModesModel}
@@ -415,7 +430,7 @@ function DataGridCustom({ rows, columns, onRowClick, isRowSelectable,
 
           // autoHeight={true}
         
-          initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
+          initialState={{ pagination: { paginationModel: { pageSize: 8 } } }}
           // pageSizeOptions={[5, 10, 15]}
           sx={{
             ...sx, "& .css-1ui3wbn-MuiInputBase-root-MuiTablePagination-select": {
@@ -465,6 +480,7 @@ DataGridCustom.propTypes = {
   checkboxSelection: PropTypes.bool,
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
+  onRestore: PropTypes.func,
   onArchive:PropTypes.func,
   sx: PropTypes.object,
   rowHeight: PropTypes.number,
@@ -476,5 +492,5 @@ DataGridCustom.propTypes = {
   onBlock:PropTypes.func,
   onDialog:PropTypes.func,
   className:PropTypes.string,
-  selected:PropTypes.bool,onFilter: PropTypes?.func
+  selected:PropTypes.bool,onFilter: PropTypes?.func,rowCount:PropTypes.number||PropTypes.string
 };

@@ -79,23 +79,23 @@ function Order({ absolute, light, isMini }) {
             editable: false,
             filterable: false,
             sortable: false, disableColumnMenu: true,
-            renderCell: (params) =>params.row.status==="pending"? <Typography sx={{color:(theme)=>theme.palette.blue.main,
+            renderCell: (params) =>params.row.status_name === "In Progress"? <Typography sx={{color:(theme)=>theme.palette.blue.main,
                 fontSize:"14px",borderRadius:"8px",
                 backgroundColor:(theme)=>theme.palette.blue.hover,
                 padding:"5px 16px 5px 16px"
-            }}>{params.row.status}</Typography>:params.row.status==="canceled"? <Typography sx={{color:(theme)=>theme.palette.error.main,
+            }}>{params.row.status_name}</Typography>:params.row.status_name === "Cancelled"? <Typography sx={{color:(theme)=>theme.palette.error.main,
                 fontSize:"14px",borderRadius:"8px",
                 backgroundColor:(theme)=>theme.palette.error.hover,
                 padding:"5px 16px 5px 16px"
-            }}>{params.row.status}</Typography>:params.row.status==="Delivered"?<Typography sx={{color:(theme)=>theme.palette.success.main,
+            }}>{params.row.status_name}</Typography>:params.row.status_name === "Delivered"?<Typography sx={{color:(theme)=>theme.palette.success.main,
                 fontSize:"14px",borderRadius:"8px",
                 backgroundColor:(theme)=>theme.palette.success.hover,
                 padding:"5px 16px 5px 16px"
-            }}>{params.row.status}</Typography>:params.row.status==="shipped"?<Typography sx={{color:(theme)=>theme.palette.warning.main,
+            }}>{params.row.status_name}</Typography>:params.row.status_name === "Shipped"?<Typography sx={{color:(theme)=>theme.palette.warning.main,
                 fontSize:"14px",borderRadius:"8px",
                 backgroundColor:(theme)=>theme.palette.warning.focus,
                 padding:"5px 16px 5px 16px"
-            }}>{params.row.status}</Typography>:<></>
+            }}>{params.row.status_name}</Typography>:<></>
         },
             {
                 field: 'total',

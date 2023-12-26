@@ -101,6 +101,7 @@ import Brands from "layouts/Brand/Brands";
 import Coupon from "layouts/coupon";
 import CouponIcon from "examples/Icons/CouponIcon";
 import AddCoupon from "layouts/coupon/addCoupon";
+import ArchiveCoupon from "layouts/coupon/archiveCoupon";
 const sub_domain = localStorage.getItem('sub_domain')
 
 const routes = [
@@ -108,7 +109,14 @@ const routes = [
     type:'title',
     name:'Home',
     key:'home',
-    route:'/',
+    route:`/${sub_domain}`,
+    component:<HomeSections/>,
+    noCollapse:false,
+  },{
+    type:'title',
+    name:'Home',
+    key:'home',
+    route:`*`,
     component:<HomeSections/>,
     noCollapse:false,
   },
@@ -289,7 +297,17 @@ const routes = [
     component: <Auth><Coupon /></Auth>,
     permission:["view_coupon"]
 
-  }, {
+  },  {
+    type: "collapse",
+    name: "Archive Coupons",
+    key: "Archive_Coupons",
+    route: `/${sub_domain}/dashboard/archiveCoupons`,
+    icon: <CouponIcon />,
+    noCollapse: false,
+    component: <Auth><ArchiveCoupon /></Auth>,
+    permission:["view_coupon"]
+
+  },{
     type: "title",
     name: "Coupons",
     key: "Coupons",

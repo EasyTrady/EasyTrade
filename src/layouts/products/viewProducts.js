@@ -6,7 +6,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import useRequest from "hooks/useRequest";
 import Tables from "layouts/tables";
 import { CustomersTableData } from "layouts/tables/data/customerTabkeData";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,useRef} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../tables/datagrid.css";
 import Footer from "examples/Footer";
@@ -20,16 +20,18 @@ import SoftBox from 'components/SoftBox'
 import Breadcrumbs from 'examples/Breadcrumbs'
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import PropTypes from "prop-types";
-import { PRODUCTS } from "data/api";
+import { PRODUCTS ,EXPORTPRODUCT} from "data/api";
+import XLSX from "sheetjs-style"
 import usePermission from 'utils/usePermission';
-
+import SoftInput from "components/SoftInput";
 import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 import { MainButton } from "styles/productStyle";
 import { PrintButton } from "styles/productStyle";
 function Products({ absolute, light, isMini }) {
   const { columns, rows } = ProductTableData();
   let permissionYour = useSelector((state) => state.permissionYour.value)
-
+  let newForm=new FormData()
+  let refInput=useRef(null)
   const [open, setOpen] = React.useState(false);
   const products=useSelector((state)=>state.products.value)
   const navigate =useNavigate()
@@ -47,7 +49,7 @@ function Products({ absolute, light, isMini }) {
   };
   const [paginationModel, setPaginationModel] = React.useState({
     page: 0,
-    pageSize: 5,
+    pageSize: 8,
   });
   let dispatch = useDispatch();
   let Token = localStorage.getItem("token");
@@ -60,6 +62,12 @@ function Products({ absolute, light, isMini }) {
     path: PRODUCTS,
     method: "delete",
     Token: `Token ${Token}`,
+  });
+  const [exportProductsFile, exportProductsResponce] = useRequest({
+    path: EXPORTPRODUCT,
+    method: "post",
+    Token: `Token ${Token}`,
+    contentType: "multipart/form-data",
   });
   const [customerDeleteRequest, DeleteCustomerrResponce] = useRequest({
     path: CUSTOMER,
@@ -128,14 +136,35 @@ function Products({ absolute, light, isMini }) {
   //     },
 
   //   ]
+  function handleDownloadModel(){
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet([
+      ["name","price","sku","quantity","mpn","gtin"]
+    ]);
+  // XLSX.utils.sheet_to_txt
+    XLSX.utils.book_append_sheet(wb, ws, "productSheet");
+
+    XLSX.writeFile(wb, "productSheet.xls");
+  }
+  function exportProductfile(e){
+    console.log("vdljirjeo")
+    newForm.append("file",e.target.files[0])
+    exportProductsFile({
+      body:newForm,
+      onSuccess:(res)=>{
+        console.log(res.data)
+      }
+    })
+  }
   useEffect(() => {
     RequestGetProducts({
+      params:{page:paginationModel?.page+1},
       onSuccess: (res) => {
         // console.log(res.data)
         dispatch({ type: "products/set", payload: { ...res.data } });
       },
     });
-  }, []);
+  }, [paginationModel?.page]);
   // useEffect(() => {
   //     setRows(customers?.results);
   //   }, [customers])
@@ -153,14 +182,34 @@ function Products({ absolute, light, isMini }) {
                     xs: 1, md: 0, display: "flex", justifyContent: "flex-end",
                     alignItems: "center"
                 }} sx={{ textAlign: "right" }}>
-                    <Button onClick={() => window.print()}
+                  {/*  */}
+                
+                    <Button onClick={handleDownloadModel}
                         sx={{
                             backgroundColor: "white !important",
                             color: "black !important", marginX: "10px", padding: "13px 16px"
                         }}>
-                        <LocalPrintshopIcon />
-                        Print
+                        {/* <LocalPrintshopIcon /> */}
+                        Import
                     </Button>
+                    <Box
+          component="input"
+          type="file"
+          sx={{ display: "none" }}
+          onChange={exportProductfile}
+          ref={refInput}
+          accept={".xlsx,.xls"}
+        />
+                    {/* <Box component={"input"} type="file"onChange={(e)=>exportProductfile(e)} sx={{display:"none"}} ref={refInput} /> */}
+                    <Button onClick={()=>refInput.current.click()}
+                        sx={{
+                            backgroundColor: "white !important",
+                            color: "black !important", marginX: "10px", padding: "13px 16px"
+                        }}>
+                        {/* <LocalPrintshopIcon /> */}
+                        Export
+                    </Button>
+                  
                     <Divider orientation="vertical" sx={{ width: '1px', height: "72px" }} />
                    {permissionYour.map((ele)=>ele.codename).includes("add_product")&& <SoftButton variant="gradient"
                         sx={{
@@ -196,7 +245,7 @@ function Products({ absolute, light, isMini }) {
           rows={products?.results}
           columns={columns}
           loading={ResponseGetProducts.isPending}
-
+          rowCount={products?.count}
           onDialog={isPermitted(onEdit,["change_product"])}
 
           onDelete={isPermitted(onDelete,["delete_product"])}
@@ -207,8 +256,8 @@ function Products({ absolute, light, isMini }) {
             // setClick({ ...e.id });
           }}
           // notProduct={false}
-          
-          // onPaginationModelChange={setPaginationModel}
+          paginationModel={paginationModel}
+          onPaginationModelChange={setPaginationModel}
           rowHeight={72}
           getRowSpacing={4}
           sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
@@ -220,6 +269,7 @@ function Products({ absolute, light, isMini }) {
       {ResponseGetProducts.successAlert}
       {ResponseGetProducts.failAlert}
       {ResponseDeleteProducts.failAlert}
+      {exportProductsResponce.failAlert}
     </>
   );
 }

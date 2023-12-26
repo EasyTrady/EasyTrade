@@ -451,10 +451,10 @@ const AddProduct = ({ light, isMini,handleChange }) => {
     }
 }, [productId])
 useEffect(()=>{
-  if(category.length==0){
+  if(category?.length==0){
     getCategory()
   }
-  if(Brands.results.length==0){
+  if(Brands?.results?.length==0){
     getBrandItems()
   }
 },[category,Brands])
@@ -540,9 +540,12 @@ useEffect(()=>{
               onOpen={getCategory}
               renderValue={(selected) => {
                 // selected.map((ele)=>category.map((elem)=>elem.id).includes(ele))
-                
-                let resultcategory=category?.filter((category) => selected.includes(category.id))
-                return resultcategory.map((ele)=>ele.name).join(" , ")
+ 
+  if(category?.results?.length==0){
+    getCategory()
+  }
+                let resultcategory=category?.results?.filter((category) => selected.includes(category.id))
+                return resultcategory?.map((ele)=>ele.name).join(" , ")
               }}
               value={controls.categories.map((ele)=>ele.id?ele.id:ele)}
               onChange={(e) => {setControl("categories", e.target.value);}}
@@ -560,8 +563,8 @@ useEffect(()=>{
                 // onClose: onClose,
                 renderValue: (selected) => {
 
-                     let resultcategory=category?.filter((category) => selected.includes(category.id))
-                return resultcategory.map((ele)=>ele.name).join(" , ")
+                     let resultcategory=category?.results?.filter((category) => selected.includes(category.id))
+                return resultcategory?.map((ele)=>ele.name).join(" , ")
                 },
                 MenuProps: {
                     PaperProps: {
@@ -577,7 +580,7 @@ useEffect(()=>{
 
             }}
             >
-              {category?.map((category, index) => (
+              {category?.results?.map((category, index) => (
                 <MenuItem key={`${category.id} ${index}`} value={category.id}>
                   {category?.name}
                   
@@ -594,6 +597,7 @@ useEffect(()=>{
               onOpen={getBrandItems}
               renderValue={(selected) => {
                 // selected.map((ele)=>category.map((elem)=>elem.id).includes(ele))
+               
                
                 let resultcategory=Brands?.results?.filter((category) => category.id==selected)
                 return resultcategory.map((ele)=>ele.name).join(" , ")
@@ -613,8 +617,7 @@ useEffect(()=>{
                 // onOpen: onOpen,
                 // onClose: onClose,
                 renderValue: (selected) => {
-                    
-                     let resultcategory=Brands?.results?.filter((category) => selected.includes(category.id))
+                     let resultcategory=Brands?.results?.filter((category) => category.id==selected)
                 return resultcategory.map((ele)=>ele.name).join(" , ")
                 },
                 MenuProps: {

@@ -378,6 +378,7 @@ function Addnewcategory({ absolute, light, isMini }) {
                                     // onOpen: onOpen,
                                     // onClose: onClose,
                                     renderValue: (selected) => {
+                                        console.log(selected,categories)
                                         if (!Boolean(selected)) {
                                             return (
                                                 <Typography sx={{ opacity: "0.42", fontSize: "14px", color: "#959FA3" }} variant="p">
@@ -387,10 +388,10 @@ function Addnewcategory({ absolute, light, isMini }) {
                                         } else {
                                            
                                             if(selected.id){
-                                                return categories?.find((ele) => ele.id === selected.id)?.name;
+                                                return categories?.results?.find((ele) => ele.id === selected.id)?.name;
 
                                             }else{
-                                            return categories?.find((ele) => ele.id === selected)?.name;
+                                            return categories?.results?.find((ele) => ele.id === selected)?.name;
 
                                             }
                                         }
@@ -410,7 +411,7 @@ function Addnewcategory({ absolute, light, isMini }) {
                                 }}
 
                             >
-                                {categories?.map((ele) => <MenuItem value={ele.id} key={ele.id}>{ele.name}</MenuItem>)}
+                                {categories?.results?.map((ele) => <MenuItem value={ele.id} key={ele.id}>{ele.name}</MenuItem>)}
                             </SoftInput>
                         </Box>
                         {/* <Box sx={{marginX:"14px"}}>

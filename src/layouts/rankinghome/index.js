@@ -4,6 +4,9 @@ import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import Form from 'components/common/Form'
 import SoftInput from 'components/SoftInput'
 import { useDispatch, useSelector } from 'react-redux'
+import MultiSelect from "components/common/MultiSelect";
+import EditIcon from "examples/Icons/EditIcon";
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import {
     Container, InputAdornment, Avatar, Icon, Stack, Typography, Dialog, MenuItem
 } from '@mui/material'
@@ -137,6 +140,10 @@ function index({ absolute, light, isMini }) {
                 control: "category_level",
                 value: "",
                 isRequired: false,
+            }, {
+                control: "visible",
+                value: false,
+                isRequired: false,
             }
         ]);
     const StyleSoftBox = styled(SoftBox)((props) => ({
@@ -212,7 +219,7 @@ function index({ absolute, light, isMini }) {
         getBannerdRequest({
             onSuccess: (res) => {
                 dispatch({ type: "banners/set", payload: res?.data });
-               
+
             }
         })
     }
@@ -231,10 +238,10 @@ function index({ absolute, light, isMini }) {
 
             }, onSuccess: (res) => {
                 dispatch({ type: "home-component/set", payload: res?.data?.data })
-                
+
             }
         })
-       
+
         // console.log('Item dropped:', item.nativeEvent.layerY,       item?.nativeEvent);
     };
 
@@ -283,7 +290,7 @@ function index({ absolute, light, isMini }) {
             id: shop_id + "/brands/",
             onSuccess: (res) => {
                 dispatch({ type: "brand/set", payload: res.data })
-                
+
             }
         })
     }
@@ -296,10 +303,21 @@ function index({ absolute, light, isMini }) {
             }
         })
     }
+    const handleVisible=(element)=>{
+        patchcontentRequest({
+            id: element?.id,
+            body:{visible:!element.visible},
+            onSuccess:(res)=>{
+                dispatch({ type: "home-component/patchItem", payload: { id: res.data.id, item: res.data } })
+                console.log(res.data)
+                
+            }
+        })
+    }
     const handlleSubmit = () => {
         if (!Edit) {
             validate().then((output) => {
-               
+
                 if (!output.isOk) return;
                 contentpostRequest({
                     body: controls?.content_type?.title == "brand" ? {
@@ -342,7 +360,7 @@ function index({ absolute, light, isMini }) {
                         dispatch({ type: "home-component/addItem", payload: res.data })
                         resetControls();
                         handleCloseDialog()
-                       
+
                     }
                 })
             })
@@ -351,7 +369,7 @@ function index({ absolute, light, isMini }) {
             let result = compare(Object?.entries(Edit)?.map(([key, value]) => (key == "content_type" ?
                 [controls[key]?.id, value, key] : key == "items" ? [controls[key], value, key] : [controls[key], String(value), key])), false)
 
-
+            console.log(Edit, result)
             // console.log(controls.items.filter((ele)=>!Boolean(controls.items.find((elem)=>elem.id==ele.id))))
             // console.log(compare(Object.entries(Edit).map(([key,value])=>key=="content_type"?[controls[key].id,value,key]:key=="items"?[controls[key],value,key]:[controls[key],String(value),key])),"sort_number")
             if (result.nochange) {
@@ -359,22 +377,26 @@ function index({ absolute, light, isMini }) {
                     delete result.array.sort_number
                     delete result.array.frame
                     delete result.array.category_level
-
+                    delete result.array.visible
                     delete result.array.display
                     delete result.array.overflow_type
                 } else if (controls?.content_type?.title == "banner") {
                     delete result.array.sort_number
                     delete result.array.frame
+                    delete result.array.visible
                     delete result.array.category_level
                 } else if (controls?.content_type?.title == "category") {
                     delete result.array.sort_number
                     delete result.array.display
+                    delete result.array.visible
+
                     delete result.array.overflow_type
                 } else if (controls?.content_type?.title == "specialcategory") {
                     delete result.array.sort_number
                     delete result.array.frame
                     delete result.array.category_level
                     delete result.array.max_number
+                    delete result.array.visible
                     delete result.array.display
                     delete result.array.overflow_type
                 }
@@ -386,7 +408,7 @@ function index({ absolute, light, isMini }) {
                         dispatch({ type: "home-component/patchItem", payload: { id: res.data.id, item: res.data } })
                         resetControls();
                         handleCloseDialog()
-                       
+
                     }
                 })
             }
@@ -411,7 +433,7 @@ function index({ absolute, light, isMini }) {
             onSuccess: (res) => {
 
                 dispatch({ type: "home-component/set", payload: res.data })
-              
+
             }
         })
     }, [])
@@ -426,18 +448,18 @@ function index({ absolute, light, isMini }) {
                 <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
                     <Breadcrumbs icon="home" title={"Ranking home"} route={route} light={light} />
                 </SoftBox>
-                <Stack direction={{ lg: "row", md: "column", sm: "column", xs: "column" }} justifyContent={"space-between"}>
+                <Stack direction={{ lg: "row", md: "column", sm: "column", xs: "column" }} justifyContent={"space-between"} gap={"20px"}>
                     <SoftBox sx={{ backgroundColor: "#fff", width: { lg: "44%", md: "100%", sm: "100%", xs: "100%" }, borderRadius: "8px", height: "100vh" }}>
                         <SoftBox sx={{ width: "100%", borderBottom: "1px solid ", padding: "16px" }}>
-                            {permissionYour.map((ele)=>ele.codename).includes("add_homecomponent")&& <SoftButton variant={"outlined"} onClick={() => { setOpen(true); setEdit(null); resetControls() }}
+                            {permissionYour.map((ele) => ele.codename).includes("add_homecomponent") && <SoftButton variant={"outlined"} onClick={() => { setOpen(true); setEdit(null); resetControls() }}
                                 sx={{ borderColor: ({ palette: { purple } }) => purple.middle, color: ({ palette: { purple } }) => purple.middle }}>
                                 <Icon fontSize="small" on sx={{ color: ({ palette: { purple } }) => purple.middle }}>
                                     add
                                 </Icon>
                                 {t("Additem")}
                             </SoftButton>
-}
-                           
+                            }
+
 
                         </SoftBox>
                         <SoftBox refence={drop} onDrop={handleDrop} >
@@ -447,13 +469,16 @@ function index({ absolute, light, isMini }) {
                                     <SoftBox sx={{ backgroundColor: "#F0F6FF", display: "flex", justifyContent: "space-between", alignItems: "center", paddingX: "24px", paddingY: "10px", borderRadius: "8px", width: "75%" }}>
                                         <SoftBox sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "60%" }}>
                                             <SwitchIcon />
-                                            <Typography sx={{marginX:"8px"}}>  {TypeItem.find((elem) => elem.id == ele.content_type)?.icon}</Typography>
+                                            {ele?.visible?<SoftBox onClick={()=>handleVisible(ele)} sx={{mx:2}}><ViewIcon /></SoftBox>:<SoftBox  sx={{mx:2}}onClick={()=>handleVisible(ele)}><VisibilityOffIcon/></SoftBox>}
+                                            
+                                            
+                                            <Typography sx={{ marginX: "8px" }}>  {TypeItem.find((elem) => elem.id == ele.content_type)?.icon}</Typography>
                                             <Typography component="p" sx={{ fontSize: "14px", width: "100%" }}>{ele.title}</Typography>
                                         </SoftBox>
 
-                                        {permissionYour.map((ele)=>ele.codename).includes("change_homecomponent")&&<ViewIcon sx={{ width: "20%" }} onClick={() => { Object.entries(ele).map(([key, value]) => key == "content_type" ? setControl(key, TypeItem.find((elem) => elem.id == value)) : key == "items" ? setControl(key, value) : setControl(key, value)); setOpen(true); setEdit(ele) }} />}
+                                        {permissionYour.map((elem) => elem.codename).includes("change_homecomponent") && <EditIcon  sx={{ width: "20%" }} onClick={() => { Object.entries(ele).map(([key, value]) => key == "content_type" ? setControl(key, TypeItem.find((elem) => elem.id == value)) : key == "items" ? setControl(key, value) : setControl(key, value)); setOpen(true); setEdit(ele) }} />}
                                     </SoftBox>
-                                    {permissionYour.map((ele)=>ele.codename).includes("delete_homecomponent")&&<DeleteIcon sx={{ width: "20%" }} onClick={() => DeleteComponenet(ele)} />}
+                                    {permissionYour.map((elem) => elem.codename).includes("delete_homecomponent") && <DeleteIcon sx={{ width: "20%" }} onClick={() => DeleteComponenet(ele)} />}
                                     {/* </SoftBox> */}
                                 </DragerItem>)}
                         </SoftBox>
@@ -468,7 +493,7 @@ function index({ absolute, light, isMini }) {
                         {homeComponent.map((ele) => {
                             let component = TypeItem.find((elem) => elem.id == ele.content_type)
 
-                            if (component?.title == "category") {
+                            if (component?.title == "category"||ele?.visible) {
 
                                 return (
                                     <SoftBox key={component.id} sx={{ padding: "10px", width: "100%" }}>
@@ -489,7 +514,7 @@ function index({ absolute, light, isMini }) {
                                         </Slider>
                                     </SoftBox>
                                 )
-                            } else if (component?.title == "brand") {
+                            } else if (component?.title == "brand"||ele?.visible) {
                                 return (<SoftBox key={ele.id} >
                                     <SoftTypography component="div">{t("Brands")}</SoftTypography>
                                     <Slider {...settings} slidesToShow={ele?.max_number} >
@@ -524,21 +549,21 @@ function index({ absolute, light, isMini }) {
 
 
                                 )
-                            } else if (component?.title == "banner") {
+                            } else if (component?.title == "banner"||ele?.visible) {
 
                                 return (<SoftBox key={component.id} sx={{ padding: "10px" }}>
                                     <SoftTypography component="div">{t("Banner")}</SoftTypography>
 
                                     <Slider {...settings} slidesToShow={ele?.max_number}>
                                         {ele?.items?.map((elem) => <SoftBox key={elem?.id} sx={{ borderRadius: "8px", width: "100%", height: "80px" }}>
-                                            <img src={BaseUrl + elem?.image} style={{ width: "100%" }} />
+                                            <img src={elem?.image} style={{ width: "100%" }} />
                                         </SoftBox>)}
 
 
                                     </Slider>
 
                                 </SoftBox>)
-                            } else if (component?.title == "specialcategory") {
+                            } else if (component?.title == "specialcategory"||ele?.visible) {
                                 return (<SoftBox key={component.id} sx={{ padding: "10px" }}>
                                     <SoftTypography component="div">{t("Products")}</SoftTypography>
                                     <SoftBox sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
@@ -675,10 +700,11 @@ function index({ absolute, light, isMini }) {
                             value={controls?.max_number}
                             //   disabled={max_number && !Boolean(max_number)}
 
-                            onChange={(e) =>
-                                {let tester=/^(?:\d+|)$/
-                                
-                                tester.test(e.target.value) && setControl("max_number", e.target.value)}
+                            onChange={(e) => {
+                                let tester = /^(?:\d+|)$/
+
+                                tester.test(e.target.value) && setControl("max_number", e.target.value)
+                            }
                             }
                             required={required.includes("max_number")}
                             error={Boolean(invalid?.max_number)}
@@ -741,7 +767,7 @@ function index({ absolute, light, isMini }) {
                             </SoftButton>
                         </SoftBox>
 
-                        {controls?.display == "multiple" && <><Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
+                        {controls?.display == "multiple" ? <><Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
                         >{t("Presentation")}
 
                         </Typography><SoftBox sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -765,8 +791,7 @@ function index({ absolute, light, isMini }) {
 
                                     {t("Grid")}
                                 </SoftButton>
-                            </SoftBox></>}
-                            {controls?.display == "single"&&<><Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
+                            </SoftBox></> : <><Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
                             >{t("brannernumber")}
 
                             </Typography>
@@ -775,10 +800,11 @@ function index({ absolute, light, isMini }) {
                                 value={controls?.max_number}
                                 //   disabled={number && !Boolean(number)}
 
-                                onChange={(e) =>
-                                    {let tester=/^(?:\d+|)$/
-                                  
-                                    tester.test(e.target.value) && setControl("max_number", e.target.value)}
+                                onChange={(e) => {
+                                    let tester = /^(?:\d+|)$/
+
+                                    tester.test(e.target.value) && setControl("max_number", e.target.value)
+                                }
                                 }
                                 required={required.includes("max_number")}
                                 error={Boolean(invalid?.max_number)}
@@ -791,17 +817,17 @@ function index({ absolute, light, isMini }) {
                             <SelectField
                                 variant="outlined"
                                 placeholder={"Export"}
-                                
+
                                 onOpen={getBanners}
                                 value={controls?.items}
                                 onChange={(e) => setControl("items", e.target.value)}
 
                                 renderValue={(selected) => {
-                                    
+
                                     if (banners?.results?.length == 0) {
                                         getBanners()
                                     }
-                                    return <SoftBox sx={{ display: "flex" }}>{ selected?.banner_object?.name}</SoftBox>
+                                    return <SoftBox sx={{ display: "flex" }}>{selected?.banner_object?.name}</SoftBox>
                                 }}
                                 sx={{ width: "100% !important" }}
                                 required={required.includes("items")}
@@ -814,15 +840,16 @@ function index({ absolute, light, isMini }) {
                                     ))
                                 }
                             </SelectField>
-                            {Boolean(controls?.items?.image)&&<SoftBox sx={{display: "flex",justifyContent: "space-around"}}>
-                            <SwitchIcon />
-                            <img src={controls?.items?.image}/>
-                            <DeleteIcon sx={{ width: "20%" }} onClick={() => DeleteComponenet(ele)} />
-                            
+                            {Boolean(controls?.items?.image) && <SoftBox sx={{ display: "flex", justifyContent: "space-around" }}>
+                                <SwitchIcon />
+                                <img src={controls?.items?.image} style={{ width: "100px", height: "100px" }} />
+                                <DeleteIcon sx={{ width: "20%" }} onClick={() => DeleteComponenet(ele)} />
+
                             </SoftBox>}
-                            
-                            </>}
-                        {controls?.overflow_type == "scroll" ? <>
+
+                        </>}
+
+                        {controls?.overflow_type == "scroll" && controls?.display == "multiple" ? <>
                             <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
                             >{t("brannernumber")}
 
@@ -832,10 +859,11 @@ function index({ absolute, light, isMini }) {
                                 value={controls?.max_number}
                                 //   disabled={number && !Boolean(number)}
 
-                                onChange={(e) =>
-                                    {let tester=/^(?:\d+|)$/
-                                  
-                                    tester.test(e.target.value) && setControl("max_number", e.target.value)}
+                                onChange={(e) => {
+                                    let tester = /^(?:\d+|)$/
+
+                                    tester.test(e.target.value) && setControl("max_number", e.target.value)
+                                }
                                 }
                                 required={required.includes("max_number")}
                                 error={Boolean(invalid?.max_number)}
@@ -845,33 +873,66 @@ function index({ absolute, light, isMini }) {
                             >{t("ChooseBanners")}
 
                             </Typography>
-                            <SelectField
-                                variant="outlined"
-                                placeholder={"Export"}
-                                multiple
-                                onOpen={getBanners}
-                                value={controls?.items}
-                                onChange={(e) => setControl("items", e.target.value)}
+                            <MultiSelect
+                                select
 
+                                variant="outlined"
+                                placeholder="category"
+
+                                isPending={getBannerdResponce.isPending}
+                                onOpen={getBanners}
                                 renderValue={(selected) => {
-                                    
+
                                     if (banners?.results?.length == 0) {
                                         getBanners()
                                     }
                                     return <SoftBox sx={{ display: "flex" }}>{banners?.results?.filter((ele) => selected?.map((ele) => ele?.id ? ele?.id : ele)?.includes(ele?.id)).map((elem) => elem?.banner_object?.name)?.join(",")}</SoftBox>
                                 }}
-                                sx={{ width: "100% !important" }}
+                                value={controls.items.map((ele) => ele.id ? ele.id : ele)}
+                                onChange={(e) => { setControl("items", e.target.value); }}
                                 required={required.includes("items")}
-                                error={Boolean(invalid?.items)}
-                                helperText={invalid?.items}
+                                textHelper={controls.items}
+                                error={Boolean(invalid.items)}
+                                helperText={invalid.items}
+                                sx={{
+                                    width: "100%", fontSize: "14px", "& .MuiMenu-paper": {
+                                        backgroundColor: "white !important"
+                                    }
+                                }}
+                                SelectProps={{
+                                    defaultValue: "",
+                                    displayEmpty: true,
+                                    // onOpen: onOpen,
+                                    // onClose: onClose,
+                                    renderValue: (selected) => {
+
+                                        if (banners?.results?.length == 0) {
+                                            getBanners()
+                                        }
+                                        return <SoftBox sx={{ display: "flex" }}>{banners?.results?.filter((ele) => selected?.map((ele) => ele?.id ? ele?.id : ele)?.includes(ele?.id)).map((elem) => elem?.banner_object?.name)?.join(",")}</SoftBox>
+                                    },
+                                    MenuProps: {
+                                        PaperProps: {
+                                            sx: {
+                                                maxHeight: "200px",
+                                                overflowY: "auto",
+                                                backgroundColor: "white !important"
+                                            },
+                                        },
+                                    },
+
+                                    // IconComponent: <KeyboardArrowDownIcon></KeyboardArrowDownIcon>,
+
+                                }}
                             >
                                 {
                                     banners?.results?.map((product, index) => (
                                         <MenuItem key={index} value={product?.id}>{product?.banner_object?.name}</MenuItem>
                                     ))
                                 }
-                            </SelectField>
-                        </> : controls?.overflow_type == "wrap" ? <>
+                            </MultiSelect>
+
+                        </> : controls?.overflow_type == "wrap" && controls?.display == "multiple" ? <>
                             <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
                             >{t("brannernumber")}
 
@@ -881,10 +942,11 @@ function index({ absolute, light, isMini }) {
                                 value={controls?.max_number}
                                 //   disabled={number && !Boolean(number)}
 
-                                onChange={(e) =>
-                                    {let tester=/^(?:\d+|)$/
+                                onChange={(e) => {
+                                    let tester = /^(?:\d+|)$/
 
-                                    tester.test(e.target.value) && setControl("max_number", e.target.value)}
+                                    tester.test(e.target.value) && setControl("max_number", e.target.value)
+                                }
                                 }
                                 required={required?.includes("max_number")}
                                 error={Boolean(invalid?.max_number)}
@@ -894,46 +956,84 @@ function index({ absolute, light, isMini }) {
                             >{t("ChooseBanners")}
 
                             </Typography>
-                            <SelectField
+                            <MultiSelect
+                                select
+
                                 variant="outlined"
-                                placeholder={"Export"}
+                                placeholder="category"
+
+                                isPending={getBannerdResponce.isPending}
                                 onOpen={getBanners}
-                                multiple
-                                // onOpen={getProducts}
-                                value={controls?.items}
-                                onChange={(e) => setControl("items", e.target.value)}
                                 renderValue={(selected) => {
-                                   
+
                                     if (banners?.results?.length == 0) {
                                         getBanners()
                                     }
                                     return <SoftBox sx={{ display: "flex" }}>{banners?.results?.filter((ele) => selected?.map((ele) => ele?.id ? ele?.id : ele)?.includes(ele?.id)).map((elem) => elem?.banner_object?.name)?.join(",")}</SoftBox>
                                 }}
-                                sx={{ width: "100% !important" }}
+                                value={controls.items.map((ele) => ele.id ? ele.id : ele)}
+                                onChange={(e) => { setControl("items", e.target.value); }}
                                 required={required.includes("items")}
-                                error={Boolean(invalid?.items)}
-                                helperText={invalid?.items}
+                                textHelper={controls.items}
+                                error={Boolean(invalid.items)}
+                                helperText={invalid.items}
+                                sx={{
+                                    width: "100%", fontSize: "14px", "& .MuiMenu-paper": {
+                                        backgroundColor: "white !important"
+                                    }
+                                }}
+                                SelectProps={{
+                                    defaultValue: "",
+                                    displayEmpty: true,
+                                    // onOpen: onOpen,
+                                    // onClose: onClose,
+                                    renderValue: (selected) => {
+
+                                        if (banners?.results?.length == 0) {
+                                            getBanners()
+                                        }
+                                        return <SoftBox sx={{ display: "flex" }}>{banners?.results?.filter((ele) => selected?.map((ele) => ele?.id ? ele?.id : ele)?.includes(ele?.id)).map((elem) => elem?.banner_object?.name)?.join(",")}</SoftBox>
+                                    },
+                                    MenuProps: {
+                                        PaperProps: {
+                                            sx: {
+                                                maxHeight: "200px",
+                                                overflowY: "auto",
+                                                backgroundColor: "white !important"
+                                            },
+                                        },
+                                    },
+
+                                    // IconComponent: <KeyboardArrowDownIcon></KeyboardArrowDownIcon>,
+
+                                }}
                             >
                                 {
                                     banners?.results?.map((product, index) => (
                                         <MenuItem key={index} value={product?.id}>{product?.banner_object?.name}</MenuItem>
                                     ))
                                 }
-                            </SelectField>
+                            </MultiSelect>
+
                         </> : <></>}
-                        {( controls?.overflow_type == "wrap" ||controls?.overflow_type == "scroll")&&Boolean(controls?.items?.length>0)&&<SoftBox sx={{display: "flex",justifyContent: "space-around"}}>
-                            <SwitchIcon />
-                           
-                            {controls?.items?.map((ele)=> <img key={ele.id} src={ele?.image}/>)}
-                            <DeleteIcon sx={{ width: "20%" }} onClick={() => DeleteComponenet(ele)} />
-                            
-                            </SoftBox>}
+                        {(controls?.overflow_type == "wrap" || controls?.overflow_type == "scroll") && Boolean(controls?.items?.length > 0) && <SoftBox sx={{ display: "flex", justifyContent: "space-around" }}>
+
+                                {/* <Slider {...settings} slidesToShow={controls?.max_number} > */}
+                            {controls?.items?.map((ele) => <SoftBox key={ele.id} sx={{ position: "relative" }}><img src={ele?.image} style={{ width: "100px", height: "100px" }} /> <DeleteIcon sx={{
+                                width: "20%", position: "absolute",
+                                top: "24%",
+                                left: "40%"
+                            }} onClick={() => setControl("items", controls?.items?.filter((elem) => elem.id != ele.id))} /></SoftBox>)}
+
+{/* </Slider> */}
+                        </SoftBox>}
                     </>}
                     {controls?.content_type?.title == "specialcategory" && <>
                         <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
                         >{t("AS")}
 
                         </Typography>
+
                         <SelectField
                             variant="outlined"
                             placeholder={"Export"}
@@ -941,7 +1041,7 @@ function index({ absolute, light, isMini }) {
 
                             value={controls?.items}
                             onChange={(e) => { setControl("items", [e.target.value]); }}
-                            renderValue={(selected) => { 
+                            renderValue={(selected) => {
                                 return <SoftBox sx={{ display: "flex" }}>{brandfrom?.find((ele) => selected?.map((elem) => elem?.id ? elem?.id : elem)?.includes(ele?.id))?.name}</SoftBox>
                             }}
                             sx={{ width: "100% !important" }}
@@ -1002,32 +1102,66 @@ function index({ absolute, light, isMini }) {
                         >{t("choose category")}
 
                         </Typography>
-                        <SelectField
+                        <MultiSelect
+                            select
+
                             variant="outlined"
-                            placeholder={"Export"}
+                            placeholder="category"
+
+                            isPending={getcategoryResponce.isPending}
                             onOpen={getCategory}
-                            multiple
-                            value={controls?.items}
-                            onChange={(e) => { setControl("items", e.target.value); }}
                             renderValue={(selected) => {
                                 if (categories.length == 0) {
                                     getCategory()
                                 }
-                                
-                                return <SoftBox sx={{ display: "flex" }}>{categories?.filter((ele) => selected.map((ele) => ele?.id ? ele?.id : ele)?.includes(ele?.id))?.map((elem) => elem?.name)?.join(",")}</SoftBox>
+
+                                return <SoftBox sx={{ display: "flex" }}>{categories?.results?.filter((ele) => selected.map((eleme) => eleme?.id ? eleme?.id : eleme)?.includes(ele?.id))?.map((elem) => elem?.name)?.join(",")}</SoftBox>
                             }}
-                            sx={{ width: "100% !important" }}
+                            value={controls.items.map((ele) => ele.id ? ele.id : ele)}
+                            onChange={(e) => { setControl("items", e.target.value); }}
                             required={required.includes("items")}
-                            error={Boolean(invalid?.items)}
-                            helperText={invalid?.items}
+                            textHelper={controls.items}
+                            error={Boolean(invalid.items)}
+                            helperText={invalid.items}
+                            sx={{
+                                width: "100%", fontSize: "14px", "& .MuiMenu-paper": {
+                                    backgroundColor: "white !important"
+                                }
+                            }}
+                            SelectProps={{
+                                defaultValue: "",
+                                displayEmpty: true,
+                                // onOpen: onOpen,
+                                // onClose: onClose,
+                                renderValue: (selected) => {
+                                    if (categories.length == 0) {
+                                        getCategory()
+                                    }
+
+                                    return <SoftBox sx={{ display: "flex" }}>{categories?.results?.filter((ele) => selected.map((eleme) => eleme?.id ? eleme?.id : eleme)?.includes(ele?.id))?.map((elem) => elem?.name)?.join(",")}</SoftBox>
+                                },
+                                MenuProps: {
+                                    PaperProps: {
+                                        sx: {
+                                            maxHeight: "200px",
+                                            overflowY: "auto",
+                                            backgroundColor: "white !important"
+                                        },
+                                    },
+                                },
+
+                                // IconComponent: <KeyboardArrowDownIcon></KeyboardArrowDownIcon>,
+
+                            }}
                         >
                             {
-                                categories?.map((product, index) => (
+                                categories?.results?.map((product, index) => (
 
                                     <MenuItem key={index} value={product?.id}>{product?.name}</MenuItem>
                                 ))
                             }
-                        </SelectField>
+                        </MultiSelect>
+
                     </>}
                 </Form>
                 {postcontentResponce.failAlert}

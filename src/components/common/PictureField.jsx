@@ -159,7 +159,7 @@ function PictureField({ accept, label, placeholder, onChange, value,productName,
                   alignItems:'center',
                   justifyContent:'center'
                   
-                  }}>{cat?.name||category?.find((ele)=>ele?.id==cat)?.name}</Box>
+                  }}>{cat?.name||category?.results?.find((ele)=>ele?.id==cat)?.name}</Box>
               ))}
               </Box>
                 <Typography

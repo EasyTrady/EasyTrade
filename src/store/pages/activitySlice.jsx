@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const CategorySlice = createSlice({
-  name: "category",
+export const ActivitySlice = createSlice({
+  name: "activity",
   initialState: {
-    value:{
+    value: {
       count: 0,
       next: null,
       previous: null,
@@ -13,10 +13,9 @@ export const CategorySlice = createSlice({
   reducers: {
     set: (state, action) => {
       state.value = action.payload;
-     
     },
     reset: (state) => {
-      state.value ={
+      state.value = {
         count: 0,
         next: null,
         previous: null,
@@ -46,11 +45,8 @@ export const CategorySlice = createSlice({
         ...state.value.results[index],
         ...action.payload.item,
       });
-    },addSubCategory:(state,action)=>{
-        
-       state.value.results.find((ele)=>ele.id===action.payload.idCategory)["subCategory"]=action.payload.subCategory
-    }
+    },
   },
 });
 
-export default CategorySlice.reducer;
+export default ActivitySlice.reducer;

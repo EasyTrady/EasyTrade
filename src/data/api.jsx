@@ -7,7 +7,7 @@ export const PROFILE=`${BaseUrl}accounts/shop/info/`
 
 // "products/categories/"
 export const REPORT= `${BaseUrl}shop/dashboard/reports/`
-
+export const   EXPORTPRODUCT=`${BaseUrl}shop/dashboard/import-export/products/`
 export const CUSTOMER= `${BaseUrl}shop/dashboard/customers/`
 export const CATEGORY= `${BaseUrl}shop/dashboard/categories/`
 export const ORDERS= `${BaseUrl}shop/dashboard/orders/`
@@ -36,6 +36,8 @@ export const NOTIFICATIONS=`${BaseUrl}shop/dashboard/notifications/`
 export const VIEWADDTIONPAGE=`${BaseUrl}shop/dashboard/pages/`
 export const BRANDS=`${BaseUrl}shop/dashboard/brands/`
 export const COUPONS=`${BaseUrl}shop/dashboard/coupons/`
+export const DELETENOTCOUPONS=`${BaseUrl}shop/dashboard/deleted-coupons/`
 export const TOTALREPORT=`${BaseUrl}shop/dashboard/reports/total/`
 export const PERMISSIONS=`${BaseUrl}shop/dashboard/permissions/`
 export const YOURSPERMISSIONS=`${BaseUrl}shop/user-permissions/`
+export const BRANDSPOPLIC=`${BaseUrl}shop/dashboard/popular-brands/`
