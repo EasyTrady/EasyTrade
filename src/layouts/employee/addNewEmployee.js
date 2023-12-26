@@ -174,13 +174,12 @@ function AddNewEmployee({ absolute, light, isMini }) {
 
                     setInvalid(response);
 
-                });
-
-            }
-
-        })
-
-    }
+                })
+              
+              }
+            });
+          }
+          
     useEffect(() => {
         jobRequest({
             onSuccess: (res) => {

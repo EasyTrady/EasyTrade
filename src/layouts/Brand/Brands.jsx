@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Box, Button, Container, Grid, Icon } from '@mui/material'
+import { Box, Button, Container, Grid, Icon, Skeleton } from '@mui/material'
 import SoftBox from 'components/SoftBox'
 import SoftButton from 'components/SoftButton'
 import DataGridCustom from 'components/common/DateGridCustomer'
@@ -15,15 +15,25 @@ import { useDispatch, useSelector } from 'react-redux'
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import BrandBox from 'components/common/BrandBox'
 import { useTranslation } from 'react-i18next'
+import AddBrand from 'components/common/product/AddBrandDialog'
+import AddBrandDialog from 'components/common/AddBrandDialog'
 const Brands = ({ absolute, light, isMini }) => {
     const navigate = useNavigate();
     const dispatch=useDispatch()
     const route = useLocation().pathname.split("/").slice(1);
     const sub_domain = localStorage.getItem("sub_domain");
     let { t } = useTranslation("common");
-  
     let Token = localStorage.getItem("token");
     const brands = useSelector((state) => state.brand.value);
+    const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const [BrandsGetRequest, BrandsGetResponce] = useRequest({
     path: BRANDS,
     method: "get",
@@ -94,10 +104,10 @@ const Brands = ({ absolute, light, isMini }) => {
               backgroundColor: (theme) => theme.palette.purple.middle,
             },
           }}
-          onClick={() => navigate(`/${sub_domain}/dashboard/additionalpage/addadditionalpage`)}
+          onClick={handleClickOpen}
         >
           <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-          &nbsp;{t("addnewpage")}
+          &nbsp;{t("addnewbrand")}
         </SoftButton>
       </SoftBox>
 
@@ -106,7 +116,13 @@ const Brands = ({ absolute, light, isMini }) => {
           
             <Grid item>
                 <Grid container spacing={2}>
-          {brands.results.map((brand,index)=>(
+          {BrandsGetResponce.isPinding?
+         Array.from({ length: 5 }, (_, index) => (
+          <Grid item md={2.4} key={index}>
+            <Skeleton variant="rectangular" width={210} height={118} animation="wave" />
+          </Grid>
+          )):
+          brands.results.map((brand,index)=>(
                     <Grid item md={2.4} key={index}>
                         <BrandBox {...brand}/>
                     </Grid>
@@ -116,6 +132,7 @@ const Brands = ({ absolute, light, isMini }) => {
           
           </Container>
           </Box>
+          <AddBrandDialog open={open} handleClose={handleClose}/>
     </Container>
     {/* {BannerDeleteResponce.failAlert}
     {BannerDeleteResponce.successAlert} */}

@@ -242,10 +242,22 @@ const routes = [
     type: "collapse",
     name: "Brands",
     key: "brands",
-    path: `/${sub_domain}/dashboard/brands`,
+    route: `/${sub_domain}/dashboard/brands`,
     icon: <Shop size="12px" />,
     component:  <Auth><Brands /></Auth>,
-    noCollapse: true},
+    noCollapse: true,
+    permission:[],
+    children: [
+      {
+        key: "Brands",
+        id: "Brands",
+        path:`/${sub_domain}/dashboard/brands`,
+        title: "Brands",
+        element:  <Auth><Brands /></Auth>,
+        type: "item",
+        permission:[]
+
+      },]},
   { type: "title", title: "Discounts & Ads", key: "Discounts-&-Ads" },
   {
     type: "collapse",
