@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const BrandSlice = createSlice({
-  name: "brand",
+export const PopularBrandSlice = createSlice({
+  name: "popularbrand",
   initialState: {
     value: {
       count: 0,
@@ -24,7 +24,7 @@ export const BrandSlice = createSlice({
     },
     deleteItem: (state, action) => {
       state.value.results = state.value.results.filter(
-        (item) => item.id !== action.payload
+        (item) => item.id !== action.payload.id
       );
       state.value.count = state.value.count - 1;
     },
@@ -49,4 +49,4 @@ export const BrandSlice = createSlice({
   },
 });
 
-export default BrandSlice.reducer;
+export default PopularBrandSlice.reducer;

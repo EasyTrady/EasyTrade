@@ -95,9 +95,12 @@ import AddNewBanner from "layouts/banners/addNewBanner";
 import banner from "./assets/images/banner.svg"
 import Report from "layouts/Report";
 import ReportIcon from "examples/Icons/ReportIcon";
-import AddCoupon from "layouts/coupon/addCoupon";
-import CouponIcon from "examples/Icons/CouponIcon";
+import ViewAddtionalPage from "layouts/AdditionalPage/ViewAddtionalPage";
+import AddAddtionalPage from "layouts/AdditionalPage/AddAddtionalPage";
+import Brands from "layouts/Brand/Brands";
 import Coupon from "layouts/coupon";
+import CouponIcon from "examples/Icons/CouponIcon";
+import AddCoupon from "layouts/coupon/addCoupon";
 const sub_domain = localStorage.getItem('sub_domain')
 
 const routes = [
@@ -227,6 +230,26 @@ const routes = [
       },
     ]
   },
+  {
+    type: "collapse",
+    name: "Brands",
+    key: "brands",
+    route: `/${sub_domain}/dashboard/brands`,
+    icon: <Shop size="12px" />,
+    component:  <Auth><Brands /></Auth>,
+    noCollapse: true,
+    permission:[],
+    children: [
+      {
+        key: "Brands",
+        id: "Brands",
+        path:`/${sub_domain}/dashboard/brands`,
+        title: "Brands",
+        element:  <Auth><Brands /></Auth>,
+        type: "item",
+        permission:[]
+
+      },]},
   { type: "title", title: "Discounts & Ads", key: "Discounts-&-Ads" },
   {
     type: "collapse",
@@ -234,18 +257,18 @@ const routes = [
     key: "Offers",
     route: `/${sub_domain}/dashboard/offers`,
     icon: <img src={offers} size="12px" />,
-    noCollapse: true,
+    noCollapse: false,
     component: <Auth><Offers /></Auth>,
-    permission:["view_offer"],
-    children: [{
-      id: "Offers",
-      path: `/${sub_domain}/dashboard/offers`,
-      title: "offers",
-      element: <Auth><Offers /></Auth>,
-      type: "item",
-      permission:["view_offer"],
-    }
-    ]
+    permission:["view_productoffer"],
+    // children: [{
+    //   id: "Offers",
+    //   path: `/${sub_domain}/dashboard/offers`,
+    //   title: "offers",
+    //   element: <Auth><Offers /></Auth>,
+    //   type: "item",
+    //   permission:["view_productoffer"],
+    // }
+    // ]
   },
   {
     type: "collapse",
@@ -253,20 +276,20 @@ const routes = [
     key: "Banners",
     route: `/${sub_domain}/dashboard/banners`,
     icon: <img src={banner} size="12px" />,
-    noCollapse: true,
+    noCollapse: false,
     component: <Auth><ViewBanners /></Auth>,
     permission:["view_banner"],
 
-    children: [{
-      id: "Banners",
-      path: `/${sub_domain}/dashboard/banners`,
-      title: "Banners",
-      element: <Auth><ViewBanners /></Auth>,
-      type: "item",
-      permission:["view_banner"]
+    // children: [{
+    //   id: "Banners",
+    //   path: `/${sub_domain}/dashboard/banners`,
+    //   title: "Banners",
+    //   element: <Auth><ViewBanners /></Auth>,
+    //   type: "item",
+    //   permission:["view_banner"]
 
-    }
-    ]
+    // }
+    // ]
   },
   {
     type: "collapse",
@@ -296,14 +319,14 @@ const routes = [
     icon: <GroupIcon size="12px" />,
     noCollapse: true,
     component: <Auth><Customer /></Auth>,
-    permission:["view_customeraddress"],
+    permission:["view_customer"],
     children: [{
       id: "Customer",
       path: `/${sub_domain}/dashboard/customer`,
       title: "Customer",
       element: <Auth><Customer /></Auth>,
       type: "item",
-      permission:["view_customeraddress"]
+      permission:["view_customer"]
     },
     ]
   },
@@ -538,6 +561,15 @@ const routes = [
     noCollapse: false,
     permission:["view_homecomponent"]
   },
+  {
+    type: "collapse",
+    name: "Additional Page",
+    key: "addtionalpage",
+    route: `/${sub_domain}/dashboard/additionalpage`,
+    icon: <RankingIcon size="12px" />,
+    component:<Auth> <ViewAddtionalPage /></Auth>,
+    noCollapse: false,
+  },
   { type: "title", title: "Account Pages", key: "account-pages" },
   {
     type: "collapse",
@@ -546,6 +578,16 @@ const routes = [
     route: `/${sub_domain}/dashboard/profile`,
     icon: <CustomerSupport size="12px" />,
     component:<Auth> <Profile /></Auth>,
+    noCollapse: false,
+    permission:[]
+
+  },
+  {
+    type: "title",
+    name: "Add New Page",
+    key: "Add New Page",
+    route: `/${sub_domain}/dashboard/additionalpage/addadditionalpage`,
+    component:<Auth> <AddAddtionalPage /></Auth>,
     noCollapse: false,
   },
   {

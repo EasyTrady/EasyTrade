@@ -83,7 +83,7 @@ console.log(active)
     let [open,setOpen]=useState(false)
     // console.log(key,active)
     const menus = children?.map((item) => {
-  console.log(permission,item)
+ 
       switch (item.type) {
         case 'collapse':
           return <NavCollapse key={item.id} menu={item}  />;
@@ -108,7 +108,7 @@ console.log(active)
           sx={{ textDecoration: "none" }}
           onClick={(e)=>setActive((previous)=>previous===key?previous:key)}
         >
-          
+         
 
           <SidenavCollapse
             color={sidenavColor}
@@ -135,6 +135,7 @@ console.log(active)
           noCollapse={noCollapse}
           onClick={()=>setOpen(!open)}
           >
+             
              {menus}
           </SidenavCollapse>
           
@@ -153,8 +154,8 @@ console.log(active)
           mt={2}
           mb={1}
           ml={1}
-         
         >
+         
           {title}
         </SoftTypography>
       );

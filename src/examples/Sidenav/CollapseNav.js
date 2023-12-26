@@ -63,7 +63,7 @@ const NavCollapse = ({ menu }) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, menu.children]);
-
+  
   // menu collapse & item
   const menus = menu.map((item) => {
     switch (item.type) {
@@ -107,6 +107,7 @@ const NavCollapse = ({ menu }) => {
         selected={selected === menu.id}
         onClick={handleClick}
       >
+       
         <ListItemIcon sx={{ my: 'auto', minWidth: !menu.icon ? 18 : 36 }}>{menuIcon}</ListItemIcon>
         <ListItemText
           primary={

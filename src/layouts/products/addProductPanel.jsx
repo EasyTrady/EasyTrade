@@ -23,14 +23,14 @@ export default function AddProductPanel() {
  
  
   if((newValue==1||newValue==2)&&(Boolean(id)||Boolean(productId)||Boolean(productIdEdit))){
-    if(newValue==1&&Boolean(isPermitted(true,["add_productvariantimage","change_productvariantimage","change_productvariantimages","add_productvariantimages"]))){
-      setValue(newValue); 
-    }
-    if(newValue==2&&Boolean(isPermitted(true,["change_productvariant","add_productvariant"]))){
-      setValue(newValue); 
+    // if(newValue==1&&Boolean(isPermitted(true,["add_productvariantimage","change_productvariantimage","change_productvariantimages","add_productvariantimages"]))){
+    //   setValue(newValue); 
+    // }
+    // if(newValue==2&&Boolean(isPermitted(true,["change_productvariant","add_productvariant"]))){
+    //   setValue(newValue); 
 
-    }
-    
+    // }
+    setValue(newValue); 
   }else if(newValue==0) {
     setValue(newValue);
   }
@@ -64,8 +64,8 @@ width:{lg:"50%",md:"50%",sm:"100%",xs:"100%"},
 }}>
   
           <Tab label="Product details  (1st step)" {...a11yProps(0)}sx={{color:value==0&&"#5D449B !important"}} />
-          <Tab label="Product images (2nd step)" {...a11yProps(1)}sx={{color:value==1&&"#5D449B !important"}} disabled={Boolean(!isPermitted(true,["add_productvariantimage","change_productvariantimage","change_productvariantimages","add_productvariantimages"]))} />
-          <Tab label="Attributes (3rd step)" {...a11yProps(2)}sx={{color:value==2&&"#5D449B !important"}} disabled={Boolean(!isPermitted(true,["change_productvariant","add_productvariant"]))}/>
+          <Tab label="Product images (2nd step)" {...a11yProps(1)}sx={{color:value==1&&"#5D449B !important"}}  />
+          <Tab label="Attributes (3rd step)" {...a11yProps(2)}sx={{color:value==2&&"#5D449B !important"}}/>
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
