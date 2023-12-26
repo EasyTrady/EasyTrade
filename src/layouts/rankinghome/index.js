@@ -71,7 +71,7 @@ function index({ absolute, light, isMini }) {
     const handleCloseDialog = () => {
         setOpen(false)
     }
-    const [TypeItem, setTypeItem] = useState([{ icon: <BrandIcon />, title: "brand" }, { icon: <SpecialCategoryIcon />, title: "specialcategory" }, { icon: <CategoryIcon />, title: "category" }, { icon: <BrannerIcon />, title: "banner" }])
+    const [TypeItem, setTypeItem] = useState([{ icon: <BrandIcon />, title: "shopbrand" }, { icon: <SpecialCategoryIcon />, title: "specialcategory" }, { icon: <CategoryIcon />, title: "category" }, { icon: <BrannerIcon />, title: "banner" }])
     const [brandfrom, setItems] = useState([...specialCategorys])
     let Token = localStorage.getItem('token')
     const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
@@ -258,6 +258,7 @@ function index({ absolute, light, isMini }) {
             onSuccess: (res) => {
 
                 setTypeItem(TypeItem.map((ele) => {
+                  
                     let findContent = res?.data?.find((elem) => elem?.type == ele?.title);
 
                     return Boolean(findContent) ? { ...ele, id: findContent?.id } : ele
@@ -317,10 +318,10 @@ function index({ absolute, light, isMini }) {
     const handlleSubmit = () => {
         if (!Edit) {
             validate().then((output) => {
-
+                console.log(controls?.content_type)
                 if (!output.isOk) return;
                 contentpostRequest({
-                    body: controls?.content_type?.title == "brand" ? {
+                    body: controls?.content_type?.title == "shopbrand" ? {
                         title: controls?.title,
                         content_type: controls?.content_type?.id,
                         items: controls?.items,
@@ -369,11 +370,11 @@ function index({ absolute, light, isMini }) {
             let result = compare(Object?.entries(Edit)?.map(([key, value]) => (key == "content_type" ?
                 [controls[key]?.id, value, key] : key == "items" ? [controls[key], value, key] : [controls[key], String(value), key])), false)
 
-            console.log(Edit, result)
+            console.log(Edit, result,controls?.content_type)
             // console.log(controls.items.filter((ele)=>!Boolean(controls.items.find((elem)=>elem.id==ele.id))))
             // console.log(compare(Object.entries(Edit).map(([key,value])=>key=="content_type"?[controls[key].id,value,key]:key=="items"?[controls[key],value,key]:[controls[key],String(value),key])),"sort_number")
             if (result.nochange) {
-                if (controls?.content_type?.title == "brand") {
+                if (controls?.content_type?.title == "shopbrand") {
                     delete result.array.sort_number
                     delete result.array.frame
                     delete result.array.category_level
@@ -491,15 +492,15 @@ function index({ absolute, light, isMini }) {
 
                         </SoftBox>
                         {homeComponent.map((ele) => {
-                            let component = TypeItem.find((elem) => elem.id == ele.content_type)
+                            let component = TypeItem.find((elem) => elem?.id == ele?.content_type)
 
                             if (component?.title == "category"||ele?.visible) {
 
                                 return (
-                                    <SoftBox key={component.id} sx={{ padding: "10px", width: "100%" }}>
+                                    <SoftBox key={component?.id} sx={{ padding: "10px", width: "100%" }}>
                                         <SoftTypography component="div">{t("Categories")}</SoftTypography>
                                         <Slider {...settings} slidesToShow={ele?.max_number} >
-                                            {ele?.items?.map((elem) => <div key={elem.id}>
+                                            {ele?.items?.map((elem) => <div key={elem?.id}>
                                                 <SoftBox sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                                                     <StyleSoftBox frame={ele.frame}>
                                                         <img src={elem?.image} style={{ width: "100%" }} />
@@ -514,7 +515,7 @@ function index({ absolute, light, isMini }) {
                                         </Slider>
                                     </SoftBox>
                                 )
-                            } else if (component?.title == "brand"||ele?.visible) {
+                            } else if (component?.title == "shopbrand"||ele?.visible) {
                                 return (<SoftBox key={ele.id} >
                                     <SoftTypography component="div">{t("Brands")}</SoftTypography>
                                     <Slider {...settings} slidesToShow={ele?.max_number} >
@@ -678,7 +679,7 @@ function index({ absolute, light, isMini }) {
                             ))
                         }
                     </SelectField>
-                    {controls?.content_type?.title == "brand" && <>
+                    {controls?.content_type?.title == "shopbrand" && <>
                         <Typography variant={"label"} sx={{ display: "block", fontSize: "14px", }}
                         >{t("Postion")}
 

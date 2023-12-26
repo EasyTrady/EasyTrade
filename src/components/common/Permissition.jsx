@@ -14,11 +14,14 @@ function Permissition({children,permission,type}) {
         Token: `Token ${Token}`
     });
     useEffect(()=>{
-        permissionYourRequest({
-            onSuccess:(res)=>{
-                dispatch({type:"yourspermission/set",payload:res.data})
-            }
-        })
+        if(permissionYour?.length==0){
+            permissionYourRequest({
+                onSuccess:(res)=>{
+                    dispatch({type:"yourspermission/set",payload:res.data})
+                }
+            })
+        }
+        
     },[])
 
   return (
