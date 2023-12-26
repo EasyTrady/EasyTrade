@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import BrandBox from 'components/common/BrandBox'
 import { useTranslation } from 'react-i18next'
-import AddBrand from 'components/common/product/AddBrandDialog'
+import AddBrand from 'components/common/AddBrandDialog'
 import AddBrandDialog from 'components/common/AddBrandDialog'
 const Brands = ({ absolute, light, isMini }) => {
     const navigate = useNavigate();

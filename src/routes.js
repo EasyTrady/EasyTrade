@@ -245,19 +245,9 @@ const routes = [
     route: `/${sub_domain}/dashboard/brands`,
     icon: <Shop size="12px" />,
     component:  <Auth><Brands /></Auth>,
-    noCollapse: true,
-    permission:[],
-    children: [
-      {
-        key: "Brands",
-        id: "Brands",
-        path:`/${sub_domain}/dashboard/brands`,
-        title: "Brands",
-        element:  <Auth><Brands /></Auth>,
-        type: "item",
-        permission:[]
-
-      },]},
+    noCollapse: false,
+    permission:["view_brand"],
+   },
   { type: "title", title: "Discounts & Ads", key: "Discounts-&-Ads" },
   {
     type: "collapse",

@@ -27,12 +27,12 @@ import  NotificationSlice  from './pages/notificationSlice';
 import  CouponSlice  from './pages/couponSlice';
 import  PermissionSlice  from './pages/permissionSlice';
 import  PermissionYourSlice  from './pages/yourPermissionSlice';
-<<<<<<< HEAD
+
 import  ActivitySlice  from './pages/activitySlice';
 import  DeleteCouponSlice  from './pages/deleteCoupon';
-=======
+
 import  PopularBrandSlice  from './pages/popularbrandSlice';
->>>>>>> 107500927c1c1683c179e39a427c2a8bb743c2ff
+
 
 
 const store = configureStore({
