@@ -139,7 +139,7 @@ function Products({ absolute, light, isMini }) {
   function handleDownloadModel(){
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.aoa_to_sheet([
-      ["name","price","sku","quantity","mpn","gtin"]
+      ["name","price","sku","quantity","mpn","gtin","description","main_image"]
     ]);
   // XLSX.utils.sheet_to_txt
     XLSX.utils.book_append_sheet(wb, ws, "productSheet");
@@ -147,7 +147,6 @@ function Products({ absolute, light, isMini }) {
     XLSX.writeFile(wb, "productSheet.xls");
   }
   function exportProductfile(e){
-    console.log("vdljirjeo")
     newForm.append("file",e.target.files[0])
     exportProductsFile({
       body:newForm,
@@ -184,7 +183,7 @@ function Products({ absolute, light, isMini }) {
                 }} sx={{ textAlign: "right" }}>
                   {/*  */}
                 
-                    <Button onClick={handleDownloadModel}
+                    <Button onClick={()=>refInput.current.click()} 
                         sx={{
                             backgroundColor: "white !important",
                             color: "black !important", marginX: "10px", padding: "13px 16px"
@@ -201,7 +200,7 @@ function Products({ absolute, light, isMini }) {
           accept={".xlsx,.xls"}
         />
                     {/* <Box component={"input"} type="file"onChange={(e)=>exportProductfile(e)} sx={{display:"none"}} ref={refInput} /> */}
-                    <Button onClick={()=>refInput.current.click()}
+                    <Button onClick={handleDownloadModel}
                         sx={{
                             backgroundColor: "white !important",
                             color: "black !important", marginX: "10px", padding: "13px 16px"

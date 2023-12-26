@@ -56,7 +56,10 @@ function Attribute({ absolute, light, isMini }) {
     let {isPermitted}=usePermission()
     let dispatch = useDispatch()
     let { t } = useTranslation("common")
-
+    const [paginationModel, setPaginationModel] = React.useState({
+        page: 0,
+        pageSize: 8,
+      });
     const route = useLocation().pathname.split("/").slice(1);
     let attributes = useSelector((state) => state?.attribute?.value)
     let [rows, setRows] = useState([])
@@ -499,6 +502,9 @@ function Attribute({ absolute, light, isMini }) {
 
                 <DataGridCustom
                     rows={rows}
+                    paginationModel={paginationModel}
+          onPaginationModelChange={setPaginationModel}
+        //   rowCount={}
                     onDelete={isPermitted(onDelete,["delete_productattribute"])}
                     onDialog={isPermitted(onEdit,["change_productattribute"])}
                     columns={columns}

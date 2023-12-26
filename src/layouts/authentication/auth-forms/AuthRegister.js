@@ -272,8 +272,8 @@ const FirebaseRegister = ({ ...others }) => {
                   marginRight: 'auto',
 
                 }}
-                name="email"
-                value={values.email}
+                name="full_name"
+                value={values.full_name}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 placeholder=" الاسم بالكامل"

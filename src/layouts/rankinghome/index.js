@@ -67,7 +67,10 @@ function index({ absolute, light, isMini }) {
     let [Edit, setEdit] = useState(null)
     let [drap, setDrap] = useState(0)
     let [dropele, setDrop] = useState(0)
-
+    const [paginationModel, setPaginationModel] = React.useState({
+        page: 0,
+        pageSize: 8,
+      });
     const handleCloseDialog = () => {
         setOpen(false)
     }
@@ -318,7 +321,6 @@ function index({ absolute, light, isMini }) {
     const handlleSubmit = () => {
         if (!Edit) {
             validate().then((output) => {
-                console.log(controls?.content_type)
                 if (!output.isOk) return;
                 contentpostRequest({
                     body: controls?.content_type?.title == "shopbrand" ? {
@@ -370,7 +372,7 @@ function index({ absolute, light, isMini }) {
             let result = compare(Object?.entries(Edit)?.map(([key, value]) => (key == "content_type" ?
                 [controls[key]?.id, value, key] : key == "items" ? [controls[key], value, key] : [controls[key], String(value), key])), false)
 
-            console.log(Edit, result,controls?.content_type)
+           
             // console.log(controls.items.filter((ele)=>!Boolean(controls.items.find((elem)=>elem.id==ele.id))))
             // console.log(compare(Object.entries(Edit).map(([key,value])=>key=="content_type"?[controls[key].id,value,key]:key=="items"?[controls[key],value,key]:[controls[key],String(value),key])),"sort_number")
             if (result.nochange) {

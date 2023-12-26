@@ -207,7 +207,7 @@ function AddNewJob({ absolute, light, isMini }) {
                             subtitle:t("Alwaysactive")
                         }}hideFooter={true}>
                         <Box sx={{ display: "flex", flexDirection: "column" }}>
-                        {permissions?.map((ele,index)=>index<=6&&
+                        {permissions?.map((ele,index,array)=>index<=array.length/2&&
                              <Box key={index} sx={{ marginY: "6px",marginBottom:"20px",display:"flex",justifyContent:"space-between" }}>
                              <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{ele?.name}</InputLabel>
                              <SoftBox sx={{display:"flex" ,alignItems:"center"}}> 
@@ -228,10 +228,11 @@ function AddNewJob({ absolute, light, isMini }) {
                             subtitle:t("Alwaysactive")
                         }}hideFooter={true}>
                         <Box sx={{ display: "flex", flexDirection: "column" }}>
-                            {permissions?.results?.map((ele,index)=>index>6&&
+                            {permissions?.map((ele,index,array)=>index>array.length/2&&
                              <Box key={index} sx={{ marginY: "6px",marginBottom:"20px",display:"flex",justifyContent:"space-between" }}>
                              <InputLabel htmlFor="outlined-adornment-email-register" sx={{ marginY: "6px", fontSize: "14px" }}>{ele?.name}</InputLabel>
                              <SoftBox sx={{display:"flex" ,alignItems:"center"}}> 
+                            
                                    <Divider sx={{ flexGrow: 1 }} orientation="vertical"/>
                                    <Switch  checked={controls?.job_permissions?.includes(ele?.codename)} color="default"onChange={()=>setControl("job_permissions",[...controls?.job_permissions,ele?.codename])} />
                                    </SoftBox>

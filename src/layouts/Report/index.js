@@ -45,9 +45,15 @@ function Report({ absolute, light, isMini }) {
   const route = useLocation().pathname.split("/").slice(1);
   const [dateRange, setDateRange] = useState([null, null]);
 
-
+  const [paginationModel, setPaginationModel] = React.useState({
+    page: 0,
+    pageSize: 8,
+  });
   const { chart, items } = reportsBarChartData;
   let [rows, setRows] = useState([])
+  let [count, setCount] = useState(0)
+  let [click, setClick] = useState(0)
+
   let [total, setTotal] = useState({total_orders: 0,
   total_products: 0,
   total_profit: 0,
@@ -108,15 +114,16 @@ function Report({ absolute, light, isMini }) {
     setDateRange(newDates);
   };
   function togetdataoftable(data) {
-
+    setClick(data)
     ReportRequest({
       id: data,
       params: {
         start_date: controls?.start_date,
-        end_date: controls?.end_date
+        end_date: controls?.end_date,params:{page:paginationModel?.page+1},
       },
       onSuccess: (res) => {
         // setControl(`total_${data}`, res.data.count)
+        setCount(res.data.count)
         setRows(res.data.results.map((ele) => ele))
         setColumns(res.data.results.length > 0 ? Object.keys(res.data.results[0]).map((elem) => (elem == "created_at" || elem == "date" ?
           { field: elem, renderCell: (params) => (moment(params.row.created_at).format('MMMM-DD-YYYY')), headerName: elem.replace("_", " "), width: 150 } : elem == "main_image" ?
@@ -142,6 +149,10 @@ function Report({ absolute, light, isMini }) {
     })
     togetdataoftable("sales")
   },[])
+  useEffect(()=>{
+    togetdataoftable(click)
+
+  },[paginationModel?.page])
   return (
     <DashboardLayout >
       <DashboardNavbar />
@@ -179,7 +190,7 @@ function Report({ absolute, light, isMini }) {
           <SoftTypography variant="h5">Sales Report</SoftTypography>
           <SoftBox sx={{
             justifyContent: "flex-end",
-            display: "flex", alignItems: "center", width: "40%"
+            display: "flex", alignItems: "center",  width: { lg: "50%", md: "50%", sm: "75%", xs: "75%" }
           }}>
             <SoftBox sx={{
               display: "flex", width: { lg: "50%", md: "50%", sm: "100%", xs: "100%" }, borderRadius: '8px',
@@ -245,11 +256,14 @@ function Report({ absolute, light, isMini }) {
         </SoftBox>
 
         <DataGridCustom rows={rows} columns={columns} checkboxSelection={true}
+        rowCount={count}
           onRowClick={(e, row) => {
            
             // setClick({ ...e.id });
           }}
           loading={getReportResponce.isPending}
+          paginationModel={paginationModel}
+          onPaginationModelChange={setPaginationModel}
           // notProduct={false}
           // rowsPerPageOptions={[5, 10, 15, 20]}
           // onPaginationModelChange={setPaginationModel}

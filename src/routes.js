@@ -109,10 +109,11 @@ const routes = [
     type:'title',
     name:'Home',
     key:'home',
-    route:`/${sub_domain}`,
+    route:`/${sub_domain}/t1/`,
     component:<HomeSections/>,
     noCollapse:false,
-  },{
+  },
+  {
     type:'title',
     name:'Home',
     key:'home',
@@ -307,7 +308,7 @@ const routes = [
     icon: <CouponIcon />,
     noCollapse: false,
     component: <Auth><ArchiveCoupon /></Auth>,
-    permission:["view_coupon"]
+    permission:["view_deletedcoupons"]
 
   },{
     type: "title",

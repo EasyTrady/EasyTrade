@@ -198,7 +198,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             
           </SoftBox>
         </SoftBox>
-        <SoftBox component={NavLink} to={`/${sub_domain}`}target={"_blank"} sx={{display:"flex",alignItems:"center",":hover,:active,:visited,:focus":{color:(theme)=>theme.palette.purple.middle}}} >
+        <SoftBox component={"a"} href={shop_url}target={"_blank"} sx={{display:"flex",alignItems:"center",":hover,:active,:visited,:focus":{color:(theme)=>theme.palette.purple.middle}}} >
           <VisitSite color={(theme)=>theme.palette.purple.middle}/>
           <SoftTypography component={"span"} sx={{fontSize:"12px",marginX:"5px"}}>Visit Site</SoftTypography>
           <ArrowForwardIcon sx={{fontSize:"12px"}} />

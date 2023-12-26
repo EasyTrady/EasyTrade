@@ -23,7 +23,7 @@ function Customer({ absolute, light, isMini }) {
   const navigate = useNavigate()
   const [paginationModel, setPaginationModel] = React.useState({
     page: 0,
-    pageSize: 5,
+    pageSize: 8,
   });
   let dispatch = useDispatch()
   let Token = localStorage.getItem('token')
@@ -150,7 +150,7 @@ function Customer({ absolute, light, isMini }) {
             // onDelete={onDelete}
             rowsPerPageOptions={[5, 10, 15, 20]}
 
-            // paginationModel={paginationModel}
+            paginationModel={paginationModel}
             onPaginationModelChange={setPaginationModel}
           />
           {DeleteCustomerrResponce.failAlert}
