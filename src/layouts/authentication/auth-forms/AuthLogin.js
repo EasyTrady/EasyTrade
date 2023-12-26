@@ -88,7 +88,7 @@ const FirebaseLogin = ({ ...others }) => {
           password: Yup.string().max(255).required('Password is required')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-      
+         console.log(values)
             signInRequest({
               body:values,
               onSuccess:async(res)=>{
@@ -96,7 +96,7 @@ const FirebaseLogin = ({ ...others }) => {
                 // console.log(res.data.expiry,new Date(),new Date(res.data.expiry).getHours())
                 localStorage.setItem('tokenTimestamp', new Date(res.data.expiry).getTime());
                 // if (Boolean(sub_domain)) {
-                 
+                  console.log(Boolean(sub_domain))
 
 
                   // navigate(`/${sub_domain}/dashboard`)
@@ -114,7 +114,7 @@ const FirebaseLogin = ({ ...others }) => {
                     localStorage.setItem('email', response?.data?.user?.email)
                     localStorage.setItem('phone', response?.data?.user?.phone)
                     localStorage.setItem('sub_domain', response?.data?.sub_domain)
-                   
+                    console.log(response?.data)
                     navigate(`/${response?.data?.sub_domain}/dashboard`)
                   } })
 

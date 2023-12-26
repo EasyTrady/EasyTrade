@@ -37,7 +37,6 @@ export default function ContactUs() {
     padding: 30px;
   `;
 
-  
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarSeverity, setSnackbarSeverity] = useState("success"); // Default to success
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -66,12 +65,7 @@ export default function ContactUs() {
     setSnackbarSeverity('success'); // Reset severity to default
     setSnackbarMessage('');
   };
-  const [isFirstNameFocused, setIsFirstNameFocused] = useState(false);
-  const [islastNameFocused, setIslastNameFocused] = useState(false);
-  const [isEmailFocused, setIsEmailFocused] = useState(false);
-  const [isMessageFocused, setIsMessageFocused] = useState(false);
 
-  
   const [contactUsRequest, contactUsResponce] =
         useRequest({
             path: CONTACTUS,
@@ -188,7 +182,7 @@ export default function ContactUs() {
           sx={{
             flexGrow: 1,
             marginBottom: "50px",
-            textAlign: "center",
+            textAlign: "center", // Center content vertically
             marginLeft: "auto",
             marginRight: "auto",
           }}
@@ -201,7 +195,7 @@ export default function ContactUs() {
               justifyContent: "center",
               padding: "0 !important",
               marginTop: "16px",
-              alignItems: "center",
+              alignItems: "center", // Center content horizontally
               flexDirection: { xs: "column-reverse", md: "row" },
             }}
           >
@@ -237,14 +231,12 @@ export default function ContactUs() {
                           >
                             الأسم الأول
                           </Typography>
-                          <SoftInput
+                          <TextField
                             type="text"
                             name="first_name"
                             value={controls?.first_name}
-                            onChange={(e) => 
-                              setControl('first_name', e.target.value)
-                            }
-                            onFocus={() => setIsFirstNameFocused(true)}
+                            onBlur={(e) => setControl('first_name', e.target.value)}
+                            onChange={(e) => setControl('first_name', e.target.value)}
                             error={Boolean(invalid?.first_name)}
                             helperText={invalid?.first_name}
                             required={required.includes('first_name')}
@@ -261,10 +253,7 @@ export default function ContactUs() {
                                 fontWeight: 500,
                                 fontFamily: "Cairo",
                               },
-                            }}
-                            autoFocus={isFirstNameFocused}
-                            
-                            />
+                            }}></TextField>
                         </Grid>
                         <Grid item xs={12} sx={{ textAlign: "end" }}>
                           <Typography
@@ -272,13 +261,12 @@ export default function ContactUs() {
                           >
                             الأسم الثاني
                           </Typography>
-                          <SoftInput
+                          <TextField
                             type="text"
                             name="last_name"
                             value={controls.last_name}
                             onChange={(e) => setControl('last_name', e.target.value)}
                             required={required.includes('last_name')}
-                            onFocus={() => setIslastNameFocused(true)}
                             error={Boolean(invalid?.last_name)}
                             helperText={invalid?.last_name}
                             fullWidth
@@ -295,7 +283,6 @@ export default function ContactUs() {
                                 fontFamily: "Cairo",
                               },
                             }}
-                            autoFocus={islastNameFocused}
                           />
                         </Grid>
                       </Grid>
@@ -309,12 +296,11 @@ export default function ContactUs() {
                       >
                         البريد الالكتروني
                       </Typography>
-                      <SoftInput
+                      <TextField
                         type="text"
                         name="email"
                         value={controls.email}
                         onChange={(e) => setControl('email', e.target.value)}
-                        onFocus={() => setIsEmailFocused(true)}
                         required={required.includes('email')}
                         error={Boolean(invalid?.email)}
                         helperText={invalid?.email}
@@ -332,7 +318,6 @@ export default function ContactUs() {
                             fontFamily: "Cairo",
                           },
                         }}
-                        autoFocus={isEmailFocused}
                       />
                       <Typography
                         sx={{
@@ -352,7 +337,7 @@ export default function ContactUs() {
                           value={controls.message}
                           onChange={(e) => setControl('message', e.target.value)}
                           required={required.includes('message')}
-                          onFocus={() => setIsMessageFocused(true)}
+                          onFocus={(e) => e.target.select()} 
                           error={Boolean(invalid?.message)}
                           helperText={invalid?.message}
                           placeholder="...الرسالة"
@@ -369,8 +354,6 @@ export default function ContactUs() {
                             paddingRight: "10px",
                             marginTop: "10px",
                           }}
-                          autoFocus={isMessageFocused}
-                          
                         />
                       </Box>
                       

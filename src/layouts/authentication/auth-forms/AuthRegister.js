@@ -109,7 +109,7 @@ const FirebaseRegister = ({ ...others }) => {
 
   useEffect(() => {
     // changePassword('123456');
- 
+    console.log(others?.subscribtionId);
   }, []);
   // console.log(user);
   return (
@@ -145,7 +145,7 @@ const FirebaseRegister = ({ ...others }) => {
           // code: Yup.string().required('code is required'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-      
+          console.log(values, "on submit");
           //  try {
           Object.entries(values).forEach(([key, value]) => formData.append(key, value));
 
@@ -155,7 +155,7 @@ const FirebaseRegister = ({ ...others }) => {
           signUpRequest({
             body: formData,
             onSuccess: async (res) => {
-            
+              console.log(res, "rsjkdklsj");
               // if(res?.type==='signupUser/fulfilled'){
               //   toast.success('welcome to EasyTrade')
               // navigate('/register/creatingshop')
@@ -289,8 +289,8 @@ const FirebaseRegister = ({ ...others }) => {
                 <Typography sx={{fontSize:'14px', fontWeight:500, fontFamily: "Cairo", pb:'16px', pt:'16px', color:'#344054'}}>الإسم بالكامل</Typography>
                 <TextField
                   variant="outlined"
-                  name="email"
-                  value={values.email}
+                  name="full_name"
+                  value={values.full_name}
                   onBlur={handleBlur}
                   onChange={handleChange}
                   InputProps={{

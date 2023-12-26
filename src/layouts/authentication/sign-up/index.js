@@ -67,7 +67,7 @@ function SignUp({ ...others }) {
   const location = useLocation();
   const { state } = location;
   const handleSetAgremment = () => setAgremment(!agreement);
-  
+  console.log(others, "others", state);
   return (
     <Card>
       <PageLayout>

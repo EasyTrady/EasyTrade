@@ -144,11 +144,9 @@ function AddNewEmployee({ absolute, light, isMini }) {
                     body: result.array,
                     onSuccess: (res) => {
                         console.log(res.data, controls.id)
-
                         dispatch({ type: "employee/patchItem", payload: { id: controls.id, item: res.data } })
                         resetControls()
                 navigate(`/${sub_domain}/dashboard/employee`)
-
                     }
                 })
             }else{

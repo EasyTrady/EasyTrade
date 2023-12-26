@@ -348,7 +348,7 @@ export default function Price() {
                               alignItems: "center",
                               fontSize: "16px",
                               fontWeight: 500,
-                              lineHeight: "50px"
+                              lineHeight: "50.5px"
                             }}
                           >
                             {features.includes(feature) ? (
@@ -356,7 +356,7 @@ export default function Price() {
                                 <CheckCircleIcon  />
                               </Box>
                             ) : (
-                              "-"
+                              <Box sx={{ color: "#6495ed",borderBottom: "1px solid #D4D2E3",width:'100%' }}>-</Box>
                             )}
                           </Box>
                         ))}

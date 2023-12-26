@@ -1,4 +1,5 @@
 export const BaseUrl = 'https://easytradyapi.shop/';
+export const CONTACTUS = `${BaseUrl}core/contact-us/`
 export const SIGNIN=`${BaseUrl}accounts/auth/login/`
 export const SIGNUP=`${BaseUrl}accounts/shop/create/`
 export const JOBS=`${BaseUrl}shop/dashboard/jobs/`
