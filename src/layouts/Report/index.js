@@ -193,7 +193,7 @@ function Report({ absolute, light, isMini }) {
             display: "flex", alignItems: "center",  width: { lg: "50%", md: "50%", sm: "75%", xs: "75%" }
           }}>
             <SoftBox sx={{
-              display: "flex", width: { lg: "50%", md: "50%", sm: "100%", xs: "100%" }, borderRadius: '8px',
+              display: "flex", width: { lg: "50%", md: "50%", sm: "75%", xs: "75%" }, borderRadius: '8px',
               border: "1px solid #D9D9D9", overflow: "hidden", alignItems: "center"
             }}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -204,7 +204,7 @@ function Report({ absolute, light, isMini }) {
                   endText=""
                   value={dateRange}
                   slots={{ field: SingleInputDateRangeField }}
-                  sx={{ ".MuiInputBase-root": { width: "117% !important" } }}
+                  sx={{ ".MuiInputBase-root": { width:"116% !important" } }}
                   onChange={handleDateChange}
                   label=""
 

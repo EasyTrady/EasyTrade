@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Parser } from "html-to-react";
 
-import { Box, Divider, Typography, createTheme, responsiveFontSizes } from "@mui/material";
+import { Box, Container, Divider, Grid, Typography, createTheme, responsiveFontSizes } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,6 +10,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Subscribtion } from "store/pages/subscribition";
 import { Skeleton } from "@mui/material";
+import Slider from "react-slick";
+import { SIGNUP } from "data/api";
 
 const SubscribeCard = ({ type }) => {
   const [isHovering, setIsHovering] = useState(-1);
@@ -29,7 +31,198 @@ const SubscribeCard = ({ type }) => {
     setIsHovering(-1);
   };
 
-  // const Card = [
+  
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    console.log(subscribtion);
+    // console.log('run');
+    if (subscribtion.length >= 1) {
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+    }
+  }, [subscribtion]);
+
+  const boxStyle = {
+    width:'100%',
+    mx: "auto",
+    overFlow: "hidden",
+    display: "flex !important",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: { xs: "center", md: "stretch" }
+  };
+  const cardStyle = {
+    position: "relative",
+    width: {sm: '100%', xs: "80%", md: "60%", lg: "20%", xl: "20%" },
+    margin: "0 0 15px",
+    padding: "10px",
+    boxShadow:
+      "0px 0.796192px 2.38858px -0.875px rgba(0, 0, 0, 0.067), 0px 2.41451px 7.24352px -1.75px rgba(0, 0, 0, 0.067), 0px 6.38265px 19.148px -2.625px rgba(0, 0, 0, 0.06), 0px 20px 60px -3.5px rgba(0, 0, 0, 0.03)",
+    backgroundColor: "#FFFFFF01",
+    borderRadius: "20px",
+    // px: "24px",
+    ":hover": {
+      cursor: "pointer",
+      border: " 2px solid #5D449B",
+      transition: "1s fade-in",
+      ".MuiButton-root": {
+        backgroundColor: "#5D449B",
+        color: "#ffffff",
+      },
+      ".MuiSvgIcon-root": {
+        color: "black",
+      },
+    },
+  };
+  const PriceStyle = {
+    
+
+  };
+  const offerStyle = {
+    fontSize: "16px",
+    fontWeight: 400,
+    color: "#5D449B",
+    lineHeight: "29.98px",
+    mb: "11px",
+  };
+
+  const linkStyle = {
+    color: "#5D449B",
+    fontSize: "14px",
+    lineHeight: "26.24px",
+    fontWeight: 500,
+    letterSpacing: "-0.5px",
+    justifyContent: "center",
+    display: "flex",
+    my: "5px 20px",
+  };
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    autoplaySpeed: 2000,
+    autoplay: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+        },
+      },
+      {
+        breakpoint: 650,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          initialSlide: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+  return (
+    <Container>
+      
+        <Box sx={boxStyle}>
+          <Box sx={{width:'100%'}}>
+          <Slider {...settings} >
+        {isLoading
+          ? [1, 2, 3, 4].map((item, indx) => (
+              <Skeleton key={item + indx} variant="rectangle" sx={{height:'480px', color:'#8BB3E8'}} />
+            ))
+          : subscribtion?.map((card, i) => {
+            
+              return (
+                  <Box
+                  xs={12} md={6} lg={4} 
+                  sx={cardStyle}
+                  key={`${card.id} ${i}`}
+                  onMouseOver={() => handleMouseOver(i)}
+                  onMouseOut={handleMouseOut}
+                >
+                  <Typography 
+                    sx={{
+                      fontFamily:'Cairo', 
+                      fontWeight:600, 
+                      fontSize:'22px', 
+                      lineHeight:'33px', 
+                      textAlign: "right",
+                      maxLines: 1,
+                      ...(card.id === 9 || i === card.length - 1 ? { marginBottom: {sm:'0', md:'22px', xs:'33px'} , fontSize: '20px'} : { marginBottom: '33px'}),
+                    }}>
+                      {card.name}
+                  </Typography>
+                  {card.hasOwnProperty.call("offer") && isHovering === i && (
+                    <Typography sx={offerStyle}>{card.offer}</Typography>
+                  )}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "end",
+                      justifyContent: "end",
+                    }}
+                  >
+                    <Typography sx={{fontFamily:'Cairo', fontWeight:600, fontSize:'14px', lineHeight:'21px'}}>شهريا/</Typography>
+                    <Typography 
+                      variant="h3" 
+                      margin={0} 
+                      sx={{
+                        fontSize: "54px",
+                        fontWeight: 700,
+                        fontFamilly: "Inter",
+                        letterSpacing: "-3px",
+                        lineHeight: "54px",
+                        ...(card.id === 9 || i === card.length - 1 ? { marginTop: { lg: '22px', md: '8px' } } : {}),
+                      }}>
+                      ${card.price}
+                    </Typography>
+                  </Box>
+                  <Link
+                    to={`authentication/sign-up?id=${card?.id}`}
+                    sx={{ fontFamily: 'Cairo', fontWeight: 600, fontSize: '16px', lineHeight: '29.98px',textDecoration: 'none',
+                    display: 'inline-block'}}
+                  >
+                    <ButtonSubScribtion
+                      sx={{ fontFamily: 'Cairo', fontWeight: 600, fontSize: '16px', lineHeight: '29.98px', marginTop:'15px' }}
+                    >
+                      {t("chooseplan.title")}
+                    </ButtonSubScribtion>
+                  </Link>
+                  <Divider width="90%" sx={{ mx: "auto", my: "18px" }} />
+                  <Typography sx={{ fontFamily:'Cairo', fontWeight:400, fontSize:'18px', lineHeight:'30px', textAlign: "start", margin: "20px 0" }}>
+                    {Parser().parse(card.description)}
+                  </Typography>
+                  
+                </Box>
+                
+              );
+            })}
+            </Slider>
+          </Box>
+        </Box>
+      
+    </Container>
+  );
+};
+
+export default SubscribeCard;
+
+
+
+// const Card = [
   //   {
   //     id: 1,
   //     title: "Basic",
@@ -133,127 +326,3 @@ const SubscribeCard = ({ type }) => {
 
   // console.log(Card);
   // ....................................skeleton......................................
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    
-    // console.log('run');
-    if (subscribtion.length >= 1) {
-      setIsLoading(false);
-    } else {
-      setIsLoading(true);
-    }
-  }, [subscribtion]);
-
-  const boxStyle = {
-    width: "100%",
-    // height: '480px',
-    mx: "auto",
-    overFlow: "hidden",
-    display: "flex",
-    flexDirection: { xs: "column", md: "row" },
-    justifyContent: "center",
-    alignItems: { xs: "center", md: "stretch" }
-  };
-  const cardStyle = {
-    position: "relative",
-    fontFamilly:'Cairo',
-    fontSize:'25px',
-    width: {sm: '100%', xs: "80%", md: "60%", lg: "20%", xl: "20%" },
-    margin: "0 5px 10px",
-    padding: "10px",
-    boxShadow:
-      "0px 0.796192px 2.38858px -0.875px rgba(0, 0, 0, 0.067), 0px 2.41451px 7.24352px -1.75px rgba(0, 0, 0, 0.067), 0px 6.38265px 19.148px -2.625px rgba(0, 0, 0, 0.06), 0px 20px 60px -3.5px rgba(0, 0, 0, 0.03)",
-    backgroundColor: "#FFFFFF01",
-    borderRadius: "20px",
-    px: "24px",
-    ":hover": {
-      cursor: "pointer",
-      border: " 2px solid #5D449B",
-      transition: "1s fade-in",
-      ".MuiButton-root": {
-        backgroundColor: "#5D449B",
-        color: "#ffffff",
-      },
-      ".MuiSvgIcon-root": {
-        color: "black",
-      },
-    },
-  };
-  // const decriptionStyle = { fontSize: '13px', fontWeight: 500, color: '#666666', lineHeight: '19.5px' };
-  const PriceStyle = {
-    fontSize: "54px",
-    fontWeight: 500,
-    fontFamilly: "Cairo",
-    letterSpacing: "-3px",
-    lineHeight: "54px",
-    mt: "22px",
-  };
-  const offerStyle = {
-    fontSize: "16px",
-    fontWeight: 400,
-    color: "#5D449B",
-    lineHeight: "29.98px",
-    mb: "11px",
-  };
-
-  const linkStyle = {
-    color: "#5D449B",
-    fontSize: "14px",
-    lineHeight: "26.24px",
-    fontWeight: 500,
-    letterSpacing: "-0.5px",
-    justifyContent: "center",
-    display: "flex",
-    my: "5px 20px",
-  };
-  return (
-    <Box sx={boxStyle}>
-      {isLoading
-        ? [1, 2, 3, 4].map((item, indx) => (
-            <Skeleton key={item + indx} variant="rectangle" sx={{height:'480px', color:'#8BB3E8'}} />
-          ))
-        : subscribtion?.map((card, i) => {
-            return (
-              <Box
-                key={`${card.id} ${i}`}
-                sx={cardStyle}
-                onMouseOver={() => handleMouseOver(i)}
-                onMouseOut={handleMouseOut}
-              >
-                <TitleText sx={{ textAlign: "right" }}>{card.name}</TitleText>
-                {card.hasOwnProperty.call("offer") && isHovering === i && (
-                  <Typography sx={offerStyle}>{card.offer}</Typography>
-                )}
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "end",
-                    justifyContent: "end",
-                  }}
-                >
-                  <Typography>شهريا/</Typography>
-                  <Typography variant="h3" margin={0} sx={PriceStyle}>
-                    ${card.price}
-                  </Typography>
-                </Box>
-                <Divider width="90%" sx={{ mx: "auto", my: "18px" }} />
-                <ButtonSubScribtion
-                  onClick={() => {
-                    navigate("/authentication/sign-up", { state: { subscribtionId: card?.id } });
-                  }}
-                >
-                  {t("chooseplan.title")}
-                </ButtonSubScribtion>
-                <Typography sx={{ textAlign: "start", margin: "20px 0" }}>
-                  {Parser().parse(card.description)}
-                </Typography>
-              </Box>
-            );
-          })}
-    </Box>
-  );
-};
-
-export default SubscribeCard;

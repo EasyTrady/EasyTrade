@@ -4,10 +4,12 @@ import Grid from '@mui/material/Grid';
 import home from '../../../assets/images/icons/Social Media Icon Square/home.svg';
 import { Box, ButtonBase, Container, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate } from 'react-router-dom';
 
 export default function landingSection () {
   const [t] = useTranslation('common');
-
+  const navigate = useNavigate();
   return (
     <Box
       sx={{
@@ -40,72 +42,70 @@ export default function landingSection () {
           </Box>
         </Grid>
         <Grid xs={12} md={6}>
-          <Stack sx={{ pt: '2%', width: '100%', textAlign: 'right', mt: '10%' }}>
+          <Stack className='gehad' sx={{ pt: '2%', width: '100%', textAlign: 'right', mt: '10%', alignItems:{xs:'center', sm:'end', md:'end', lg:'end'} }}>
             <Typography
               sx={{
-                fontSize: '25px',
-                fontWeight: {md:900,xs:700},
+                fontSize: {xs:'28px', sm:'28px', md:'28px', lg:'48px'},
+                fontWeight: {xs:700, sm:700, md:600, lg:600},
                 lineHeight: '50.4px',
-                color: '#03090d',
-                fontFamily: 'Cairo'
+                color: '#3D2D66',
+                fontFamily: 'Cairo',
+                lineHeight:'86.4px',
+                textAlign:{xs:'center', sm:'right', md:'right', lg:'right'} 
               }}
             >
               {t('aselateam.title', { framework: 'react' })}
             </Typography>
             <Typography
               sx={{
-                fontSize: {md:'15px',xs:"14px"},
-                fontWeight:{md: 700,xs:500},
-                lineHeight: '21.33px',
+                fontSize: "18px",
+                fontWeight:400,
+                lineHeight: '33.73px',
                 color: '#616161',
-                
-                fontFamily: 'Cairo'
-
+                fontFamily: 'Cairo',
+                textAlign:{xs:'center', sm:'right', md:'right', lg:'right'} 
               }}
             >
               {t('ourteam.title', { framework: 'React' })}
             </Typography>
 
             <Stack
+              direction='column'
+              alignItems='flex-end'
               gap={2}
-              sx={{
-                flexDirection: {
-                  xl: 'row',
-                  lg: 'row',
-                  md: 'row',
-                  sm: 'column',
-                  xs: 'column'
-                },
-                flexWrap: 'wrap',
-                width: '100%',
-                justifyContent: 'right',
-                alignItems: 'right'
-              }}
+
             >
               <ButtonBase
+              onClick={(e) => {
+                navigate('/price')
+              }}
                 sx={{
                   bgcolor: '#5D449B',
                   color: '#FFFFFF',
-                  height: '7vh',
+                  height:'2.5rem',
                   borderRadius: '12px',
-                  textAlign:{lg: "right",xl: "right",md: "right",xs: "right",sm: "right"},
-                  fontSize: '14px',
+                  textAlign: 'right', 
+                  fontSize: '16px',
                   lineHeight: '22.4px',
                   fontWeight: 600,
                   mt: '15px',
-                  fontFamily:'Cairo',
-                  width: { md: '30%', xs: '50%', xL: '30%', sm: '50%', lg: '30%' }
+                  fontFamily: 'Cairo',
+                  width: '100%',
                 }}
               >
+                <Typography sx={{margin:'10px'}}>
+                <ArrowBackIcon />
+                </Typography>
                 {t('getforfree.title', { framework: 'react' })}
               </ButtonBase>
               <Typography
                 sx={{
-                  color: '#8a2296',
+                  color: '#782F9A',
                   width: { xl: '100%', md: '100%', xs: '100%' },
                   fontSize: '16px',
                   fontFamily: 'Cairo',
-                  textAlign:'right'
+                  textAlign:'right',
+                  fontWeight:500
                 }}
               >
                 تجربة مجانية مدتها 14 يومًا

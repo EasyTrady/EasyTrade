@@ -32,6 +32,7 @@ import  ActivitySlice  from './pages/activitySlice';
 import  DeleteCouponSlice  from './pages/deleteCoupon';
 
 import  PopularBrandSlice  from './pages/popularbrandSlice';
+import VendersSlice  from './pages/venderSlice';
 
 
 
@@ -68,8 +69,8 @@ const store = configureStore({
      activity:ActivitySlice,
      deleteCoupon:DeleteCouponSlice,
 
-     popularbrand:PopularBrandSlice
-
+     popularbrand:PopularBrandSlice,
+     vender:VendersSlice
   }
 });
 export default store

@@ -1,0 +1,14 @@
+.cardName{
+    font-family: 'Cairo'; 
+                      font-weight: 600;  
+                      line-height: 33px;
+                      text-align:right;
+                      font-size: 22px;
+}
+.subscribtionCardName{
+    margin-bottom: 0 !important ;
+    font-size: 20px !important;
+}
+/* .cardsName{
+    font-size: 22px;
+} */

@@ -25,6 +25,8 @@ export const SWAP = `${BaseUrl}shop/dashboard/home-components/swap/`
 export const SENDEMAILPRODUCT=`${BaseUrl}/shop/dashboard/notifycart/`
 export const EMPLOYEE= `${BaseUrl}shop/dashboard/employees/`
  export const PAGES= `${BaseUrl}shop/pages/`
+ export const VENDER= `${BaseUrl}shop/profile/`
+
  export const CONTENTTYPES= `${BaseUrl}shop/content-types/`
 export const CREATEHOMECOMPONENTS=`${BaseUrl}shop/dashboard/home-components/`
 export const SHOP= `${BaseUrl}shop/accounts/shop/info/`

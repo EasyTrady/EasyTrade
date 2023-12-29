@@ -43,7 +43,7 @@ import { useTheme } from "@emotion/react";
 import PhoneField from "components/common/PhoneField";
 import PageLayout from "examples/LayoutContainers/PageLayout";
 import AuthWrapper1 from "../AuthWrapper1";
-import { useLocation } from "react-router-dom";
+import { useLocation,useParams } from "react-router-dom";
 
 // material-ui
 
@@ -61,12 +61,13 @@ import vector from "../../../assets/images/icons/Social Media Icon Square/authve
 
 function SignUp({ ...others }) {
   const theme = useTheme();
+  let {id}=useParams()
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
   const [agreement, setAgremment] = useState(true);
   const location = useLocation();
   const { state } = location;
   const handleSetAgremment = () => setAgremment(!agreement);
-  
+
   return (
     <Card>
       <PageLayout>
@@ -179,7 +180,7 @@ function SignUp({ ...others }) {
                             </Grid>
                           </Grid>
                           <Grid item xs={12}>
-                            <AuthRegister subscribtionId={state?.subscribtionId} />
+                            <AuthRegister subscribtionId={window?.location?.search?.split("id=")[1]} />
                           </Grid>
                           <Grid item xs={12}>
                             <Divider />

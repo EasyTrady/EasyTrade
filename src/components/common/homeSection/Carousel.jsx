@@ -44,26 +44,28 @@ export default function CarouselComponent() {
       <Box sx={{marginBottom:'100px',marginTop:'60px'}}>
       <Typography
         sx={{
-          fontSize: "42px",
-          fontWeight: 500,
+          fontSize: { md:'35px', lg:'48px'}, 
+          fontWeight: { md:600, lg:500},
           textAlign: "center",
           marginTop: "60px",
           paddingTop: "100px",
           fontFamily:'Cairo',
-          color:'#3D2D66'
+          color:'#3D2D66',
+          lineHeight:'52.5px'
         }}
       >
         تجربة مطور سهلة
       </Typography>
       <Typography
         sx={{
-          fontSize: "18px",
+          fontSize:{md:'16px', lg:'18px'},
           fontWeight: 400,
           textAlign: "center",
           marginTop: "18px",
           marginBottom: "30px",
           fontFamily:'Cairo',
-          color:'#505050'
+          color:'#505050',
+          lineHeight:'27px'
         }}
       >
         لقت جعلت EASYTRADE من السهل على المطورين من اي مستوى مهارة استخدام منتجاتهم

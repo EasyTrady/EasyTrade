@@ -33,7 +33,7 @@ function Chart({ color, title, description, chart, items, subDescription }) {
         <SoftBox px={1}>
           <SoftBox >
             <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-              {title}
+              {title}  SAR
             </SoftTypography>
             <SoftTypography component="div" variant="button" color="text" fontWeight="regular">
               {description}

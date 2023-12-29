@@ -12,8 +12,9 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-
+import useRequest from "hooks/useRequest";
 import { useEffect, useState } from "react";
+import { YOURSPERMISSIONS } from "data/api";
 
 // react-router-dom components
 import { useLocation, NavLink } from "react-router-dom";
@@ -44,6 +45,8 @@ import imageEasy from "assets/images/easytrade2.png"
 // Soft UI Dashboard React context
 import { useSoftUIController, setMiniSidenav } from "context";
 import NavCollapse from "./CollapseNav";
+import { useDispatch, useSelector } from 'react-redux';
+
 import NavItem from "./CollapseItem";
 import VisitSite from "examples/Icons/VisitSite";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -58,7 +61,15 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const shop_name = localStorage.getItem('shop_name')
   const shop_url = localStorage.getItem("shop_url")
   const sub_domain = localStorage.getItem("sub_domain")
-
+  let Token = localStorage.getItem('token')
+  let permissionYour = useSelector((state) => state.permissionYour.value)
+  let dispatchrequest=useDispatch()
+  const [permissionYourRequest, permissionYourResponce] =
+  useRequest({
+      path: YOURSPERMISSIONS,
+      method: "get",
+      Token: `Token ${Token}`
+  });
   
   const closeSidenav = () => setMiniSidenav(dispatch, true);
 
@@ -79,6 +90,16 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleMiniSidenav);
   }, [dispatch, location]);
+  useEffect(()=>{
+    if(permissionYour?.length==0){
+        permissionYourRequest({
+            onSuccess:(res)=>{
+              dispatchrequest({type:"permissionYour/set",payload:[...res.data]})
+            }
+        })
+    }
+    
+},[])
   let [active,setActive]=useState("")
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)

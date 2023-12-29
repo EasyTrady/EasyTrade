@@ -13,16 +13,16 @@ function Permissition({children,permission,type}) {
         method: "get",
         Token: `Token ${Token}`
     });
-    useEffect(()=>{
-        if(permissionYour?.length==0){
-            permissionYourRequest({
-                onSuccess:(res)=>{
-                    dispatch({type:"yourspermission/set",payload:res.data})
-                }
-            })
-        }
+    // useEffect(()=>{
+    //     if(permissionYour?.length==0){
+    //         permissionYourRequest({
+    //             onSuccess:(res)=>{
+    //                 dispatch({type:"yourspermission/set",payload:res.data})
+    //             }
+    //         })
+    //     }
         
-    },[])
+    // },[permissionYour?.length])
 
   return (
     ((type=="collapse"? permission?.some((ele)=>permissionYour.map((elem)=>elem?.codename).includes(ele)):permission?.map((ele)=>permissionYour.map((elem)=>elem?.codename).includes(ele)))||permission?.length==0) &&children

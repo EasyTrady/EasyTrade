@@ -138,12 +138,12 @@ const FirebaseRegister = ({ ...others }) => {
           password: Yup.string().max(255).required("Password is required"),
           phone: Yup.string().max(20).required("Phone is required"),
           shop_name: Yup.string().max(255).required("Store name is required"),
-          sub_domain: Yup.string().max(255).required("Store Domain is required"),
+          sub_domain: Yup.string().max(255).required("domain name is required"),
           logo: Yup.mixed().required("add logo please"),
           // code: Yup.string().required('code is required'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-      
+          console.log(values)
           //  try {
           Object.entries(values).forEach(([key, value]) => formData.append(key, value));
 
@@ -153,8 +153,8 @@ const FirebaseRegister = ({ ...others }) => {
           signUpRequest({
             body: formData,
             onSuccess: async (res) => {
-            
-              // if(res?.type==='signupUser/fulfilled'){
+            console.log(res?.type)
+              if(res?.type==='signupUser/fulfilled'){
               //   toast.success('welcome to EasyTrade')
               // navigate('/register/creatingshop')
               localStorage.setItem("shop_url", res?.data?.shop_url);
@@ -163,9 +163,9 @@ const FirebaseRegister = ({ ...others }) => {
               localStorage.setItem("shop_name", res?.data?.shop_name);
               localStorage.setItem("sub_domain", res?.data?.sub_domain);
               navigate(`/authentication/sign-in`);
-              // }else{
-              //    console.log(res.data)
-              //   setErrors(res.payload)
+              }else{
+                 console.log(res.data)
+                setErrors(res.payload)
               //  const errorMessage = typeof res.payload === 'string' ? res.payload : 'An error occurred';
               //  toast.error(errorMessage,{
               //    position: "bottom-left",
@@ -178,7 +178,7 @@ const FirebaseRegister = ({ ...others }) => {
               //    theme: "light",
               //    className: 'toast-message'
               //    })
-              // }
+              }
             },
           });
 
@@ -199,11 +199,11 @@ const FirebaseRegister = ({ ...others }) => {
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
             <Box sx={{justifyContent:'center',alignItems:'center',textAlign:'center'}}>
           <form noValidate {...others}>
-         
+        
             <Box sx={{display: "flex",justifyContent:'center'}}>
               
-              <FormControl error={Boolean(touched?.logo && errors?.logo)}>
-                <Box sx={{ width: "360px",display: "flex",justifyContent:'flex-end'}}>
+              <FormControl error={Boolean(touched?.logo || errors?.logo)}>
+                <Box sx={{ width: "360px",display: "flex",justifyContent:'flex-end'}} name={"logo"}>
                   <label htmlFor="profile_image" style={{ position: "relative" }}>
                     <IconButton
                       onClick={() => {
@@ -414,13 +414,13 @@ const FirebaseRegister = ({ ...others }) => {
             </FormControl>
 
             
-            {/* <FormControl
-              fullWidth
+            <FormControl
+              
               error={Boolean(touched?.sub_domain && errors?.sub_domain)}
-              sx={{ ...theme.typography.customInput }}
+              sx={{ ...theme.typography.customInput,width:'360px' }}
             >
-              <OutlinedInput
-                placeholder="store domain"
+              <SoftInput
+                placeholder="اسم domain"
                 id="outlined-adornment-email-register"
                 type="text"
                 value={values.sub_domain}
@@ -438,7 +438,7 @@ const FirebaseRegister = ({ ...others }) => {
                   {errors.storedomain}
                 </FormHelperText>
               )}
-            </FormControl> */}
+            </FormControl> 
 
 
             {errors?.submit && (

@@ -99,6 +99,8 @@ import ViewAddtionalPage from "layouts/AdditionalPage/ViewAddtionalPage";
 import AddAddtionalPage from "layouts/AdditionalPage/AddAddtionalPage";
 import Brands from "layouts/Brand/Brands";
 import Coupon from "layouts/coupon";
+import Vender from "layouts/vendor";
+
 import CouponIcon from "examples/Icons/CouponIcon";
 import AddCoupon from "layouts/coupon/addCoupon";
 import ArchiveCoupon from "layouts/coupon/archiveCoupon";
@@ -365,6 +367,16 @@ const routes = [
       permission:["view_employeejob"]
     }
     ]
+  }, {
+    type: "collapse",
+    name: "Vender",
+    key: "Vender",
+    route: `/${sub_domain}/dashboard/venders`,
+    icon: <ManageAccountsIcon size="12px" />,
+    noCollapse: false,
+    component: <Auth><Vender /></Auth>,
+    permission:[],
+    
   },
   {
     type: "title",
@@ -578,6 +590,8 @@ const routes = [
     icon: <RankingIcon size="12px" />,
     component:<Auth> <ViewAddtionalPage /></Auth>,
     noCollapse: false,
+    permission:[]
+
   },
   { type: "title", title: "Account Pages", key: "account-pages" },
   {

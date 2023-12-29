@@ -7,7 +7,6 @@ import Navbar from 'components/common/navbar/navbar';
 import Achievements from '../../components/common/homeSection/Achievements'
 import CompanySection from '../../components/common/homeSection/companySection'
 import PageLayout from "examples/LayoutContainers/PageLayout"
-
 import React from 'react';
 import CarouselComponent from 'components/common/homeSection/Carousel';
 
@@ -17,7 +16,7 @@ const HomeSections = () => {
     <PageLayout>
     <Box>
       <Navbar />
-      <LandingSection />
+      <LandingSection/>
       <Achievements/>
       <CarouselComponent/>
       <SubscribeSection />
