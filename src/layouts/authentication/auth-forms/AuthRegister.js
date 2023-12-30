@@ -310,80 +310,6 @@ const FirebaseRegister = ({ ...others }) => {
                 )}
               </FormControl>
               <FormControl
-                error={Boolean(touched?.email && errors?.email)}
-                sx={{ ...theme.typography.customInput, width: '100%'  }}
-              >
-                <Typography sx={{fontSize:'14px', fontWeight:500, fontFamily: "Cairo", pb:'16px', pt:'16px', color:'#344054'}}>البريد الإلكتروني</Typography>
-                <TextField
-                  variant="outlined"
-                  name="email"
-                  value={values.email}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  InputProps={{
-                    placeholder:"البريد الالكتروني",
-                    style: {direction: 'rtl',
-                    width:'100%',
-                    fontWeight: 400,
-                    fontSize: '16px',
-                    fontFamily: 'Cairo',
-                    color: '#667085'}
-                  }}
-                ></TextField>
-                {touched?.email && errors?.email && (
-                  <FormHelperText error id="standard-weight-helper-text--register">
-                    {errors.email}
-                  </FormHelperText>
-                )}
-              </FormControl>
-              <FormControl
-                error={Boolean(touched?.password && errors?.password)}
-                sx={{ ...theme.typography.customInput, width: '100%' }}
-              >
-                <Typography sx={{fontSize:'14px', fontWeight:500, fontFamily: "Cairo", pb:'16px', pt:'16px', color:'#344054'}}>كلمة المرور</Typography>
-                <TextField
-                  variant="outlined"
-                  name="password"
-                  value={values.password}
-                  type={showPassword ? "text" : "password"}
-                  InputProps={{
-                    placeholder:"كلمة المرور",
-                    style: {direction: 'rtl',
-                    width:'100%',
-                    fontWeight: 400,
-                    fontSize: '16px',
-                    fontFamily: 'Cairo',
-                    color: '#667085'}
-                  }}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                ></TextField>
-                {touched?.password && errors?.password && (
-                  <FormHelperText error id="standard-weight-helper-text-password-register">
-                    {errors.password}
-                  </FormHelperText>
-                )}
-              </FormControl>
-              {strength !== 0 && (
-                <FormControl fullWidth>
-                  <Box sx={{ mb: 2 }}>
-                    <Grid container spacing={2} alignItems="center">
-                      <Grid item>
-                        <Box
-                          style={{ backgroundColor: level?.color }}
-                          sx={{ width: 85, height: 8, borderRadius: "7px" }}
-                        />
-                      </Grid>
-                      <Grid item>
-                        <Typography variant="subtitle1" fontSize="0.75rem">
-                          {level?.label}
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  </Box>
-                </FormControl>
-              )}
-              <FormControl
                 error={Boolean(touched?.phone && errors?.phone)}
                 sx={{ ...theme.typography.customInput, width: '100%' }}
               >
@@ -419,6 +345,54 @@ const FirebaseRegister = ({ ...others }) => {
                 )}
               </FormControl>
               <FormControl
+                error={Boolean(touched?.email && errors?.email)}
+                sx={{ ...theme.typography.customInput, width: '100%'  }}
+              >
+                <Typography sx={{fontSize:'14px', fontWeight:500, fontFamily: "Cairo", pb:'16px', pt:'16px', color:'#344054'}}>البريد الإلكتروني</Typography>
+                <TextField
+                  variant="outlined"
+                  name="email"
+                  value={values.email}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  InputProps={{
+                    placeholder:"البريد الالكتروني",
+                    style: {direction: 'rtl',
+                    width:'100%',
+                    fontWeight: 400,
+                    fontSize: '16px',
+                    fontFamily: 'Cairo',
+                    color: '#667085'}
+                  }}
+                ></TextField>
+                {touched?.email && errors?.email && (
+                  <FormHelperText error id="standard-weight-helper-text--register">
+                    {errors.email}
+                  </FormHelperText>
+                )}
+              </FormControl>
+              
+              {strength !== 0 && (
+                <FormControl fullWidth>
+                  <Box sx={{ mb: 2 }}>
+                    <Grid container spacing={2} alignItems="center">
+                      <Grid item>
+                        <Box
+                          style={{ backgroundColor: level?.color }}
+                          sx={{ width: 85, height: 8, borderRadius: "7px" }}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <Typography variant="subtitle1" fontSize="0.75rem">
+                          {level?.label}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </FormControl>
+              )}
+              
+              <FormControl
                 error={Boolean(touched?.shop_name && errors?.shop_name)}
                 sx={{ ...theme.typography.customInput , width: '100%'}}
               >
@@ -442,6 +416,35 @@ const FirebaseRegister = ({ ...others }) => {
                 {touched?.shop_name && errors?.shop_name && (
                   <FormHelperText error id="standard-weight-helper-text--register">
                     {errors.shop_name}
+                  </FormHelperText>
+                )}
+              </FormControl>
+
+              <FormControl
+                error={Boolean(touched?.password && errors?.password)}
+                sx={{ ...theme.typography.customInput, width: '100%' }}
+              >
+                <Typography sx={{fontSize:'14px', fontWeight:500, fontFamily: "Cairo", pb:'16px', pt:'16px', color:'#344054'}}>كلمة المرور</Typography>
+                <TextField
+                  variant="outlined"
+                  name="password"
+                  value={values.password}
+                  type={showPassword ? "text" : "password"}
+                  InputProps={{
+                    placeholder:"كلمة المرور",
+                    style: {direction: 'rtl',
+                    width:'100%',
+                    fontWeight: 400,
+                    fontSize: '16px',
+                    fontFamily: 'Cairo',
+                    color: '#667085'}
+                  }}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                ></TextField>
+                {touched?.password && errors?.password && (
+                  <FormHelperText error id="standard-weight-helper-text-password-register">
+                    {errors.password}
                   </FormHelperText>
                 )}
               </FormControl>
