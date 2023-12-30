@@ -38,6 +38,8 @@ import themeRTL from "assets/theme/theme-rtl";
 import rtlPlugin from "stylis-plugin-rtl";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
+import{requestPermission,
+} from "./firebase";
 import HomeSections from "layouts/home/homepage";
 // Soft UI Dashboard React routes
 import routes from "routes";
@@ -56,13 +58,14 @@ export default function App() {
   const { pathname } = useLocation();
   const shop_name=localStorage.getItem('shop_name')
   const logo=localStorage.getItem('logo')
+ 
   // Cache for the rtl
   useMemo(() => {
     const cacheRtl = createCache({
       key: "rtl",
       stylisPlugins: [rtlPlugin],
     });
-
+    
     setRtlCache(cacheRtl);
   }, []);
 
@@ -91,7 +94,16 @@ export default function App() {
     setDirection(dispatch,"ltr")
     // document.body.setAttribute("dir", "ltr");
   }, [direction]);
-
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+      .register("/firebase-messaging-sw.js")
+      .then((registration) => {
+        console.log("Registration successful, scope is:", registration.scope);
+      })
+      .catch((error) => {
+        console.log("Service worker registration failed, error:", error);
+      });
+  }
   // Setting page scroll to 0 when changing the route
   useEffect(() => {
     document.documentElement.scrollTop = 0;

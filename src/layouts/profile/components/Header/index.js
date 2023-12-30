@@ -47,6 +47,8 @@ function Header() {
   const [tabValue, setTabValue] = useState(0);
   const name=localStorage.getItem('full_name')
   const image=localStorage.getItem('logo')
+  const role=localStorage.getItem('role')
+
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
     function handleTabsOrientation() {
@@ -117,7 +119,7 @@ function Header() {
                {name}
               </SoftTypography>
               <SoftTypography variant="button" color="text" fontWeight="medium">
-                CEO / Co-Founder
+                {role}
               </SoftTypography>
             </SoftBox>
           </Grid>

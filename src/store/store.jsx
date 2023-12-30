@@ -33,7 +33,8 @@ import  DeleteCouponSlice  from './pages/deleteCoupon';
 
 import  PopularBrandSlice  from './pages/popularbrandSlice';
 import VendersSlice  from './pages/venderSlice';
-
+import  VenderPermissionSlice  from './pages/vendorPermissionSlice';
+import ShopSlice from "./pages/shopInfoSlice"
 
 
 const store = configureStore({
@@ -47,6 +48,7 @@ const store = configureStore({
     job:JobSlice,
     attribute:attributeSlice,
     orders:OrdersSlice,
+    shop:ShopSlice,
     // registration:registrationSlice
      profile:ProfileSlice ,
      cart:CartSlice,
@@ -70,7 +72,8 @@ const store = configureStore({
      deleteCoupon:DeleteCouponSlice,
 
      popularbrand:PopularBrandSlice,
-     vender:VendersSlice
+     vender:VendersSlice,
+     vendorPermission:VenderPermissionSlice
   }
 });
 export default store

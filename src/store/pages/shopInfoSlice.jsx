@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const VendersSlice = createSlice({
-  name: "vender",
+export const ShopSlice = createSlice({
+  name: "shop",
   initialState: {
     value:   {
       count: 0,
@@ -49,4 +49,4 @@ export const VendersSlice = createSlice({
   },
 });
 
-export default VendersSlice.reducer;
+export default ShopSlice.reducer;

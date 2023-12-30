@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Chip, Divider, Icon, Stack, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Button, Chip, Divider, Icon, Stack, TextField, Typography,Dialog } from "@mui/material";
 import DataGridCustom from "components/common/DateGridCustomer";
 import { CUSTOMER } from "data/api";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -10,6 +10,7 @@ import React, { useEffect, useState ,useRef} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../tables/datagrid.css";
 import Footer from "examples/Footer";
+import Form from 'components/common/Form';
 
 import ProjectsTableData from "layouts/tables/data/projectsTableData";
 import { ProductTableData } from "layouts/tables/data/projecttableData";
@@ -20,6 +21,8 @@ import SoftBox from 'components/SoftBox'
 import Breadcrumbs from 'examples/Breadcrumbs'
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import PropTypes from "prop-types";
+import useControls from "hooks/useControls";
+
 import { PRODUCTS ,EXPORTPRODUCT} from "data/api";
 import XLSX from "sheetjs-style"
 import usePermission from 'utils/usePermission';
@@ -31,6 +34,7 @@ function Products({ absolute, light, isMini }) {
   const { columns, rows } = ProductTableData();
   let permissionYour = useSelector((state) => state.permissionYour.value)
   let newForm=new FormData()
+  const [openDialog,setOpenDialog]=useState(false)
   let refInput=useRef(null)
   const [open, setOpen] = React.useState(false);
   const products=useSelector((state)=>state.products.value)
@@ -73,6 +77,7 @@ function Products({ absolute, light, isMini }) {
     path: CUSTOMER,
     method: "delete",
   });
+  
   function onDelete(row) {
 
     RequestDeleteProducts({
@@ -136,24 +141,41 @@ function Products({ absolute, light, isMini }) {
   //     },
 
   //   ]
+  function handleCloseDialog(){
+    setOpenDialog(false)
+  }
   function handleDownloadModel(){
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.aoa_to_sheet([
       ["name","price","sku","quantity","mpn","gtin","description","main_image"]
     ]);
+    const headerStyle = {
+      fill: {
+        bgColor: "black", // Light blue background color
+      },
+      font: {
+        color: { rgb: "000000" }, // Black font color
+        bold: true,
+      },
+    };
+    // XLSX.utils.sheet_set_range_style(ws, "A1:H1", headerStyle);
   // XLSX.utils.sheet_to_txt
     XLSX.utils.book_append_sheet(wb, ws, "productSheet");
 
     XLSX.writeFile(wb, "productSheet.xls");
   }
-  function exportProductfile(e){
-    newForm.append("file",e.target.files[0])
+  function handleSubmit(){
     exportProductsFile({
       body:newForm,
       onSuccess:(res)=>{
         console.log(res.data)
       }
     })
+    // refInput.current.click()
+  }
+  function exportProductfile(e){
+    newForm.append("file",e.target.files[0])
+   
   }
   useEffect(() => {
     RequestGetProducts({
@@ -183,7 +205,7 @@ function Products({ absolute, light, isMini }) {
                 }} sx={{ textAlign: "right" }}>
                   {/*  */}
                 
-                    <Button onClick={()=>refInput.current.click()} 
+                    <Button onClick={()=>setOpenDialog(true)} 
                         sx={{
                             backgroundColor: "white !important",
                             color: "black !important", marginX: "10px", padding: "13px 16px"
@@ -264,6 +286,62 @@ function Products({ absolute, light, isMini }) {
         </Box>
         <ProductImageDialog open={open} onClose={handleClose} />
         <Footer />
+        <Dialog open={openDialog} onClose={handleCloseDialog}>
+                    <Form component="form"
+                        childrenProps={{
+                            saveBtn: {
+                                onClick: handleSubmit,
+                                disabled: exportProductsResponce.isPending,
+                            },
+                            closeBtn: {
+                                onClick: () => {
+                                  handleCloseDialog();
+                                    // resetControls();
+                                },
+                                disabled: exportProductsResponce.isPending,
+                            }
+                        }}>
+                            <Button onClick={handleDownloadModel}
+                        sx={{
+                            backgroundColor: (theme)=>theme.palette.purple.middle,
+                            color: "white !important", marginX: "10px", padding: "13px 16px"
+                        }}>
+                        {/* <LocalPrintshopIcon /> */}
+                        Export
+                    </Button>
+                    <input
+                                    id="images_product"
+                                    type="file"
+                                    accept={".xlsx,.xls"}
+                                    onChange={exportProductfile} 
+                                    style={{border:"1px solid #E5E7E8",padding:"10px 16px"}}
+                                />
+
+                        {/* <TextField
+
+                            // id="filled-size-small"
+                            placeholder='title'
+                            variant="standard"
+                            size="small"
+                            value={controls.title}
+                            onChange={(e) =>
+                                setControl("title", e.target.value)
+                            }
+                            required={required.includes("title")}
+                            error={Boolean(invalid?.title)}
+                            helperText={invalid?.title}
+                        /> */}
+
+
+                        {/* <PictureField placeholder={"add image profile"}
+                        error={Boolean(invalid.image)}
+                        helperText={invalid.image}
+                        required={required.includes("image")}
+                        label={"profile"} accept={"image/*"} onChange={handleImageChange} value={selectedImage} /> */}
+                    </Form>
+
+
+                </Dialog>
       </DashboardLayout>
       {ResponseGetProducts.successAlert}
       {ResponseGetProducts.failAlert}

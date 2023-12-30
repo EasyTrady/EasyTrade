@@ -16,6 +16,10 @@ Coded by www.creative-tim.com
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
+import Container from "@mui/material/Container";
+
+
+import { SHOP } from "data/api";
 
 // @mui icons
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -49,22 +53,42 @@ import team1 from "assets/images/team-1.jpg";
 import team2 from "assets/images/team-2.jpg";
 import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
+import useRequest from 'hooks/useRequest'
+import { useRef, useState, useEffect } from 'react'
 
 function Overview() {
   const name=localStorage.getItem('full_name')
   const email=localStorage.getItem('email')
   const phone=localStorage.getItem('phone')
   const shop_name=localStorage.getItem('shop_name')
+  let Token = localStorage.getItem('token');
+
+  const [ShopRequest, shopResponce] =
+  useRequest({
+      path: SHOP,
+      method: "get",
+      Token: `Token ${Token}`
+  });
+  useEffect(()=>{
+    ShopRequest({
+      onSuccess:(res)=>{
+        localStorage.setItem('phone',res.data.phone)
+  localStorage.setItem('email',res.data.email)
+  localStorage.setItem('role',res.data.role)
+  
+
+        console.log(res.data)
+      }
+    })
+  },[])
   return (
     <DashboardLayout>
       <Header />
       <SoftBox mt={5} mb={3}>
+        <Container>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} xl={4}>
-            <PlatformSettings />
-          </Grid>
-          <Grid item xs={12} md={6} xl={4}>
-            <ProfileInfoCard
+          <Grid item xs={12} md={6} xl={6}>
+          <ProfileInfoCard
               title="profile information"
               description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
               info={{
@@ -93,14 +117,19 @@ function Overview() {
               action={{ route: "", tooltip: "Edit Profile" }}
             />
           </Grid>
-          <Grid item xs={12} xl={4}>
-            <ProfilesList title="conversations" profiles={profilesListData} />
+          <Grid item xs={12} md={6} xl={6}>
+          <PlatformSettings />
+            
           </Grid>
+          {/* <Grid item xs={12} xl={4}>
+            <ProfilesList title="conversations" profiles={profilesListData} />
+          </Grid> */}
         </Grid>
+        </Container>
       </SoftBox>
       <SoftBox mb={3}>
         <Card>
-          <SoftBox pt={2} px={2}>
+          {/* <SoftBox pt={2} px={2}>
             <SoftBox mb={0.5}>
               <SoftTypography variant="h6" fontWeight="medium">
                 Projects
@@ -111,10 +140,10 @@ function Overview() {
                 Architects design houses
               </SoftTypography>
             </SoftBox>
-          </SoftBox>
-          <SoftBox p={2}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={6} xl={3}>
+          </SoftBox> */}
+          {/* <SoftBox p={2}>
+            <Grid container spacing={3}> */}
+              {/* <Grid item xs={12} md={6} xl={3}>
                 <DefaultProjectCard
                   image={homeDecor1}
                   label="project #2"
@@ -133,8 +162,8 @@ function Overview() {
                     { image: team4, name: "Peterson" },
                   ]}
                 />
-              </Grid>
-              <Grid item xs={12} md={6} xl={3}>
+              </Grid> */}
+              {/* <Grid item xs={12} md={6} xl={3}>
                 <DefaultProjectCard
                   image={homeDecor2}
                   label="project #1"
@@ -153,8 +182,8 @@ function Overview() {
                     { image: team2, name: "Ryan Milly" },
                   ]}
                 />
-              </Grid>
-              <Grid item xs={12} md={6} xl={3}>
+              </Grid> */}
+              {/* <Grid item xs={12} md={6} xl={3}>
                 <DefaultProjectCard
                   image={homeDecor3}
                   label="project #3"
@@ -173,12 +202,12 @@ function Overview() {
                     { image: team1, name: "Elena Morison" },
                   ]}
                 />
-              </Grid>
-              <Grid item xs={12} md={6} xl={3}>
+              </Grid> */}
+              {/* <Grid item xs={12} md={6} xl={3}>
                 <PlaceholderCard title={{ variant: "h5", text: "New project" }} outlined />
-              </Grid>
-            </Grid>
-          </SoftBox>
+              </Grid> */}
+            {/* </Grid>
+          </SoftBox> */}
         </Card>
       </SoftBox>
 

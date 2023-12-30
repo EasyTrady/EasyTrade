@@ -104,6 +104,8 @@ import Vender from "layouts/vendor";
 import CouponIcon from "examples/Icons/CouponIcon";
 import AddCoupon from "layouts/coupon/addCoupon";
 import ArchiveCoupon from "layouts/coupon/archiveCoupon";
+import AdditionIcon from "examples/Icons/AdditionPage";
+import AddVendor from "layouts/vendor/addVendor";
 const sub_domain = localStorage.getItem('sub_domain')
 
 const routes = [
@@ -375,7 +377,7 @@ const routes = [
     icon: <ManageAccountsIcon size="12px" />,
     noCollapse: false,
     component: <Auth><Vender /></Auth>,
-    permission:[],
+    permission:["view_vendor"],
     
   },
   {
@@ -387,6 +389,14 @@ const routes = [
     component: <Auth><Employee /></Auth>,
     noCollapse: false
   }, {
+    type: "title",
+    name: "add vendor",
+    key: "addVendor",
+    route: `/${sub_domain}/dashboard/venders/addNewVendor`,
+    icon: <Office size="12px" />,
+    component: <Auth><AddVendor /></Auth>,
+    noCollapse: false
+  },{
     type: "title",
     name: "values",
     key: "valuse",
@@ -587,7 +597,7 @@ const routes = [
     name: "Additional Page",
     key: "addtionalpage",
     route: `/${sub_domain}/dashboard/additionalpage`,
-    icon: <RankingIcon size="12px" />,
+    icon: <AdditionIcon size="12px" />,
     component:<Auth> <ViewAddtionalPage /></Auth>,
     noCollapse: false,
     permission:[]

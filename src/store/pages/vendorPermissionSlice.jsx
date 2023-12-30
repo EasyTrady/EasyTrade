@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const VendersSlice = createSlice({
-  name: "vender",
+export const VenderPermissionSlice = createSlice({
+  name: "venderPermission",
   initialState: {
     value:   {
       count: 0,
@@ -20,7 +20,7 @@ export const VendersSlice = createSlice({
         next: null,
         previous: null,
         results: [],
-      };
+      }
     },
     deleteItem: (state, action) => {
       state.value.results = state.value.results.filter(
@@ -42,11 +42,11 @@ export const VendersSlice = createSlice({
         (item) => item.id === action.payload.id
       );
       state.value.results.splice(index, 1, {
-        ...state.value.results[index],
+        ...state.value[index],
         ...action.payload.item,
       });
     },
   },
 });
 
-export default VendersSlice.reducer;
+export default VenderPermissionSlice.reducer;
