@@ -93,16 +93,9 @@ const FirebaseLogin = ({ ...others }) => {
               body:values,
               onSuccess:async(res)=>{
                 localStorage.setItem('token', res.data.token);
-                // console.log(res.data.expiry,new Date(),new Date(res.data.expiry).getHours())
                 localStorage.setItem('tokenTimestamp', new Date(res.data.expiry).getTime());
-                // if (Boolean(sub_domain)) {
                   console.log(Boolean(sub_domain))
 
-
-                  // navigate(`/${sub_domain}/dashboard`)
-
-                // } else {s
-                  
                   await ShopInfoRequest({ 
                     token:`Token ${res.data.token}`,onSuccess:(response)=>{
                     
@@ -117,51 +110,8 @@ const FirebaseLogin = ({ ...others }) => {
                     console.log(response?.data)
                     navigate(`/${response?.data?.sub_domain}/dashboard`)
                   } })
-
-                // }
               }
             })
-            // dispatch(UserSignin(values)).then(async (res) => {
-            //   console.log(res)
-            //   if (res.type === 'userSignin/fulfilled') {
-            //     toast.success('welcome to EasyTrade')
-
-            //     if (shop_name !== "undefined") {
-
-            //       navigate(`/${shop_name}/dashboard`)
-
-            //     } else {
-            //       console.log(res?.payload?.token)
-            //       await dispatch(GetShopInfo({ token: res?.payload?.token })).then((res) => {
-            //         console.log(res)
-            //         localStorage.setItem('shop_url', res?.payload?.shop_url)
-            //         localStorage.setItem('dashboard_url', res?.payload?.dashboard_url)
-            //         localStorage.setItem('shop_id', res?.payload?.id)
-            //         localStorage.setItem('shop_name', res?.payload?.shop_name)
-            //         navigate(`/${res?.payload?.shop_name}/dashboard`)
-            //       })
-
-            //     }
-
-            //   } else {
-            //     // console.log(Object.keys(res.payload).map((ele)=>res.payload[ele][0])[0],"error")
-            //     // setErrors({ password: res.payload.non_field_errors[0] });
-
-              
-            //   }
-            // });
-          //   if (scriptedRef.current) {
-          //     setStatus({ success: true });
-          //     setSubmitting(false);
-          //   }
-          // } catch (err) {
-          //   console.error(err);
-          //   if (scriptedRef.current) {
-          //     setStatus({ success: false });
-          //     setErrors({ submit: err.message });
-          //     setSubmitting(false);
-          //   }
-          // }
           }}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
@@ -191,17 +141,6 @@ const FirebaseLogin = ({ ...others }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
               ></TextField>
-              {/* <InputLabel htmlFor="outlined-adornment-email-login">البريد الالكتروني</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-email-login"
-                type="email"
-                value={values.email}
-                name="email"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                label="Email Address"
-                inputProps={{}}
-              /> */}
               {touched.email && errors.email && (
                 <FormHelperText error id="standard-weight-helper-text-email-login">
                   {errors.email}
@@ -213,30 +152,6 @@ const FirebaseLogin = ({ ...others }) => {
               error={Boolean(touched.password && errors.password)}
               sx={{ ...theme.typography.customInput, marginY: '15px' }}
             >
-              {/* <InputLabel htmlFor="outlined-adornment-password-login" sx={{textAlign:'right',display:'block'}}>كلمة المرور</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-password-login"
-                type={showPassword ? 'text' : 'password'}
-                value={values.password}
-                name="password"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                      size="large"
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Password"
-                inputProps={{}}
-              /> */}
               <Box
                 sx={{
                   width:'100%'

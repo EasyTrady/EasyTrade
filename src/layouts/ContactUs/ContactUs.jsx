@@ -81,7 +81,7 @@ export default function ContactUs() {
   const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] = 
       useControls([
         {
-          control: "first_name", 
+          // control: "first_name", 
           value: "", 
           isRequired: true},
         {control: "last_name", value: "", isRequired: true},
