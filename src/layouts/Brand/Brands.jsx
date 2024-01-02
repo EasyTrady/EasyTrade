@@ -119,17 +119,17 @@ const Brands = ({ absolute, light, isMini }) => {
           
             <Grid item>
                 <Grid container spacing={2}>
-          {BrandsGetResponce.isPinding?
+          {BrandsGetResponce.isPending?
          Array.from({ length: 5 }, (_, index) => (
           <Grid item md={2.4} key={index}>
             <Skeleton variant="rectangular" width={210} height={118} animation="wave" />
           </Grid>
-          )):
+          )):brands.results.length>0?
           brands.results.map((brand,index)=>(
                     <Grid item md={2.4} sm={6} xs={12}key={index}>
                         <BrandBox {...brand}/>
                     </Grid>
-                    ))}
+                    )): <Grid item md={12} sx={{display:"flex",justifyContent:"center",alignItems:"center",height:"100px"}}>no data</Grid>}
                 </Grid>
             </Grid>
           

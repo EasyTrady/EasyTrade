@@ -13,7 +13,7 @@ import useControls from 'hooks/useControls';
 import useRequest from 'hooks/useRequest';
 import React from 'react'
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 import filter from 'utils/ClearNull';
 import TwoArrow from 'examples/Icons/TwoArrow';
 import SelectField from 'components/common/SelectField';
@@ -23,6 +23,7 @@ const AddAddtionalPage = ({ absolute, light, isMini }) => {
     const sub_domain = localStorage.getItem("sub_domain");
     let Token = localStorage.getItem("token");
     let { t } = useTranslation("common");
+    let navigate=useNavigate()
     const modules = {
         toolbar: [
           [{ font: [] }],
@@ -187,7 +188,7 @@ const AddAddtionalPage = ({ absolute, light, isMini }) => {
             </Container>
             </Box>
             <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: "24px" }}>
-      <SoftButton variant="contained" color="white"sx={{mx:"20px", width: {md:"25%",xs:'50px'},}} onClick={() =>{resetControls(); navigate(`/${sub_domain}/dashboard/products`)}}>
+      <SoftButton variant="contained" color="white"sx={{mx:"20px", width: {md:"25%",xs:'50px'},}} onClick={() =>{resetControls(); navigate(`/${sub_domain}/dashboard/additionalpage`)}}>
                         {"cancel"}
                     </SoftButton>
         <SoftButton

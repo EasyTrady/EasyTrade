@@ -57,7 +57,7 @@ const ViewAddtionalPage = ({ absolute, light, isMini }) => {
       field: 'title',
       headerName: 'Page',
       type: 'text',
-      width: 339,
+      width: 200,
       height:72,
       align: 'start',
       headerAlign: 'start',
@@ -69,7 +69,7 @@ const ViewAddtionalPage = ({ absolute, light, isMini }) => {
       field: 'offer_end_date',
       headerName: 'Expire date',
       type: 'text',
-      width: 179.4,
+      width: 500,
       align: 'center',
       color:'#1B53C5',
       headerAlign: 'center',
@@ -88,33 +88,33 @@ const ViewAddtionalPage = ({ absolute, light, isMini }) => {
       field: 'active',
       headerName: 'Active',
       type: 'text',
-      width: 220,
+      width: 400,
       align: 'center',
       headerAlign: 'center',
       editable: true,
       renderCell:(params)=><Switch
               checked={params?.row?.is_active}
-              onClick={()=>onDelete(params?.row?.id,params?.row)}
+              // onClick={()=>onDelete(params?.row?.id,params?.row)}
               inputProps={{ 'aria-label': 'controlled' }}
             />
     
     },
-     {
-      field: 'status',
-      headerName: 'status',
-      type: 'text',
-      width: 186,
-      align: 'center',
-      headerAlign: 'center',
-      // editable: true,
-      renderCell:(params)=>{
-        const { row } = params;
-        row?.categories?.map((cat)=>(
-          <span key={cat?.id}>{cat?.name}</span>
+    //  {
+    //   field: 'status',
+    //   headerName: 'status',
+    //   type: 'text',
+    //   width: 186,
+    //   align: 'center',
+    //   headerAlign: 'center',
+    //   // editable: true,
+    //   renderCell:(params)=>{
+    //     const { row } = params;
+    //     row?.categories?.map((cat)=>(
+    //       <span key={cat?.id}>{cat?.name}</span>
           
-        ))
-      }
-    },
+    //     ))
+    //   }
+    // },
     
   ]
   useEffect(()=>{
@@ -167,9 +167,9 @@ const ViewAddtionalPage = ({ absolute, light, isMini }) => {
         rows={banners?.results}
         columns={columns}
         loading={AddtionPageGetResponce.pinding}
-        onEdit={()=>{}}
-        onDelete={()=>{}}
-        onCopy={() => {}}
+        // onEdit={()=>{}}
+        // onDelete={()=>{}}
+        // onCopy={() => {}}
         checkboxSelection={true}
         onRowClick={(e, row) => {
          
