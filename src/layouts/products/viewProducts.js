@@ -147,7 +147,7 @@ function Products({ absolute, light, isMini }) {
   function handleDownloadModel(){
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.aoa_to_sheet([
-      ["name","price","sku","quantity","mpn","gtin","description","main_image"]
+      ["name","price","sku","quantity","mpn","gtin","description","main_image","brand","images"]
     ]);
     const headerStyle = {
       fill: {

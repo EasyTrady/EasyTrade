@@ -42,6 +42,9 @@ const Brands = ({ absolute, light, isMini }) => {
 
   const getBrands = () => {
     BrandsGetRequest({
+      params:{
+        size:brands?.count?brands?.count:10
+      },
       onSuccess: (res) => {
        
         dispatch({ type: "brand/set", payload: res?.data });
@@ -123,7 +126,7 @@ const Brands = ({ absolute, light, isMini }) => {
           </Grid>
           )):
           brands.results.map((brand,index)=>(
-                    <Grid item md={2.4} key={index}>
+                    <Grid item md={2.4} sm={6} xs={12}key={index}>
                         <BrandBox {...brand}/>
                     </Grid>
                     ))}

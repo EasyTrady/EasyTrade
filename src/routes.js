@@ -56,14 +56,14 @@ import Document from "examples/Icons/Document";
 import SpaceShip from "examples/Icons/SpaceShip";
 import CustomerSupport from "examples/Icons/CustomerSupport";
 import RankingIcon from "examples/Icons/Rankinghome";
-
+import mobile from './assets/images/mobile.svg'
 import CreditCard from "examples/Icons/CreditCard";
 import Cube from "examples/Icons/Cube";
 import Customer from "layouts/customer";
 import Employee from "layouts/employee";
 import Products from "layouts/products/viewProducts";
 import Category from "layouts/products/category";
-
+import ViewSubscription from "layouts/mobile/viewmobileSub";
 import Auth from "layouts/authentication/Auth";
 import Job from "layouts/job";
 import { element } from "prop-types";
@@ -105,6 +105,7 @@ import CouponIcon from "examples/Icons/CouponIcon";
 import AddCoupon from "layouts/coupon/addCoupon";
 import ArchiveCoupon from "layouts/coupon/archiveCoupon";
 import AdditionIcon from "examples/Icons/AdditionPage";
+import MobileSubscription from "layouts/mobile/mobileSub";
 import AddVendor from "layouts/vendor/addVendor";
 const sub_domain = localStorage.getItem('sub_domain')
 
@@ -602,6 +603,25 @@ const routes = [
     noCollapse: false,
     permission:[]
 
+  },
+  {
+    type: "title",
+    name: "Mobile subscription",
+    key: "Mobile subscription",
+    route: `/${sub_domain}/dashboard/mobilesubscription/viewsubscription`,
+    icon: <img src={mobile} alt='mobile' size="12px" />,
+    component:<Auth> <ViewSubscription /></Auth>,
+    noCollapse: false,
+  },
+  {
+    type: "collapse",
+    name: "Mobile subscription",
+    key: "Mobile subscription",
+    route: `/${sub_domain}/dashboard/mobilesubscription`,
+    icon: <img src={mobile} alt='mobile' size="12px" />,
+    component:<Auth> <MobileSubscription /></Auth>,
+    noCollapse: false,
+    permission:[]
   },
   { type: "title", title: "Account Pages", key: "account-pages" },
   {

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import {  Button, Container, Icon, Stack, Typography } from '@mui/material'
+import {  Button, Container, Icon, Stack, Typography,Switch } from '@mui/material'
 import SoftBox from 'components/SoftBox'
 import SoftButton from 'components/SoftButton'
 import DataGridCustom from 'components/common/DateGridCustomer'
@@ -33,7 +33,11 @@ const ViewBanners = ({ absolute, light, isMini }) => {
     method: "get",
     Token: `Token ${Token}`,
   });
-
+  const [BannersPatchRequest, BannersPatchResponce] = useRequest({
+    path: BANNERS,
+    method: "patch",
+    Token: `Token ${Token}`,
+  });
   const getBanners = () => {
     BannersGetRequest({
       onSuccess: (res) => {
@@ -53,6 +57,16 @@ const ViewBanners = ({ absolute, light, isMini }) => {
         id: row,
         onSuccess: () => {
             dispatch({ type: "banners/deleteItem", payload: { id: row } })
+        }
+    })
+  }
+  function patchStatus(data) {
+  
+    BannersPatchRequest({
+        id: data?.id,
+        body:{is_public:!data?.is_public},
+        onSuccess: (res) => {
+            dispatch({ type: "banners/patchItem", payload: { id: data?.id,item:res.data } })
         }
     })
   }
@@ -133,11 +147,7 @@ color:row?.banner_type===1?'#027A48':row?.banner_type===2?"#7A0243":row?.banner_
       headerAlign: 'center',
       editable: false,
       renderCell:(params)=>{
-        const { row } = params;
-        row?.categories?.map((cat)=>(
-          <span key={cat?.id}>{cat?.name}</span>
-          
-        ))
+       return <><Switch checked={params.row.is_public} onChange={()=>patchStatus(params.row)}/> {params.row.is_public?<Typography sx={{color:(theme)=>theme.palette.success.main,mx:1,fontSize:"14px"}}>on</Typography>:<Typography sx={{color:(theme)=>theme.palette.grey[500],mx:1,fontSize:"14px"}}>paused</Typography>}</>
       }
     },
     
@@ -192,7 +202,7 @@ color:row?.banner_type===1?'#027A48':row?.banner_type===2?"#7A0243":row?.banner_
         <DataGridCustom
           rows={banners?.results}
           columns={columns}
-          onEdit={isPermitted(()=>{},["change_banner"])}
+          onDialog={isPermitted((row,newRow)=>navigate(`/${sub_domain}/dashboard/banners/addnewbanner`,{state:{id:row,dataRow:newRow}}),["change_banner"])}
           onDelete={isPermitted(onDelete,["delete_banner"])}
           onCopy={() => {}}
           checkboxSelection={true}

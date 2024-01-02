@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Box, Button, Container, Typography } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useEffect } from "react";
 import rectangleShape from "../../assets/images/shapes/Frame 41366.png";
 import circleShape from "../../assets/images/shapes/Frame 41363.png";
 import BG from "../../assets/images/shapes/BG.png";
@@ -11,7 +11,7 @@ import { TextTitle } from "styles/style";
 import { UploadButton } from "styles/productStyle";
 import { CircleBanner } from "styles/productStyle";
 import { RectangleBanner } from "styles/productStyle";
-const BannerShape = ({ banner, onChange }) => {
+const BannerShape = ({ banner, onChange,is_rectangular,value }) => {
   const [images, setImages] = useState(null);
   const [shape, setShape] = useState(false);
   const [rectangle, setRectangle] = useState(false);
@@ -29,6 +29,19 @@ const BannerShape = ({ banner, onChange }) => {
     reader.readAsDataURL(file);
     onChange(event.target.files[0]);
   };
+  useEffect(()=>{
+    if(Boolean(value)){
+      if(is_rectangular==true){
+        setRectangle(is_rectangular);
+
+      }else{
+        setShape(is_rectangular);
+
+      }
+    }
+    
+  },[value])
+  console.log(is_rectangular,Boolean(value),shape,rectangle)
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <SoftBox
@@ -56,6 +69,7 @@ const BannerShape = ({ banner, onChange }) => {
                 onClick={() => {
                   setShape(true);
                   setRectangle(false);
+                  
                 }}
               />
             )}
@@ -69,23 +83,24 @@ const BannerShape = ({ banner, onChange }) => {
                 onClick={() => {
                   setRectangle(true);
                   setShape(false);
+                 
                 }}
               />
             )}
           </Box>
         </Container>
       </SoftBox>
-      {shape||rectangle?
+      {shape||rectangle||(Boolean(value))?
       <SoftBox
         sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5, py: "24px" }}
       >
         <Container sx={{ display: "flex",flexWrap:shape?'noWrap':"wrap", gap: "24px" }}>
           <Box>
-            {shape && (
-              <img src={images ? images : BG} alt="banner" style={{ borderRadius: "24px",height: '152px',width: '152px' }} />
+            {shape&& (
+              <img src={images ? images : value} alt="banner" style={{ borderRadius: "24px",height: '152px',width: '152px' }} />
             )}
-            {rectangle && (
-              <img src={images ? images : Rec} alt="banner" style={{ borderRadius: "24px" ,width: '464px',height: '152px'}} />
+            {rectangle&& (
+              <img src={images ? images : value} alt="banner" style={{ borderRadius: "24px" ,width: '464px',height: '152px'}} />
             )}
           </Box>
           <Box>

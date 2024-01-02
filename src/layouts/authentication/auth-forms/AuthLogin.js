@@ -42,7 +42,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { UserSignin } from 'store/pages/signinSlice';
 import { useNavigate } from 'react-router';
 import { GetShopInfo } from 'store/pages/signupslice';
-import { requestPermission,gettoken } from '../../../firebase';
+// import { requestPermission,gettoken } from '../../../firebase';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
@@ -75,11 +75,11 @@ const FirebaseLogin = ({ ...others }) => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-useEffect(async()=>{
-    requestPermission()
-  // console.log( await gettoken())
+// useEffect(async()=>{
+//     // requestPermission()
+//   // console.log( await gettoken())
 
-},[])
+// },[])
  
   return (
     <>

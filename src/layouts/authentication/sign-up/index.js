@@ -190,7 +190,7 @@ function SignUp({ ...others }) {
                               <Typography
                                 sx={{fontFamily:'Cairo',fontWeight:400,fontSize:'18px',color:'#344054', textDecoration: "none"}}
                                 component={Link}
-                                to="/login"
+                                to="/authentication/sign-in"
                                 variant="subtitle1"
                               >
                                 لديك حساب بالفعل؟ تسجيل الدخول

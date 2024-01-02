@@ -61,12 +61,16 @@ function handleDeleteProduct(selected){
           value={value}
           onChange={onChange}
           renderValue={(selected)=>{
-            return category.find((category)=>category.id===selected)?.name
+            if(category?.results?.length==0){
+              getCategories()
+            }
+            
+            return category?.results?.find((category)=>category.id===selected)?.name
           }}
           sx={{ width: "100%" }}
         >
           {
-            category?.map((category)=>(
+            category?.results?.map((category)=>(
               <MenuItem key={category?.id} value={category?.id}>{category?.name}</MenuItem>
             ))
           }
@@ -75,7 +79,7 @@ function handleDeleteProduct(selected){
           <Grid item>
             {
             
-            category?.filter((category)=>category?.id===value).map((category)=>(
+            category?.results?.filter((category)=>category?.id===value)?.results?.map((category)=>(
             <Grid key={category?.id} container >
               
               <Grid md={1.5} pl={1}>

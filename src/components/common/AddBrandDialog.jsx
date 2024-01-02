@@ -103,6 +103,9 @@ const AddBrandDialog = ({ open, handleClose }) => {
             output: "formData",
           }),
           onSuccess: (res) => {
+        dispatch({ type: "brand/addItem", payload: res?.data });
+
+            handleClose()
             resetControls("");
             
           }
@@ -130,6 +133,9 @@ const AddBrandDialog = ({ open, handleClose }) => {
             output: "object",
           }),
           onSuccess: (res) => {
+        dispatch({ type: "brand/addItem", payload: res?.data });
+
+            handleClose()
             resetControls("");
             
           }

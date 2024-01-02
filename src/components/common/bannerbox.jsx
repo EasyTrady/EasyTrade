@@ -18,6 +18,7 @@ const Bannerbox = ({value,onChange}) => {
   });
  const getProducts=()=>{
   RequestGetProducts({
+    params:{size:10},
     onSuccess: (res) => {
       // console.log(res.data)
       dispatch({ type: "products/set", payload: { ...res.data } });
@@ -34,6 +35,10 @@ const Bannerbox = ({value,onChange}) => {
          value={value}
          onChange={onChange}
          renderValue={(selected)=>{
+          console.log(selected)
+          if(products.results.length==0){
+            getProducts()
+          }
           let resultproduct=products.results?.filter((product) => selected.includes(product.id))
                 return resultproduct.map((ele)=>ele.name).join(" , ")
          }}
