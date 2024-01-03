@@ -455,12 +455,20 @@ function index({ absolute, light, isMini }) {
   }, [specialCategorys]);
 
   const settings = {
+    
+    className: "center",
+    centerMode: true,
+    // centerPadding: "60px",
     dots: true,
     infinite: false,
     speed: 500,
-    slidesToShow: 5,
+    slidesToShow: 4,
     slidesToScroll: 1,
-    // style: { overflowX: "auto" },
+    row:1,
+    // width:'90% !important',
+    // style: {
+      
+    // },
     responsive: [
       {
         breakpoint: 1024,
@@ -661,9 +669,9 @@ function index({ absolute, light, isMini }) {
               console.log(component);
               if (component?.title == "category" ) {
                 return (
-                  <SoftBox className={component?.title} key={component?.id} sx={{ padding: "10px", width: "100%" }}>
+                  <SoftBox key={component?.id} sx={{ padding: "10px", width: "100%" }}>
                     <SoftTypography component="div">{t("Categories")}</SoftTypography>
-                    <Slider {...settings}>
+                    <Slider {...settings} slidesToShow={ele?.max_number}>
                       {ele?.items?.map((elem) => (
                         <Box key={elem?.id}>
                           <SoftBox
@@ -688,47 +696,47 @@ function index({ absolute, light, isMini }) {
                 );
               } else if (component?.title == "shopbrand" ) {
                 const hasItems = ele?.items && ele.items.length > 0;
-              
                 return (
-                  <SoftBox key={ele.id}>
+                  <SoftBox key={component?.id} sx={{ padding: "10px", width: "100%" }}>
                     <SoftTypography component="div">{t("Brands")}</SoftTypography>
-                      <Slider {...settings}>
+                      <Slider {...settings} slidesToShow={ele?.max_number}>
                         {ele.items.map((elem) => (
                           <SoftBox
-                          className="gehad"
-                          key={elem.id}
-                          sx={{
-                            borderRadius: "8px",
-                            border: "1px solid #D3D3D3",
-                            // width: "20%",
-                            backgroundColor: "#fff",
-                            // display: "flex",
-                            // flexDirection: "row",
-                          }}
-                        >
-                            <SoftTypography
-                              component={"img"}
-                              src={elem?.image}
-                              sx={{ width: "100%", height: "30px" }}
-                            />
-                          <SoftBox
-                            sx={{
-                              display: "flex",
-                              justifyContent: "flex-start",
-                              flexDirection: "column",
-                              padding: "10px",
-                            }}
-                          >
-                            <SoftTypography sx={{ fontSize: "8px", color: "gray" }}>
-                              {" "}
-                              Makeup
-                            </SoftTypography>
-                            <SoftTypography sx={{ fontSize: "8px" }}> {elem?.name}</SoftTypography>
-                            <SoftTypography sx={{ fontSize: "8px", color: "gray" }}>
-                              {" "}
-                              244+ items
-                            </SoftTypography>
-                          </SoftBox>
+                          key={elem.id}>
+                            <Box
+                              sx={{
+                                borderRadius: "8px",
+                                border: "1px solid #D3D3D3",
+                                // width: "20%",
+                                backgroundColor: "#fff",
+                                margin:"0 10px"
+                                // display: "flex",
+                                // flexDirection: "row",
+                          }}>
+                              <SoftTypography
+                                component={"img"}
+                                src={elem?.image}
+                                sx={{ width: "100%", height: "30px" }}
+                              />
+                              <SoftBox
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "flex-start",
+                                  flexDirection: "column",
+                                  padding: "10px",
+                                }}
+                              >
+                                <SoftTypography sx={{ fontSize: "8px", color: "gray" }}>
+                                  {" "}
+                                  Makeup
+                                </SoftTypography>
+                                <SoftTypography sx={{ fontSize: "8px" }}> {elem?.name}</SoftTypography>
+                                <SoftTypography sx={{ fontSize: "8px", color: "gray" }}>
+                                  {" "}
+                                  244+ items
+                                </SoftTypography>
+                              </SoftBox>
+                            </Box>
                         </SoftBox>
                         ))}
                       </Slider>
@@ -736,17 +744,18 @@ function index({ absolute, light, isMini }) {
                 );
               } else if (component?.title == "banner" ) {
                 const hasItems = ele?.items && ele.items.length > 0;
-              
                 return (
                   <SoftBox key={component.id} sx={{ padding: "10px" }}>
                     <SoftTypography component="div">{t("Banner")}</SoftTypography>
-                      <Slider {...settings}>
+                      <Slider {...settings} slidesToShow={ele?.max_number}>
                         {ele?.items?.map((elem) => (
                           <SoftBox
                           key={elem?.id}
-                          sx={{ borderRadius: "8px", width: "100%", height: "80px" }}
                         >
-                          <img src={elem?.image} style={{ width: "100%" }} />
+                          <Box 
+                          sx={{ borderRadius: "8px", width: "100%", height: "80px", margin:'0 10px', display:'flex', alignItems:'center' }}>
+                            <img src={elem?.image} style={{ width: "100%", padding:"0 10px"}} />
+                          </Box>
                         </SoftBox>
                         ))}
                       </Slider>
@@ -754,26 +763,21 @@ function index({ absolute, light, isMini }) {
                 );
               } else if (component?.title == "specialcategory" ) {
                 const hasItems = ele?.items && ele.items.length > 0;
-
                 return (
                   <SoftBox key={component?.id} sx={{ padding: "10px" }}>
                     <SoftTypography component="div">{t("Products")}</SoftTypography>
-                      <Slider {...settings}>
+                      <Slider {...settings} slidesToShow={ele?.max_number}>
                         {ele?.items?.map((elem) => (
                           <Box key={elem?.id}>
                             <SoftBox
-                            className="salem"
-                            
-                            sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
-                          >
-                            <SoftBox
-                              sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+                              sx={{ display: "flex", flexDirection: "row", alignItems: "center", margin:'0 10px' }}
                             >
                               <SoftBox
                                 sx={{
                                   borderRadius: "8px",
                                   border: "1px solid #D3D3D3",
-                                  // width: "20%",
+                                  // width: "100%",
+                                  padding:'0 10px',
                                   backgroundColor: "#fff",
                                   // display: "flex",
                                   // flexDirection: "column",
@@ -846,11 +850,10 @@ function index({ absolute, light, isMini }) {
                                   </SoftTypography>
                                 </SoftBox>
                               </SoftBox>
-                              <SoftBox sx={{ borderRadius: "8px", width: "50%", height: "80px" }}>
+                              <SoftBox sx={{ borderRadius: "8px", width: "50%", height: "80px", display:'flex', alignItems:'center', padding:'0 10px' }}>
                                 ...
                               </SoftBox>
                             </SoftBox>
-                          </SoftBox>
                           </Box>
                         ))}
                       </Slider>
