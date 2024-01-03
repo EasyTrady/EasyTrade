@@ -22,7 +22,7 @@ import Breadcrumbs from 'examples/Breadcrumbs'
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import PropTypes from "prop-types";
 import useControls from "hooks/useControls";
-
+import * as FileSaver from "file-saver"
 import { PRODUCTS ,EXPORTPRODUCT} from "data/api";
 import XLSX from "sheetjs-style"
 import usePermission from 'utils/usePermission';
@@ -144,6 +144,13 @@ function Products({ absolute, light, isMini }) {
   function handleCloseDialog(){
     setOpenDialog(false)
   }
+  function ExportResult(){
+    const ws=XLSX.utils.json_to_sheet(rows)
+    const wb={Sheets:{"data":ws},SheetNames:["data"]}
+    const excelBuffer=XLSX.write(wb,{bookType:"xlsx",type:"array"})
+    const data=new Blob([excelBuffer],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8"})
+    FileSaver.saveAs(data,"data.xlsx")
+  }
   function handleDownloadModel(){
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.aoa_to_sheet([
@@ -168,6 +175,14 @@ function Products({ absolute, light, isMini }) {
     exportProductsFile({
       body:newForm,
       onSuccess:(res)=>{
+        RequestGetProducts({
+          params:{page:paginationModel?.page+1},
+          onSuccess: (res) => {
+            // console.log(res.data)
+            dispatch({ type: "products/set", payload: { ...res.data } });
+            handleCloseDialog()
+          },
+        });
         console.log(res.data)
       }
     })
@@ -222,7 +237,7 @@ function Products({ absolute, light, isMini }) {
           accept={".xlsx,.xls"}
         />
                     {/* <Box component={"input"} type="file"onChange={(e)=>exportProductfile(e)} sx={{display:"none"}} ref={refInput} /> */}
-                    <Button onClick={handleDownloadModel}
+                    <Button onClick={ExportResult}
                         sx={{
                             backgroundColor: "white !important",
                             color: "black !important", marginX: "10px", padding: "13px 16px"
@@ -304,7 +319,8 @@ function Products({ absolute, light, isMini }) {
                             <Button onClick={handleDownloadModel}
                         sx={{
                             backgroundColor: (theme)=>theme.palette.purple.middle,
-                            color: "white !important", marginX: "10px", padding: "13px 16px"
+                            color: "white !important", marginX: "10px", padding: "13px 16px",
+                            ":hover":{color: "black !important",border:"1px solid gray"}
                         }}>
                         {/* <LocalPrintshopIcon /> */}
                         Export

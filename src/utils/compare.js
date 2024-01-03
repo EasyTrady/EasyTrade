@@ -27,7 +27,7 @@ const compare = (array=[], complete) => {
     }
 
   });
- 
+ console.log(array2)
  let filterarray= array2.filter(([item1, item2,nameofobject])=>!_.isEqual(item1, item2))
  
 // array2.map(([item1, item2,nameofobject])=>{

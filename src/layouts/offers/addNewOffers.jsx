@@ -9,6 +9,7 @@ import {
   RadioGroup,
   Switch,
   Typography,
+  InputLabel
 } from "@mui/material";
 import DateIcon from 'examples/Icons/DateIcon';
 
@@ -24,14 +25,17 @@ import SelectField from "components/common/SelectField";
 import SelectValuePrecentage from "components/common/SelectValuePrecentage";
 import InputField from "components/common/TextField";
 import { OFFERTYPES } from "data/api";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { OFFERS } from "data/api";
+import compare from 'utils/compare'
+import SoftInput from "components/SoftInput";
 import Breadcrumbs from "examples/Breadcrumbs";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import { navbarRow } from "examples/Navbars/DashboardNavbar/styles";
 import useControls from "hooks/useControls";
 import useRequest from "hooks/useRequest";
-import React from "react";
+import React,{useEffect} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -67,10 +71,15 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
     Token: `Token ${Token}`,
     contentType: "multipart/form-data",
   });
-
+  const [PatchOfferRequest, PatchOfferResponce] = useRequest({
+    path: OFFERS,
+    method: "patch",
+    Token: `Token ${Token}`,
+    contentType: "multipart/form-data",
+  });
   
   const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
-    { control: "offer_type", value: '', isRequired: false },
+    { control: "offer_type_id", value: '', isRequired: false },
     { control: "offer_title", value: '', isRequired: false },
     { control: "offer_start_date", value: '', isRequired: false },
     { control: "offer_end_date", value: '', isRequired: false },
@@ -86,67 +95,116 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
     { control: "published_on", value: '', isRequired: false },
     { control: "quantity", value: '', isRequired: false },
   ])
+  useEffect(() => {
+    // jobRequest({
+    //     onSuccess: (res) => {
+    //         dispatch({ type: "job/set", payload: res.data })
+    //     }
+    // })
+  
+    if(Boolean(state?.dataRow)){
+        Object.entries(state?.dataRow)?.forEach(([key,value])=>key=="offer_banners"?setControl("banner",value[0]?.image):setControl(key,value))
+    }
+   
+    // setControl()
+   
+}, [state])
 
   function handleSubmit() {
     validate().then((output) => {
       
-      if (!output.isOk) return;  
-      let obj = {
-        type: controls.offer_type,
-        offer_title: controls.offer_title,
-        offer_start_date: controls.offer_start_date?.toISOString(),
-        offer_end_date: controls.offer_end_date?.toISOString(),
-        banner: controls.banner,
-        published_on: controls.published_on,
-      };
-  
-      if(controls.offer_type === 1||2){
-        obj.productX= controls.productX
-        obj.productY= controls.productY
-      }
-      if (controls.offer_type === 2||3||4||6||5) {
-        obj.discount = controls.discount;
-        obj.is_percentage_discount = controls.is_percentage_discount;
-        if (controls.offer_type === 3){
-          obj.total_amount = controls.total_amount;
+      if (!output.isOk) return;
+      if(Boolean(state?.dataRow)){
+        let result=compare([[controls.offer_type_id,state?.dataRow?.offer_type_id,"offer_type_id"],
+        [controls.offer_title,state?.dataRow?.offer_title,"offer_title"],
+        [controls?.offer_start_date,state?.dataRow?.offer_start_date,"offer_start_date"],
+        [controls?.offer_end_date,state?.dataRow?.offer_end_date,"offer_end_date"],
+        [String(controls?.banner),String(state?.dataRow?.banner),"banner"],
+        [controls?.published_on,state?.dataRow?.published_on,"published_on"],
+        [controls?.productX,state?.dataRow?.productX,"productX"],
+        [controls?.productY,state?.dataRow?.productY,"productY"],
+        [controls?.discount,state?.dataRow?.discount,"discount"],
+        [controls?.is_percentage_discount,state?.dataRow?.is_percentage_discount,"is_percentage_discount"],
+        [controls?.total_amount,state?.dataRow?.total_amount,"total_amount"],
+        [controls?.quantity,state?.dataRow?.quantity,"quantity"],
+        [String(controls?.products),String(state?.dataRow?.products),"products"],
+        [String(controls?.category),String(state?.dataRow?.category),"category"],  
+      ])
+      PatchOfferRequest({
+        id: state?.dataRow?.id,
+        body:filter({
+          obj: result.array,
+          output: "formData",
+        }),onSuccess:(res)=>{
+          resetControls("");
+          // dispatch({ type: "offers/patchItem", payload: {id:controls?.id,item:res.data} })
+          navigate(`/${sub_domain}/dashboard/offers`)
+          console.log(res.data)
+
         }
-        if (controls.offer_type === 4){
-          obj.productX = controls.productX;
-          obj.quantity = controls.quantity;
+      })
+      }else{
+        let obj = {
+          type: controls.offer_type_id,
+          offer_title: controls.offer_title,
+          offer_start_date: controls.offer_start_date?.toISOString(),
+          offer_end_date: controls.offer_end_date?.toISOString(),
+          banner: controls.banner,
+          published_on: controls.published_on,
+        };
+    
+        if(controls.offer_type_id === 1||2){
+          obj.productX= controls.productX
+          obj.productY= controls.productY
         }
-        if (controls.offer_type === 5){
-          obj.products = [...controls.products]
-         
+        if (controls.offer_type_id === 2||3||4||6||5) {
+          obj.discount = controls.discount;
+          obj.is_percentage_discount = controls.is_percentage_discount;
+          if (controls.offer_type_id === 3){
+            obj.total_amount = controls.total_amount;
+          }
+          if (controls.offer_type_id === 4){
+            obj.productX = controls.productX;
+            obj.quantity = controls.quantity;
+          }
+          if (controls.offer_type_id === 5){
+            obj.products = [...controls.products]
+           
+          }
+          if (controls.offer_type_id === 6){
+            obj.category = controls.category;
+            
+          }
         }
-        if (controls.offer_type === 6){
-          obj.category = controls.category;
+        
+       
+        AddOfferRequest({
+          body: filter({
+            obj: obj,
+            output: "formData",
+          }),
+          onSuccess: (res) => {
+            resetControls("");
+            dispatch({ type: "offers/addItem", payload: res.data })
+
+            navigate(`/${sub_domain}/dashboard/offers`)
+          }
+        }).then((res) => {
+          let response = res?.response?.data;
           
-        }
+          // const responseBody = filter({
+          //   obj: {
+          //     name: response?.name?.join(""),
+          //     quantity: response?.quantity?.join(" "),
+          //    
+          //   },
+          //   output: "object",
+          // });
+    
+          // setInvalid(responseBody);
+        });
       }
       
-     
-      AddOfferRequest({
-        body: filter({
-          obj: obj,
-          output: "formData",
-        }),
-        onSuccess: (res) => {
-          resetControls("");
-        }
-      }).then((res) => {
-        let response = res?.response?.data;
-        
-        // const responseBody = filter({
-        //   obj: {
-        //     name: response?.name?.join(""),
-        //     quantity: response?.quantity?.join(" "),
-        //    
-        //   },
-        //   output: "object",
-        // });
-  
-        // setInvalid(responseBody);
-      });
     });
   }
 
@@ -334,12 +392,12 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
                 renderValue={(selected) => {
                   return offerstypes?.find((offer) => offer.id === selected)?.name
                 }}
-                value={controls.offer_type}
-                onChange={(e) => setControl("offer_type", e.target.value)}
-                required={required.includes("offer_type")}
-                textHelper={controls.offer_type}
-                error={Boolean(invalid.offer_type)}
-                helperText={invalid.offer_type}
+                value={controls.offer_type_id}
+                onChange={(e) => setControl("offer_type_id", e.target.value)}
+                required={required.includes("offer_type_id")}
+                textHelper={controls.offer_type_id}
+                error={Boolean(invalid.offer_type_id)}
+                helperText={invalid.offer_type_id}
                 sx={{ width: "100%", fontSize: "14px", background: "#fff" }}
               >
                 {offerstypes?.map((offer, index) => (
@@ -353,7 +411,7 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
             </SoftBox>
           </Container>
         </SoftBox>
-        {controls.offer_type===1&&
+        {controls.offer_type_id==1&&
         <>
         <Box sx={{display:'flex',flexDirection:{md:'row',xs:'column'},gap:'20px',mt:'20px',width:'100%'}}>
         <OfferBox
@@ -372,13 +430,13 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
         <Box sx={{mt:'20px'}}>
          <ImageOffer 
          title='Offer image*'
-         value={controls.banner}
+         value={controls?.banner}
          onChange={(e)=>setControl('banner',e)}
          /> 
         </Box>
         </>
         }
-         {controls.offer_type===2&&
+         {controls.offer_type_id==2&&
          <>
          <Box sx={{display:'flex',flexDirection:{md:'row',xs:'column'},gap:'20px',mt:'20px',width:'100%'}}>
         <OfferBox
@@ -407,18 +465,72 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
         </Box>
         </>
 }
-{controls.offer_type===3&&
+{controls?.offer_type_id==3&&
 <>
+
 <SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5 }}>
-          <AddProductTitle title={offerstypes?.find((offer) => offer.id === controls.offer_type)?.name} />
-          <Container sx={{display:'flex',flexDirection:"column",gap:'20px',py:'20px'}}>
-          <SelectValuePrecentage
+          <AddProductTitle title={offerstypes?.find((offer) => offer.id === controls.offer_type_id)?.name} />
+          <Container sx={{display:'flex',flexDirection:"column",py:'20px'}}>
+          <InputLabel htmlFor="outlined-adornment-email-register" sx={{  fontSize: "14px" }}>{t("discount")}</InputLabel>
+
+          <SoftInput
+                                id="outlined-adornment-password"
+                                type={'text'}
+                                 icon ={{ component: <KeyboardArrowDownIcon />, direction: "right" }}
+
+                                value={controls?.discount}
+                                sx={{ ".MuiInputBase-root": { overflow: "hidden !important", padding: "0px !important",border:"unset" } }}
+                                onChange={(e) => {
+                                    let tester = /^(?:\d+|)$/
+                                    
+                                    tester.test(e.target.value) && setControl("discount", e.target.value)
+                                }}
+                                InputProps={{
+                                    endAdornment:
+                                        (
+                                            <SoftInput
+                                                select
+                                                value={controls?.is_percentage_discount?"%":"$"}
+                                                 sx={{ ".MuiInputBase-root": { border: "unset" } ,width:"10% !important"}}
+                                                onChange={(e) =>{setControl("is_percentage_discount", e.target.value == "%" ? true : false)}}
+                                                required={required.includes("is_percentage_discount")}
+                                                error={Boolean(invalid?.is_percentage_discount)}
+                                                helperText={invalid?.is_percentage_discount}
+                                                SelectProps={{
+                                                    defaultValue: "",
+                                                    displayEmpty: true,
+                                                    renderValue: (selected) => {
+                                                        if (!Boolean(selected)) {
+                                                            return (
+                                                                "%"
+                                                            );
+                                                        } else {
+
+                                                            return selected;
+                                                        }
+                                                    },
+                                                    MenuProps: {
+                                                        PaperProps: {
+                                                            sx: {
+                                                                maxHeight: "200px",
+                                                                overflowY: "auto",
+                                                                backgroundColor: "white !important"
+                                                            },
+                                                        },
+                                                    },
+                                                }}
+
+                                            >
+                                                {["%", "$"]?.map((ele, index) => <MenuItem value={ele} key={index}>{ele}</MenuItem>)}
+                                            </SoftInput>)
+                                }} />
+          {/* <SelectValuePrecentage
         variant={'outlined'}
         label={'Discount'}
-        type={controls.type}
+        type={controls.offer_type_id}
         onChange={(e)=>setControl("is_percentage_discount",e.target.value)}
         handleValueChange={(e)=>setControl('discount',e.target.value)}
-        />
+        /> */}
          <InputField
                 variant="outlined"
                 label={"Minimum Price*"}
@@ -453,16 +565,16 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
 <Box sx={{mt:'20px'}}>
          <ImageOffer 
          title='Offer image*'
-         value={controls.banner}
+         value={controls?.banner}
          onChange={(e)=>setControl('banner',e)}
          /> 
         </Box>
 </>
 }
-{controls.offer_type===4&&
+{controls.offer_type_id==4&&
   <>
 <SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5 }}>
-          <AddProductTitle title={offerstypes?.find((offer) => offer.id === controls.offer_type)?.name} />
+          <AddProductTitle title={offerstypes?.find((offer) => offer.id === controls.offer_type_id)?.name} />
          
           <OfferBox 
         select
@@ -498,10 +610,10 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
         </Box>
 </>
 }
-{controls.offer_type===5&&
+{controls.offer_type_id==5&&
   <>
 <SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5 }}>
-          <AddProductTitle title={offerstypes?.find((offer) => offer.id === controls.offer_type)?.name} />
+          <AddProductTitle title={offerstypes?.find((offer) => offer.id === controls.offer_type_id)?.name} />
          
           <OfferBox 
         muliple
@@ -538,10 +650,10 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
 </>
 }
 
-{controls.offer_type===6&&
+{controls.offer_type_id==6&&
   <>
 <SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5 }}>
-          <AddProductTitle title={offerstypes?.find((offer) => offer.id === controls.offer_type)?.name} />
+          <AddProductTitle title={offerstypes?.find((offer) => offer.id === controls.offer_type_id)?.name} />
          
           <OfferBoxCategory 
         

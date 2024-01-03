@@ -86,7 +86,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
   }
 
   const [OffersTypesGetRequest, OffersTypesGetResponce] = useRequest({
-    path: OFFERTYPES + `?type=${controls.offer_type}`,
+    path: OFFERTYPES,
     method: "get",
     Token: `Token ${Token}`,
   });
@@ -137,34 +137,35 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
           output: "formData",
         }),onSuccess:(res)=>{
           dispatch({ type: "banners/patchItem", payload: { id: data?.id,item:res.data } })
+      navigate(`/${sub_domain}/dashboard/banners`)
+
         }
       })
-      navigate(`/${sub_domain}/dashboard/banners`)
      
       console.log(result)
       }else{
         let obj = {
           banner_type: controls.banner_type,
-          // object_id: controls.object_id,
+          object_id: controls.object_id,
           is_public: controls?.is_public || 'true',
           is_rectangular: controls.is_rectangular || "true",
           image: controls.image
         };
   
         if (controls.banner_type === 1) {
-          obj.object_id = [...controls.product]
+          obj.object_id = [...controls.object_id]
         }
         if (controls.banner_type === 2) {
-          obj.object_id = controls.category
+          obj.category_products = controls.object_id
         }
         if (controls.banner_type === 3) {
-          obj.object_id = controls.offer_type
+          obj.offer_type_products = controls.object_id
         }
         if (controls.banner_type === 4) {
           obj.link = controls.url
         }
         if (controls.banner_type === 5) {
-          obj.object_id = controls.pages
+          obj.object_id = controls.object_id
         }
   
         AddBannerRequest({
@@ -173,6 +174,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
             output: "formData",
           }),
           onSuccess: (res) => {
+            dispatch({ type: "banners/addItem", payload: res.data  })
             resetControls("");
             navigate(`/${sub_domain}/dashboard/banners`)
           }
@@ -349,7 +351,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
                         variant="outlined"
                         placeholder="Buy X get Y free"
                         label="Choose offer type*"
-                        isPinding={OffersTypesGetResponce.isPinding}
+                        isPending={OffersTypesGetResponce.isPending}
                         onOpen={getOfferTypes}
                         renderValue={(selected) => {
                           return offerstypes?.find((offer) => offer.id === selected)?.name
@@ -360,7 +362,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
                         textHelper={controls.object_id}
                         error={Boolean(invalid.object_id)}
                         helperText={invalid.object_id}
-                        disabled={controls.alloffers}
+                        disabled={Boolean(controls.alloffers)==false}
                         sx={{ width: "100%", fontSize: "14px", background: "#fff" }}
                       >
                         {offerstypes?.map((offer, index) => (
@@ -381,23 +383,23 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
                             color="secondary" />
                         } />
                       {/* get offers of specific offer */}
-                      {controls.offer_type !== "" ?
+                      {controls.object_id !== "" ?
                         <SelectField
                           variant="outlined"
                           placeholder="Buy X get Y free"
                           label="Choose offer"
-                          isPinding={OffersTypesGetResponce.isPinding}
+                          isPending={OffersTypesGetResponce.isPending}
                           onOpen={getOfferTypes}
                           renderValue={(selected) => {
                             return offerstypes?.find((offer) => offer.id === selected)?.name
                           }}
-                          value={controls.offer_type}
-                          onChange={(e) => setControl("offer_type", e.target.value)}
-                          required={required.includes("offer_type")}
-                          textHelper={controls.offer_type}
-                          error={Boolean(invalid.offer_type)}
-                          helperText={invalid.offer_type}
-                          disabled={controls.alloffers}
+                          value={controls.object_id}
+                          onChange={(e) => setControl("object_id", e.target.value)}
+                          required={required.includes("object_id")}
+                          textHelper={controls.object_id}
+                          error={Boolean(invalid.object_id)}
+                          helperText={invalid.object_id}
+                          disabled={Boolean(controls.alloffers)==false}
                           sx={{ width: "100%", fontSize: "14px", background: "#fff" }}
                         >
                           {offerstypes?.map((offer, index) => (

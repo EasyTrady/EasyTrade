@@ -343,7 +343,7 @@ const ProductAttributes = ({ idProduct ,handleChange}) => {
     });
   const [GenerationAttributesRequest, GenerationAttributeResponse] =
     useRequest({
-      path:  "/products/generate/attributes/",
+      path:  "shop/dashboard/generate/attributes/",
       method: "POST",
       Token: `Token ${Token}`
     });
@@ -401,7 +401,7 @@ const ProductAttributes = ({ idProduct ,handleChange}) => {
         // localStorage.removeItem('productId');
         // dispatch({ type: "products/addNewProperty", payload: { id: idproduct, item: res?.data[0]?.variant_attributes } })
         setgenerate(!generate)
-        setgenerateresult(res.data)
+        // setgenerateresult(res.data)
         let result = res.data.map((ele) => ({
           attributes: [ele],
           title: "",
@@ -442,8 +442,10 @@ const ProductAttributes = ({ idProduct ,handleChange}) => {
      if(controls.variants.filter((ele)=>(Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin))&&Boolean(ele.id)).length>0){
      let variant=products.results.find((ele)=>ele.id==idproduct)?.variant_attributes
      let newvariant=controls.variants.filter((ele)=>(Boolean(ele.title) || Boolean(ele.sku) || Boolean(ele.quantity) || Boolean(ele.price)  || Boolean(ele.gtin))&&Boolean(ele.id))
-   
-    let result=newvariant?.map((ele,index)=>(compare([[String(ele?.quantity),String(variant[index]?.quantity),"quantity"],
+     if(newvariant.length>0){
+
+     }
+    let result=newvariant.length>0&&newvariant?.map((ele,index)=>(compare([[String(ele?.quantity),String(variant[index]?.quantity),"quantity"],
      [ele?.title,variant[index]?.title,"title"],
      [ele?.sku,variant[index]?.sku,"sku"],
      [String(ele?.gtin),String(variant[index]?.gtin),"gtin"],
@@ -592,18 +594,22 @@ const ProductAttributes = ({ idProduct ,handleChange}) => {
       }
     })
   },[])
-  useEffect(()=>{
-    setControl("variants",products?.results?.find((ele)=>ele.id==idproduct)?.variant_attributes)
-  },[products])
+  // useEffect(()=>{
+  //   console.log(products?.results?.find((ele)=>ele.id==idproduct)?.variant_attributes)
+  //   if(products?.results?.length>0){
+  //     setControl("variants",products?.results?.find((ele)=>ele.id==idproduct)?.variant_attributes)
+  //   }
+  // },[products])
   useEffect(() => {
-    
-     if(controls?.variants?.length==0){
+    console.log(controls?.variants)
+      if(controls?.variants?.length==0&&productvariantResponce.isPending){
     
        setgenerate(false)
      }else{
       setgenerate(true)
      }
-   }, [controls?.variants])
+    
+   }, [controls?.variants,productvariantResponce.isPending])
   return (
     <Container
       maxWidth="xl"

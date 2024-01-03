@@ -197,6 +197,7 @@ const sub_domain = localStorage.getItem('sub_domain')
     useEffect(()=>{
         if(vendorPermissions?.results?.length==0){
             vendorPermissionRequest({
+                params:{size:vendorPermissions?.count?vendorPermissions?.count:20},
                 onSuccess:(res)=>{
                     dispatch({ type: "venderPermission/set", payload: res.data })
                    
@@ -264,7 +265,20 @@ const sub_domain = localStorage.getItem('sub_domain')
                         dispatch({ type: "vender/addItem", payload: res.data })
                         navigate(`/${sub_domain}/dashboard/venders`)
                     }
-                })
+                }).then((res) => {
+                    let response = res?.response?.data;
+                    
+                    // const responseBody = filter({
+                    //   obj: {
+                    //     name: response?.name?.join(""),
+                    //     quantity: response?.quantity?.join(" "),
+                    //    
+                    //   },
+                    //   output: "object",
+                    // });
+              
+                    setInvalid(response);
+                  });
             }
            
         })

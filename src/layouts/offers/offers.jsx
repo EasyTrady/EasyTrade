@@ -54,6 +54,10 @@ const Offers = ({ absolute, light, isMini }) => {
         }
     })
 }
+function onEdit(row, newRow) {
+  navigate(`/${sub_domain}/dashboard/offers/addnewoffer`,{state:{id:row,dataRow:newRow}})
+  
+}
  const  columns = [
     {
       field: 'main_image',
@@ -192,7 +196,7 @@ color:row.offer_type_id===1?'#027A48':row.offer_type_id===2?"#7A0243":row.offer_
         <DataGridCustom
           rows={offers?.results}
           columns={columns}
-          // onEdit={()=>{}}
+          onDialog={onEdit}
           onDelete={isPermitted(onDelete,["delete_productoffer"])}
           onCopy={() => {}}
           checkboxSelection={true}

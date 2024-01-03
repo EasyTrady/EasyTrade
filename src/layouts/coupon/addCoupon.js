@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react'
 import SoftBox from "components/SoftBox";
 import PropTypes from "prop-types";
-import { useLocation } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import SoftButton from 'components/SoftButton';
 import Breadcrumbs from 'examples/Breadcrumbs'
@@ -26,6 +26,8 @@ function AddCoupon({ absolute, light, isMini }) {
     const route = useLocation().pathname.split("/").slice(1);
     let Token = localStorage.getItem('token')
     let dispatch = useDispatch()
+    const sub_domain = localStorage.getItem('sub_domain')
+    let navigate=useNavigate()
     let { t } = useTranslation('common')
     const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
         useControls([
@@ -123,11 +125,11 @@ function AddCoupon({ absolute, light, isMini }) {
                 discount_amount:controls?.discount_amount,
                 is_percentage_discount:controls?.is_percentage_discount,
                 max_users_number:1,
-                minimum_purchase_amount:controls?.minimum_purchase_amount,
-                minimum_items_quantity:controls?.minimum_items_quantity},
+                minimum_purchase_amount:controls?.minimum_purchase_amount?controls?.minimum_purchase_amount:0,
+                minimum_items_quantity:controls?.minimum_items_quantity?controls?.minimum_items_quantity:0},
                     onSuccess:(res)=>{
                         dispatch({ type: "coupon/addItem", payload: res.data }) 
-                        
+                        navigate(`/${sub_domain}/dashboard/coupons`)
                     }
             })
         }
@@ -353,7 +355,7 @@ function AddCoupon({ absolute, light, isMini }) {
                            />
                             }
                         </Box>
-                        <Box sx={{ marginY: "6px" }}>
+                        {/* <Box sx={{ marginY: "6px" }}>
                             <InputLabel htmlFor="outlined-adornment-email-register" sx={{ fontSize: "14px" }}>{t("Customers illegibility*")}</InputLabel>
                             <RadioGroup
                                 row
@@ -380,7 +382,7 @@ function AddCoupon({ absolute, light, isMini }) {
                                 startAdornment: (<SearchOutlinedIcon sx={{height:'16px',width:'16px'}}/>)
                                 }}
                            />}
-                        </Box>
+                        </Box> */}
                     </Box>
                 </Form>
             </Container>

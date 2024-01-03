@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Box, Typography } from "@mui/material";
-import React from "react";
+import React ,{useEffect}from "react";
 import AddProductTitle from "./AddProductTitle";
 import image from "../../assets/images/icons/image.svg";
 const ImageOffer = ({ title, value, onChange }) => {
@@ -15,12 +15,26 @@ const ImageOffer = ({ title, value, onChange }) => {
     reader.readAsDataURL(file);
     onChange(event.target.files[0]);
   };
+  useEffect(()=>{
+    console.log(value)
+  },[value])
   return (
     <Box sx={{ borderRadius: "8px", background: "#fff", width: "100%", pb: "20px" }}>
       <AddProductTitle title={title} />
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-        {avatarUrl ? (
-          <img src={avatarUrl} style={{ height: "186px", width: "100%", borderRadius: "8px" }} />
+        {avatarUrl? (
+          <>
+           <input
+                id="profile_image"
+                name="profile_image"
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarChange}
+                style={{ display: "none" }}
+              />
+          <img src={avatarUrl} style={{ height: "186px", width: "100%", borderRadius: "8px" }} onClick={() => {
+                    document.getElementById("profile_image").click();
+                  }} /></>
         ) : (
           <Box
             sx={{
@@ -54,8 +68,10 @@ const ImageOffer = ({ title, value, onChange }) => {
                 onChange={handleAvatarChange}
                 style={{ display: "none" }}
               />
-              <img src={image} alt="image" />
-              <Typography
+              <img src={value?value:image} alt="image" onClick={() => {
+                    document.getElementById("profile_image").click();
+                  }} />
+                  {!value?<Typography
                 sx={{
                   color: "#626C70",
                   textAlign: "center",
@@ -82,7 +98,8 @@ const ImageOffer = ({ title, value, onChange }) => {
                 >
                   select click to browse
                 </Typography>
-              </Typography>
+              </Typography>:<></>}
+              
             </Box>
           </Box>
         )}

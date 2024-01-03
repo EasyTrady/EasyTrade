@@ -112,7 +112,7 @@ function AddNewJob({ absolute, light, isMini }) {
                             id: controls.id,
                             body: result.array,
                             onSuccess: (res) => {
-                                dispatch({ type: "job/patchItem", payload: { id: row, item: res.data } })
+                                dispatch({ type: "job/patchItem", payload: { id: controls.id, item: res.data } })
                                 navigate(`/${sub_domain}/dashboard/jobs`)
                             }
                         })

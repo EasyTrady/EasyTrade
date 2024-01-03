@@ -31,7 +31,7 @@ import { BRANDS } from "data/api";
 import filter from "utils/ClearNull";
 const AddBrandDialog = ({ open, handleClose }) => {
   const category = useSelector((state) => state.category.value);
-  const popularbrand = useSelector((state) => state.brand.value);
+  const popularbrand = useSelector((state) => state.popularbrand.value);
   const [avatarUrl, setAvatarUrl] = React.useState(null);
   let Token = localStorage.getItem("token");
   const dispatch = useDispatch();
@@ -133,7 +133,8 @@ const AddBrandDialog = ({ open, handleClose }) => {
             output: "object",
           }),
           onSuccess: (res) => {
-        dispatch({ type: "brand/addItem", payload: res?.data });
+            
+            res?.data?.map((elem)=>dispatch({ type: "brand/addItem", payload:elem }));
 
             handleClose()
             resetControls("");
@@ -326,10 +327,10 @@ const AddBrandDialog = ({ open, handleClose }) => {
             popularbrand?.results?.filter((brand)=>controls.popular_brands.includes(brand?.id)).map((brand)=>(
             <Grid key={brand?.id} container >
               
-              <Grid md={3} pl={1}>
-                <img src={brand?.logo} alt="product" style={{ width: "102px", height: "64px",borderRadius:'4px' }} />
+              <Grid md={3} pl={1} sx={{mx:1}}>
+                <img src={brand?.image} alt="product" style={{ width: "102px", height: "64px",borderRadius:'4px' }} />
               </Grid>
-              <Grid md={8}>
+              <Grid md={8} sx={{mx:1}}>
                 <Typography
                   sx={{
                     color: " #191B1C",
@@ -353,7 +354,7 @@ color:'#7F7F7F'
                 </Typography>
               </Grid>
               <Grid md={1}>
-                <Box sx={{display:'flex',justifyContent:'flex-end',pt:1}} onClick={''}>
+                <Box sx={{display:'flex',justifyContent:'flex-end',pt:1}} onClick={()=>setControl("popular_brands",controls?.popular_brands?.filter((ele)=>ele!=brand?.id))}>
                 <img src={Delete} alt="delete" />
                 </Box>
               </Grid>

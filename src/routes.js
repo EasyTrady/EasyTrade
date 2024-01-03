@@ -331,18 +331,18 @@ const routes = [
     key: "Customer",
     route: `/${sub_domain}/dashboard/customer`,
     icon: <GroupIcon size="12px" />,
-    noCollapse: true,
+    noCollapse: false,
     component: <Auth><Customer /></Auth>,
     permission:["view_customer"],
-    children: [{
-      id: "Customer",
-      path: `/${sub_domain}/dashboard/customer`,
-      title: "Customer",
-      element: <Auth><Customer /></Auth>,
-      type: "item",
-      permission:["view_customer"]
-    },
-    ]
+    // children: [{
+    //   id: "Customer",
+    //   path: `/${sub_domain}/dashboard/customer`,
+    //   title: "Customer",
+    //   element: <Auth><Customer /></Auth>,
+    //   type: "item",
+    //   permission:["view_customer"]
+    // },
+    // ]
   },
   {
     type: "collapse",

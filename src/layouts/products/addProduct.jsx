@@ -111,12 +111,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
       control: "name",
       value: "",
       isRequired: false,
-      validations: [
-        {
-          test: /^(?:[A-Za-z\u0600-\u06ff\s]*)$/,
-          message: "not valid name",
-        },
-      ],
+     
     },
     {
       control: "require_shipping",
@@ -297,10 +292,10 @@ const AddProduct = ({ light, isMini,handleChange }) => {
         // // //  [controls.minimum_stock_quantity,product.minimum_stock_quantity,"minimum_stock_quantity"],
          [controls?.description,product?.description,"description"],
          [String(controls?.categories),String(product?.categories),"categories"],
-         [controls?.brand,product?.brand,"brand"],
+         [String(controls?.brand),String(product?.brand),"brand"],
 
         //  [controls.custom_shipping_price,product.custom_shipping_price,"custom_shipping_price"],
-         [controls?.dimensions,product?.dimensions,"dimensions"],
+         [String(controls?.dimensions),String(product?.dimensions),"dimensions"],
          [controls?.weight,product?.weight,"weight"],
          [controls?.in_taxes,product?.in_taxes,"in_taxes"],
          [controls?.is_published,product?.is_published,"is_published"],
@@ -308,6 +303,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
         ],false
       )
       // console.log(Object.entries(result.array).map(([key,value])=>key==="discount_start_date"||key==="discount_end_date"?{key:value.toISOString()}:{key:value}))
+      console.log(controls,product,result)
    
       if(result.nochange){ patchProductRequest({
         id:productId,
@@ -450,14 +446,14 @@ const AddProduct = ({ light, isMini,handleChange }) => {
       })
     }
 }, [productId])
-useEffect(()=>{
-  if(category?.length==0){
-    getCategory()
-  }
-  if(Brands?.results?.length==0){
-    getBrandItems()
-  }
-},[category,Brands])
+// useEffect(()=>{
+//   if(category?.length==0){
+//     getCategory()
+//   }
+//   if(Brands?.results?.length==0){
+//     getBrandItems()
+//   }
+// },[category,Brands])
 useEffect(()=>{
   if(controls.specifications.length>0){
     setControl("switchSpecifications",true)
@@ -597,7 +593,9 @@ useEffect(()=>{
               onOpen={getBrandItems}
               renderValue={(selected) => {
                 // selected.map((ele)=>category.map((elem)=>elem.id).includes(ele))
-               
+                if(Brands?.results?.length==0){
+                      getBrandItems()
+                    }
                
                 let resultcategory=Brands?.results?.filter((category) => category.id==selected)
                 return resultcategory.map((ele)=>ele.name).join(" , ")

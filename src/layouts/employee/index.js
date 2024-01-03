@@ -298,7 +298,7 @@ function Employee({ absolute, light, isMini }) {
             editable: false,
             filterable: false,
             sortable: false, disableColumnMenu: true,
-            renderCell: (params) => {moment(params.row.created_at).format('MMMM Do YYYY, h:mm:ss a')}
+            renderCell: (params) => {moment(params.row.created_at).format('MMMM Do YYYY')}
         },
 
     ]
