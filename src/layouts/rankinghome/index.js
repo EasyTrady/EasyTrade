@@ -701,43 +701,64 @@ function index({ absolute, light, isMini }) {
                     <SoftTypography component="div">{t("Brands")}</SoftTypography>
                       <Slider {...settings} slidesToShow={ele?.max_number}>
                         {ele.items.map((elem) => (
+                          <Box key={elem?.id}>
                           <SoftBox
-                          key={elem.id}>
-                            <Box
-                              sx={{
-                                borderRadius: "8px",
-                                border: "1px solid #D3D3D3",
-                                // width: "20%",
-                                backgroundColor: "#fff",
-                                margin:"0 10px"
-                                // display: "flex",
-                                // flexDirection: "row",
-                          }}>
-                              <SoftTypography
-                                component={"img"}
-                                src={elem?.image}
-                                sx={{ width: "100%", height: "30px" }}
-                              />
-                              <SoftBox
-                                sx={{
-                                  display: "flex",
-                                  justifyContent: "flex-start",
-                                  flexDirection: "column",
-                                  padding: "10px",
-                                }}
-                              >
-                                <SoftTypography sx={{ fontSize: "8px", color: "gray" }}>
-                                  {" "}
-                                  Makeup
-                                </SoftTypography>
-                                <SoftTypography sx={{ fontSize: "8px" }}> {elem?.name}</SoftTypography>
-                                <SoftTypography sx={{ fontSize: "8px", color: "gray" }}>
-                                  {" "}
-                                  244+ items
-                                </SoftTypography>
-                              </SoftBox>
-                            </Box>
-                        </SoftBox>
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "center",
+                              margin: "0 10px",
+                            }}
+                          >
+                            <StyleSoftBox frame={ele.frame}>
+                              <img src={elem?.image} style={{ width: "100%" }} />
+                            </StyleSoftBox>
+                            <SoftTypography component="div" sx={{ fontSize: "12px" }}>
+                              {elem?.name}
+                            </SoftTypography>
+                          </SoftBox>
+                        </Box>
+                        //   <SoftBox
+                        //   key={elem.id}>
+                        //     <SoftTypography component={"name"}
+                        //         src={elem?.name}>
+                            
+                        //     </SoftTypography>
+                        //     <Box
+                        //       sx={{
+                        //         borderRadius: "8px",
+                        //         border: "1px solid #D3D3D3",
+                        //         // width: "20%",
+                        //         backgroundColor: "#fff",
+                        //         margin:"0 10px"
+                        //         // display: "flex",
+                        //         // flexDirection: "row",
+                        //   }}>
+                        //       <SoftTypography
+                        //         component={"img"}
+                        //         src={elem?.image}
+                        //         sx={{ width: "100%", height: "30px" }}
+                        //       />
+                        //       <SoftBox
+                        //         sx={{
+                        //           display: "flex",
+                        //           justifyContent: "flex-start",
+                        //           flexDirection: "column",
+                        //           padding: "10px",
+                        //         }}
+                        //       >
+                        //         <SoftTypography sx={{ fontSize: "8px", color: "gray" }}>
+                        //           {" "}
+                        //           Makeup
+                        //         </SoftTypography>
+                        //         <SoftTypography sx={{ fontSize: "8px" }}> {elem?.name}</SoftTypography>
+                        //         <SoftTypography sx={{ fontSize: "8px", color: "gray" }}>
+                        //           {" "}
+                        //           244+ items
+                        //         </SoftTypography>
+                        //       </SoftBox>
+                        //     </Box>
+                        // </SoftBox>
                         ))}
                       </Slider>
                   </SoftBox>
@@ -749,14 +770,25 @@ function index({ absolute, light, isMini }) {
                     <SoftTypography component="div">{t("Banner")}</SoftTypography>
                       <Slider {...settings} slidesToShow={ele?.max_number}>
                         {ele?.items?.map((elem) => (
-                          <SoftBox
-                          key={elem?.id}
-                        >
-                          <Box 
-                          sx={{ borderRadius: "8px", width: "100%", height: "80px", margin:'0 10px', display:'flex', alignItems:'center' }}>
-                            <img src={elem?.image} style={{ width: "100%", padding:"0 10px"}} />
-                          </Box>
-                        </SoftBox>
+                          <Box key={elem?.id} sx={{margin:"auto"}}>
+                            <StyleSoftBox frame={ele.frame} sx={{display: "flex",
+                              alignItems: "center",
+                              margin: "0 10px",
+                              justifyContent:'center',width:"75%", border:'none'}}>
+                              <img src={elem?.image} style={{ width: "100%" }} />
+                            </StyleSoftBox>
+                            {/* <SoftTypography component="div" sx={{ fontSize: "12px" }}>
+                              {elem?.name}
+                            </SoftTypography> */}
+                        </Box>
+                        //   <SoftBox
+                        //   key={elem?.id}
+                        // >
+                        //   <Box 
+                        //   sx={{ borderRadius: "8px", width: "100%", height: "80px", margin:'0 10px', display:'flex', alignItems:'center' }}>
+                        //     <img src={elem?.image} style={{ width: "100%", padding:"0 10px"}} />
+                        //   </Box>
+                        // </SoftBox>
                         ))}
                       </Slider>
                   </SoftBox>
@@ -769,92 +801,109 @@ function index({ absolute, light, isMini }) {
                       <Slider {...settings} slidesToShow={ele?.max_number}>
                         {ele?.items?.map((elem) => (
                           <Box key={elem?.id}>
-                            <SoftBox
-                              sx={{ display: "flex", flexDirection: "row", alignItems: "center", margin:'0 10px' }}
-                            >
-                              <SoftBox
-                                sx={{
-                                  borderRadius: "8px",
-                                  border: "1px solid #D3D3D3",
-                                  // width: "100%",
-                                  padding:'0 10px',
-                                  backgroundColor: "#fff",
-                                  // display: "flex",
-                                  // flexDirection: "column",
-                                }}
-                              >
-                                <SoftBox
-                                  sx={{
-                                    display: "flex",
-                                    justifyContent: "space-around",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  <SoftBox
-                                    sx={{
-                                      border: "1px solid #8150A0",
-                                      borderRadius: "24px",
-                                      display: "Flex",
-                                      alignItems: "center",
-                                      justifyContent: "space-evenly",
-                                      width: "40px",
-                                      height: "10px",
-                                    }}
-                                  >
-                                    <StartIcon />
-                                    <SoftTypography sx={{ fontSize: "8px" }}>4.6</SoftTypography>
-                                    <SoftTypography sx={{ fontSize: "8px", color: "gray" }}>
-                                      (23)
-                                    </SoftTypography>
-                                  </SoftBox>
-                                  <SoftBox>
-                                    <HeartIcon />
-                                  </SoftBox>
-                                </SoftBox>
-                                <SoftBox
-                                  sx={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                  }}
-                                >
-                                  <SoftTypography
-                                    component={"img"}
-                                    src={imageProduct}
-                                    sx={{ width: "50%", height: "50%" }}
-                                  />
-                                </SoftBox>
-                                <SoftBox
-                                  sx={{
-                                    display: "flex",
-                                    justifyContent: "flex-start",
-                                    flexDirection: "column",
-                                    padding: "10px",
-                                  }}
-                                >
-                                  <SoftTypography sx={{ fontSize: "8px", color: "gray" }}>
-                                    {" "}
-                                    Sports shoes
-                                  </SoftTypography>
-                                  <SoftTypography sx={{ fontSize: "8px" }}>
-                                    {" "}
-                                    Adidas running sn..
-                                  </SoftTypography>
-                                  <SoftTypography
-                                    sx={{
-                                      fontSize: "8px",
-                                      color: (theme) => theme.palette.error.main,
-                                    }}
-                                  >
-                                    {" "}
-                                    7,000 SAR
-                                  </SoftTypography>
-                                </SoftBox>
-                              </SoftBox>
-                              <SoftBox sx={{ borderRadius: "8px", width: "50%", height: "80px", display:'flex', alignItems:'center', padding:'0 10px' }}>
-                                ...
-                              </SoftBox>
-                            </SoftBox>
-                          </Box>
+                          <SoftBox
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "center",
+                              margin: "0 10px",
+                            }}
+                          >
+                            <StyleSoftBox frame={ele.frame}>
+                              <img src={elem?.image} style={{ width: "100%" }} />
+                            </StyleSoftBox>
+                            <SoftTypography component="div" sx={{ fontSize: "12px" }}>
+                              {elem?.name}
+                            </SoftTypography>
+                          </SoftBox>
+                        </Box>
+                          // <Box key={elem?.id}>
+                          //   <SoftBox
+                          //     sx={{ display: "flex", flexDirection: "row", alignItems: "center", margin:'0 10px' }}
+                          //   >
+                          //     <SoftBox
+                          //       sx={{
+                          //         borderRadius: "8px",
+                          //         border: "1px solid #D3D3D3",
+                          //         // width: "100%",
+                          //         padding:'0 10px',
+                          //         backgroundColor: "#fff",
+                          //         // display: "flex",
+                          //         // flexDirection: "column",
+                          //       }}
+                          //     >
+                          //       <SoftBox
+                          //         sx={{
+                          //           display: "flex",
+                          //           justifyContent: "space-around",
+                          //           alignItems: "center",
+                          //         }}
+                          //       >
+                          //         <SoftBox
+                          //           sx={{
+                          //             border: "1px solid #8150A0",
+                          //             borderRadius: "24px",
+                          //             display: "Flex",
+                          //             alignItems: "center",
+                          //             justifyContent: "space-evenly",
+                          //             width: "40px",
+                          //             height: "10px",
+                          //           }}
+                          //         >
+                          //           <StartIcon />
+                          //           <SoftTypography sx={{ fontSize: "8px" }}>4.6</SoftTypography>
+                          //           <SoftTypography sx={{ fontSize: "8px", color: "gray" }}>
+                          //             (23)
+                          //           </SoftTypography>
+                          //         </SoftBox>
+                          //         <SoftBox>
+                          //           <HeartIcon />
+                          //         </SoftBox>
+                          //       </SoftBox>
+                          //       <SoftBox
+                          //         sx={{
+                          //           display: "flex",
+                          //           justifyContent: "center",
+                          //         }}
+                          //       >
+                          //         <SoftTypography
+                          //           component={"img"}
+                          //           src={imageProduct}
+                          //           sx={{ width: "50%", height: "50%" }}
+                          //         />
+                          //       </SoftBox>
+                          //       <SoftBox
+                          //         sx={{
+                          //           display: "flex",
+                          //           justifyContent: "flex-start",
+                          //           flexDirection: "column",
+                          //           padding: "10px",
+                          //         }}
+                          //       >
+                          //         <SoftTypography sx={{ fontSize: "8px", color: "gray" }}>
+                          //           {" "}
+                          //           Sports shoes
+                          //         </SoftTypography>
+                          //         <SoftTypography sx={{ fontSize: "8px" }}>
+                          //           {" "}
+                          //           Adidas running sn..
+                          //         </SoftTypography>
+                          //         <SoftTypography
+                          //           sx={{
+                          //             fontSize: "8px",
+                          //             color: (theme) => theme.palette.error.main,
+                          //           }}
+                          //         >
+                          //           {" "}
+                          //           7,000 SAR
+                          //         </SoftTypography>
+                          //       </SoftBox>
+                          //     </SoftBox>
+                          //     <SoftBox sx={{ borderRadius: "8px", width: "50%", height: "80px", display:'flex', alignItems:'center', padding:'0 10px' }}>
+                          //       ...
+                          //     </SoftBox>
+                          //   </SoftBox>
+                          // </Box>
                         ))}
                       </Slider>
                   </SoftBox>
