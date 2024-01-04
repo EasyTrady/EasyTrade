@@ -82,7 +82,7 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
     { control: "offer_type_id", value: '', isRequired: false },
     { control: "offer_title", value: '', isRequired: false },
     { control: "offer_start_date", value: '', isRequired: false },
-    { control: "offer_end_date", value: '', isRequired: false },
+    { control: "offer_end_date", value: '', isRequired: true },
     { control: "productX", value: '', isRequired: false },
     { control: "productY", value: '', isRequired: false },
     { control: "products", value: [], isRequired: false },
@@ -109,7 +109,7 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
     // setControl()
    
 }, [state])
-
+console.log(controls)
   function handleSubmit() {
     validate().then((output) => {
       
@@ -119,7 +119,7 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
         [controls.offer_title,state?.dataRow?.offer_title,"offer_title"],
         [controls?.offer_start_date,state?.dataRow?.offer_start_date,"offer_start_date"],
         [controls?.offer_end_date,state?.dataRow?.offer_end_date,"offer_end_date"],
-        [String(controls?.banner),String(state?.dataRow?.banner),"banner"],
+        [controls?.banner?controls?.banner:"",state?.dataRow?.banner?state?.dataRow?.banner:"","banner"],
         [controls?.published_on,state?.dataRow?.published_on,"published_on"],
         [controls?.productX,state?.dataRow?.productX,"productX"],
         [controls?.productY,state?.dataRow?.productY,"productY"],
@@ -147,8 +147,8 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
         let obj = {
           type: controls.offer_type_id,
           offer_title: controls.offer_title,
-          offer_start_date: controls.offer_start_date?.toISOString(),
-          offer_end_date: controls.offer_end_date?.toISOString(),
+          offer_start_date: controls.offer_start_date?.toISOString()?controls.offer_start_date?.toISOString():"",
+          offer_end_date: controls.offer_end_date?.toISOString()?controls.offer_end_date?.toISOString():"",
           banner: controls.banner,
           published_on: controls.published_on,
         };
@@ -329,6 +329,7 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
               </FormControl>
               {/* choose date rang for offter */}
               <Box>
+                
                 <Typography
                   sx={{
                     fontSize: "14px",
@@ -338,6 +339,9 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
                     textAlign: "left",
                     mb:'6px'
                   }}
+                  required={required.includes("offer_start_date")}
+                  error={Boolean(invalid?.offer_start_date)}
+                  helperText={invalid?.offer_start_date}
                 >
                   Start date*
                 </Typography>
@@ -390,6 +394,9 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
                 label="Choose offer type*"
                 onOpen={getOfferTypes}
                 renderValue={(selected) => {
+                  if(offerstypes.length==0){
+                    getOfferTypes()
+                  }
                   return offerstypes?.find((offer) => offer.id === selected)?.name
                 }}
                 value={controls.offer_type_id}
@@ -445,6 +452,59 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
          value={controls.productX}
          onChange={(e)=>setControl('productX',e.target.value)}
          />
+          <InputLabel htmlFor="outlined-adornment-email-register" sx={{  fontSize: "14px" }}>{t("discount")}</InputLabel>
+
+<SoftInput
+                      id="outlined-adornment-password"
+                      type={'text'}
+                       icon ={{ component: <KeyboardArrowDownIcon />, direction: "right" }}
+
+                      value={controls?.discount}
+                      sx={{ ".MuiInputBase-root": { overflow: "hidden !important", padding: "0px !important",border:"unset" } }}
+                      onChange={(e) => {
+                          let tester = /^(?:\d+|)$/
+                          
+                          tester.test(e.target.value) && setControl("discount", e.target.value)
+                      }}
+                      InputProps={{
+                          endAdornment:
+                              (
+                                  <SoftInput
+                                      select
+                                      value={controls?.is_percentage_discount?"%":"$"}
+                                       sx={{ ".MuiInputBase-root": { border: "unset" } ,width:"10% !important"}}
+                                      onChange={(e) =>{setControl("is_percentage_discount", e.target.value == "%" ? true : false)}}
+                                      required={required.includes("is_percentage_discount")}
+                                      error={Boolean(invalid?.is_percentage_discount)}
+                                      helperText={invalid?.is_percentage_discount}
+                                      SelectProps={{
+                                          defaultValue: "",
+                                          displayEmpty: true,
+                                          renderValue: (selected) => {
+                                              if (!Boolean(selected)) {
+                                                  return (
+                                                      "%"
+                                                  );
+                                              } else {
+
+                                                  return selected;
+                                              }
+                                          },
+                                          MenuProps: {
+                                              PaperProps: {
+                                                  sx: {
+                                                      maxHeight: "200px",
+                                                      overflowY: "auto",
+                                                      backgroundColor: "white !important"
+                                                  },
+                                              },
+                                          },
+                                      }}
+
+                                  >
+                                      {["%", "$"]?.map((ele, index) => <MenuItem value={ele} key={index}>{ele}</MenuItem>)}
+                                  </SoftInput>)
+                      }} />
         <OfferBox 
         select
         title='Product Y'
@@ -524,13 +584,13 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
                                                 {["%", "$"]?.map((ele, index) => <MenuItem value={ele} key={index}>{ele}</MenuItem>)}
                                             </SoftInput>)
                                 }} />
-          {/* <SelectValuePrecentage
+           {/* <SelectValuePrecentage
         variant={'outlined'}
         label={'Discount'}
         type={controls.offer_type_id}
         onChange={(e)=>setControl("is_percentage_discount",e.target.value)}
         handleValueChange={(e)=>setControl('discount',e.target.value)}
-        /> */}
+        />  */}
          <InputField
                 variant="outlined"
                 label={"Minimum Price*"}
@@ -575,7 +635,60 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
   <>
 <SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5 }}>
           <AddProductTitle title={offerstypes?.find((offer) => offer.id === controls.offer_type_id)?.name} />
-         
+          <Container>
+          <InputLabel htmlFor="outlined-adornment-email-register" sx={{  fontSize: "14px" }}>{t("discount")}</InputLabel>
+          <SoftInput
+                      id="outlined-adornment-password"
+                      type={'text'}
+                       icon ={{ component: <KeyboardArrowDownIcon />, direction: "right" }}
+
+                      value={controls?.discount}
+                      sx={{ ".MuiInputBase-root": { overflow: "hidden !important", padding: "0px !important",border:"unset" } }}
+                      onChange={(e) => {
+                          let tester = /^(?:\d+|)$/
+                          
+                          tester.test(e.target.value) && setControl("discount", e.target.value)
+                      }}
+                      InputProps={{
+                          endAdornment:
+                              (
+                                  <SoftInput
+                                      select
+                                      value={controls?.is_percentage_discount?"%":"$"}
+                                       sx={{ ".MuiInputBase-root": { border: "unset" } ,width:"10% !important"}}
+                                      onChange={(e) =>{setControl("is_percentage_discount", e.target.value == "%" ? true : false)}}
+                                      required={required.includes("is_percentage_discount")}
+                                      error={Boolean(invalid?.is_percentage_discount)}
+                                      helperText={invalid?.is_percentage_discount}
+                                      SelectProps={{
+                                          defaultValue: "",
+                                          displayEmpty: true,
+                                          renderValue: (selected) => {
+                                              if (!Boolean(selected)) {
+                                                  return (
+                                                      "%"
+                                                  );
+                                              } else {
+
+                                                  return selected;
+                                              }
+                                          },
+                                          MenuProps: {
+                                              PaperProps: {
+                                                  sx: {
+                                                      maxHeight: "200px",
+                                                      overflowY: "auto",
+                                                      backgroundColor: "white !important"
+                                                  },
+                                              },
+                                          },
+                                      }}
+
+                                  >
+                                      {["%", "$"]?.map((ele, index) => <MenuItem value={ele} key={index}>{ele}</MenuItem>)}
+                                  </SoftInput>)
+                      }} />
+                      </Container>
           <OfferBox 
         select
         value={controls.productX}
@@ -614,8 +727,61 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
   <>
 <SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5 }}>
           <AddProductTitle title={offerstypes?.find((offer) => offer.id === controls.offer_type_id)?.name} />
-         
-          <OfferBox 
+          <Container>
+          <InputLabel htmlFor="outlined-adornment-email-register" sx={{  fontSize: "14px" }}>{t("discount")}</InputLabel>
+          <SoftInput
+                      id="outlined-adornment-password"
+                      type={'text'}
+                       icon ={{ component: <KeyboardArrowDownIcon />, direction: "right" }}
+
+                      value={controls?.discount}
+                      sx={{ ".MuiInputBase-root": { overflow: "hidden !important", padding: "0px !important",border:"unset" } }}
+                      onChange={(e) => {
+                          let tester = /^(?:\d+|)$/
+                          
+                          tester.test(e.target.value) && setControl("discount", e.target.value)
+                      }}
+                      InputProps={{
+                          endAdornment:
+                              (
+                                  <SoftInput
+                                      select
+                                      value={controls?.is_percentage_discount?"%":"$"}
+                                       sx={{ ".MuiInputBase-root": { border: "unset" } ,width:"10% !important"}}
+                                      onChange={(e) =>{setControl("is_percentage_discount", e.target.value == "%" ? true : false)}}
+                                      required={required.includes("is_percentage_discount")}
+                                      error={Boolean(invalid?.is_percentage_discount)}
+                                      helperText={invalid?.is_percentage_discount}
+                                      SelectProps={{
+                                          defaultValue: "",
+                                          displayEmpty: true,
+                                          renderValue: (selected) => {
+                                              if (!Boolean(selected)) {
+                                                  return (
+                                                      "%"
+                                                  );
+                                              } else {
+
+                                                  return selected;
+                                              }
+                                          },
+                                          MenuProps: {
+                                              PaperProps: {
+                                                  sx: {
+                                                      maxHeight: "200px",
+                                                      overflowY: "auto",
+                                                      backgroundColor: "white !important"
+                                                  },
+                                              },
+                                          },
+                                      }}
+
+                                  >
+                                      {["%", "$"]?.map((ele, index) => <MenuItem value={ele} key={index}>{ele}</MenuItem>)}
+                                  </SoftInput>)
+                      }} />
+                      </Container>
+           <OfferBox 
         muliple
         value={controls.products}
          onChange={(e)=>setControl('products',e.target.value)}
@@ -623,8 +789,8 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
          typeChange={(e)=>setControl('is_percentage_discount',e.target.value)}
          handleValueChange={(e)=>setControl('discount',e.target.value)} 
         discount
-        />
-        {/* <Container sx={{pb:"24px"}}>
+        /> 
+         <Container sx={{pb:"24px"}}>
          <InputField
                 variant="outlined"
                 label={"Minimum Quantity*"}
@@ -637,7 +803,7 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
                 sx={{ width: "100%" ,}}
               />
               </Container>
-            */}
+          
             </SoftBox>
 
 <Box sx={{mt:'20px'}}>
@@ -654,7 +820,60 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
   <>
 <SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5 }}>
           <AddProductTitle title={offerstypes?.find((offer) => offer.id === controls.offer_type_id)?.name} />
-         
+          <Container>
+          <InputLabel htmlFor="outlined-adornment-email-register" sx={{  fontSize: "14px" }}>{t("discount")}</InputLabel>
+          <SoftInput
+                      id="outlined-adornment-password"
+                      type={'text'}
+                       icon ={{ component: <KeyboardArrowDownIcon />, direction: "right" }}
+
+                      value={controls?.discount}
+                      sx={{ ".MuiInputBase-root": { overflow: "hidden !important", padding: "0px !important",border:"unset" } }}
+                      onChange={(e) => {
+                          let tester = /^(?:\d+|)$/
+                          
+                          tester.test(e.target.value) && setControl("discount", e.target.value)
+                      }}
+                      InputProps={{
+                          endAdornment:
+                              (
+                                  <SoftInput
+                                      select
+                                      value={controls?.is_percentage_discount?"%":"$"}
+                                       sx={{ ".MuiInputBase-root": { border: "unset" } ,width:"10% !important"}}
+                                      onChange={(e) =>{setControl("is_percentage_discount", e.target.value == "%" ? true : false)}}
+                                      required={required.includes("is_percentage_discount")}
+                                      error={Boolean(invalid?.is_percentage_discount)}
+                                      helperText={invalid?.is_percentage_discount}
+                                      SelectProps={{
+                                          defaultValue: "",
+                                          displayEmpty: true,
+                                          renderValue: (selected) => {
+                                              if (!Boolean(selected)) {
+                                                  return (
+                                                      "%"
+                                                  );
+                                              } else {
+
+                                                  return selected;
+                                              }
+                                          },
+                                          MenuProps: {
+                                              PaperProps: {
+                                                  sx: {
+                                                      maxHeight: "200px",
+                                                      overflowY: "auto",
+                                                      backgroundColor: "white !important"
+                                                  },
+                                              },
+                                          },
+                                      }}
+
+                                  >
+                                      {["%", "$"]?.map((ele, index) => <MenuItem value={ele} key={index}>{ele}</MenuItem>)}
+                                  </SoftInput>)
+                      }} />
+                      </Container>
           <OfferBoxCategory 
         
         value={controls.category}

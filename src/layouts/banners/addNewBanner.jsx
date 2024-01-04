@@ -40,19 +40,24 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
   const location = useLocation();
   // const location = useLocation();
   const { state } = location;
-  const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
+  const [{ controls, invalid, required }, { setControl, resetControls, validate,setInvalid }] = useControls([
     { control: "id", value: '', isRequired: false },
 
     { control: "banner_type", value: '', isRequired: false },
    
-    { control: "alloffers", value: true, isRequired: false },
+    { control: "alloffers", value: false, isRequired: false },
+    { control: "type", value: "", isRequired: false },
+
     { control: "is_rectangular", value: true, isRequired: false },
 
     
     { control: "object_id", value: '', isRequired: false },
     { control: "banner", value: '', isRequired: false },
     { control: "is_percentage_discount", value: '', isRequired: false },
-    { control: "url", value: '', isRequired: false },
+    { control: "url", value: '', isRequired: false,validations:{
+      test:/^(https?|ftp):\/\/[^\s\/$.?#].[^\s]*$/,
+      message:"not right url"
+    } },
     { control: "image", value: "", isRequired: false },
     { control: "published_on", value: '', isRequired: false },
     // { control: "pages", value: '', isRequired: false },
@@ -94,6 +99,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
   const getOfferTypes = () => {
 
     OffersTypesGetRequest({
+      params:{type:controls?.type},
       onSuccess: (res) => {
 
         dispatch({ type: "offerstypes/set", payload: res?.data });
@@ -136,7 +142,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
           obj: result.array,
           output: "formData",
         }),onSuccess:(res)=>{
-          dispatch({ type: "banners/patchItem", payload: { id: data?.id,item:res.data } })
+          dispatch({ type: "banners/patchItem", payload: { id: controls?.id,item:res.data } })
       navigate(`/${sub_domain}/dashboard/banners`)
 
         }
@@ -158,9 +164,9 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
         if (controls.banner_type === 2) {
           obj.category_products = controls.object_id
         }
-        if (controls.banner_type === 3) {
-          obj.offer_type_products = controls.object_id
-        }
+        // if (controls.banner_type === 3) {
+        //   obj.offer_type_products = controls.object_id
+        // }
         if (controls.banner_type === 4) {
           obj.link = controls.url
         }
@@ -180,7 +186,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
           }
         }).then((res) => {
           let response = res?.response?.data;
-  
+          console.log(response)
           // const responseBody = filter({
           //   obj: {
           //     name: response?.name?.join(""),
@@ -190,7 +196,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
           //   output: "object",
           // });
   
-          // setInvalid(responseBody);
+          setInvalid(response);
         });
       }
   
@@ -219,18 +225,18 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
       <DashboardNavbar />
       <Container sx={{ p: 2 }}>
         <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-          <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+          <Breadcrumbs icon="home" title={"Add New Banner"} route={route} light={light} />
         </SoftBox>
         <Grid item>
           <Grid container spacing={3}>
-            <Grid item md={6}>
+            <Grid item md={12}xl={8}lg={12} sm={12}>
               <BannerShape
                 value={controls.image}
                 onChange={(e) => setControl('image', e)}
                 is_rectangular={state?.dataRow?state?.dataRow.is_rectangular:null}
               />
             </Grid>
-            <Grid item md={6}>
+            <Grid item md={12}xl={4}lg={12}sm={12}>
               <SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5, py: '24px', height: 'fit-content' }} >
                 <Container sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <FormControl>
@@ -354,6 +360,10 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
                         isPending={OffersTypesGetResponce.isPending}
                         onOpen={getOfferTypes}
                         renderValue={(selected) => {
+                          if(offerstypes.length==0){
+                            getOfferTypes()
+                          }
+                         
                           return offerstypes?.find((offer) => offer.id === selected)?.name
                         }}
                         value={controls.object_id}
@@ -362,7 +372,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
                         textHelper={controls.object_id}
                         error={Boolean(invalid.object_id)}
                         helperText={invalid.object_id}
-                        disabled={Boolean(controls.alloffers)==false}
+                        
                         sx={{ width: "100%", fontSize: "14px", background: "#fff" }}
                       >
                         {offerstypes?.map((offer, index) => (
@@ -393,12 +403,12 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
                           renderValue={(selected) => {
                             return offerstypes?.find((offer) => offer.id === selected)?.name
                           }}
-                          value={controls.object_id}
-                          onChange={(e) => setControl("object_id", e.target.value)}
-                          required={required.includes("object_id")}
-                          textHelper={controls.object_id}
-                          error={Boolean(invalid.object_id)}
-                          helperText={invalid.object_id}
+                          value={controls.type}
+                          onChange={(e) => setControl("type", e.target.value)}
+                          required={required.includes("type")}
+                          textHelper={controls.type}
+                          error={Boolean(invalid.type)}
+                          helperText={invalid.type}
                           disabled={Boolean(controls.alloffers)==false}
                           sx={{ width: "100%", fontSize: "14px", background: "#fff" }}
                         >
@@ -421,8 +431,8 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
                       value={controls.url}
                       onChange={(e) => setControl("url", e.target.value)}
                       required={required.includes("url")}
-                      error={Boolean(invalid.url)}
-                      helperText={invalid.url}
+                      error={Boolean(invalid.link)}
+                      helperText={invalid.link}
                       sx={{ width: "100%" }}
                     />
                   }

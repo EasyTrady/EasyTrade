@@ -90,6 +90,8 @@ import Price from "layouts/Price/Price";
 import Offers from "layouts/offers/offers";
 import offers from './assets/images/offers.svg'
 import AddNewOffers from "layouts/offers/addNewOffers";
+import ArchiveOffers from "layouts/offers/archiveOffers";
+
 import ViewBanners from "layouts/banners/viewBanners";
 import AddNewBanner from "layouts/banners/addNewBanner";
 import banner from "./assets/images/banner.svg"
@@ -263,6 +265,24 @@ const routes = [
     icon: <img src={offers} size="12px" />,
     noCollapse: false,
     component: <Auth><Offers /></Auth>,
+    permission:["view_productoffer"],
+    // children: [{
+    //   id: "Offers",
+    //   path: `/${sub_domain}/dashboard/offers`,
+    //   title: "offers",
+    //   element: <Auth><Offers /></Auth>,
+    //   type: "item",
+    //   permission:["view_productoffer"],
+    // }
+    // ]
+  }, {
+    type: "collapse",
+    name: "Archive Offers",
+    key: "ArchiveOffers",
+    route: `/${sub_domain}/dashboard/archiveOffer`,
+    icon: <img src={offers} size="12px" />,
+    noCollapse: false,
+    component: <Auth><ArchiveOffers /></Auth>,
     permission:["view_productoffer"],
     // children: [{
     //   id: "Offers",

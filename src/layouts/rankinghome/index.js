@@ -666,7 +666,6 @@ function index({ absolute, light, isMini }) {
             </SoftBox>
             {homeComponent.map((ele) => {
               let component = TypeItem.find((elem) => elem?.id == ele?.content_type);
-              console.log(component);
               if (component?.title == "category" ) {
                 return (
                   <SoftBox key={component?.id} sx={{ padding: "10px", width: "100%" }}>
@@ -1231,7 +1230,7 @@ function index({ absolute, light, isMini }) {
                         getBanners();
                       }
                       return (
-                        <SoftBox sx={{ display: "flex" }}>{selected?.banner_object?.name}</SoftBox>
+                        <SoftBox sx={{ display: "flex" }}>{selected?.banner_type_name}</SoftBox>
                       );
                     }}
                     sx={{ width: "100% !important" }}
@@ -1241,7 +1240,7 @@ function index({ absolute, light, isMini }) {
                   >
                     {banners?.results?.map((product, index) => (
                       <MenuItem key={index} value={product}>
-                        {product?.banner_object?.name}
+                        {product?.banner_type_name}
                       </MenuItem>
                     ))}
                   </SelectField>
@@ -1252,7 +1251,7 @@ function index({ absolute, light, isMini }) {
                         src={controls?.items?.image}
                         style={{ width: "100px", height: "100px" }}
                       />
-                      <DeleteIcon sx={{ width: "20%" }} onClick={() => DeleteComponenet(ele)} />
+                      {/* <DeleteIcon sx={{ width: "20%" }} onClick={() => setControl("items",[])} /> */}
                     </SoftBox>
                   )}
                 </>
@@ -1294,12 +1293,12 @@ function index({ absolute, light, isMini }) {
                             ?.filter((ele) =>
                               selected?.map((ele) => (ele?.id ? ele?.id : ele))?.includes(ele?.id)
                             )
-                            .map((elem) => elem?.banner_object?.name)
+                            .map((elem) => elem?.banner_type_name)
                             ?.join(",")}
                         </SoftBox>
                       );
                     }}
-                    value={controls.items.map((ele) => (ele.id ? ele.id : ele))}
+                    value={controls?.items?.map((ele) => (ele.id ? ele.id : ele))}
                     onChange={(e) => {
                       setControl("items", e.target.value);
                     }}
@@ -1329,7 +1328,7 @@ function index({ absolute, light, isMini }) {
                               ?.filter((ele) =>
                                 selected?.map((ele) => (ele?.id ? ele?.id : ele))?.includes(ele?.id)
                               )
-                              .map((elem) => elem?.banner_object?.name)
+                              .map((elem) => elem?.banner_type_name)
                               ?.join(",")}
                           </SoftBox>
                         );
@@ -1349,7 +1348,7 @@ function index({ absolute, light, isMini }) {
                   >
                     {banners?.results?.map((product, index) => (
                       <MenuItem key={index} value={product?.id}>
-                        {product?.banner_object?.name}
+                        {product?.banner_type_name}
                       </MenuItem>
                     ))}
                   </MultiSelect>
@@ -1391,12 +1390,12 @@ function index({ absolute, light, isMini }) {
                             ?.filter((ele) =>
                               selected?.map((ele) => (ele?.id ? ele?.id : ele))?.includes(ele?.id)
                             )
-                            .map((elem) => elem?.banner_object?.name)
+                            .map((elem) => elem?.banner_type_name)
                             ?.join(",")}
                         </SoftBox>
                       );
                     }}
-                    value={controls.items.map((ele) => (ele.id ? ele.id : ele))}
+                    value={controls?.items?.map((ele) => (ele.id ? ele.id : ele))}
                     onChange={(e) => {
                       setControl("items", e.target.value);
                     }}
@@ -1426,7 +1425,7 @@ function index({ absolute, light, isMini }) {
                               ?.filter((ele) =>
                                 selected?.map((ele) => (ele?.id ? ele?.id : ele))?.includes(ele?.id)
                               )
-                              .map((elem) => elem?.banner_object?.name)
+                              .map((elem) => elem?.banner_type_name)
                               ?.join(",")}
                           </SoftBox>
                         );
@@ -1446,7 +1445,7 @@ function index({ absolute, light, isMini }) {
                   >
                     {banners?.results?.map((product, index) => (
                       <MenuItem key={index} value={product?.id}>
-                        {product?.banner_object?.name}
+                        {product?.banner_type_name}
                       </MenuItem>
                     ))}
                   </MultiSelect>

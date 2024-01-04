@@ -327,10 +327,10 @@ const AddBrandDialog = ({ open, handleClose }) => {
             popularbrand?.results?.filter((brand)=>controls.popular_brands.includes(brand?.id)).map((brand)=>(
             <Grid key={brand?.id} container >
               
-              <Grid md={3} pl={1} sx={{mx:1}}>
+              <Grid md={3} lg={3} pl={1} sx={{mx:1}}>
                 <img src={brand?.image} alt="product" style={{ width: "102px", height: "64px",borderRadius:'4px' }} />
               </Grid>
-              <Grid md={8} sx={{mx:1}}>
+              <Grid md={8} lg={8}sx={{mx:1}}>
                 <Typography
                   sx={{
                     color: " #191B1C",
@@ -353,7 +353,7 @@ color:'#7F7F7F'
                     {brand?.website}
                 </Typography>
               </Grid>
-              <Grid md={1}>
+              <Grid md={1}lg={1}>
                 <Box sx={{display:'flex',justifyContent:'flex-end',pt:1}} onClick={()=>setControl("popular_brands",controls?.popular_brands?.filter((ele)=>ele!=brand?.id))}>
                 <img src={Delete} alt="delete" />
                 </Box>

@@ -24,7 +24,7 @@ export const SWAP = `${BaseUrl}shop/dashboard/home-components/swap/`
 // /products/attributes/15/values/bulkupdate/
 export const SENDEMAILPRODUCT=`${BaseUrl}/shop/dashboard/notifycart/`
 export const EMPLOYEE= `${BaseUrl}shop/dashboard/employees/`
- export const PAGES= `${BaseUrl}shop/pages/`
+ export const PAGES= `${BaseUrl}shop/dashboard/pages/`
  export const VENDER= `${BaseUrl}shop/dashboard/vendors/`
  export const VENDERCATEGORY=`${BaseUrl}shop/shop-categories/`
  export const SHOPCATEGORIES = `${BaseUrl}shop/shop-categories/`
@@ -47,3 +47,4 @@ export const PERMISSIONS=`${BaseUrl}shop/dashboard/permissions/`
 export const YOURSPERMISSIONS=`${BaseUrl}shop/user-permissions/`
 export const BRANDSPOPLIC=`${BaseUrl}shop/dashboard/popular-brands/`
 export const VENDORPERMISSION=`${BaseUrl}shop/dashboard/vendor-permissions/`
+export const DELETEOFFERP=`${BaseUrl}shop/dashboard/deleted-offers/`
