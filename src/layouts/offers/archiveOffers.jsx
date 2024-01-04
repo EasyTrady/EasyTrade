@@ -1,8 +1,9 @@
-/* eslint-disable react/prop-types */
 import { Button, Container, Icon, Stack, Typography,Tooltip,Paper } from "@mui/material";
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import Breadcrumbs from "examples/Breadcrumbs";
+import PropTypes from "prop-types";
+
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
@@ -16,7 +17,7 @@ import { OFFERS ,DELETEOFFERP} from "data/api";
 import DataGridCustom from "components/common/DateGridCustomer";
 import moment from "moment";
 import usePermission from 'utils/usePermission';
-const Offers = ({ absolute, light, isMini }) => {
+const ArchiveOffers = ({ absolute, light, isMini }) => {
   const navigate = useNavigate();
   const dispatch=useDispatch()
   let {isPermitted}=usePermission()
@@ -27,7 +28,7 @@ const Offers = ({ absolute, light, isMini }) => {
   let Token = localStorage.getItem("token");
   const offers = useSelector((state) => state.offers.value);
   const [OffersGetRequest, OffersGetResponce] = useRequest({
-    path: OFFERS,
+    path: DELETEOFFERP,
     method: "get",
     Token: `Token ${Token}`,
   });
@@ -41,8 +42,8 @@ const Offers = ({ absolute, light, isMini }) => {
     });
   };
   const [OffersDeleyeRequest, OffersDeleteResponce] = useRequest({
-    path: OFFERS,
-    method: "DELETE",
+    path: DELETEOFFERP,
+    method: "post",
     Token: `Token ${Token}`,
   });
   const [OffersDeleyePRequest, OffersDeletepResponce] = useRequest({
@@ -54,7 +55,7 @@ const Offers = ({ absolute, light, isMini }) => {
   function onDelete(row) {
    
     OffersDeleyeRequest({
-        id: row,
+        id: row+"/restore",
         onSuccess: () => {
             dispatch({ type: "offers/deleteItem", payload: { id: row } })
         }
@@ -189,49 +190,13 @@ color:row.offer_type_id===1?'#027A48':row.offer_type_id===2?"#7A0243":row.offer_
         <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
           <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
         </SoftBox>
-        <SoftBox
-          mb={{
-            xs: 1,
-            md: 0,
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-          }}
-          sx={{ textAlign: "right" }}
-        >
-          <Button
-            onClick={() => window.print()}
-            sx={{
-              backgroundColor: "white !important",
-              color: "black !important",
-              marginX: "10px",
-              p: 1.5,
-            }}
-          >
-            <LocalPrintshopIcon /> Print
-          </Button>
-         { permissionYour.map((ele)=>ele.codename).includes("add_productoffer")&&<SoftButton
-            variant="gradient"
-            sx={{
-              backgroundColor: (theme) => theme.palette.purple.middle,
-              color: "white !important",
-              "&:hover": {
-                backgroundColor: (theme) => theme.palette.purple.middle,
-              },
-            }}
-            onClick={() => navigate(`/${sub_domain}/dashboard/offers/addnewoffer`)}
-          >
-            <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-            &nbsp;{t("addnewoffer")}
-          </SoftButton>}
-          
-        </SoftBox>
+       
         <DataGridCustom
           rows={offers?.results}
           columns={columns}
           // onDialog={onEdit}
-          onArchive={isPermitted(onDelete,["delete_productoffer"])}
-          // onDelete={isPermitted(onDeletePer,["delete_productoffer"])}
+          onRestore={isPermitted(onDelete,["delete_productoffer"])}
+          onDelete={isPermitted(onDeletePer,["delete_productoffer"])}
           onCopy={() => {}}
           checkboxSelection={true}
           loading={OffersGetResponce.isPending}
@@ -254,4 +219,16 @@ color:row.offer_type_id===1?'#027A48':row.offer_type_id===2?"#7A0243":row.offer_
   );
 };
 
-export default Offers;
+export default ArchiveOffers;
+ArchiveOffers.defaultProps = {
+    absolute: false,
+    light: false,
+    isMini: false,
+  };
+  
+  // Typechecking props for the ArchiveOffers
+  ArchiveOffers.propTypes = {
+    absolute: PropTypes.bool,
+    light: PropTypes.bool,
+    isMini: PropTypes.bool,
+  };
