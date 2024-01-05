@@ -11,7 +11,7 @@ import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles';
 import useControls from 'hooks/useControls';
 import useRequest from 'hooks/useRequest';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useLocation,useNavigate } from 'react-router-dom';
 import filter from 'utils/ClearNull';
@@ -24,6 +24,8 @@ const AddAddtionalPage = ({ absolute, light, isMini }) => {
     let Token = localStorage.getItem("token");
     let { t } = useTranslation("common");
     let navigate=useNavigate()
+    const location = useLocation();
+    const { state } = location;
     const modules = {
         toolbar: [
           [{ font: [] }],
@@ -37,23 +39,52 @@ const AddAddtionalPage = ({ absolute, light, isMini }) => {
           ["clean"],
         ],
       };
-    const [{ controls, invalid, required }, { setControl, resetControls, validate }] = useControls([
+      const [{ controls, invalid, required }, { setControl, resetControls, validate,setInvalid }] = useControls([
         { control: "title", value: '', isRequired: false },
         { control: "english_title", value: '', isRequired: false },
         { control: "type", value: '', isRequired: false },
         { control: "size_guide", value: '', isRequired: false },
         { control: "description", value: '', isRequired: false },
       ])
-      const pageTypes=[{id:1,title:"general"},{id:2,title:"Privacy policy"},{id:3,title:"About us"},{id:4,title:"Size guide"}]
+      const pageTypes=[{id:1,title:"general"},{id:2,title:"terms of use"},{id:3,title:"terms of exchange and return"},{id:4,title:"Size guide"}]
       const [AddtionPageGetRequest, AddtionPageGetResponce] = useRequest({
         path: VIEWADDTIONPAGE,
         method: "POST",
         Token: `Token ${Token}`,
       });
+      const [patchAddtionPageRequest, patchAddtionPageResponce] = useRequest({
+        path: VIEWADDTIONPAGE,
+        method: "patch",
+        Token: `Token ${Token}`,
+      });
       function handleSubmit() {
         validate().then((output) => {
           console.log(output);
-          if (!output.isOk) return;  
+          if (!output.isOk) return; 
+          if(Boolean(state?.dataRow)){
+            let  result= compare(
+              [
+              [controls.description,state?.dataRow?.description,"description"],
+              [controls.title,state?.dataRow?.title,"title"],
+              [controls.size_guide,state?.dataRow?.size_guide,"size_guide"],
+              [controls.type,state?.dataRow?.type,"type"],
+              [controls.object_id,state?.dataRow?.object_id,"object_id"],
+              [controls.english_title,state?.dataRow?.english_title,"english_title"],
+          ],false
+          )
+          patchAddtionPageRequest({
+            id:controls?.id,
+            body: filter({
+              obj: result.array,
+              output: "object",
+            }),onSuccess:(res)=>{
+              dispatch({ type: "banners/patchItem", payload: { id: controls?.id,item:res.data } })
+          navigate(`/${sub_domain}/dashboard/additionalpage`)
+            }
+          })
+         
+          console.log(result)
+          } 
           AddtionPageGetRequest({
             body: filter({
               obj: {
@@ -84,6 +115,11 @@ const AddAddtionalPage = ({ absolute, light, isMini }) => {
           });
         });
       }
+    useEffect(() => {
+        if (Boolean(state?.dataRow)) {
+            Object.entries(state?.dataRow)?.forEach(([key, value]) => setControl(key, value))
+        }
+    }, [state])
   return (
     <DashboardLayout>
     <DashboardNavbar />
@@ -94,57 +130,72 @@ const AddAddtionalPage = ({ absolute, light, isMini }) => {
       <Box sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", pb: 4 }}>
         <AddProductTitle title={"Basic info"} />
         <Container>
-          <SoftBox
-            py={"20px"}
-            display="flex"
-            flexDirection="column"
-            gap={"20px"}
-            sx={{ width: "100%", height: "100%",position:"relative" }}
-          >
-             <SoftInput
-                            placeholder='Arabic name...'
-                            
-                            sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
-                            value={controls.title}
-                            onChange={(e) => setControl("title", e.target.value)}
-                            required={required.includes("title")}
-                            error={Boolean(invalid?.title)}
-                            helperText={invalid?.title}
-                            disabled={controls.type!=='general'?true:false}
-                        // sx={input}
-                        />
-                        <SoftButton sx={{
-                            width: "max-content",
-                            padding: "5px",
-                            borderRadius: "50%",
-                            minWidth: "max-content",
-                            minHeight: "max-content",
-                            position: "absolute",
-                            left: "90%",
-                            top: "3.5rem",
-                            zIndex: 1
-                        }} onClick={() => {
-                            let copyName = controls.english_title;
-                            setControl("english_title", controls.title)
-                            setControl("title", copyName)
-                        }}>
-                            <TwoArrow color={"#959FA3"} size={"16"}/>
-                           
-                        </SoftButton>
-                        <SoftInput
-                            placeholder='English name'
-                            sx={{ ".MuiInputBase-root": { border: `1px solid !important`, borderColor: (theme) => theme.palette.grey[400] + "!important" }, }}
-                            value={controls.english_title}
-                            onChange={(e) => setControl("english_title", e.target.value)}
-                            required={required.includes("english_title")}
-                            error={Boolean(invalid?.english_title)}
-                            helperText={invalid?.english_title}
-                        // sx={input}
-                        />
-                        
-                        <SelectField
+            <SoftBox
+              py={"20px"}
+              display="flex"
+              flexDirection="column"
+              gap={"20px"}
+              sx={{ width: "100%", height: "100%", position: "relative" }}
+            >
+              <SoftInput
+  placeholder={
+    controls.type === "general"
+      ? "Arabic name..."
+      : controls.type
+      ? `${controls.type}`
+      : "Choose page type first"
+  }
+  sx={{
+    ".MuiInputBase-root": {
+      border: `1px solid !important`,
+      borderColor: (theme) => theme.palette.grey[400] + "!important",
+    },
+  }}
+  value={controls.type !== "general" ? controls.type : controls.title}
+  onChange={(e) => setControl("title", e.target.value)}
+  required={required.includes("title")}
+  error={Boolean(invalid?.title)}
+  helperText={invalid?.title}
+  // disabled={controls.type !== "general" ? true : false}
+/>
+              <SoftButton
+                sx={{
+                  width: "max-content",
+                  padding: "5px",
+                  borderRadius: "50%",
+                  minWidth: "max-content",
+                  minHeight: "max-content",
+                  position: "absolute",
+                  left: "90%",
+                  top: "3.5rem",
+                  zIndex: 1,
+                }}
+                onClick={() => {
+                  let copyName = controls.english_title;
+                  setControl("english_title", controls.title);
+                  setControl("title", copyName);
+                }}
+              >
+                <TwoArrow color={"#959FA3"} size={"16"} />
+              </SoftButton>
+              <SoftInput
+                placeholder="English name"
+                sx={{
+                  ".MuiInputBase-root": {
+                    border: `1px solid !important`,
+                    borderColor: (theme) => theme.palette.grey[400] + "!important",
+                  },
+                }}
+                value={controls.english_title}
+                onChange={(e) => setControl("english_title", e.target.value)}
+                required={required.includes("english_title")}
+                error={Boolean(invalid?.english_title)}
+                helperText={invalid?.english_title}
+              />
+
+              <SelectField
                 variant="outlined"
-                placeholder="General.."
+                placeholder="Choose page type"
                 label="Choose page type*"
                 value={controls.type}
                 onChange={(e) => setControl("type", e.target.value)}
@@ -155,37 +206,35 @@ const AddAddtionalPage = ({ absolute, light, isMini }) => {
                 sx={{ width: "100%", fontSize: "14px", background: "#fff" }}
               >
                 {pageTypes?.map((type, index) => (
-                <MenuItem key={`${type.id} ${index}`} value={type.title}>
-                  {type.title}
-                  
-                </MenuItem>
-              ))}
+                  <MenuItem key={`${type.id} ${index}`} value={type.title}>
+                    {type.title}
+                  </MenuItem>
+                ))}
               </SelectField>
-              <SoftBox sx={{mb:'24px'}}>
-              <Typography
-                sx={{
-                  fontSize: "14px",
-                  fontWeight: 400,
-                  lineHeight: " 20px",
-                  letterSpacing: "0em",
-                  textAlign: "left",
-                }}
-              >
-                Description
-              </Typography>
-              <ReactQuill
-                theme="snow"
-                value={controls.description}
-                onChange={(e) => setControl("description", e)}
-                placeholder="Typing the description of page."
-                onBlur={(e) => validate({ content: e.index })}
-                modules={modules}
-                style={{ height: "218px", }}
-              />
+              <SoftBox sx={{ mb: "24px" }}>
+                <Typography
+                  sx={{
+                    fontSize: "14px",
+                    fontWeight: 400,
+                    lineHeight: " 20px",
+                    letterSpacing: "0em",
+                    textAlign: "left",
+                  }}
+                >
+                  Description
+                </Typography>
+                <ReactQuill
+                  theme="snow"
+                  value={controls.description}
+                  onChange={(e) => setControl("description", e)}
+                  placeholder="Typing the description of the page."
+                  onBlur={(e) => validate({ content: e.index })}
+                  modules={modules}
+                  style={{ height: "218px" }}
+                />
               </SoftBox>
-             
             </SoftBox>
-            </Container>
+          </Container>
             </Box>
             <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: "24px" }}>
       <SoftButton variant="contained" color="white"sx={{mx:"20px", width: {md:"25%",xs:'50px'},}} onClick={() =>{resetControls(); navigate(`/${sub_domain}/dashboard/additionalpage`)}}>

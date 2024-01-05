@@ -779,18 +779,7 @@ function index({ absolute, light, isMini }) {
                               justifyContent:'center',width:"75%", border:'none'}}>
                               <img src={elem?.image} style={{ width: "100%" }} />
                             </StyleSoftBox>
-                            {/* <SoftTypography component="div" sx={{ fontSize: "12px" }}>
-                              {elem?.name}
-                            </SoftTypography> */}
-                        </Box>
-                        //   <SoftBox
-                        //   key={elem?.id}
-                        // >
-                        //   <Box 
-                        //   sx={{ borderRadius: "8px", width: "100%", height: "80px", margin:'0 10px', display:'flex', alignItems:'center' }}>
-                        //     <img src={elem?.image} style={{ width: "100%", padding:"0 10px"}} />
-                        //   </Box>
-                        // </SoftBox>
+                          </Box>
                         ))}
                       </Slider>
                   </SoftBox>

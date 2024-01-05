@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import {  Button, Container, Icon, Stack, Switch, Typography } from '@mui/material'
+import {  Button, Container, Icon, IconButton, Stack, Switch, Typography } from '@mui/material'
 import SoftBox from 'components/SoftBox'
 import SoftButton from 'components/SoftButton'
 import DataGridCustom from 'components/common/DateGridCustomer'
@@ -15,13 +15,17 @@ import useRequest from 'hooks/useRequest'
 import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import Breadcrumbs from 'examples/Breadcrumbs'
 import moment from 'moment'
+import EditIcon from 'examples/Icons/EditIcon'
+import DeleteIcon from 'examples/Icons/DeleteIcon'
+import usePermission from 'utils/usePermission'
 const ViewAddtionalPage = ({ absolute, light, isMini }) => {
     const navigate = useNavigate();
+    let {isPermitted}=usePermission()
     const dispatch=useDispatch()
     const route = useLocation().pathname.split("/").slice(1);
     const sub_domain = localStorage.getItem("sub_domain");
     let { t } = useTranslation("common");
-  
+    let permissionYour = useSelector((state) => state.permissionYour.value)
     let Token = localStorage.getItem("token");
     const banners = useSelector((state) => state.banners.value);
   const [AddtionPageGetRequest, AddtionPageGetResponce] = useRequest({
@@ -29,7 +33,11 @@ const ViewAddtionalPage = ({ absolute, light, isMini }) => {
     method: "get",
     Token: `Token ${Token}`,
   });
-
+  const [AddtionPageDeleteRequest, AddtionPageDeleteResponce] = useRequest({
+    path: VIEWADDTIONPAGE,
+    method: "DELETE",
+    Token: `Token ${Token}`,
+  });
   const getAddtionPage = () => {
     AddtionPageGetRequest({
       onSuccess: (res) => {
@@ -52,6 +60,23 @@ const ViewAddtionalPage = ({ absolute, light, isMini }) => {
 //         }
 //     })
   //}
+
+  function onEdit(row, newRow) {
+    navigate(`/${sub_domain}/dashboard/additionalpage/addadditionalpage`, {
+      state: { id: row.id, dataRow: row },
+    });
+  }
+
+  function onDelete(row) {
+  
+    AddtionPageDeleteRequest({
+        id: row,
+        onSuccess: () => {
+            dispatch({ type: "banners/deleteItem", payload: { id: row } })
+        }
+    })
+  }
+
   const  columns = [
     {
       field: 'title',
@@ -99,6 +124,30 @@ const ViewAddtionalPage = ({ absolute, light, isMini }) => {
             />
     
     },
+  //   {
+  //     field: 'actions',
+  //     headerName: 'Actions',
+  //     type: 'text',
+  //     width: 200,
+  //     align: 'center',
+  //     headerAlign: 'center',
+  //     renderCell: (params) => (
+  //       <>
+  //         {/* <Switch
+  //           checked={params.row.is_public}
+  //           onChange={() => patchStatus(params.row)}
+  //         /> */}
+  //         <IconButton checked={params.row.is_public}
+  //           onClick={() => onEdit(params.row.id, params.row)}>
+  //           <EditIcon fontSize="small" />
+  //         </IconButton>
+  //         <IconButton checked={params.row.is_public}
+  //           onChange={() => patchStatus(params.row)}>
+  //           <DeleteIcon fontSize="small" />
+  //         </IconButton>
+  //       </>
+  //     ),
+  // },
     //  {
     //   field: 'status',
     //   headerName: 'status',
@@ -117,9 +166,9 @@ const ViewAddtionalPage = ({ absolute, light, isMini }) => {
     // },
     
   ]
-  useEffect(()=>{
-    getAddtionPage()
-  },[])
+  useEffect(() => {
+    getAddtionPage();
+}, []);
   return (
     <DashboardLayout>
     <DashboardNavbar />
@@ -164,27 +213,23 @@ const ViewAddtionalPage = ({ absolute, light, isMini }) => {
         </SoftButton>
       </SoftBox>
       <DataGridCustom
-        rows={banners?.results}
-        columns={columns}
-        loading={AddtionPageGetResponce.pinding}
-        // onEdit={()=>{}}
-        // onDelete={()=>{}}
-        // onCopy={() => {}}
-        checkboxSelection={true}
-        onRowClick={(e, row) => {
-         
-          //  setClick({ ...e.id });
-        }}
-        notProduct={false}
-      //   rowsPerPageOptions={[5, 10, 15, 20]}
-      //   onPaginationModelChange={setPaginationModel}
-        rowHeight={72}
-        getRowSpacing={4}
-        sx={{
-          backgroundColor: "white !important",
-          " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" },
-        }}
-      />
+                rows={banners?.results}
+                columns={columns}
+                loading={AddtionPageGetResponce.pinding}
+                checkboxSelection={true}
+                onRowClick={(e, row) => {
+                    //  setClick({ ...e.id });
+                }}
+                onDialog={isPermitted(onEdit,["change_banner"])}
+                onDelete={isPermitted(onDelete,["delete_banner"])}
+                notProduct={false}
+                rowHeight={72}
+                getRowSpacing={4}
+                sx={{
+                    backgroundColor: "white !important",
+                    " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" },
+                }}
+            />
     </Container>
     {/* {BannerDeleteResponce.failAlert}
     {BannerDeleteResponce.successAlert} */}
