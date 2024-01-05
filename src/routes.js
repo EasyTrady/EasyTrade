@@ -112,38 +112,38 @@ import AddVendor from "layouts/vendor/addVendor";
 const sub_domain = localStorage.getItem('sub_domain')
 
 const routes = [
-  {
-    type:'title',
-    name:'Home',
-    key:'home',
-    route:`/${sub_domain}/t1/`,
-    component:<HomeSections/>,
-    noCollapse:false,
-  },
-  {
-    type:'title',
-    name:'Home',
-    key:'home',
-    route:`*`,
-    component:<HomeSections/>,
-    noCollapse:false,
-  },
-  {
-    type:'title',
-    name:'ContactUS',
-    key:'contactus',
-    route:'/contactus',
-    component:<ContactUs/>,
-    noCollapse:false,
-  },
-  {
-    type:'title',
-    name:'Price',
-    key:'price',
-    route:'/price',
-    component:<Price/>,
-    noCollapse:false,
-  },
+  // {
+  //   type:'title',
+  //   name:'Home',
+  //   key:'home',
+  //   route:`/${sub_domain}/t1/`,
+  //   component:<HomeSections/>,
+  //   noCollapse:false,
+  // },
+  // {
+  //   type:'title',
+  //   name:'Home',
+  //   key:'home',
+  //   route:`*`,
+  //   component:<HomeSections/>,
+  //   noCollapse:false,
+  // },
+  // {
+  //   type:'title',
+  //   name:'ContactUS',
+  //   key:'contactus',
+  //   route:'/contactus',
+  //   component:<ContactUs/>,
+  //   noCollapse:false,
+  // },
+  // {
+  //   type:'title',
+  //   name:'Price',
+  //   key:'price',
+  //   route:'/price',
+  //   component:<Price/>,
+  //   noCollapse:false,
+  // },
   {
     type: "title",
     name: "Dashboard",
@@ -693,6 +693,15 @@ const routes = [
     type: "title",
     key: "sign-in",
     route: "/authentication/sign-in",
+    icon: <Document size="12px" />,
+
+    component:<SignIn />,
+
+    noCollapse: false,
+  },{
+    type: "title",
+    key: "sign-in",
+    route: "*",
     icon: <Document size="12px" />,
 
     component:<SignIn />,

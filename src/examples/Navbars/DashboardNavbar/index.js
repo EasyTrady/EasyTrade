@@ -80,7 +80,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
   });
   let [ResDeviceRequest,ResDeviceResponse]=useRequest({
-    path:DEVICESTOKEN,method:"delete",Token: `Token ${Token}`,
+    path:DEVICESTOKEN,method:"delete",Token: `Token ${Token}`
   })
  
   function getNavigations(){
@@ -116,9 +116,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
     // Remove event listener on cleanup
     return () => window.removeEventListener("scroll", handleTransparentNavbar);
   }, [dispatch, fixedNavbar]);
-function deleteDevice(){
+ function deleteDevice(){
+  let tokenDevice=JSON?.parse(localStorage?.getItem('divceToken'))?.token
   ResDeviceRequest({
-    registeration_id:JSON.parse(localStorage.getItem('divceToken'))?.token,
+    registration_id:tokenDevice+"/",
     onSuccess:(res)=>{
       localStorage.setItem('divceToken',{status:false,token:""});
     }

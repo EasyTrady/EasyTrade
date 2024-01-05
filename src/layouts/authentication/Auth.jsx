@@ -3,14 +3,15 @@ import { useEffect } from 'react'
 import { Navigate ,useNavigate} from 'react-router'
 import PropTypes from "prop-types";
 function Auth({children}) {
-    const currentTime = new Date().getTime();
+    const currentTime = new Date()
+    let tomorrow = new Date();
+tomorrow.setDate(currentTime.getDate()+1)
     const tokenTimestamp = localStorage.getItem('tokenTimestamp');
    let navigate=useNavigate()
   
     useEffect(()=>{
          // 24 hours in milliseconds
-         
-        if (currentTime  > tokenTimestamp) {
+        if (currentTime  == tokenTimestamp) {
             // Token has expired, delete it from localStorage
             localStorage.removeItem('token');
             localStorage.removeItem('tokenTimestamp');

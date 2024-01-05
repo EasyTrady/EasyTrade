@@ -49,7 +49,7 @@ import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import { setDirection } from "context";
 import { useEffect } from "react";
 import { useSoftUIController } from "context";
-import { PROFILE, STATISTICSTOTAL } from "data/api";
+import { PROFILE, STATISTICSTOTAL,DEVICESTOKEN } from "data/api";
 import { useDispatch, useSelector } from "react-redux";
 import useRequest from "hooks/useRequest";
 import CardIcon from "examples/Icons/CardIcon";
@@ -89,6 +89,21 @@ function Dashboard() {
     method: "get",
     Token: `Token ${Token}`,
   });
+  let [ResDeviceRequest,ResDeviceResponse]=useRequest({
+    path:DEVICESTOKEN,method:"post",Token: `Token ${Token}`
+  })
+ async function RecDevice(){
+    if(JSON?.parse(localStorage?.getItem("divceToken"))?.token){
+      ResDeviceRequest({
+        body:{
+          registration_id:JSON?.parse(localStorage?.getItem("divceToken"))?.token,
+          type:"web"
+        },onSuccess:(res)=>{
+          console.log(res.data)
+        }
+      })
+    }
+  }
   let { gradientLineChartData, amountLineChartData } = GradientLine()
   useEffect(() => {
     profileRequest({
@@ -108,6 +123,13 @@ function Dashboard() {
     })
     // return () => setDirection(dispatch, "ltr");
   }, []);
+  useEffect(()=>{
+    
+    // console.log( await gettoken())
+    if(JSON.parse(localStorage.getItem("divceToken"))?.token){
+      RecDevice()
+    }
+  },[])
   const [totalRequest, gettotalResponce] =
     useRequest({
       path: STATISTICSTOTAL,

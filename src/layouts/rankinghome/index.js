@@ -52,6 +52,7 @@ import {
   CATEGORY,
   SWAP,
   SWAPCOMPONENT,
+  DEVICESTOKEN
 } from "data/api";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -134,7 +135,11 @@ function index({ absolute, light, isMini }) {
       {
         control: "items",
         value: [],
-        isRequired: true,
+        isRequired: false,
+      }, {
+        control: "product_categories",
+        value: [],
+        isRequired: false,
       },
       {
         control: "display",
@@ -354,8 +359,8 @@ function index({ absolute, light, isMini }) {
               ? {
                   title: controls?.title,
                   content_type: controls?.content_type?.id,
-                  items: controls?.items,
-
+                  product_categories: controls?.items,
+                  // items:controls?.items,
                   max_number: controls?.max_number,
 
                   position: controls?.position ? controls?.position : "fixed",
@@ -383,13 +388,11 @@ function index({ absolute, light, isMini }) {
             ? [controls[key]?.id, value, key]
             : key == "items"
             ? [controls[key], value, key]
-            : [controls[key], String(value), key]
+            :key=="category_level"? [Number(controls[key]), Number(value), key]:[controls[key], String(value), key]
         ),
         false
       );
-        console.log(result.array,Edit)
-      // console.log(controls.items.filter((ele)=>!Boolean(controls.items.find((elem)=>elem.id==ele.id))))
-      // console.log(compare(Object.entries(Edit).map(([key,value])=>key=="content_type"?[controls[key].id,value,key]:key=="items"?[controls[key],value,key]:[controls[key],String(value),key])),"sort_number")
+    //  console.log(Edit)
       if (result.nochange) {
         if (controls?.content_type?.title == "shopbrand") {
           delete result.array.sort_number;
@@ -407,7 +410,6 @@ function index({ absolute, light, isMini }) {
           delete result.array.sort_number;
           delete result.array.display;
           delete result.array.visible;
-
           delete result.array.overflow_type;
         } else if (controls?.content_type?.title == "specialcategory") {
           delete result.array.sort_number;
@@ -417,6 +419,7 @@ function index({ absolute, light, isMini }) {
           delete result.array.visible;
           delete result.array.display;
           delete result.array.overflow_type;
+          delete result.array.id;
         }
 
         patchcontentRequest({
@@ -1609,7 +1612,7 @@ function index({ absolute, light, isMini }) {
                   {t("Circle")}
                 </SoftButton>
               </SoftBox>
-              <Typography variant={"label"} sx={{ display: "block", fontSize: "14px" }}>
+              {/* <Typography variant={"label"} sx={{ display: "block", fontSize: "14px" }}>
                 {t("choose category")}
               </Typography>
               <MultiSelect
@@ -1640,6 +1643,8 @@ function index({ absolute, light, isMini }) {
                 value={controls.items.map((ele) => (ele.id ? ele.id : ele))}
                 onChange={(e) => {
                   setControl("items", e.target.value);
+                  setControl("product_categories", e.target.value);
+
                 }}
                 required={required.includes("items")}
                 textHelper={controls.items}
@@ -1693,7 +1698,7 @@ function index({ absolute, light, isMini }) {
                     {product?.name}
                   </MenuItem>
                 ))}
-              </MultiSelect>
+              </MultiSelect> */}
             </>
           )}
         </Form>

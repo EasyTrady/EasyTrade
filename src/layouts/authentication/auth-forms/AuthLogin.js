@@ -50,7 +50,8 @@ const FirebaseLogin = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
   let Token=localStorage.getItem('token')
-
+  let tomorrow = new Date();
+          tomorrow.setDate(tomorrow.getDate()+1)
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   const customization = useSelector((state) => state.customization);
   const [checked, setChecked] = useState(true);
@@ -69,32 +70,14 @@ const FirebaseLogin = ({ ...others }) => {
   let [signInRequest,signInResponse]=useRequest({
     path:SIGNIN,method:"post"
   })
-  let [ResDeviceRequest,ResDeviceResponse]=useRequest({
-    path:DEVICESTOKEN,method:"post",Token: `Token ${Token}`
-  })
+
   let [ShopInfoRequest,ShopInfoResponse]=useRequest({
     path:PROFILE,method:"get",Token:`Token ${Token}`
   })
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-useEffect(()=>{
-    
-  // console.log( await gettoken())
-return  async()=>{
-  if(JSON.parse(localStorage.getItem("divceToken"))?.token){
-    ResDeviceRequest({
-      body:{
-        registeration_id:JSON.parse(localStorage.getItem("divceToken"))?.token,
-        type:"web"
-      },onSuccess:(res)=>{
-        console.log(res.data)
-      }
-    })
-  }
- 
-}
-},[JSON.parse(localStorage.getItem("divceToken"))?.token])
+
  
   return (
     <>
@@ -109,13 +92,13 @@ return  async()=>{
           password: Yup.string().max(255).required('Password is required')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-         
+        
             signInRequest({
               body:values,
               onSuccess:async(res)=>{
                 localStorage.setItem('token', res.data.token);
                 // console.log(res.data.expiry,new Date(),new Date(res.data.expiry).getHours())
-                localStorage.setItem('tokenTimestamp', new Date(res.data.expiry).getTime());
+                localStorage.setItem('tokenTimestamp', tomorrow);
                 // if (Boolean(sub_domain)) {
                  
 
