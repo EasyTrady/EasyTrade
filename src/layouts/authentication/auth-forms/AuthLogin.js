@@ -70,7 +70,7 @@ const FirebaseLogin = ({ ...others }) => {
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
-<<<<<<< HEAD
+
   let [signInRequest,signInResponse]=useRequest({
     path:SIGNIN,method:"post"
   })
@@ -83,42 +83,7 @@ const FirebaseLogin = ({ ...others }) => {
   };
 
  
-=======
-  let [signInRequest, signInResponse] = useRequest({
-    path: SIGNIN,
-    method: "post",
-  });
-  let [ResDeviceRequest, ResDeviceResponse] = useRequest({
-    path: DEVICESTOKEN,
-    method: "post",
-    Token: `Token ${Token}`,
-  });
-  let [ShopInfoRequest, ShopInfoResponse] = useRequest({
-    path: PROFILE,
-    method: "get",
-    Token: `Token ${Token}`,
-  });
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-  useEffect(() => {
-    // console.log( await gettoken())
-    return async () => {
-      if (JSON.parse(localStorage.getItem("divceToken"))?.token) {
-        ResDeviceRequest({
-          body: {
-            registeration_id: JSON.parse(localStorage.getItem("divceToken"))?.token,
-            type: "web",
-          },
-          onSuccess: (res) => {
-            console.log(res.data);
-          },
-        });
-      }
-    };
-  }, [JSON.parse(localStorage.getItem("divceToken"))?.token]);
 
->>>>>>> 729d631bc1fd41730298a89590339074ef8a03b1
   return (
     <>
       <Formik
