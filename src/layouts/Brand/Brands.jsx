@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
-import { Box, Button, Container, Grid, Icon, Skeleton } from '@mui/material'
+import { Box, Button, CircularProgress, Container, Grid, Icon, Skeleton } from '@mui/material'
 import SoftBox from 'components/SoftBox'
 import SoftButton from 'components/SoftButton'
 import DataGridCustom from 'components/common/DateGridCustomer'
 import Breadcrumbs from 'examples/Breadcrumbs'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 import { BRANDS } from 'data/api'
 import useRequest from 'hooks/useRequest'
@@ -25,10 +25,16 @@ const Brands = ({ absolute, light, isMini }) => {
     let { t } = useTranslation("common");
     let Token = localStorage.getItem("token");
     const brands = useSelector((state) => state.brand.value);
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setIsLoading(false);
+    });
   };
 
   const handleClose = () => {
@@ -109,8 +115,18 @@ const Brands = ({ absolute, light, isMini }) => {
           }}
           onClick={handleClickOpen}
         >
-          <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+          {isLoading ? (
+          <>
+          <CircularProgress size={20} color="inherit" />
+          جاري التحميل...
+        </>
+        ) : (
+          <>
+            <Icon sx={{ fontWeight: "bold" }}>add</Icon>
           &nbsp;{t("addnewbrand")}
+          </>
+        )}
+          
         </SoftButton>
       </SoftBox>
 

@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
-import {  Button, Container, Icon, Stack, Typography,Switch } from '@mui/material'
+import {  Button, Container, Icon, Stack, Typography,Switch, CircularProgress } from '@mui/material'
 import SoftBox from 'components/SoftBox'
 import SoftButton from 'components/SoftButton'
 import DataGridCustom from 'components/common/DateGridCustomer'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -51,6 +51,16 @@ const ViewBanners = ({ absolute, light, isMini }) => {
     method: "DELETE",
     Token: `Token ${Token}`,
   });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleAddNewBanner = () => {
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setIsLoading(false);
+      navigate(`/${sub_domain}/dashboard/banners/addnewbanner`);
+    }, 1000);
+  };
   function onDelete(row) {
   
     BannerDeleteRequest({
@@ -184,19 +194,30 @@ color:row?.banner_type===1?'#027A48':row?.banner_type===2?"#7A0243":row?.banner_
             <LocalPrintshopIcon /> Print
           </Button>
           {permissionYour.map((ele)=>ele.codename).includes("add_banner")&&<SoftButton
-            variant="gradient"
-            sx={{
-              backgroundColor: (theme) => theme.palette.purple.middle,
-              color: "white !important",
-              "&:hover": {
-                backgroundColor: (theme) => theme.palette.purple.middle,
-              },
-            }}
-            onClick={() => navigate(`/${sub_domain}/dashboard/banners/addnewbanner`)}
-          >
+        variant="gradient"
+        sx={{
+          backgroundColor: (theme) => theme.palette.purple.middle,
+          color: "white !important",
+          "&:hover": {
+            backgroundColor: (theme) => theme.palette.purple.middle,
+          },
+          width: { md: "25%", xs: "50px" },
+          textTransform: "none",
+        }}
+        onClick={handleAddNewBanner}
+      >
+        {isLoading ? (
+          <>
+          <CircularProgress size={20} color="inherit" />
+          جاري التحميل...
+        </>
+        ) : (
+          <>
             <Icon sx={{ fontWeight: "bold" }}>add</Icon>
             &nbsp;{t("addnewbanner")}
-          </SoftButton>}
+          </>
+        )}
+      </SoftButton>}
           
         </SoftBox>
         <DataGridCustom
