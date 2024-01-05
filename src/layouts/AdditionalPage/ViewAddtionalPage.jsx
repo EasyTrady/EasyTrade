@@ -220,8 +220,8 @@ const ViewAddtionalPage = ({ absolute, light, isMini }) => {
                 onRowClick={(e, row) => {
                     //  setClick({ ...e.id });
                 }}
-                onDialog={isPermitted(onEdit,["change_banner"])}
-                onDelete={isPermitted(onDelete,["delete_banner"])}
+                // onDialog={isPermitted(onEdit,["change_banner"])}
+                // onDelete={isPermitted(onDelete,["delete_banner"])}
                 notProduct={false}
                 rowHeight={72}
                 getRowSpacing={4}
