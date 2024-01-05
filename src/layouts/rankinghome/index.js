@@ -58,6 +58,8 @@ import "slick-carousel/slick/slick-theme.css";
 import { styled } from "@mui/system";
 import Slider from "react-slick";
 import compare from "utils/compare";
+import DateIcon from 'examples/Icons/DateIcon';
+
 import DragerItem from "./DragerItem";
 import image1 from "assets/images/Avatar.png";
 function index({ absolute, light, isMini }) {
@@ -326,6 +328,7 @@ function index({ absolute, light, isMini }) {
     if (!Edit) {
       validate().then((output) => {
         if (!output.isOk) return;
+        
         contentpostRequest({
           body:
             controls?.content_type?.title == "shopbrand"
@@ -384,7 +387,7 @@ function index({ absolute, light, isMini }) {
         ),
         false
       );
-
+        console.log(result.array,Edit)
       // console.log(controls.items.filter((ele)=>!Boolean(controls.items.find((elem)=>elem.id==ele.id))))
       // console.log(compare(Object.entries(Edit).map(([key,value])=>key=="content_type"?[controls[key].id,value,key]:key=="items"?[controls[key],value,key]:[controls[key],String(value),key])),"sort_number")
       if (result.nochange) {
@@ -1037,14 +1040,14 @@ function index({ absolute, light, isMini }) {
                 variant="outlined"
                 onOpen={getBrandItems}
                 placeholder={"Export"}
-                value={controls?.items}
+                value={controls?.items?.map((ele)=>ele.id?ele.id:ele)}
                 multiple
                 onChange={(e) => setControl("items", e.target.value)}
                 renderValue={(selected) => {
                   if (Brands?.results?.length == 0) {
                     getBrandItems();
                   }
-
+                  console.log(selected)
                   return (
                     <SoftBox sx={{ display: "flex" }}>
                       {Brands?.results
@@ -1079,7 +1082,7 @@ function index({ absolute, light, isMini }) {
                 <SoftButton
                   value={t("single")}
                   variant={"outlined"}
-                  onClick={(e) => setControl("display", e.target.value)}
+                  onClick={(e) => {setControl("display", e.target.value);controls.items.length>0?setControl("items",[]):null}}
                   sx={{
                     width: "49%",
                     borderColor:
@@ -1106,7 +1109,7 @@ function index({ absolute, light, isMini }) {
                 <SoftButton
                   value={t("multiple")}
                   variant={"outlined"}
-                  onClick={(e) => setControl("display", e.target.value)}
+                  onClick={(e) =>{ setControl("display", e.target.value)}}
                   sx={{
                     width: "49%",
                     borderColor:
@@ -1198,7 +1201,7 @@ function index({ absolute, light, isMini }) {
                     </SoftButton>
                   </SoftBox>
                 </>
-              ) : (
+              ) : controls?.display == "single" ?(
                 <>
                   <Typography variant={"label"} sx={{ display: "block", fontSize: "14px" }}>
                     {t("brannernumber")}
@@ -1244,18 +1247,20 @@ function index({ absolute, light, isMini }) {
                       </MenuItem>
                     ))}
                   </SelectField>
+                 
                   {Boolean(controls?.items?.image) && (
                     <SoftBox sx={{ display: "flex", justifyContent: "space-around" }}>
                       <SwitchIcon />
+                     
                       <img
                         src={controls?.items?.image}
                         style={{ width: "100px", height: "100px" }}
                       />
-                      {/* <DeleteIcon sx={{ width: "20%" }} onClick={() => setControl("items",[])} /> */}
+                      <DeleteIcon sx={{ width: "20%" }} onClick={()=>setControl("items",[])}/>
                     </SoftBox>
                   )}
                 </>
-              )}
+              ):<></>}
               {controls?.overflow_type == "scroll" && controls?.display == "multiple" ? (
                 <>
                   <Typography variant={"label"} sx={{ display: "block", fontSize: "14px" }}>
@@ -1457,7 +1462,9 @@ function index({ absolute, light, isMini }) {
                 Boolean(controls?.items?.length > 0) && (
                   <SoftBox sx={{ display: "flex", justifyContent: "space-around" }}>
                     {/* <Slider {...settings} slidesToShow={controls?.max_number} > */}
+               
                     {controls?.items?.map((ele) => (
+                      ele.id?
                       <SoftBox key={ele.id} sx={{ position: "relative" }}>
                         <img src={ele?.image} style={{ width: "100px", height: "100px" }} />{" "}
                         <DeleteIcon
@@ -1471,6 +1478,22 @@ function index({ absolute, light, isMini }) {
                             setControl(
                               "items",
                               controls?.items?.filter((elem) => elem.id != ele.id)
+                            )
+                          }
+                        />
+                      </SoftBox>: <SoftBox key={ele.id} sx={{ position: "relative" }}>
+                        <img src={banners?.results?.find((product, index) => (product.id==ele))?.image} style={{ width: "100px", height: "100px" }} />{" "}
+                        <DeleteIcon
+                          sx={{
+                            width: "20%",
+                            position: "absolute",
+                            top: "24%",
+                            left: "40%",
+                          }}
+                          onClick={() =>
+                            setControl(
+                              "items",
+                              controls?.items?.filter((elem) => elem != ele)
                             )
                           }
                         />
@@ -1607,7 +1630,8 @@ function index({ absolute, light, isMini }) {
                 isPending={getcategoryResponce.isPending}
                 onOpen={getCategory}
                 renderValue={(selected) => {
-                  if (categories.length == 0) {
+                  console.log(selected)
+                  if (categories?.results?.length == 0) {
                     getCategory();
                   }
 

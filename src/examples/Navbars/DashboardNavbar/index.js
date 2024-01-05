@@ -61,7 +61,7 @@ import input from "assets/theme/components/form/input";
 import { InputAdornment } from "@mui/material";
 import InputField from "components/common/TextField";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import { NOTIFICATIONS } from "data/api";
+import { NOTIFICATIONS,DEVICESTOKEN } from "data/api";
 import useRequest from "hooks/useRequest";
 import { useDispatch, useSelector } from "react-redux";
 function DashboardNavbar({ absolute, light, isMini }) {
@@ -79,6 +79,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
       Token: `Token ${Token}`,
 
   });
+  let [ResDeviceRequest,ResDeviceResponse]=useRequest({
+    path:DEVICESTOKEN,method:"delete",Token: `Token ${Token}`,
+  })
+ 
   function getNavigations(){
     notificationRequest({
       onSuccess:(res)=>{
@@ -112,7 +116,14 @@ function DashboardNavbar({ absolute, light, isMini }) {
     // Remove event listener on cleanup
     return () => window.removeEventListener("scroll", handleTransparentNavbar);
   }, [dispatch, fixedNavbar]);
-
+function deleteDevice(){
+  ResDeviceRequest({
+    registeration_id:JSON.parse(localStorage.getItem('divceToken'))?.token,
+    onSuccess:(res)=>{
+      localStorage.setItem('divceToken',{status:false,token:""});
+    }
+  })
+}
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => {setOpenMenu(event.currentTarget);getNavigations()};
@@ -214,6 +225,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                         localStorage.removeItem('email')
                         localStorage.removeItem('phone')
                         localStorage.removeItem('sub_domain')
+                        deleteDevice()
                         navigate("/authentication/sign-in")
                       }
                     }}

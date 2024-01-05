@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Box, Grid, MenuItem, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState ,useEffect} from 'react'
 import MultiSelect from './MultiSelect'
 import { useDispatch, useSelector } from 'react-redux'
 import useRequest from 'hooks/useRequest'
@@ -9,6 +9,8 @@ import DeleteOffer from "../../assets/images/DeleteOffer.svg";
 const Bannerbox = ({value,onChange}) => {
     const products=useSelector((state)=>state.products.value)
   const [viewProduct,setViewProduct]=useState()
+  const [Product,setProduct]=useState([])
+
   let Token = localStorage.getItem("token");
   const dispatch=useDispatch()
   const [RequestGetProducts, ResponseGetProducts] = useRequest({
@@ -25,6 +27,13 @@ const Bannerbox = ({value,onChange}) => {
     },
   });
 }
+useEffect(()=>{
+  console.log(value)
+  if(Boolean(value)){
+    // console.log(products?.results?.filter((product)=>product.id===value?value:Array.isArray(value)&&value.map((ele)=>ele?.id?ele?.id:ele).includes(product.id)))
+    setProduct(products?.results?.filter((product)=>product.id===value?value:Array.isArray(value)&&value.map((ele)=>ele?.id?ele?.id:ele).includes(product.id)))
+  }
+},[value])
   return (
     <Box sx={{display:'flex',flexDirection:'column',gap:'16px'}}>
          <MultiSelect
@@ -32,8 +41,8 @@ const Bannerbox = ({value,onChange}) => {
          placeholder={"Type here…"}
          label="Choose Product*"
          onOpen={getProducts}
-         value={value}
-         onChange={onChange}
+         value={Product}
+         onChange={(e)=>{onChange(e)}}
          renderValue={(selected)=>{
           console.log(selected)
           if(products.results.length==0){
@@ -53,7 +62,7 @@ const Bannerbox = ({value,onChange}) => {
        <Grid item>
             {
             
-            products?.results?.filter((product)=>product.id===value?value:Array.isArray(value)&&value.includes(product.id)).map((product)=>(
+            Product?.map((product)=>(
             <Grid key={product.id} container >
               
               <Grid md={1.5} pl={1}>
@@ -74,7 +83,7 @@ const Bannerbox = ({value,onChange}) => {
                 </Typography>
               </Grid>
               <Grid md={1}>
-                <Box sx={{display:'flex',justifyContent:'flex-end',pt:1}} onClick={''}>
+                <Box sx={{display:'flex',justifyContent:'flex-end',pt:1}} onClick={()=>setProduct(Product.filter((ele)=>ele?.id!=product?.id))}>
                 <img src={DeleteOffer} alt="delete" />
                 </Box>
               </Grid>

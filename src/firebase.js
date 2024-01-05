@@ -13,7 +13,7 @@ const firebaseConfig = {
   };
 export const firebaseApp = initializeApp(firebaseConfig);
  const messaging = getMessaging(firebaseApp);
-
+console.log(messaging)
 export const gettoken = async() => {
    return await getToken(messaging, {vapidKey: 'BFZShwq3OUqTPSSL1F-KSLvOX8QhnKZ5FjixQrWqp2cd-OjaDR2uUOAAVlf_5vR_2oGf9HvICK7oC_bnUyp6IzM'}).then((currentToken) => {
     
@@ -47,9 +47,10 @@ export const onMessageListener = () =>
 
 export function requestPermission() {
   console.log('Requesting permission...');
-  Notification.requestPermission().then((permission) => {
-    if (permission === 'granted') {
-      gettoken()
+  Notification.requestPermission().then(async(permission) => {
+    await gettoken().then((res)=>console.log(res))
+    if (permission === 'denied') {
+    
       console.log('Notification permission granted.');
     }
     console.log(permission)

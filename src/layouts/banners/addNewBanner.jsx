@@ -10,6 +10,7 @@ import BannerShape from 'components/common/bannerShape'
 import Bannerbox from 'components/common/bannerbox'
 import { OFFERTYPES } from 'data/api'
 import { BANNERS } from 'data/api'
+import moment from 'moment'
 import { STATIC } from 'data/api'
 import { PAGES } from 'data/api'
 import { BannersTYPES } from 'data/api'
@@ -20,6 +21,8 @@ import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles'
 import useControls from 'hooks/useControls'
 import useRequest from 'hooks/useRequest'
 import React, { useEffect } from 'react'
+import DatePickerField from "components/common/DatePicker";
+import DateIcon from 'examples/Icons/DateIcon';
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -35,7 +38,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
   const offerstypes = useSelector((state) => state.offerstypes.value);
   const pages = useSelector((state) => state.pages.value);
   let dispatch = useDispatch()
-
+  const formData = new FormData();
   const navigate = useNavigate();
   const location = useLocation();
   // const location = useLocation();
@@ -58,6 +61,11 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
       test:/^(https?|ftp):\/\/[^\s\/$.?#].[^\s]*$/,
       message:"not right url"
     } },
+    {
+      control: "expire_date",
+      value: "",
+      isRequired: false,
+    },
     { control: "image", value: "", isRequired: false },
     { control: "published_on", value: '', isRequired: false },
     // { control: "pages", value: '', isRequired: false },
@@ -130,38 +138,38 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
           [controls.is_rectangular,state?.dataRow?.is_rectangular,"is_rectangular"],
           [controls.image,state?.dataRow?.image,"image"],
           [controls.published_on,state?.dataRow?.published_on,"published_on"],
-          [controls.object_id,state?.dataRow?.object_id,"object_id"],
-          [controls.link,state?.dataRow?.link,"link"],
+          [controls.object_id,String(state?.dataRow?.object_id),"object_id"],
+          [String(controls.url),String(state?.dataRow?.link),"link"],
           [controls.is_percentage_discount,state?.dataRow?.is_percentage_discount,"is_percentage_discount"],
+          [controls.expire_date,state?.dataRow?.expire_date,"expire_date"]
       //    [controls.job,state?.dataRow?.job,"job"]
       ],false
       )
+      console.log(controls.is_rectangular,state?.dataRow?.is_rectangular, result.array)
+      Object.entries(result.array).map(([key,value])=>formData.append(key,value))
       patchBannerRequest({
         id:controls?.id,
-        body: filter({
-          obj: result.array,
-          output: "formData",
-        }),onSuccess:(res)=>{
+        body: formData,onSuccess:(res)=>{
           dispatch({ type: "banners/patchItem", payload: { id: controls?.id,item:res.data } })
       navigate(`/${sub_domain}/dashboard/banners`)
 
         }
       })
-     
-      console.log(result)
       }else{
         let obj = {
           banner_type: controls.banner_type,
-          object_id: controls.object_id,
+          // object_id: controls.object_id,
           is_public: controls?.is_public || 'true',
-          is_rectangular: controls.is_rectangular || "true",
-          image: controls.image
+          is_rectangular: controls.is_rectangular,
+          image: controls.image,
+          expire_date:controls?.expire_date
         };
   
         if (controls.banner_type === 1) {
           obj.object_id = [...controls.object_id]
         }
         if (controls.banner_type === 2) {
+          obj.object_id = controls.object_id
           obj.category_products = controls.object_id
         }
         // if (controls.banner_type === 3) {
@@ -171,6 +179,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
           obj.link = controls.url
         }
         if (controls.banner_type === 5) {
+
           obj.object_id = controls.object_id
         }
   
@@ -187,16 +196,19 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
         }).then((res) => {
           let response = res?.response?.data;
           console.log(response)
-          // const responseBody = filter({
-          //   obj: {
-          //     name: response?.name?.join(""),
-          //     quantity: response?.quantity?.join(" "),
-          //    
-          //   },
-          //   output: "object",
-          // });
+          const responseBody = filter({
+            obj :{
+              banner_type: response.banner_type,
+              object_id: response.object_id,
+              is_public: response?.is_public,
+              is_rectangular: response.is_rectangular,
+              image: response.image,
+              expire_date:response?.expire_date
+            },
+            output: "object",
+          });
   
-          setInvalid(response);
+          setInvalid(responseBody);
         });
       }
   
@@ -208,9 +220,9 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
     //         dispatch({ type: "job/set", payload: res.data })
     //     }
     // })
-  
+
     if (Boolean(state?.dataRow)) {
-      Object.entries(state?.dataRow)?.forEach(([key, value]) => setControl(key, value))
+      Object.entries(state?.dataRow)?.forEach(([key, value]) => key=="link"?setControl("url", value):setControl(key,value))
       // if(!Boolean(controls.banner_type)){
       //   setControl("banner_type", state?.dataRow?.banner_type)
       // }
@@ -233,13 +245,14 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
               <BannerShape
                 value={controls.image}
                 onChange={(e) => setControl('image', e)}
-                is_rectangular={state?.dataRow?state?.dataRow.is_rectangular:null}
+                is_rectangular={state?.dataRow?state?.dataRow.is_rectangular:controls?.is_rectangular}
+                setControl={(value)=>setControl("is_rectangular",value)}
               />
             </Grid>
             <Grid item md={12}xl={4}lg={12}sm={12}>
               <SoftBox sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", mt: 2.5, py: '24px', height: 'fit-content' }} >
                 <Container sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  <FormControl>
+                  <FormControl >
                     <FormLabel
                       id="demo-row-radio-buttons-group-label"
                       sx={{
@@ -250,6 +263,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
                         letterSpacing: "0em",
                         mb: '6px'
                       }}
+                      
                     >
                       Publish on*
                     </FormLabel>
@@ -300,6 +314,7 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
                           },
                         }}
                       />
+             
                       <FormControlLabel
                         value="both"
                         control={<RadioButton />}
@@ -320,6 +335,30 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
                       />
                     </RadioGroup>
                   </FormControl>
+                  <Box>
+            <Typography
+              sx={{
+                fontSize: "14px",
+                fontWeight: 400,
+                lineHeight: "20px",
+                letterSpacing: "0em",
+                textAlign: "left",
+                mb:'6px'
+              }}
+              component={"lable"}
+              required={required.includes("expire_date")}
+              textHelper={controls.expire_date}
+              error={Boolean(invalid.expire_date)}
+              helperText={invalid.expire_date}
+            >
+              expire date*
+            </Typography>
+             <DatePickerField
+              value={controls.expire_date}
+              onChange={(newvalue) => {setControl("expire_date", moment(newvalue).format("YYYY-MM-DD"));console.log(moment(newvalue).format("YYYY-MM-DD"))}}
+              icon={DateIcon}
+            /> 
+          </Box>
                   <SelectField
                     variant="outlined"
                     placeholder="Specific product"
@@ -346,11 +385,13 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
                       </MenuItem>
                     ))}
                   </SelectField>
+                  
                   {controls.banner_type == 1 &&
                     <Bannerbox
                       value={Array.isArray(controls.object_id)?controls.object_id:[controls.object_id]}
-                      onChange={(e) => setControl("object_id", e.target.value)}
+                      onChange={(e) => {setControl("object_id", e.target.value.map((ele)=>ele?.id?ele?.id:ele));}}
                     />}
+                    {console.log(controls.object_id)}
                   {controls.banner_type == 3 &&
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                       <SelectField

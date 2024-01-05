@@ -43,6 +43,7 @@ import createCache from "@emotion/cache";
 import HomeSections from "layouts/home/homepage";
 // Soft UI Dashboard React routes
 import routes from "routes";
+import { onMessageListener } from './firebase';
 
 // Soft UI Dashboard React contexts
 import { useSoftUIController, setMiniSidenav, setOpenConfigurator,setDirection,setLayout } from "context";
@@ -58,8 +59,38 @@ export default function App() {
   const { pathname } = useLocation();
   const shop_name=localStorage.getItem('shop_name')
   const logo=localStorage.getItem('logo')
- 
+  // if ("serviceWorker" in navigator) {
+  //   navigator.serviceWorker
+  //     .register("/firebase-messaging-sw.js")
+  //     .then((registration) => {
+  //       console.log("Registration successful, scope is:", registration.scope+`authentication/sign-in`);
+  //     })
+  //     .catch((error) => {
+  //       console.log("Service worker registration failed, error:", error);
+  //     });
+  // }
   // Cache for the rtl
+  onMessageListener()
+  .then((payload) => {
+    // setShow(true);
+    console.log(payload);
+    // if (payload) {
+    //   dispatch({
+    //     type: "notifications/addItem",
+    //     payload: {
+    //       title: payload.notification.title,
+    //       body: payload.notification.body,
+    //     },
+    //   });
+    //   dispatch({
+    //     type: "unread/addItem",
+    //     payload:
+    //       Math.minimumZero(notifictionsStore?.results?.length) +
+    //       Math.minimumZero(0),
+    //   });
+    // }
+  })
+  .catch((err) => console.log("failed: ", err));
   useMemo(() => {
     const cacheRtl = createCache({
       key: "rtl",

@@ -303,7 +303,7 @@ const AddProduct = ({ light, isMini,handleChange }) => {
         ],false
       )
       // console.log(Object.entries(result.array).map(([key,value])=>key==="discount_start_date"||key==="discount_end_date"?{key:value.toISOString()}:{key:value}))
-      console.log(controls,product,result)
+      // console.log(controls,product,result)
    
       if(result.nochange){ patchProductRequest({
         id:productId,

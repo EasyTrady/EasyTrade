@@ -7,15 +7,22 @@ self.importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-
 // let playsoundeffect=importScripts("../src/utils/playSoundEffect");
 // let notificationSfx=importScripts("../src/assets/notificationsfx.wav")
 // Initialize the Firebase app in the service worker by passing the generated config
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/firebase-messaging-sw.js')
+    .then(function(registration) {
+      console.log('Registration successful, scope is:', registration.scope);
+    }).catch(function(err) {
+      console.log('Service worker registration failed, error:', err);
+    });
+  }
 let firebaseConfig = {
-  apiKey: "AIzaSyAmHXQEvslz5HRfKLtj39Oi3CEJfXo3YRo",
-    authDomain: "crm-f03ae.firebaseapp.com",
-    projectId: "crm-f03ae",
-    storageBucket: "crm-f03ae.appspot.com",
-    messagingSenderId: "43857829456",
-    appId: "1:43857829456:web:d740c65fcc86a00d6e7b55",
-    measurementId: "G-YTPLM4Y9XN",
-    
+  apiKey: "AIzaSyBWuBKJXfmayoiV_iBsVgbIJGj6zp0xPvs",
+  authDomain: "easy-trade-eb360.firebaseapp.com",
+  projectId: "easy-trade-eb360",
+  storageBucket: "easy-trade-eb360.appspot.com",
+  messagingSenderId: "555143091504",
+  appId: "1:555143091504:web:ae1443cfca2f59cf57a4f5",
+  measurementId: "G-G4R9M927KL"
 };
 
 firebase.initializeApp(firebaseConfig);

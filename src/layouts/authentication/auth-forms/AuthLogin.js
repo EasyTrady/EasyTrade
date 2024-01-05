@@ -35,14 +35,14 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import useRequest from "hooks/useRequest";
-import { SIGNIN ,PROFILE} from "data/api";
+import { SIGNIN ,PROFILE,DEVICESTOKEN} from "data/api";
 
 import Google from 'assets/images/icons/social-google.svg';
 import { ToastContainer, toast } from 'react-toastify';
 import { UserSignin } from 'store/pages/signinSlice';
 import { useNavigate } from 'react-router';
 import { GetShopInfo } from 'store/pages/signupslice';
-// import { requestPermission,gettoken } from '../../../firebase';
+import { requestPermission,gettoken } from '../../../firebase';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
@@ -69,17 +69,32 @@ const FirebaseLogin = ({ ...others }) => {
   let [signInRequest,signInResponse]=useRequest({
     path:SIGNIN,method:"post"
   })
+  let [ResDeviceRequest,ResDeviceResponse]=useRequest({
+    path:DEVICESTOKEN,method:"post",Token: `Token ${Token}`
+  })
   let [ShopInfoRequest,ShopInfoResponse]=useRequest({
     path:PROFILE,method:"get",Token:`Token ${Token}`
   })
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-// useEffect(async()=>{
-//     // requestPermission()
-//   // console.log( await gettoken())
-
-// },[])
+useEffect(()=>{
+    
+  // console.log( await gettoken())
+return  async()=>{
+  if(JSON.parse(localStorage.getItem("divceToken"))?.token){
+    ResDeviceRequest({
+      body:{
+        registeration_id:JSON.parse(localStorage.getItem("divceToken"))?.token,
+        type:"web"
+      },onSuccess:(res)=>{
+        console.log(res.data)
+      }
+    })
+  }
+ 
+}
+},[JSON.parse(localStorage.getItem("divceToken"))?.token])
  
   return (
     <>

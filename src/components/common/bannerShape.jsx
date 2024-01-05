@@ -11,7 +11,7 @@ import { TextTitle } from "styles/style";
 import { UploadButton } from "styles/productStyle";
 import { CircleBanner } from "styles/productStyle";
 import { RectangleBanner } from "styles/productStyle";
-const BannerShape = ({ banner, onChange,is_rectangular,value }) => {
+const BannerShape = ({ banner, onChange,is_rectangular,value ,setControl}) => {
   const [images, setImages] = useState(null);
   const [shape, setShape] = useState(false);
   const [rectangle, setRectangle] = useState(false);
@@ -30,18 +30,18 @@ const BannerShape = ({ banner, onChange,is_rectangular,value }) => {
     onChange(event.target.files[0]);
   };
   useEffect(()=>{
+    console.log(value)
     if(Boolean(value)){
       if(is_rectangular==true){
         setRectangle(is_rectangular);
 
       }else{
-        setShape(is_rectangular);
+        setShape(true);
 
       }
     }
     
   },[value])
-  console.log(is_rectangular,Boolean(value),shape,rectangle)
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <SoftBox
@@ -69,7 +69,7 @@ const BannerShape = ({ banner, onChange,is_rectangular,value }) => {
                 onClick={() => {
                   setShape(true);
                   setRectangle(false);
-                  
+                  setControl(false)
                 }}
               />
             )}
@@ -83,6 +83,7 @@ const BannerShape = ({ banner, onChange,is_rectangular,value }) => {
                 onClick={() => {
                   setRectangle(true);
                   setShape(false);
+                  setControl(true)
                  
                 }}
               />
