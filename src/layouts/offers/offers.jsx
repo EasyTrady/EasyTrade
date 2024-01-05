@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
-import { Button, Container, Icon, Stack, Typography,Tooltip,Paper } from "@mui/material";
+import { Button, Container, Icon, Stack, Typography,Tooltip,Paper, CircularProgress } from "@mui/material";
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import Breadcrumbs from "examples/Breadcrumbs";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { navbarRow } from "examples/Navbars/DashboardNavbar/styles";
@@ -73,6 +73,16 @@ function onEdit(row, newRow) {
   navigate(`/${sub_domain}/dashboard/offers/addnewoffer`,{state:{id:row,dataRow:newRow}})
   
 }
+
+const [isLoading, setIsLoading] = useState(false);
+    const handleAddNewOffer = () => {
+        setIsLoading(true);
+    
+        setTimeout(() => {
+          setIsLoading(false);
+          navigate(`/${sub_domain}/dashboard/offers/addnewoffer`);
+        }, 1000);
+      };
  const  columns = [
     {
       field: 'main_image',
@@ -211,19 +221,30 @@ color:row.offer_type_id===1?'#027A48':row.offer_type_id===2?"#7A0243":row.offer_
             <LocalPrintshopIcon /> Print
           </Button>
          { permissionYour.map((ele)=>ele.codename).includes("add_productoffer")&&<SoftButton
-            variant="gradient"
-            sx={{
+          variant="gradient"
+          sx={{
+            backgroundColor: (theme) => theme.palette.purple.middle,
+            color: "white !important",
+            "&:hover": {
               backgroundColor: (theme) => theme.palette.purple.middle,
-              color: "white !important",
-              "&:hover": {
-                backgroundColor: (theme) => theme.palette.purple.middle,
-              },
-            }}
-            onClick={() => navigate(`/${sub_domain}/dashboard/offers/addnewoffer`)}
-          >
-            <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+            },
+            width: { md: "25%", xs: "50px" },
+            textTransform: "none",
+          }}
+          onClick={handleAddNewOffer}
+        >
+          {isLoading ? (
+            <>
+            <CircularProgress size={20} color="inherit" />
+            جاري التحميل...
+          </>
+          ) : (
+            <>
+              <Icon sx={{ fontWeight: "bold" }}>add</Icon>
             &nbsp;{t("addnewoffer")}
-          </SoftButton>}
+            </>
+          )}
+        </SoftButton>}
           
         </SoftBox>
         <DataGridCustom

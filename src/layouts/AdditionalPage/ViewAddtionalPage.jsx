@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
-import {  Button, Container, Icon, IconButton, Stack, Switch, Typography } from '@mui/material'
+import {  Button, CircularProgress, Container, Icon, IconButton, Stack, Switch, Typography } from '@mui/material'
 import SoftBox from 'components/SoftBox'
 import SoftButton from 'components/SoftButton'
 import DataGridCustom from 'components/common/DateGridCustomer'
 import { VIEWADDTIONPAGE } from 'data/api'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
@@ -60,6 +60,17 @@ const ViewAddtionalPage = ({ absolute, light, isMini }) => {
 //         }
 //     })
   //}
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleAddNewAddtionPage = () => {
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setIsLoading(false);
+      navigate(`/${sub_domain}/dashboard/additionalpage/addadditionalpage`);
+    }, 1000);
+  };
 
   function onEdit(row, newRow) {
     navigate(`/${sub_domain}/dashboard/additionalpage/addadditionalpage`, {
@@ -198,6 +209,31 @@ const ViewAddtionalPage = ({ absolute, light, isMini }) => {
           <LocalPrintshopIcon /> Print
         </Button>
         <SoftButton
+        variant="gradient"
+        sx={{
+          backgroundColor: (theme) => theme.palette.purple.middle,
+          color: "white !important",
+          "&:hover": {
+            backgroundColor: (theme) => theme.palette.purple.middle,
+          },
+          width: { md: "25%", xs: "50px" },
+          textTransform: "none",
+        }}
+        onClick={handleAddNewAddtionPage}
+      >
+        {isLoading ? (
+          <>
+          <CircularProgress size={20} color="inherit" />
+          جاري التحميل...
+        </>
+        ) : (
+          <>
+            <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+          &nbsp;{t("addnewpage")}
+          </>
+        )}
+      </SoftButton>
+        {/* <SoftButton
           variant="gradient"
           sx={{
             backgroundColor: (theme) => theme.palette.purple.middle,
@@ -210,7 +246,7 @@ const ViewAddtionalPage = ({ absolute, light, isMini }) => {
         >
           <Icon sx={{ fontWeight: "bold" }}>add</Icon>
           &nbsp;{t("addnewpage")}
-        </SoftButton>
+        </SoftButton> */}
       </SoftBox>
       <DataGridCustom
                 rows={banners?.results}

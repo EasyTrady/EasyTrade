@@ -1,135 +1,143 @@
 /* eslint-disable react/prop-types */
-import { Box, CircularProgress, Container, MenuItem, Typography } from '@mui/material';
-import SoftBox from 'components/SoftBox';
-import SoftButton from 'components/SoftButton';
-import SoftInput from 'components/SoftInput';
-import AddProductTitle from 'components/common/AddProductTitle';
-import { VIEWADDTIONPAGE } from 'data/api';
-import Breadcrumbs from 'examples/Breadcrumbs';
-import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
-import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
-import { navbarRow } from 'examples/Navbars/DashboardNavbar/styles';
-import useControls from 'hooks/useControls';
-import useRequest from 'hooks/useRequest';
-import React, { useEffect } from 'react'
-import { useTranslation } from 'react-i18next';
-import { useLocation,useNavigate } from 'react-router-dom';
-import filter from 'utils/ClearNull';
-import TwoArrow from 'examples/Icons/TwoArrow';
-import SelectField from 'components/common/SelectField';
-import ReactQuill from 'react-quill';
+import { Box, CircularProgress, Container, MenuItem, Typography } from "@mui/material";
+import SoftBox from "components/SoftBox";
+import SoftButton from "components/SoftButton";
+import SoftInput from "components/SoftInput";
+import AddProductTitle from "components/common/AddProductTitle";
+import { VIEWADDTIONPAGE } from "data/api";
+import Breadcrumbs from "examples/Breadcrumbs";
+import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
+import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import { navbarRow } from "examples/Navbars/DashboardNavbar/styles";
+import useControls from "hooks/useControls";
+import useRequest from "hooks/useRequest";
+import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router-dom";
+import filter from "utils/ClearNull";
+import TwoArrow from "examples/Icons/TwoArrow";
+import SelectField from "components/common/SelectField";
+import ReactQuill from "react-quill";
 const AddAddtionalPage = ({ absolute, light, isMini }) => {
-    const route = useLocation().pathname.split("/").slice(1);
-    const sub_domain = localStorage.getItem("sub_domain");
-    let Token = localStorage.getItem("token");
-    let { t } = useTranslation("common");
-    let navigate=useNavigate()
-    const location = useLocation();
-    const { state } = location;
-    const modules = {
-        toolbar: [
-          [{ font: [] }],
-          [{ header: [1, 2, 3, 4, 5, 6, false] }],
-          ["bold", "italic", "underline", "strike"],
-          [{ color: [] }, { background: [] }],
-          [{ script: "sub" }, { script: "super" }],
-          ["blockquote", "code-block"],
-          [{ list: "ordered" }, { list: "bullet" }],
-          ["link", "image", "video"],
-          ["clean"],
-        ],
-      };
-      const [{ controls, invalid, required }, { setControl, resetControls, validate,setInvalid }] = useControls([
-        { control: "title", value: '', isRequired: false },
-        { control: "english_title", value: '', isRequired: false },
-        { control: "type", value: '', isRequired: false },
-        { control: "size_guide", value: '', isRequired: false },
-        { control: "description", value: '', isRequired: false },
-      ])
-      const pageTypes=[{id:1,title:"general"},{id:2,title:"terms of use"},{id:3,title:"terms of exchange and return"},{id:4,title:"Size guide"}]
-      const [AddtionPageGetRequest, AddtionPageGetResponce] = useRequest({
-        path: VIEWADDTIONPAGE,
-        method: "POST",
-        Token: `Token ${Token}`,
-      });
-      const [patchAddtionPageRequest, patchAddtionPageResponce] = useRequest({
-        path: VIEWADDTIONPAGE,
-        method: "patch",
-        Token: `Token ${Token}`,
-      });
-      function handleSubmit() {
-        validate().then((output) => {
-          console.log(output);
-          if (!output.isOk) return; 
-          if(Boolean(state?.dataRow)){
-            let  result= compare(
-              [
-              [controls.description,state?.dataRow?.description,"description"],
-              [controls.title,state?.dataRow?.title,"title"],
-              [controls.size_guide,state?.dataRow?.size_guide,"size_guide"],
-              [controls.type,state?.dataRow?.type,"type"],
-              [controls.object_id,state?.dataRow?.object_id,"object_id"],
-              [controls.english_title,state?.dataRow?.english_title,"english_title"],
-          ],false
-          )
-          patchAddtionPageRequest({
-            id:controls?.id,
-            body: filter({
-              obj: result.array,
-              output: "object",
-            }),onSuccess:(res)=>{
-              dispatch({ type: "banners/patchItem", payload: { id: controls?.id,item:res.data } })
-          navigate(`/${sub_domain}/dashboard/additionalpage`)
-            }
-          })
-         
-          console.log(result)
-          } 
-          AddtionPageGetRequest({
-            body: filter({
-              obj: {
-                title:controls.title,
-                type:controls.type,
-                size_guide:controls.size_guide,
-                description:controls.description
-              },
-              output: "object",
-            }),
-            onSuccess: (res) => {
-              resetControls("");
-              navigate(`/${sub_domain}/dashboard/additionalpage`)
-            }
-          }).then((res) => {
-            let response = res?.response?.data;
-            console.log(res);
-            // const responseBody = filter({
-            //   obj: {
-            //     name: response?.name?.join(""),
-            //     quantity: response?.quantity?.join(" "),
-            //    
-            //   },
-            //   output: "object",
-            // });
-      
-            // setInvalid(responseBody);
-          });
+  const route = useLocation().pathname.split("/").slice(1);
+  const sub_domain = localStorage.getItem("sub_domain");
+  let Token = localStorage.getItem("token");
+  let { t } = useTranslation("common");
+  let navigate = useNavigate();
+  const location = useLocation();
+  const { state } = location;
+  const modules = {
+    toolbar: [
+      [{ font: [] }],
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ color: [] }, { background: [] }],
+      [{ script: "sub" }, { script: "super" }],
+      ["blockquote", "code-block"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link", "image", "video"],
+      ["clean"],
+    ],
+  };
+  const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
+    useControls([
+      { control: "title", value: "", isRequired: false },
+      { control: "english_title", value: "", isRequired: false },
+      { control: "type", value: "", isRequired: false },
+      { control: "size_guide", value: "", isRequired: false },
+      { control: "description", value: "", isRequired: false },
+    ]);
+  const pageTypes = [
+    { id: 1, title: "general" },
+    { id: 2, title: "terms of use" },
+    { id: 3, title: "terms of exchange and return" },
+    { id: 4, title: "Size guide" },
+  ];
+  const [AddtionPageGetRequest, AddtionPageGetResponce] = useRequest({
+    path: VIEWADDTIONPAGE,
+    method: "POST",
+    Token: `Token ${Token}`,
+  });
+  const [patchAddtionPageRequest, patchAddtionPageResponce] = useRequest({
+    path: VIEWADDTIONPAGE,
+    method: "patch",
+    Token: `Token ${Token}`,
+  });
+  function handleSubmit() {
+    validate().then((output) => {
+      console.log(output);
+      if (!output.isOk) return;
+      if (Boolean(state?.dataRow)) {
+        let result = compare(
+          [
+            [controls.description, state?.dataRow?.description, "description"],
+            [controls.title, state?.dataRow?.title, "title"],
+            [controls.size_guide, state?.dataRow?.size_guide, "size_guide"],
+            [controls.type, state?.dataRow?.type, "type"],
+            [controls.object_id, state?.dataRow?.object_id, "object_id"],
+            [controls.english_title, state?.dataRow?.english_title, "english_title"],
+          ],
+          false
+        );
+        patchAddtionPageRequest({
+          id: controls?.id,
+          body: filter({
+            obj: result.array,
+            output: "object",
+          }),
+          onSuccess: (res) => {
+            dispatch({ type: "banners/patchItem", payload: { id: controls?.id, item: res.data } });
+            navigate(`/${sub_domain}/dashboard/additionalpage`);
+          },
         });
+
+        console.log(result);
       }
-    useEffect(() => {
-        if (Boolean(state?.dataRow)) {
-            Object.entries(state?.dataRow)?.forEach(([key, value]) => setControl(key, value))
-        }
-    }, [state])
+      AddtionPageGetRequest({
+        body: filter({
+          obj: {
+            title: controls.title,
+            type: controls.type,
+            size_guide: controls.size_guide,
+            description: controls.description,
+          },
+          output: "object",
+        }),
+        onSuccess: (res) => {
+          resetControls("");
+          navigate(`/${sub_domain}/dashboard/additionalpage`);
+        },
+      }).then((res) => {
+        let response = res?.response?.data;
+        console.log(res);
+        // const responseBody = filter({
+        //   obj: {
+        //     name: response?.name?.join(""),
+        //     quantity: response?.quantity?.join(" "),
+        //
+        //   },
+        //   output: "object",
+        // });
+
+        // setInvalid(responseBody);
+      });
+    });
+  }
+  useEffect(() => {
+    if (Boolean(state?.dataRow)) {
+      Object.entries(state?.dataRow)?.forEach(([key, value]) => setControl(key, value));
+    }
+  }, [state]);
   return (
     <DashboardLayout>
-    <DashboardNavbar />
-    <Container sx={{ p: 2 }}>
-      <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-        <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
-      </SoftBox>
-      <Box sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", pb: 4 }}>
-        <AddProductTitle title={"Basic info"} />
-        <Container>
+      <DashboardNavbar />
+      <Container sx={{ p: 2 }}>
+        <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
+          <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+        </SoftBox>
+        <Box sx={{ background: "#FFFFFF", borderRadius: "8px", height: "100%", pb: 4 }}>
+          <AddProductTitle title={"Basic info"} />
+          <Container>
             <SoftBox
               py={"20px"}
               display="flex"
@@ -138,26 +146,26 @@ const AddAddtionalPage = ({ absolute, light, isMini }) => {
               sx={{ width: "100%", height: "100%", position: "relative" }}
             >
               <SoftInput
-  placeholder={
-    controls.type === "general"
-      ? "Arabic name..."
-      : controls.type
-      ? `${controls.type}`
-      : "Choose page type first"
-  }
-  sx={{
-    ".MuiInputBase-root": {
-      border: `1px solid !important`,
-      borderColor: (theme) => theme.palette.grey[400] + "!important",
-    },
-  }}
-  value={controls.type !== "general" ? controls.type : controls.title}
-  onChange={(e) => setControl("title", e.target.value)}
-  required={required.includes("title")}
-  error={Boolean(invalid?.title)}
-  helperText={invalid?.title}
-  // disabled={controls.type !== "general" ? true : false}
-/>
+                placeholder={
+                  controls.type === "general"
+                    ? "Arabic name..."
+                    : controls.type
+                    ? `${controls.type}`
+                    : "Choose page type first"
+                }
+                sx={{
+                  ".MuiInputBase-root": {
+                    border: `1px solid !important`,
+                    borderColor: (theme) => theme.palette.grey[400] + "!important",
+                  },
+                }}
+                value={controls.type !== "general" ? controls.type : controls.title}
+                onChange={(e) => setControl("title", e.target.value)}
+                required={required.includes("title")}
+                error={Boolean(invalid?.title)}
+                helperText={invalid?.title}
+                // disabled={controls.type !== "general" ? true : false}
+              />
               <SoftButton
                 sx={{
                   width: "max-content",
@@ -235,32 +243,46 @@ const AddAddtionalPage = ({ absolute, light, isMini }) => {
               </SoftBox>
             </SoftBox>
           </Container>
-            </Box>
-            <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: "24px" }}>
-      <SoftButton variant="contained" color="white"sx={{mx:"20px", width: {md:"25%",xs:'50px'},}} onClick={() =>{resetControls(); navigate(`/${sub_domain}/dashboard/additionalpage`)}}>
-                        {"cancel"}
-                    </SoftButton>
-        <SoftButton
-          type="submit"
-          variant="gradient"
-          sx={{
-            backgroundColor: (theme) => theme.palette.purple.middle,
-            color: "white !important",
-            "&:hover": {
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: "24px" }}>
+          <SoftButton
+            variant="contained"
+            color="white"
+            sx={{ mx: "20px", width: { md: "25%", xs: "50px" } }}
+            onClick={() => {
+              resetControls();
+              navigate(`/${sub_domain}/dashboard/additionalpage`);
+            }}
+          >
+            {"cancel"}
+          </SoftButton>
+          <SoftButton
+            type="submit"
+            variant="gradient"
+            sx={{
               backgroundColor: (theme) => theme.palette.purple.middle,
-            },
-            width: {md:"25%",xs:'50px'},
-            textTransform:'none'
-          }}
-          onClick={handleSubmit}
-        >
-           
-          {AddtionPageGetResponce.isPending?<><CircularProgress />loading</>:"Add page"}
-        </SoftButton>
-      </Box>
+              color: "white !important",
+              "&:hover": {
+                backgroundColor: (theme) => theme.palette.purple.middle,
+              },
+              width: { md: "25%", xs: "50px" },
+              textTransform: "none",
+            }}
+            onClick={handleSubmit}
+          >
+            {AddtionPageGetResponce.isPending ? (
+              <>
+              <CircularProgress size={20} color="inherit" />
+              جاري التحميل...
+            </>
+            ) : (
+              "Add page"
+            )}
+          </SoftButton>
+        </Box>
       </Container>
     </DashboardLayout>
-  )
-}
+  );
+};
 
-export default AddAddtionalPage
+export default AddAddtionalPage;

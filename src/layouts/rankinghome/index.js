@@ -58,7 +58,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { styled } from "@mui/system";
 import Slider from "react-slick";
 import compare from "utils/compare";
-import DateIcon from 'examples/Icons/DateIcon';
+import DateIcon from "examples/Icons/DateIcon";
 
 import DragerItem from "./DragerItem";
 import image1 from "assets/images/Avatar.png";
@@ -328,7 +328,7 @@ function index({ absolute, light, isMini }) {
     if (!Edit) {
       validate().then((output) => {
         if (!output.isOk) return;
-        
+
         contentpostRequest({
           body:
             controls?.content_type?.title == "shopbrand"
@@ -387,7 +387,7 @@ function index({ absolute, light, isMini }) {
         ),
         false
       );
-        console.log(result.array,Edit)
+      console.log(result.array, Edit);
       // console.log(controls.items.filter((ele)=>!Boolean(controls.items.find((elem)=>elem.id==ele.id))))
       // console.log(compare(Object.entries(Edit).map(([key,value])=>key=="content_type"?[controls[key].id,value,key]:key=="items"?[controls[key],value,key]:[controls[key],String(value),key])),"sort_number")
       if (result.nochange) {
@@ -458,7 +458,6 @@ function index({ absolute, light, isMini }) {
   }, [specialCategorys]);
 
   const settings = {
-    
     className: "center",
     centerMode: true,
     // centerPadding: "60px",
@@ -467,10 +466,10 @@ function index({ absolute, light, isMini }) {
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
-    row:1,
+    row: 1,
     // width:'90% !important',
     // style: {
-      
+
     // },
     responsive: [
       {
@@ -669,7 +668,7 @@ function index({ absolute, light, isMini }) {
             </SoftBox>
             {homeComponent.map((ele) => {
               let component = TypeItem.find((elem) => elem?.id == ele?.content_type);
-              if (component?.title == "category" ) {
+              if (component?.title == "category") {
                 return (
                   <SoftBox key={component?.id} sx={{ padding: "10px", width: "100%" }}>
                     <SoftTypography component="div">{t("Categories")}</SoftTypography>
@@ -696,14 +695,14 @@ function index({ absolute, light, isMini }) {
                     </Slider>
                   </SoftBox>
                 );
-              } else if (component?.title == "shopbrand" ) {
+              } else if (component?.title == "shopbrand") {
                 const hasItems = ele?.items && ele.items.length > 0;
                 return (
                   <SoftBox key={component?.id} sx={{ padding: "10px", width: "100%" }}>
                     <SoftTypography component="div">{t("Brands")}</SoftTypography>
-                      <Slider {...settings} slidesToShow={ele?.max_number}>
-                        {ele.items.map((elem) => (
-                          <Box key={elem?.id}>
+                    <Slider {...settings} slidesToShow={ele?.max_number}>
+                      {ele.items.map((elem) => (
+                        <Box key={elem?.id}>
                           <SoftBox
                             sx={{
                               display: "flex",
@@ -724,7 +723,7 @@ function index({ absolute, light, isMini }) {
                         //   key={elem.id}>
                         //     <SoftTypography component={"name"}
                         //         src={elem?.name}>
-                            
+
                         //     </SoftTypography>
                         //     <Box
                         //       sx={{
@@ -761,37 +760,44 @@ function index({ absolute, light, isMini }) {
                         //       </SoftBox>
                         //     </Box>
                         // </SoftBox>
-                        ))}
-                      </Slider>
+                      ))}
+                    </Slider>
                   </SoftBox>
                 );
-              } else if (component?.title == "banner" ) {
+              } else if (component?.title == "banner") {
                 const hasItems = ele?.items && ele.items.length > 0;
                 return (
                   <SoftBox key={component.id} sx={{ padding: "10px" }}>
                     <SoftTypography component="div">{t("Banner")}</SoftTypography>
-                      <Slider {...settings} slidesToShow={ele?.max_number}>
-                        {ele?.items?.map((elem) => (
-                          <Box key={elem?.id} sx={{margin:"auto"}}>
-                            <StyleSoftBox frame={ele.frame} sx={{display: "flex",
+                    <Slider {...settings} slidesToShow={ele?.max_number}>
+                      {ele?.items?.map((elem) => (
+                        <Box key={elem?.id} sx={{ margin: "auto" }}>
+                          <StyleSoftBox
+                            frame={ele.frame}
+                            sx={{
+                              display: "flex",
                               alignItems: "center",
                               margin: "0 10px",
-                              justifyContent:'center',width:"75%", border:'none'}}>
-                              <img src={elem?.image} style={{ width: "100%" }} />
-                            </StyleSoftBox>
-                          </Box>
-                        ))}
-                      </Slider>
+                              justifyContent: "center",
+                              width: "75%",
+                              border: "none",
+                            }}
+                          >
+                            <img src={elem?.image} style={{ width: "100%" }} />
+                          </StyleSoftBox>
+                        </Box>
+                      ))}
+                    </Slider>
                   </SoftBox>
                 );
-              } else if (component?.title == "specialcategory" ) {
+              } else if (component?.title == "specialcategory") {
                 const hasItems = ele?.items && ele.items.length > 0;
                 return (
                   <SoftBox key={component?.id} sx={{ padding: "10px" }}>
                     <SoftTypography component="div">{t("Products")}</SoftTypography>
-                      <Slider {...settings} slidesToShow={ele?.max_number}>
-                        {ele?.items?.map((elem) => (
-                          <Box key={elem?.id}>
+                    <Slider {...settings} slidesToShow={ele?.max_number}>
+                      {ele?.items?.map((elem) => (
+                        <Box key={elem?.id}>
                           <SoftBox
                             sx={{
                               display: "flex",
@@ -808,95 +814,95 @@ function index({ absolute, light, isMini }) {
                             </SoftTypography>
                           </SoftBox>
                         </Box>
-                          // <Box key={elem?.id}>
-                          //   <SoftBox
-                          //     sx={{ display: "flex", flexDirection: "row", alignItems: "center", margin:'0 10px' }}
-                          //   >
-                          //     <SoftBox
-                          //       sx={{
-                          //         borderRadius: "8px",
-                          //         border: "1px solid #D3D3D3",
-                          //         // width: "100%",
-                          //         padding:'0 10px',
-                          //         backgroundColor: "#fff",
-                          //         // display: "flex",
-                          //         // flexDirection: "column",
-                          //       }}
-                          //     >
-                          //       <SoftBox
-                          //         sx={{
-                          //           display: "flex",
-                          //           justifyContent: "space-around",
-                          //           alignItems: "center",
-                          //         }}
-                          //       >
-                          //         <SoftBox
-                          //           sx={{
-                          //             border: "1px solid #8150A0",
-                          //             borderRadius: "24px",
-                          //             display: "Flex",
-                          //             alignItems: "center",
-                          //             justifyContent: "space-evenly",
-                          //             width: "40px",
-                          //             height: "10px",
-                          //           }}
-                          //         >
-                          //           <StartIcon />
-                          //           <SoftTypography sx={{ fontSize: "8px" }}>4.6</SoftTypography>
-                          //           <SoftTypography sx={{ fontSize: "8px", color: "gray" }}>
-                          //             (23)
-                          //           </SoftTypography>
-                          //         </SoftBox>
-                          //         <SoftBox>
-                          //           <HeartIcon />
-                          //         </SoftBox>
-                          //       </SoftBox>
-                          //       <SoftBox
-                          //         sx={{
-                          //           display: "flex",
-                          //           justifyContent: "center",
-                          //         }}
-                          //       >
-                          //         <SoftTypography
-                          //           component={"img"}
-                          //           src={imageProduct}
-                          //           sx={{ width: "50%", height: "50%" }}
-                          //         />
-                          //       </SoftBox>
-                          //       <SoftBox
-                          //         sx={{
-                          //           display: "flex",
-                          //           justifyContent: "flex-start",
-                          //           flexDirection: "column",
-                          //           padding: "10px",
-                          //         }}
-                          //       >
-                          //         <SoftTypography sx={{ fontSize: "8px", color: "gray" }}>
-                          //           {" "}
-                          //           Sports shoes
-                          //         </SoftTypography>
-                          //         <SoftTypography sx={{ fontSize: "8px" }}>
-                          //           {" "}
-                          //           Adidas running sn..
-                          //         </SoftTypography>
-                          //         <SoftTypography
-                          //           sx={{
-                          //             fontSize: "8px",
-                          //             color: (theme) => theme.palette.error.main,
-                          //           }}
-                          //         >
-                          //           {" "}
-                          //           7,000 SAR
-                          //         </SoftTypography>
-                          //       </SoftBox>
-                          //     </SoftBox>
-                          //     <SoftBox sx={{ borderRadius: "8px", width: "50%", height: "80px", display:'flex', alignItems:'center', padding:'0 10px' }}>
-                          //       ...
-                          //     </SoftBox>
-                          //   </SoftBox>
-                          // </Box>
-                        ))}
-                      </Slider>
+                        // <Box key={elem?.id}>
+                        //   <SoftBox
+                        //     sx={{ display: "flex", flexDirection: "row", alignItems: "center", margin:'0 10px' }}
+                        //   >
+                        //     <SoftBox
+                        //       sx={{
+                        //         borderRadius: "8px",
+                        //         border: "1px solid #D3D3D3",
+                        //         // width: "100%",
+                        //         padding:'0 10px',
+                        //         backgroundColor: "#fff",
+                        //         // display: "flex",
+                        //         // flexDirection: "column",
+                        //       }}
+                        //     >
+                        //       <SoftBox
+                        //         sx={{
+                        //           display: "flex",
+                        //           justifyContent: "space-around",
+                        //           alignItems: "center",
+                        //         }}
+                        //       >
+                        //         <SoftBox
+                        //           sx={{
+                        //             border: "1px solid #8150A0",
+                        //             borderRadius: "24px",
+                        //             display: "Flex",
+                        //             alignItems: "center",
+                        //             justifyContent: "space-evenly",
+                        //             width: "40px",
+                        //             height: "10px",
+                        //           }}
+                        //         >
+                        //           <StartIcon />
+                        //           <SoftTypography sx={{ fontSize: "8px" }}>4.6</SoftTypography>
+                        //           <SoftTypography sx={{ fontSize: "8px", color: "gray" }}>
+                        //             (23)
+                        //           </SoftTypography>
+                        //         </SoftBox>
+                        //         <SoftBox>
+                        //           <HeartIcon />
+                        //         </SoftBox>
+                        //       </SoftBox>
+                        //       <SoftBox
+                        //         sx={{
+                        //           display: "flex",
+                        //           justifyContent: "center",
+                        //         }}
+                        //       >
+                        //         <SoftTypography
+                        //           component={"img"}
+                        //           src={imageProduct}
+                        //           sx={{ width: "50%", height: "50%" }}
+                        //         />
+                        //       </SoftBox>
+                        //       <SoftBox
+                        //         sx={{
+                        //           display: "flex",
+                        //           justifyContent: "flex-start",
+                        //           flexDirection: "column",
+                        //           padding: "10px",
+                        //         }}
+                        //       >
+                        //         <SoftTypography sx={{ fontSize: "8px", color: "gray" }}>
+                        //           {" "}
+                        //           Sports shoes
+                        //         </SoftTypography>
+                        //         <SoftTypography sx={{ fontSize: "8px" }}>
+                        //           {" "}
+                        //           Adidas running sn..
+                        //         </SoftTypography>
+                        //         <SoftTypography
+                        //           sx={{
+                        //             fontSize: "8px",
+                        //             color: (theme) => theme.palette.error.main,
+                        //           }}
+                        //         >
+                        //           {" "}
+                        //           7,000 SAR
+                        //         </SoftTypography>
+                        //       </SoftBox>
+                        //     </SoftBox>
+                        //     <SoftBox sx={{ borderRadius: "8px", width: "50%", height: "80px", display:'flex', alignItems:'center', padding:'0 10px' }}>
+                        //       ...
+                        //     </SoftBox>
+                        //   </SoftBox>
+                        // </Box>
+                      ))}
+                    </Slider>
                   </SoftBox>
                 );
               }
@@ -1029,14 +1035,14 @@ function index({ absolute, light, isMini }) {
                 variant="outlined"
                 onOpen={getBrandItems}
                 placeholder={"Export"}
-                value={controls?.items?.map((ele)=>ele.id?ele.id:ele)}
+                value={controls?.items?.map((ele) => (ele.id ? ele.id : ele))}
                 multiple
                 onChange={(e) => setControl("items", e.target.value)}
                 renderValue={(selected) => {
                   if (Brands?.results?.length == 0) {
                     getBrandItems();
                   }
-                  console.log(selected)
+                  console.log(selected);
                   return (
                     <SoftBox sx={{ display: "flex" }}>
                       {Brands?.results
@@ -1071,7 +1077,10 @@ function index({ absolute, light, isMini }) {
                 <SoftButton
                   value={t("single")}
                   variant={"outlined"}
-                  onClick={(e) => {setControl("display", e.target.value);controls.items.length>0?setControl("items",[]):null}}
+                  onClick={(e) => {
+                    setControl("display", e.target.value);
+                    controls.items.length > 0 ? setControl("items", []) : null;
+                  }}
                   sx={{
                     width: "49%",
                     borderColor:
@@ -1098,7 +1107,9 @@ function index({ absolute, light, isMini }) {
                 <SoftButton
                   value={t("multiple")}
                   variant={"outlined"}
-                  onClick={(e) =>{ setControl("display", e.target.value)}}
+                  onClick={(e) => {
+                    setControl("display", e.target.value);
+                  }}
                   sx={{
                     width: "49%",
                     borderColor:
@@ -1190,7 +1201,7 @@ function index({ absolute, light, isMini }) {
                     </SoftButton>
                   </SoftBox>
                 </>
-              ) : controls?.display == "single" ?(
+              ) : controls?.display == "single" ? (
                 <>
                   <Typography variant={"label"} sx={{ display: "block", fontSize: "14px" }}>
                     {t("brannernumber")}
@@ -1236,20 +1247,22 @@ function index({ absolute, light, isMini }) {
                       </MenuItem>
                     ))}
                   </SelectField>
-                 
+
                   {Boolean(controls?.items?.image) && (
                     <SoftBox sx={{ display: "flex", justifyContent: "space-around" }}>
                       <SwitchIcon />
-                     
+
                       <img
                         src={controls?.items?.image}
                         style={{ width: "100px", height: "100px" }}
                       />
-                      <DeleteIcon sx={{ width: "20%" }} onClick={()=>setControl("items",[])}/>
+                      <DeleteIcon sx={{ width: "20%" }} onClick={() => setControl("items", [])} />
                     </SoftBox>
                   )}
                 </>
-              ):<></>}
+              ) : (
+                <></>
+              )}
               {controls?.overflow_type == "scroll" && controls?.display == "multiple" ? (
                 <>
                   <Typography variant={"label"} sx={{ display: "block", fontSize: "14px" }}>
@@ -1451,43 +1464,51 @@ function index({ absolute, light, isMini }) {
                 Boolean(controls?.items?.length > 0) && (
                   <SoftBox sx={{ display: "flex", justifyContent: "space-around" }}>
                     {/* <Slider {...settings} slidesToShow={controls?.max_number} > */}
-               
-                    {controls?.items?.map((ele) => (
-                      ele.id?
-                      <SoftBox key={ele.id} sx={{ position: "relative" }}>
-                        <img src={ele?.image} style={{ width: "100px", height: "100px" }} />{" "}
-                        <DeleteIcon
-                          sx={{
-                            width: "20%",
-                            position: "absolute",
-                            top: "24%",
-                            left: "40%",
-                          }}
-                          onClick={() =>
-                            setControl(
-                              "items",
-                              controls?.items?.filter((elem) => elem.id != ele.id)
-                            )
-                          }
-                        />
-                      </SoftBox>: <SoftBox key={ele.id} sx={{ position: "relative" }}>
-                        <img src={banners?.results?.find((product, index) => (product.id==ele))?.image} style={{ width: "100px", height: "100px" }} />{" "}
-                        <DeleteIcon
-                          sx={{
-                            width: "20%",
-                            position: "absolute",
-                            top: "24%",
-                            left: "40%",
-                          }}
-                          onClick={() =>
-                            setControl(
-                              "items",
-                              controls?.items?.filter((elem) => elem != ele)
-                            )
-                          }
-                        />
-                      </SoftBox>
-                    ))}
+
+                    {controls?.items?.map((ele) =>
+                      ele.id ? (
+                        <SoftBox key={ele.id} sx={{ position: "relative" }}>
+                          <img src={ele?.image} style={{ width: "100px", height: "100px" }} />{" "}
+                          <DeleteIcon
+                            sx={{
+                              width: "20%",
+                              position: "absolute",
+                              top: "24%",
+                              left: "40%",
+                            }}
+                            onClick={() =>
+                              setControl(
+                                "items",
+                                controls?.items?.filter((elem) => elem.id != ele.id)
+                              )
+                            }
+                          />
+                        </SoftBox>
+                      ) : (
+                        <SoftBox key={ele.id} sx={{ position: "relative" }}>
+                          <img
+                            src={
+                              banners?.results?.find((product, index) => product.id == ele)?.image
+                            }
+                            style={{ width: "100px", height: "100px" }}
+                          />{" "}
+                          <DeleteIcon
+                            sx={{
+                              width: "20%",
+                              position: "absolute",
+                              top: "24%",
+                              left: "40%",
+                            }}
+                            onClick={() =>
+                              setControl(
+                                "items",
+                                controls?.items?.filter((elem) => elem != ele)
+                              )
+                            }
+                          />
+                        </SoftBox>
+                      )
+                    )}
 
                     {/* </Slider> */}
                   </SoftBox>
@@ -1619,7 +1640,7 @@ function index({ absolute, light, isMini }) {
                 isPending={getcategoryResponce.isPending}
                 onOpen={getCategory}
                 renderValue={(selected) => {
-                  console.log(selected)
+                  console.log(selected);
                   if (categories?.results?.length == 0) {
                     getCategory();
                   }

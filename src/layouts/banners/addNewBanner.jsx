@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Box, Checkbox, Container, FormControl, FormControlLabel, FormLabel, Grid, MenuItem, RadioGroup, Typography } from '@mui/material'
+import { Box, Checkbox, CircularProgress, Container, FormControl, FormControlLabel, FormLabel, Grid, MenuItem, RadioGroup, Typography } from '@mui/material'
 import SoftBox from 'components/SoftBox'
 import SoftButton from 'components/SoftButton'
 import OfferBoxCategory from 'components/common/OfferBoxCategory'
@@ -544,7 +544,14 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
             }}
             onClick={handleSubmit}
           >
-            Publish
+            {AddBannerResponce.isPending ? (
+              <>
+                <CircularProgress size={20} color="inherit" />
+                جاري التحميل...
+              </>
+            ) : (
+              "Publish"
+            )}
           </SoftButton>
         </Box>
       </Container>

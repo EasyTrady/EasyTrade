@@ -25,6 +25,7 @@ import {
   Avatar,
   TextField,
   Select,
+  CircularProgress,
 } from "@mui/material";
 
 
@@ -105,7 +106,7 @@ const FirebaseRegister = ({ ...others }) => {
   });
   let [ShopInfoRequest, ShopInfoResponse] = useRequest({
     path: SHOP,
-    method: "post",
+    method: "get",
   });
 
   let [ShopCategoryRequest, ShopCategoryResponse] = useRequest({
@@ -146,40 +147,55 @@ const FirebaseRegister = ({ ...others }) => {
   }, []);
 
   const handleFormSubmit = async (values, { setErrors, setStatus, setSubmitting }) => {
-    console.log(values, "on submit");
-    const formData = new FormData();
-    Object.entries(values).forEach(([key, value]) => formData.append(key, value));
-    if (values.logo) {
-      formData.append("logo", values.logo);
-    }
-    formData.append("shop_type", values.shop_category);
-    formData.append("password", values.password);
-    signUpRequest({
-      body: formData,
-      onSuccess: async (res) => {
-        console.log("Successful signup:", res);
-        toast.success('Welcome to EasyTrade');
-        navigate(`/authentication/sign-in`);
-      },
-      onError: (error) => {
-        console.error("Error during signup:", error);
-        console.error(res.data);
-        setErrors(res.payload);
-        const errorMessage = typeof res.payload === 'string' ? res.payload : 'An error occurred';
-        toast.error(errorMessage, {
-          position: "bottom-left",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          className: 'toast-message'
-        });
+    try {
+      setSubmitting(true); // Set submitting to true to show loading indicator
+
+      const formData = new FormData();
+      Object.entries(values).forEach(([key, value]) => formData.append(key, value));
+      if (values.logo) {
+        formData.append("logo", values.logo);
       }
-    });
-  };
+      formData.append("shop_type", values.shop_category);
+
+      await signUpRequest({
+        body: formData,
+        onSuccess: async (res) => {
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("tokenTimestamp", new Date(res.data.expiry).getTime());
+          setSubmitting(false);
+
+          await ShopInfoRequest({
+            token: `Token ${res.data.token}`,
+            onSuccess: (response) => {
+              // Handle the response and set localStorage items accordingly
+              navigate(`/${response?.data?.sub_domain}/dashboard`);
+            },
+          });
+        },
+        onError: (error) => {
+          console.error("Error during signup:", error);
+          setSubmitting(false);
+          const errorMessage = typeof error.payload === 'string' ? error.payload : 'An error occurred';
+          toast.error(errorMessage, {
+            position: "bottom-left",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            className: 'toast-message'
+          });
+        }
+      });
+    } catch (err) {
+      console.error(err);
+
+      // Set submitting to false in case of an error
+      setSubmitting(false);
+    }
+  }
 
   return (
     <>
@@ -556,8 +572,13 @@ const FirebaseRegister = ({ ...others }) => {
                     lineHeight: '24px'
                   }}
                   onSubmit={(e) => handleSubmit(e)}
+                  disableElevation
+                    disabled={isSubmitting}
+                    fullWidth
+                    startIcon={isSubmitting && <CircularProgress size={20} color="inherit" />}
                 >
-                  انشاء حساب
+                  {isSubmitting ? "جاري التحميل..." : "انشاء حساب"}
+                  
                 </SoftButton>
               </AnimateButton>
             </Box>
