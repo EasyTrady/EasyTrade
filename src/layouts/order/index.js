@@ -49,6 +49,10 @@ function Order({ absolute, light, isMini }) {
   let navigate = useNavigate();
   let orders = useSelector((state) => state.orders.value);
   let Token = localStorage.getItem("token");
+  const [paginationModel, setPaginationModel] = React.useState({
+    page: 0,
+    pageSize: 8,
+  });
   const columns = [
     {
       field: "id",
@@ -228,11 +232,12 @@ function Order({ absolute, light, isMini }) {
   }
   useEffect(() => {
     OrderRequest({
+      params: { page: paginationModel?.page + 1 },
       onSuccess: (res) => {
         dispatch({ type: "orders/set", payload: res.data });
       },
     });
-  }, []);
+  }, [paginationModel?.page]);
   useEffect(() => {
     setRows(orders?.results);
   }, [orders]);
@@ -248,6 +253,7 @@ function Order({ absolute, light, isMini }) {
           loading={getOrderResponce.isPending}
           // onDelete={onDelete}
           // onDialog={onEdit}
+          rowCount={orders?.count}
           columns={columns}
           checkboxSelection={true}
           onRowClick={(e) =>
@@ -256,6 +262,8 @@ function Order({ absolute, light, isMini }) {
           }
           // sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
           // onEdit={onEdit}
+          paginationModel={paginationModel}
+            onPaginationModelChange={setPaginationModel}
           rowHeight={100}
           // slots={{
           //     noRowsOverlay: MyCustomNoRowsOverlay

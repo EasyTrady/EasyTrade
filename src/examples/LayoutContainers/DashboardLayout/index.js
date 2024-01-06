@@ -31,14 +31,14 @@ import { useSoftUIController, setLayout } from "context";
 
 function DashboardLayout({ children,absolute, light, isMini }) {
   const [controller, dispatch] = useSoftUIController();
-  const { miniSidenav,backgroundColor } = controller;
+  const { miniSidenav,backgroundColor,makeIconOnly } = controller;
   const { pathname } = useLocation();
   const route = useLocation().pathname.split("/").slice(1);
 
   useEffect(() => {
     setLayout(dispatch, "dashboard");
   }, [pathname]);
-
+console.log(miniSidenav,makeIconOnly)
   return (
     <><SoftBox
       sx={({ breakpoints, transitions, functions: { pxToRem } }) => ({
@@ -47,8 +47,10 @@ function DashboardLayout({ children,absolute, light, isMini }) {
         backgroundColor:backgroundColor,
         minHeight:"100vh",
         padding:"0",
+       
+
         [breakpoints.up("xl")]: {
-          marginLeft: miniSidenav ? pxToRem(120) : pxToRem(274),
+          marginLeft: miniSidenav ||makeIconOnly? pxToRem(150) : pxToRem(274),
           transition: transitions.create(["margin-left", "margin-right"], {
             easing: transitions.easing.easeInOut,
             duration: transitions.duration.standard,

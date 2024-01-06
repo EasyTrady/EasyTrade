@@ -384,18 +384,21 @@ function Basket({ absolute, light, isMini }) {
   };
 
   useEffect(() => {
-    cartRequest({
-      onSuccess: (res) => {
-        // console.log(res.data)
-        dispatch({ type: "cart/set", payload: { ...res.data } });
-      },
-    });
     productRequest({
       onSuccess: (res) => {
         dispatch({ type: "products/set", payload: res.data });
       },
     });
   }, []);
+  useEffect(()=>{
+    cartRequest({
+      params: { page: paginationModel?.page + 1 },
+      onSuccess: (res) => {
+        // console.log(res.data)
+        dispatch({ type: "cart/set", payload: { ...res.data } });
+      },
+    });
+  },[paginationModel?.page])
   useEffect(() => {
     setRows(carts?.results);
 

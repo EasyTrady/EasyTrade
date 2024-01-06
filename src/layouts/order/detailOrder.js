@@ -193,13 +193,15 @@ function DetailOrder({ absolute, light, isMini }) {
       [controls?.country, order?.shipping_address?.country, "country"],
       [controls?.city, order?.shipping_address?.city, "city"],
       [controls?.governorate, order?.shipping_address?.governorate, "governorate"],
-      [controls?.phone, order?.shipping_address?.phone, "phone"],
+      [controls?.code+controls?.phone, order?.shipping_address?.phone, "phone"],
     ]);
     if (result.nochange) {
       updataOrderRequest({
         id: order.id + "/updateaddress/" + order.shipping_address.id,
         body: result.array,
-        onSuccess: (res) => {},
+        onSuccess: (res) => {
+
+        },
       });
     }
   }
@@ -807,7 +809,7 @@ function DetailOrder({ absolute, light, isMini }) {
                         }}
                         requiredCode
                         required={required.includes("phone")}
-                        value={controls.phone}
+                        value={controls.phone.split("20")[1]}
                         onChange={(e) => setControl("phone", e.target.value)}
                         error={Boolean(invalid.phone)}
                         helperText={invalid.phone}

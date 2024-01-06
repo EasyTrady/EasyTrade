@@ -348,7 +348,7 @@ function index({ absolute, light, isMini }) {
               ? {
                   title: controls?.title,
                   content_type: controls?.content_type?.id,
-                  items: controls?.items,
+                  items: Array.isArray(controls?.items)?controls?.items:[controls?.items?.id],
 
                   max_number: controls?.number | controls?.brannernumber,
                   display: controls?.display,
@@ -387,7 +387,7 @@ function index({ absolute, light, isMini }) {
           key == "content_type"
             ? [controls[key]?.id, value, key]
             : key == "items"
-            ? [controls[key], value, key]
+            ? [controls[key], Array.isArray(value)?value:[value?.id], key]
             :key=="category_level"? [Number(controls[key]), Number(value), key]:[controls[key], String(value), key]
         ),
         false
