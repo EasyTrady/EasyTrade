@@ -124,27 +124,11 @@ function Dashboard() {
     });
     // return () => setDirection(dispatch, "ltr");
   }, []);
-<<<<<<< HEAD
-  useEffect(()=>{
-    
-    // console.log( await gettoken())
-    if(JSON.parse(localStorage.getItem("divceToken"))?.token){
-      RecDevice()
-    }
-  },[])
-  const [totalRequest, gettotalResponce] =
-    useRequest({
-      path: STATISTICSTOTAL,
-      method: "get",
-      Token: `Token ${Token}`
-    });
-=======
   const [totalRequest, gettotalResponce] = useRequest({
     path: STATISTICSTOTAL,
     method: "get",
     Token: `Token ${Token}`,
   });
->>>>>>> 729d631bc1fd41730298a89590339074ef8a03b1
   return (
     <DashboardLayout>
       <DashboardNavbar />

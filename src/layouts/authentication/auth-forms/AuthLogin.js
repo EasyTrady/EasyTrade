@@ -96,17 +96,6 @@ const FirebaseLogin = ({ ...others }) => {
           password: Yup.string().max(255).required("Password is required"),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-<<<<<<< HEAD
-        
-            signInRequest({
-              body:values,
-              onSuccess:async(res)=>{
-                localStorage.setItem('token', res.data.token);
-                // console.log(res.data.expiry,new Date(),new Date(res.data.expiry).getHours())
-                localStorage.setItem('tokenTimestamp', tomorrow);
-                // if (Boolean(sub_domain)) {
-                 
-=======
           try {
             setSubmitting(true); // Set submitting to true to show loading indicator
 
@@ -127,7 +116,6 @@ const FirebaseLogin = ({ ...others }) => {
                     localStorage.setItem("email", response?.data?.user?.email);
                     localStorage.setItem("phone", response?.data?.user?.phone);
                     localStorage.setItem("sub_domain", response?.data?.sub_domain);
->>>>>>> 729d631bc1fd41730298a89590339074ef8a03b1
 
                     navigate(`/${response?.data?.sub_domain}/dashboard`);
                   },
