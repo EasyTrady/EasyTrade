@@ -11,7 +11,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import { navbarRow } from "examples/Navbars/DashboardNavbar/styles";
 import useControls from "hooks/useControls";
 import useRequest from "hooks/useRequest";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import filter from "utils/ClearNull";
@@ -25,6 +25,8 @@ const AddAddtionalPage = ({ absolute, light, isMini }) => {
   let { t } = useTranslation("common");
   let navigate = useNavigate();
   const location = useLocation();
+  const [selectedTypeText, setSelectedTypeText] = useState("");
+
   const { state } = location;
   const modules = {
     toolbar: [
@@ -40,18 +42,29 @@ const AddAddtionalPage = ({ absolute, light, isMini }) => {
     ],
   };
   const [{ controls, invalid, required }, { setControl, resetControls, validate, setInvalid }] =
-    useControls([
-      { control: "title", value: "", isRequired: false },
-      { control: "english_title", value: "", isRequired: false },
-      { control: "type", value: "", isRequired: false },
-      { control: "size_guide", value: "", isRequired: false },
-      { control: "description", value: "", isRequired: false },
-    ]);
+  useControls([
+    { control: "title", value: "", isRequired: () => selectedTypeText !== "general" },
+    { control: "english_title", value: "", isRequired: false },
+    {
+      control: "type",
+      value: "",
+      isRequired: false,
+      validations: [
+        {
+          customValidation: (controls) =>(controls.type === "general" && controls.title !== "") || (controls.type && ['general', 'terms_of_use', 'terms_of_exchange_and_return', 'size_guide'].includes(controls.type) ),
+          message: "type should be one of ['general', 'terms_of_use', 'terms_of_exchange_and_return', 'size_guide']",
+        },
+      ],
+      // isValid: (value) => (value === "general" && controls.title !== "") || (value && ['general', 'terms_of_use', 'terms_of_exchange_and_return', 'size_guide'].includes(value)),
+    },    
+    { control: "size_guide", value: "", isRequired: false },
+    { control: "description", value: "", isRequired: false },
+  ]);
   const pageTypes = [
-    { id: 1, title: "general" },
-    { id: 2, title: "terms of use" },
-    { id: 3, title: "terms of exchange and return" },
-    { id: 4, title: "Size guide" },
+    { id: 1, title: "general", value: '' },
+    { id: 2, title: "terms of use", value: 'terms_of_use' },
+    { id: 3, title: "terms of exchange and return", value: 'terms_of_exchange_and_return' },
+    { id: 4, title: "Size guide", value: 'size_guide' },
   ];
   const [AddtionPageGetRequest, AddtionPageGetResponce] = useRequest({
     path: VIEWADDTIONPAGE,
@@ -63,9 +76,10 @@ const AddAddtionalPage = ({ absolute, light, isMini }) => {
     method: "patch",
     Token: `Token ${Token}`,
   });
+  
   function handleSubmit() {
     validate().then((output) => {
-      console.log(output);
+      console.log(output,controls);
       if (!output.isOk) return;
       if (Boolean(state?.dataRow)) {
         let result = compare(
@@ -92,35 +106,39 @@ const AddAddtionalPage = ({ absolute, light, isMini }) => {
         });
 
         console.log(result);
-      }
-      AddtionPageGetRequest({
-        body: filter({
-          obj: {
-            title: controls.title,
-            type: controls.type,
-            size_guide: controls.size_guide,
-            description: controls.description,
+      }else{
+        AddtionPageGetRequest({
+          body: filter({
+            obj: {
+              title: controls.title,
+              type: controls.type==""?"general":controls.type, 
+              size_guide: controls.size_guide,
+              description: controls.description,
+            },
+            output: "object",
+          }),
+          
+          onSuccess: (res) => {
+            console.log(res);
+            resetControls("");
+            navigate(`/${sub_domain}/dashboard/additionalpage`);
           },
-          output: "object",
-        }),
-        onSuccess: (res) => {
-          resetControls("");
-          navigate(`/${sub_domain}/dashboard/additionalpage`);
-        },
-      }).then((res) => {
-        let response = res?.response?.data;
-        console.log(res);
-        // const responseBody = filter({
-        //   obj: {
-        //     name: response?.name?.join(""),
-        //     quantity: response?.quantity?.join(" "),
-        //
-        //   },
-        //   output: "object",
-        // });
-
-        // setInvalid(responseBody);
-      });
+        }).then((res) => {
+          let response = res?.response?.data;
+          console.log(res);
+          // const responseBody = filter({
+          //   obj: {
+          //     name: response?.name?.join(""),
+          //     quantity: response?.quantity?.join(" "),
+          //
+          //   },
+          //   output: "object",
+          // });
+  
+          // setInvalid(responseBody);
+        });
+      }
+     
     });
   }
   useEffect(() => {
@@ -146,26 +164,25 @@ const AddAddtionalPage = ({ absolute, light, isMini }) => {
               sx={{ width: "100%", height: "100%", position: "relative" }}
             >
               <SoftInput
-                placeholder={
-                  controls.type === "general"
-                    ? "Arabic name..."
-                    : controls.type
-                    ? `${controls.type}`
-                    : "Choose page type first"
-                }
-                sx={{
-                  ".MuiInputBase-root": {
-                    border: `1px solid !important`,
-                    borderColor: (theme) => theme.palette.grey[400] + "!important",
-                  },
-                }}
-                value={controls.type !== "general" ? controls.type : controls.title}
-                onChange={(e) => setControl("title", e.target.value)}
-                required={required.includes("title")}
-                error={Boolean(invalid?.title)}
-                helperText={invalid?.title}
-                // disabled={controls.type !== "general" ? true : false}
-              />
+  placeholder={
+    selectedTypeText === "general"
+      ? "Arabic name..."
+      : selectedTypeText
+      ? `${selectedTypeText}`
+      : "Choose page type first"
+  }
+  value={selectedTypeText === "general" ? (controls.title === "general" ? "" : controls.title ) : selectedTypeText}
+  onChange={(e) => {
+    if (selectedTypeText === "general") {
+      setControl("title", e.target.value);
+    } else {
+      setControl("type", selectedTypeText);
+    }
+  }}
+  required={required.includes("title")}
+  error={Boolean(invalid?.title)}
+  helperText={invalid?.title}
+/>
               <SoftButton
                 sx={{
                   width: "max-content",
@@ -201,24 +218,32 @@ const AddAddtionalPage = ({ absolute, light, isMini }) => {
                 helperText={invalid?.english_title}
               />
 
-              <SelectField
-                variant="outlined"
-                placeholder="Choose page type"
-                label="Choose page type*"
-                value={controls.type}
-                onChange={(e) => setControl("type", e.target.value)}
-                required={required.includes("type")}
-                textHelper={controls.type}
-                error={Boolean(invalid.type)}
-                helperText={invalid.type}
-                sx={{ width: "100%", fontSize: "14px", background: "#fff" }}
-              >
-                {pageTypes?.map((type, index) => (
-                  <MenuItem key={`${type.id} ${index}`} value={type.title}>
-                    {type.title}
-                  </MenuItem>
-                ))}
-              </SelectField>
+<SelectField
+  variant="outlined"
+  placeholder="Choose page type"
+  label="Choose page type*"
+  value={selectedTypeText}
+  onChange={(e) => {
+    const selectedType = pageTypes.find((type) => type.title === e.target.value) || {};
+    console.log("Selected Type:", selectedType);
+    console.log("Current Title:", controls.title);
+    console.log("Current Type:", controls.type);
+    setSelectedTypeText(e.target.value);
+    setControl("type", selectedType.value);
+    setControl("title", selectedType.value === "general" ? "" : selectedType.title);
+  }}
+  required={required.includes("type")}
+  textHelper={controls.type}
+  error={Boolean(invalid.type)}
+  helperText={invalid.type}
+  sx={{ width: "100%", fontSize: "14px", background: "#fff" }}
+>
+  {pageTypes?.map((type, index) => (
+    <MenuItem key={`${type.id} ${index}`} value={type.title}>
+      {type.title}
+    </MenuItem>
+  ))}
+</SelectField>
               <SoftBox sx={{ mb: "24px" }}>
                 <Typography
                   sx={{

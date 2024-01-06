@@ -38,8 +38,13 @@ const ViewAddtionalPage = ({ absolute, light, isMini }) => {
     method: "DELETE",
     Token: `Token ${Token}`,
   });
+  const [paginationModel, setPaginationModel] = React.useState({
+    page: 0,
+    pageSize: 8,
+  });
   const getAddtionPage = () => {
     AddtionPageGetRequest({
+      params: { page: paginationModel?.page + 1 },
       onSuccess: (res) => {
        
         dispatch({ type: "banners/set", payload: res?.data });
@@ -179,7 +184,7 @@ const ViewAddtionalPage = ({ absolute, light, isMini }) => {
   ]
   useEffect(() => {
     getAddtionPage();
-}, []);
+}, [paginationModel?.page]);
   return (
     <DashboardLayout>
     <DashboardNavbar />
@@ -251,11 +256,14 @@ const ViewAddtionalPage = ({ absolute, light, isMini }) => {
       <DataGridCustom
                 rows={banners?.results}
                 columns={columns}
-                loading={AddtionPageGetResponce.pinding}
+                loading={AddtionPageGetResponce.isPending}
                 checkboxSelection={true}
                 onRowClick={(e, row) => {
                     //  setClick({ ...e.id });
                 }}
+                paginationModel={paginationModel}
+                onPaginationModelChange={setPaginationModel}
+              rowCount={banners?.count}
                 // onDialog={isPermitted(onEdit,["change_banner"])}
                 // onDelete={isPermitted(onDelete,["delete_banner"])}
                 notProduct={false}

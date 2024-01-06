@@ -125,6 +125,7 @@ function Dashboard() {
     // return () => setDirection(dispatch, "ltr");
   }, []);
 
+
   useEffect(()=>{
     
     // console.log( await gettoken())
@@ -138,6 +139,7 @@ function Dashboard() {
       method: "get",
       Token: `Token ${Token}`
     });
+
 
   return (
     <DashboardLayout>

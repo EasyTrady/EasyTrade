@@ -20,6 +20,8 @@ import SoftButton from "components/SoftButton";
 function Customer({ absolute, light, isMini }) {
   const { columns, rows } = CustomersTableData();
   const route = useLocation().pathname.split("/").slice(1);
+let customers = useSelector((state) => state?.customer?.value)
+
   const navigate = useNavigate();
   const [paginationModel, setPaginationModel] = React.useState({
     page: 0,
@@ -100,12 +102,13 @@ function Customer({ absolute, light, isMini }) {
   //   ]
   useEffect(() => {
     customerRequest({
+      params: { page: paginationModel?.page + 1 },
       onSuccess: (res) => {
         // console.log(res.data)
         dispatch({ type: "custom/set", payload: { ...res.data } });
       },
     });
-  }, []);
+  }, [paginationModel?.page]);
   // useEffect(() => {
   //     setRows(customers?.results);
   //   }, [customers])
@@ -158,15 +161,16 @@ function Customer({ absolute, light, isMini }) {
             columns={columns}
             checkboxSelection={true}
             loading={getCustomerResponce.isPending}
+            paginationModel={paginationModel}
+            onPaginationModelChange={setPaginationModel}
+          rowCount={customers?.count}
             /* navigate(`/${shopName}/dashboard/customer/${e?.row?.id}`) */
             sx={{
               backgroundColor: "white !important",
               " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" },
             }}
             // onDelete={onDelete}
-            rowsPerPageOptions={[5, 10, 15, 20]}
-            paginationModel={paginationModel}
-            onPaginationModelChange={setPaginationModel}
+            
           />
           {DeleteCustomerrResponce.failAlert}
         </Container>
