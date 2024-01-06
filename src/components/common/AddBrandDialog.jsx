@@ -385,28 +385,53 @@ const AddBrandDialog = ({ open, handleClose }) => {
       </DialogContent>
       <DialogActions>
         <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: "24px" }}>
-          <SoftButton
-            type="submit"
-            variant="gradient"
-            sx={{
-              backgroundColor: (theme) => theme.palette.purple.middle,
-              color: "white !important",
-              "&:hover": {
-                backgroundColor: (theme) => theme.palette.purple.middle,
-              },
-              width: "260px",
-            }}
-            onClick={handleSubmit}
-          >
-            {ResponsePostBrand.isPending ? (
-              <>
-                <CircularProgress size={20} color="inherit" />
-                جاري التحميل...
-              </>
-            ) : (
-                "Add"
-            )}
-          </SoftButton>
+        {controls.brand_type === "Local brand" ? (
+  <SoftButton
+    type="submit"
+    variant="gradient"
+    sx={{
+      backgroundColor: (theme) => theme.palette.purple.middle,
+      color: "white !important",
+      "&:hover": {
+        backgroundColor: (theme) => theme.palette.purple.middle,
+      },
+      width: "260px",
+    }}
+    onClick={handleSubmit}
+  >
+    {ResponsePostBrand.isPending ? (
+      <>
+        <CircularProgress size={20} color="inherit" />
+        جاري التحميل...
+      </>
+    ) : (
+      "Add"
+    )}
+  </SoftButton>
+) : (
+  <SoftButton
+    type="submit"
+    variant="gradient"
+    sx={{
+      backgroundColor: (theme) => theme.palette.purple.middle,
+      color: "white !important",
+      "&:hover": {
+        backgroundColor: (theme) => theme.palette.purple.middle,
+      },
+      width: "260px",
+    }}
+    onClick={handleSubmit}
+  >
+    {ResponsePostPopularBrand.isPending ? (
+      <>
+        <CircularProgress size={20} color="inherit" />
+        جاري التحميل...
+      </>
+    ) : (
+      "Add"
+    )}
+  </SoftButton>
+)}
         </Box>
       </DialogActions>
       {ResponsePostBrand.failAlert}

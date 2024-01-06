@@ -23,7 +23,7 @@ import useRequest from 'hooks/useRequest'
 import {
   Collapse, Dialog, Icon, InputLabel, List, ListItemButton,
   ListItemIcon, ListItemText, MenuItem, Select, Stack, TextField,
-  Typography, Box, Container, Divider, Avatar, Radio, FormControlLabel, RadioGroup, FormLabel
+  Typography, Box, Container, Divider, Avatar, Radio, FormControlLabel, RadioGroup, FormLabel, CircularProgress
 } from '@mui/material'
 function Vender({ absolute, light, isMini }) {
   const route = useLocation().pathname.split("/").slice(1);
@@ -31,7 +31,16 @@ function Vender({ absolute, light, isMini }) {
   let { t } = useTranslation("common")
   const navigate = useNavigate()
   let {isPermitted}=usePermission()
+  const [isLoading, setIsLoading] = useState(false);
+  const handleAddNewVendor = () => {
+    setIsLoading(true);
 
+    setTimeout(() => {
+      setIsLoading(false);
+      navigate(`/${sub_domain}/dashboard/venders/addNewVendor`);
+      localStorage.removeItem("productId");
+    }, 1000);
+  };
   let venders = useSelector((state) => state.vender.value)
   let columns = [{
     field: 'id',
@@ -164,10 +173,20 @@ const sub_domain = localStorage.getItem('sub_domain')
                 backgroundColor: (theme) => theme.palette.purple.middle
               }
             }}
-            onClick={() => navigate(`/${sub_domain}/dashboard/venders/addNewVendor`)}
+            onClick={handleAddNewVendor}
           >
-            <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+            {isLoading ? (
+                <>
+                  <CircularProgress size={20} color="inherit" />
+                  جاري التحميل...
+                </>
+              ) : (
+                <>
+                  <Icon sx={{ fontWeight: "bold" }}>add</Icon>
             &nbsp;{t("add new vendor")}
+                </>
+              )}
+            
           </SoftButton>}
         </SoftBox>
         <DataGridCustom
