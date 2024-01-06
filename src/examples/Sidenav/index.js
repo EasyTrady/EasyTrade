@@ -46,7 +46,7 @@ import imageEasy from "assets/images/easytrade2.png"
 import { useSoftUIController, setMiniSidenav } from "context";
 import NavCollapse from "./CollapseNav";
 import { useDispatch, useSelector } from 'react-redux';
-
+import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup';
 import NavItem from "./CollapseItem";
 import VisitSite from "examples/Icons/VisitSite";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -133,8 +133,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           sx={{ textDecoration: "none" }}
           onClick={(e)=>setActive((previous)=>previous===key?previous:key)}
         >
-         
-
+          
           <SidenavCollapse
             color={sidenavColor}
             name={name}
@@ -221,7 +220,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         </SoftBox>
         <SoftBox component={"a"} href={shop_url}target={"_blank"} sx={{display:"flex",alignItems:"center",":hover,:active,:visited,:focus":{color:(theme)=>theme.palette.purple.middle}}} >
           <VisitSite color={(theme)=>theme.palette.purple.middle}/>
-          <SoftTypography component={"span"} sx={{fontSize:"12px",marginX:"5px"}}>Visit Site</SoftTypography>
+          <SoftTypography component={"span"} sx={{fontSize:"12px",marginX:"5px",display:makeIconOnly?"none":"inline"}}>Visit Site</SoftTypography>
           <ArrowForwardIcon sx={{fontSize:"12px"}} />
           </SoftBox>
       </SoftBox>

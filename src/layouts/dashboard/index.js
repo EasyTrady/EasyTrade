@@ -124,11 +124,23 @@ function Dashboard() {
     });
     // return () => setDirection(dispatch, "ltr");
   }, []);
-  const [totalRequest, gettotalResponce] = useRequest({
-    path: STATISTICSTOTAL,
-    method: "get",
-    Token: `Token ${Token}`,
-  });
+
+
+  useEffect(()=>{
+    
+    // console.log( await gettoken())
+    if(JSON.parse(localStorage.getItem("divceToken"))?.token){
+      RecDevice()
+    }
+  },[])
+  const [totalRequest, gettotalResponce] =
+    useRequest({
+      path: STATISTICSTOTAL,
+      method: "get",
+      Token: `Token ${Token}`
+    });
+
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -247,7 +259,7 @@ function Dashboard() {
           </Grid>
           <Grid item xs={12} lg={12} md={12} sm={12} xl={12} sx={{ my: 2 }}>
             <GradientLineChart
-              title="Total amount Orders Analytics"
+              title="Total vendor Profits"
               height="23rem"
               description={
                 <SelectField

@@ -500,13 +500,13 @@ function AddNewEmployee({ absolute, light, isMini }) {
             }}
             onClick={() => handleSubmit()}
           >
-            {PostEmployeerResponce.isPending ? (
+            {PostEmployeerResponce.isPending || PatchEmployeerResponce.isPending ? (
               <>
                 <CircularProgress size={20} color="inherit" />
                 جاري التحميل...
               </>
             ) : (
-                "save"
+              "save"
             )}
           </SoftButton>
         </Stack>

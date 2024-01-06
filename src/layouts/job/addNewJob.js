@@ -369,13 +369,13 @@ function AddNewJob({ absolute, light, isMini }) {
             }}
             onClick={() => handleSubmit()}
           >
-            {PostJobrResponce.isPending ? (
+            {PostJobrResponce.isPending || patchjobrResponce.isPending ? (
               <>
                 <CircularProgress size={20} color="inherit" />
                 جاري التحميل...
               </>
             ) : (
-                "save"
+              "save"
             )}
           </SoftButton>
         </Stack>

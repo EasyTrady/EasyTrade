@@ -48,8 +48,14 @@ const AddAddtionalPage = ({ absolute, light, isMini }) => {
     {
       control: "type",
       value: "",
-      isRequired: true,
-      isValid: (value) => (value === "general" && controls.title !== "") || (value && ['general', 'terms_of_use', 'terms_of_exchange_and_return', 'size_guide'].includes(value)),
+      isRequired: false,
+      validations: [
+        {
+          customValidation: (controls) =>(controls.type === "general" && controls.title !== "") || (controls.type && ['general', 'terms_of_use', 'terms_of_exchange_and_return', 'size_guide'].includes(controls.type) ),
+          message: "type should be one of ['general', 'terms_of_use', 'terms_of_exchange_and_return', 'size_guide']",
+        },
+      ],
+      // isValid: (value) => (value === "general" && controls.title !== "") || (value && ['general', 'terms_of_use', 'terms_of_exchange_and_return', 'size_guide'].includes(value)),
     },    
     { control: "size_guide", value: "", isRequired: false },
     { control: "description", value: "", isRequired: false },
@@ -73,7 +79,7 @@ const AddAddtionalPage = ({ absolute, light, isMini }) => {
   
   function handleSubmit() {
     validate().then((output) => {
-      console.log(output);
+      console.log(output,controls);
       if (!output.isOk) return;
       if (Boolean(state?.dataRow)) {
         let result = compare(
@@ -100,37 +106,39 @@ const AddAddtionalPage = ({ absolute, light, isMini }) => {
         });
 
         console.log(result);
-      }
-      AddtionPageGetRequest({
-        body: filter({
-          obj: {
-            title: controls.title,
-            type: controls.type, 
-            size_guide: controls.size_guide,
-            description: controls.description,
+      }else{
+        AddtionPageGetRequest({
+          body: filter({
+            obj: {
+              title: controls.title,
+              type: controls.type==""?"general":controls.type, 
+              size_guide: controls.size_guide,
+              description: controls.description,
+            },
+            output: "object",
+          }),
+          
+          onSuccess: (res) => {
+            console.log(res);
+            resetControls("");
+            navigate(`/${sub_domain}/dashboard/additionalpage`);
           },
-          output: "object",
-        }),
-        
-        onSuccess: (res) => {
+        }).then((res) => {
+          let response = res?.response?.data;
           console.log(res);
-          resetControls("");
-          navigate(`/${sub_domain}/dashboard/additionalpage`);
-        },
-      }).then((res) => {
-        let response = res?.response?.data;
-        console.log(res);
-        // const responseBody = filter({
-        //   obj: {
-        //     name: response?.name?.join(""),
-        //     quantity: response?.quantity?.join(" "),
-        //
-        //   },
-        //   output: "object",
-        // });
-
-        // setInvalid(responseBody);
-      });
+          // const responseBody = filter({
+          //   obj: {
+          //     name: response?.name?.join(""),
+          //     quantity: response?.quantity?.join(" "),
+          //
+          //   },
+          //   output: "object",
+          // });
+  
+          // setInvalid(responseBody);
+        });
+      }
+     
     });
   }
   useEffect(() => {
@@ -163,7 +171,7 @@ const AddAddtionalPage = ({ absolute, light, isMini }) => {
       ? `${selectedTypeText}`
       : "Choose page type first"
   }
-  value={selectedTypeText === "general" ? (controls.title === "general" ? "" : controls.title || "") : selectedTypeText}
+  value={selectedTypeText === "general" ? (controls.title === "general" ? "" : controls.title ) : selectedTypeText}
   onChange={(e) => {
     if (selectedTypeText === "general") {
       setControl("title", e.target.value);

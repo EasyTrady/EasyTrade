@@ -25,7 +25,7 @@ export default styled(Drawer)(({ theme, ownerState }) => {
   const { white, transparent } = palette;
   const { xxl } = boxShadows;
   const { pxToRem } = functions;
-
+console.log(makeIconOnly)
   // styles for the sidenav when miniSidenav={false}
   const drawerOpenStyles = () => ({
     transform: "translateX(0)",
@@ -47,7 +47,7 @@ export default styled(Drawer)(({ theme, ownerState }) => {
         duration: transitions.duration.enteringScreen,
       }),
     },
-    width:makeIconOnly?"10%":sidebarWidth,
+    width:makeIconOnly?sidebarWidth/2:sidebarWidth,
 
   });
 

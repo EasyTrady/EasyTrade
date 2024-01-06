@@ -998,7 +998,7 @@ const AddNewOffers = ({ absolute, light, isMini }) => {
             }}
             onClick={handleSubmit}
           >
-            {AddOfferResponce.isPending ? (
+            {AddOfferResponce.isPending || PatchOfferResponce.isPending ? (
               <>
                 <CircularProgress size={20} color="inherit" />
                 جاري التحميل...

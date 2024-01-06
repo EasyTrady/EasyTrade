@@ -40,7 +40,11 @@ function Vender({ absolute, light, isMini }) {
       navigate(`/${sub_domain}/dashboard/venders/addNewVendor`);
       localStorage.removeItem("productId");
     }, 1000);
-  };
+  };  
+  const [paginationModel, setPaginationModel] = React.useState({
+    page: 0,
+    pageSize: 8,
+  });
   let venders = useSelector((state) => state.vender.value)
   let columns = [{
     field: 'id',
@@ -144,13 +148,14 @@ const sub_domain = localStorage.getItem('sub_domain')
 }
   useEffect(() => {
     venderRequest({
+      params: { page: paginationModel?.page + 1 },
       onSuccess: (res) => {
 
 
         dispatch({ type: "vender/set", payload: res.data })
       }
     })
-  }, [])
+  }, [paginationModel?.page])
   useEffect(() => {
 
     setRows(venders?.results)
@@ -196,7 +201,10 @@ const sub_domain = localStorage.getItem('sub_domain')
           onDialog={isPermitted(onEdit,["change_vendor"])}
           columns={columns}
           checkboxSelection={true}
+          rowCount={venders?.count}
           onRowClick={() => { }}
+          paginationModel={paginationModel}
+            onPaginationModelChange={setPaginationModel}
           // sx={{ backgroundColor: "white !important", " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" } }}
           // onEdit={onEdit}
           rowHeight={100}

@@ -54,6 +54,10 @@ function Job({ absolute, light, isMini }) {
   let permissionYour = useSelector((state) => state.permissionYour.value);
   let { isPermitted } = usePermission();
   let Token = localStorage.getItem("token");
+  const [paginationModel, setPaginationModel] = React.useState({
+    page: 0,
+    pageSize: 8,
+  });
   const [jobRequest, getjobResponce] = useRequest({
     path: JOBS,
     method: "get",
@@ -202,11 +206,12 @@ function Job({ absolute, light, isMini }) {
   const MyCustomNoRowsOverlay = () => <Icon sx={{ fontWeight: "bold" }}>add</Icon>;
   useEffect(() => {
     jobRequest({
+      params: { page: paginationModel?.page + 1 },
       onSuccess: (res) => {
         dispatch({ type: "job/set", payload: res.data });
       },
     });
-  }, []);
+  }, [paginationModel?.page]);
   useEffect(() => {
     setRows(jobs?.results);
   }, [jobs]);
@@ -308,6 +313,10 @@ function Job({ absolute, light, isMini }) {
           onDelete={isPermitted(onDelete, ["delete_employeejob"])}
           columns={columns}
           checkboxSelection={true}
+          paginationModel={paginationModel}
+          onPaginationModelChange={setPaginationModel}
+          // onRowClic/k={(e) => { setClick({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
+        rowCount={jobs?.count}
           // onRowClick={(e) => { setClick({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
           sx={{
             backgroundColor: "white !important",

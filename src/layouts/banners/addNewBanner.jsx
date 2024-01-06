@@ -198,11 +198,11 @@ const AddNewBanner = ({ absolute, light, isMini }) => {
           console.log(response)
           const responseBody = filter({
             obj :{
-              banner_type: response.banner_type,
-              object_id: response.object_id,
+              banner_type: response?.banner_type,
+              object_id: response?.object_id,
               is_public: response?.is_public,
-              is_rectangular: response.is_rectangular,
-              image: response.image,
+              is_rectangular: response?.is_rectangular,
+              image: response?.image,
               expire_date:response?.expire_date
             },
             output: "object",

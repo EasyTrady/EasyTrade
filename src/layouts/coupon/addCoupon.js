@@ -488,28 +488,28 @@ function AddCoupon({ absolute, light, isMini }) {
       </Container>
       <SoftBox sx={{ display: "flex", width: "100%", justifyContent: "flex-end", px: 5 }}>
         <SoftButton
-            variant="contained"
-            type="submit"
-            color="dark"
-            sx={{
+          variant="contained"
+          type="submit"
+          color="dark"
+          sx={{
+            backgroundColor: (theme) => theme.palette.purple.middle,
+            color: "white !important",
+            "&:hover": {
               backgroundColor: (theme) => theme.palette.purple.middle,
-              color: "white !important",
-              "&:hover": {
-                backgroundColor: (theme) => theme.palette.purple.middle,
-              },
-              width: "20%",
-            }}
-            onClick={handleSubmit}
-          >
-            {couponResponce.isPending ? (
-              <>
-                <CircularProgress size={20} color="inherit" />
-                جاري التحميل...
-              </>
-            ) : (
-                "Add Coupon"
-            )}
-          </SoftButton>
+            },
+            width: "20%",
+          }}
+          onClick={handleSubmit}
+        >
+          {couponResponce.isPending ? (
+            <>
+              <CircularProgress size={20} color="inherit" />
+              جاري التحميل...
+            </>
+          ) : (
+            "Add Coupon"
+          )}
+        </SoftButton>
       </SoftBox>
       {couponResponce.failAlert}
       {couponResponce.successAlert}

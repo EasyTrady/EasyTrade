@@ -32,9 +32,13 @@ const ArchiveOffers = ({ absolute, light, isMini }) => {
     method: "get",
     Token: `Token ${Token}`,
   });
-
+  const [paginationModel, setPaginationModel] = React.useState({
+    page: 0,
+    pageSize: 8,
+  });
   const getOffers = () => {
     OffersGetRequest({
+      params: { page: paginationModel?.page + 1 },
       onSuccess: (res) => {
       
         dispatch({ type: "offers/set", payload: res?.data });
@@ -181,7 +185,7 @@ color:row.offer_type_id===1?'#027A48':row.offer_type_id===2?"#7A0243":row.offer_
   ]
   useEffect(()=>{
     getOffers()
-  },[])
+  },[paginationModel?.page])
   
   return (
     <DashboardLayout>
@@ -195,6 +199,8 @@ color:row.offer_type_id===1?'#027A48':row.offer_type_id===2?"#7A0243":row.offer_
           rows={offers?.results}
           columns={columns}
           // onDialog={onEdit}
+          rowCount={offers?.count}
+          
           onRestore={isPermitted(onDelete,["delete_productoffer"])}
           onDelete={isPermitted(onDeletePer,["delete_productoffer"])}
           onCopy={() => {}}
@@ -207,6 +213,8 @@ color:row.offer_type_id===1?'#027A48':row.offer_type_id===2?"#7A0243":row.offer_
           // notProduct={false}
           // rowsPerPageOptions={[5, 10, 15, 20]}
           // onPaginationModelChange={setPaginationModel}
+          paginationModel={paginationModel}
+            onPaginationModelChange={setPaginationModel}
           rowHeight={72}
           getRowSpacing={4}
           sx={{

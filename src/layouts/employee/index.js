@@ -64,7 +64,10 @@ function Employee({ absolute, light, isMini }) {
   let jobs = useSelector((state) => state.job.value);
   let permissionYour = useSelector((state) => state.permissionYour.value);
   let { isPermitted } = usePermission();
-
+  const [paginationModel, setPaginationModel] = React.useState({
+    page: 0,
+    pageSize: 8,
+  });
   const route = useLocation().pathname.split("/").slice(1);
   let { results } = useSelector((state) => state.job.value);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -393,12 +396,13 @@ function Employee({ absolute, light, isMini }) {
   let dispatch = useDispatch();
   useEffect(() => {
     employeeRequest({
+      params: { page: paginationModel?.page + 1 },
       onSuccess: (res) => {
         // console.log(res.data)
         dispatch({ type: "employee/set", payload: { ...res.data } });
       },
     });
-  }, []);
+  }, [paginationModel?.page]);
   useEffect(() => {
     // console.log(Object.keys(employees?.results[0]?employees?.results[0]:))
     setRows(employees?.results);
@@ -523,7 +527,11 @@ function Employee({ absolute, light, isMini }) {
             columns={columns}
             checkboxSelection={true}
             loading={getemployeeResponce.isPending}
+            paginationModel={paginationModel}
+            onPaginationModelChange={setPaginationModel}
             // onRowClic/k={(e) => { setClick({ ...e?.row });/* navigate(`/${shopName}/dashboard/employee/${e?.row?.id}`)*/ }}
+          rowCount={employees?.count}
+           
             sx={{
               backgroundColor: "white !important",
               " .css-1y2eimu .MuiDataGrid-row": { backgroundColor: "black" },

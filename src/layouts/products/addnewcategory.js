@@ -544,7 +544,7 @@ function Addnewcategory({ absolute, light, isMini }) {
             }}
             onClick={handleSubmit}
           >
-            {postcategoryResponce.isPending ? (
+            {postcategoryResponce.isPending || patchcategoryResponce.isPending ? (
               <>
                 <CircularProgress size={20} color="inherit" />
                 جاري التحميل...
