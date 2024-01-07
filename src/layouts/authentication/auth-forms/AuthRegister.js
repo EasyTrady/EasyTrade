@@ -411,7 +411,7 @@ const FirebaseRegister = ({ ...others }) => {
                   displayEmpty
                   inputProps={{ 'aria-label': 'shop_category' }}
                   IconComponent={() => <KeyboardArrowDownIcon sx={{ position: 'absolute' }} />}
-                  sx={{ textAlign: 'right', cursor: 'pointer' }}
+                  sx={{ textAlign: 'right', cursor: 'pointer', width:'100%' }}
                 >
                   {loadingCategories ? (
                     <MenuItem value="" disabled>
