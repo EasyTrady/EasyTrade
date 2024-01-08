@@ -50,7 +50,6 @@ function SidenavCollapse({ color, icon, name, children, active, noCollapse,  ope
           <ListItemIcon
             sx={(theme) => collapseIconBox(theme, { active, transparentSidenav, color })}
           >
-           
             {typeof icon === "string" ? (
               <Icon sx={(theme) => collapseIcon(theme, { active })}>{icon}</Icon>
             ) : (
@@ -61,7 +60,6 @@ function SidenavCollapse({ color, icon, name, children, active, noCollapse,  ope
           <ListItemText
             primary={name}
             sx={(theme) => collapseText(theme, { miniSidenav, transparentSidenav, active,makeIconOnly,ColorSidenav })}
-            
           />
         </SoftBox>
       </ListItem>
@@ -69,7 +67,6 @@ function SidenavCollapse({ color, icon, name, children, active, noCollapse,  ope
         <Collapse in={open} unmountOnExit>
           
           {children}
-         
         </Collapse>
       )}
     </>

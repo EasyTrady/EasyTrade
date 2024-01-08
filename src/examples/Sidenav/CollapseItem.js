@@ -96,7 +96,6 @@ const handleClick = () => {
       }}
       selected={selected === item.id}
       onClick={handleClick}
-    
     >
       <ListItemIcon sx={{ my: 'auto', minWidth: !item?.icon ? 56 : 56 }}></ListItemIcon>
       <ListItemText

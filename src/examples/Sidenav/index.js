@@ -36,41 +36,43 @@ import SoftButton from "components/SoftButton";
 // Soft UI Dashboard React examples
 import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
 import SidenavCard from "examples/Sidenav/SidenavCard";
-import { ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material";
+import { Box, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material";
 import { StarBorder } from "@mui/icons-material";
 // Custom styles for the Sidenav
 import SidenavRoot from "examples/Sidenav/SidenavRoot";
 import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
-import imageEasy from "assets/images/easytrade2.png"
+import imageEasy from "assets/images/easytrade2.png";
 // Soft UI Dashboard React context
 import { useSoftUIController, setMiniSidenav } from "context";
 import NavCollapse from "./CollapseNav";
-import { useDispatch, useSelector } from 'react-redux';
-import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup';
+import { useDispatch, useSelector } from "react-redux";
+import { Unstable_Popup as BasePopup } from "@mui/base/Unstable_Popup";
 import NavItem from "./CollapseItem";
 import VisitSite from "examples/Icons/VisitSite";
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Permissition from "components/common/Permissition";
+import ShareIcon from '@mui/icons-material/Share';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+// import './index.css
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useSoftUIController();
-  const { miniSidenav, transparentSidenav,sidenavColor,makeIconOnly ,ColorSidenav} = controller;
+  const { miniSidenav, transparentSidenav, sidenavColor, makeIconOnly, ColorSidenav } = controller;
   const location = useLocation();
   const { pathname } = location;
   const collapseName = pathname.split("/").pop();
-  const image = localStorage.getItem('logo')
-  const shop_name = localStorage.getItem('shop_name')
-  const shop_url = localStorage.getItem("shop_url")
-  const sub_domain = localStorage.getItem("sub_domain")
-  let Token = localStorage.getItem('token')
-  let permissionYour = useSelector((state) => state.permissionYour.value)
-  let dispatchrequest=useDispatch()
-  const [permissionYourRequest, permissionYourResponce] =
-  useRequest({
-      path: YOURSPERMISSIONS,
-      method: "get",
-      Token: `Token ${Token}`
+  const image = localStorage.getItem("logo");
+  const shop_name = localStorage.getItem("shop_name");
+  const shop_url = localStorage.getItem("shop_url");
+  const sub_domain = localStorage.getItem("sub_domain");
+  let Token = localStorage.getItem("token");
+  let permissionYour = useSelector((state) => state.permissionYour.value);
+  let dispatchrequest = useDispatch();
+  const [permissionYourRequest, permissionYourResponce] = useRequest({
+    path: YOURSPERMISSIONS,
+    method: "get",
+    Token: `Token ${Token}`,
   });
-  
+
   const closeSidenav = () => setMiniSidenav(dispatch, true);
 
   useEffect(() => {
@@ -90,109 +92,127 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleMiniSidenav);
   }, [dispatch, location]);
-  useEffect(()=>{
-    if(permissionYour?.length==0){
-        permissionYourRequest({
-            onSuccess:(res)=>{
-              dispatchrequest({type:"permissionYour/set",payload:[...res.data]})
-            }
-        })
+  useEffect(() => {
+    if (permissionYour?.length == 0) {
+      permissionYourRequest({
+        onSuccess: (res) => {
+          dispatchrequest({ type: "permissionYour/set", payload: [...res.data] });
+        },
+      });
     }
-    
-},[])
-  let [active,setActive]=useState("")
+  }, []);
+  let [active, setActive] = useState("");
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
-  const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, route, path, children,color,permission }) => {
-    let returnValue;
-    let [open,setOpen]=useState(false)
-    // console.log(key,active)
-    const menus = children?.map((item) => {
- 
-      switch (item.type) {
-        case 'collapse':
-          return <NavCollapse key={item.id} menu={item}  />;
-        case 'item':
-          return <Permissition permission={item.permission}type={item.type}><NavItem key={item.id} item={item} color={sidenavColor}/></Permissition>;
-        default:
-          return (
-            <Typography key={item.id} variant="h6" color="error" align="center">
-              Menu Items Error
-            </Typography>
-          );
-      }
-    });
-   
-    if (type === "collapse") {
-      returnValue = path ? (
-        <Permissition permission={permission}type={type}> <Link
-          href={path}
-          key={key}
-          target="_blank"
-          rel="noreferrer"
-          sx={{ textDecoration: "none" }}
-          onClick={(e)=>setActive((previous)=>previous===key?previous:key)}
-        >
-          
-          <SidenavCollapse
-            color={sidenavColor}
-            name={name}
-            icon={icon}
-            setOpen={setOpen}
-            open={open}
-          active={key === active}
-          noCollapse={noCollapse}
-          >
-            {menus}
-          </SidenavCollapse>
-        </Link></Permissition>
-      ) : (
-        <Permissition permission={permission}type={type}> <NavLink to={!noCollapse&&route} key={key} onClick={(e)=>setActive((previous)=>previous===key?previous:key)}>
-          <SidenavCollapse
-            color={sidenavColor}
-            key={key}
-            name={name}
-            icon={icon}
-            setOpen={setOpen}
-            open={key === active?open:false}
-          active={key === active}
-          noCollapse={noCollapse}
-          onClick={()=>setOpen(!open)}
-          >
-             
-             {menus}
-          </SidenavCollapse>
-          
-        </NavLink></Permissition>
-      );
-    } else if (type === "title") {
-      returnValue = (
-        <SoftTypography
-          key={key}
-          display={makeIconOnly?"none":"block"}
-          variant="caption"
-          fontWeight="bold"
-          textTransform="uppercase"
-          opacity={makeIconOnly?0:0.6}
-          pl={3}
-          mt={2}
-          mb={1}
-          ml={1}
-        >
-         
-          {title}
-        </SoftTypography>
-      );
-    } else if (type === "divider") {
-      returnValue = <Divider key={key} />;
-    }
+  const renderRoutes = routes.map(
+    ({ type, name, icon, title, noCollapse, key, route, path, children, color, permission }) => {
+      let returnValue;
+      let [open, setOpen] = useState(false);
+      // console.log(key,active)
+      const menus = children?.map((item) => {
+        switch (item.type) {
+          case "collapse":
+            return <NavCollapse key={item.id} menu={item} />;
+          case "item":
+            return (
+              <Permissition permission={item.permission} type={item.type}>
+                <NavItem key={item.id} item={item} color={sidenavColor} />
+              </Permissition>
+            );
+          default:
+            return (
+              <Typography key={item.id} variant="h6" color="error" align="center">
+                Menu Items Error
+              </Typography>
+            );
+        }
+      });
 
-    return returnValue;
-  });
+      if (type === "collapse") {
+        returnValue = path ? (
+          <Permissition permission={permission} type={type}>
+            {" "}
+            <Link
+              href={path}
+              key={key}
+              target="_blank"
+              rel="noreferrer"
+              sx={{ textDecoration: "none" }}
+              onClick={(e) => setActive((previous) => (previous === key ? previous : key))}
+            >
+              <SidenavCollapse
+                color={sidenavColor}
+                name={name}
+                icon={icon}
+                setOpen={setOpen}
+                open={open}
+                active={key === active}
+                noCollapse={noCollapse}
+              >
+                {menus}
+              </SidenavCollapse>
+            </Link>
+          </Permissition>
+        ) : (
+          <Permissition permission={permission} type={type}>
+            {" "}
+            <NavLink
+              to={!noCollapse && route}
+              key={key}
+              onClick={(e) => setActive((previous) => (previous === key ? previous : key))}
+            >
+              <SidenavCollapse
+                color={sidenavColor}
+                key={key}
+                name={name}
+                icon={icon}
+                setOpen={setOpen}
+                open={key === active ? open : false}
+                active={key === active}
+                noCollapse={noCollapse}
+                onClick={() => setOpen(!open)}
+              >
+                {menus}
+              </SidenavCollapse>
+            </NavLink>
+          </Permissition>
+        );
+      } else if (type === "title") {
+        returnValue = (
+          <SoftTypography
+            key={key}
+            display={makeIconOnly ? "none" : "block"}
+            // display={makeIconOnly ? "none" : "block"}
+            variant="caption"
+            fontWeight="bold"
+            textTransform="uppercase"
+            opacity={makeIconOnly ? 0 : 0.6}
+            pl={3}
+            mt={2}
+            mb={1}
+            ml={1}
+          >
+            {title && (
+            <span>
+              {title}
+            </span>
+          )}
+          </SoftTypography>
+        );
+      } else if (type === "divider") {
+        returnValue = <Divider key={key} />;
+      }
+      return returnValue;
+    }
+  );
 
   return (
-    <SidenavRoot {...rest} variant="permanent" ownerState={{ transparentSidenav, miniSidenav ,ColorSidenav,makeIconOnly}}>
-      <SoftBox pt={3} pb={1} px={4} textAlign="center">
+    <SidenavRoot
+      {...rest}
+      variant="permanent"
+      ownerState={{ transparentSidenav, miniSidenav, ColorSidenav, makeIconOnly }}
+    >
+      <SoftBox pt={3} pb={1} px={4} textAlign="center" sx={{display:'flex'}}>
         <SoftBox
           display={{ xs: "block", xl: "none" }}
           position="absolute"
@@ -206,30 +226,49 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             <Icon sx={{ fontWeight: "bold" }}>close</Icon>
           </SoftTypography>
         </SoftBox>
-        <SoftBox component={NavLink} to="/" display="flex" alignItems="center">
-          {brand && <SoftBox component="img" src={brand} alt="Soft UI Logo" width="2rem" />}
+        <SoftBox component={NavLink} to="/" display="flex" alignItems="center" >
+          {brand && <SoftBox component="img" src={brand} alt="Soft UI Logo" width="3.5rem" sx={{border:'1px solid gray',borderRadius:'15px',}} />}
           <SoftBox
             width={!brandName && "100%"}
-            sx={(theme) => sidenavLogoLabel(theme, { miniSidenav,makeIconOnly })}
+            sx={(theme) => sidenavLogoLabel(theme, { miniSidenav, makeIconOnly })}
+          ></SoftBox>
+        </SoftBox>
+        <SoftBox
+          component={"a"}
+          href={shop_url}
+          target={"_blank"}
+          sx={{
+            display: "flex",
+            alignItems: "start",
+            ":hover,:active,:visited,:focus": { color: (theme) => theme.palette.purple.middle },
+            flexDirection: 'column',
+            paddingLeft:'10px',
+          }}
+        >
+          <SoftBox sx={{display:'flex', }}>
+          <SoftTypography component="h6" variant="button" fontWeight="medium" sx={{fontSize:'20px', padding:'0 0 10px 10px'}}>
+            {brandName}
+          </SoftTypography>
+          {/* <VisitSite color={(theme) => theme.palette.purple.middle} /> */}
+          </SoftBox>
+          <SoftBox sx={{display:'flex', border:'1px solid gray', width:'120px',borderRadius:'15px', padding:'4px 10px', alignItems:'center', background: `linear-gradient(90deg, #fff 70%, #837a7a 70%)`}}>
+          <SoftTypography
+            component={"span"}
+            sx={{ fontSize: "12px", display: makeIconOnly ? "none" : "inline" }}
           >
-            <SoftTypography component="h6" variant="button" fontWeight="medium">
-              {brandName}
-            </SoftTypography>
-            
+            Visit Site
+          </SoftTypography>
+          <ArrowForwardIosIcon sx={{ marginLeft:'5px' }} />
+          <ShareIcon sx={{ color:'#FFF',marginLeft:'5px' }}/>
           </SoftBox>
         </SoftBox>
-        <SoftBox component={"a"} href={shop_url}target={"_blank"} sx={{display:"flex",alignItems:"center",":hover,:active,:visited,:focus":{color:(theme)=>theme.palette.purple.middle}}} >
-          <VisitSite color={(theme)=>theme.palette.purple.middle}/>
-          <SoftTypography component={"span"} sx={{fontSize:"12px",marginX:"5px",display:makeIconOnly?"none":"inline"}}>Visit Site</SoftTypography>
-          <ArrowForwardIcon sx={{fontSize:"12px"}} />
-          </SoftBox>
       </SoftBox>
       <Divider />
       <List>{renderRoutes}</List>
       <Divider />
-      <SoftBox sx={{px:1}}>
-    <SoftTypography component={"img"} src={imageEasy}/>
-    </SoftBox>
+      <SoftBox sx={{ px: 1 }}>
+        <SoftTypography component={"img"} src={imageEasy} />
+      </SoftBox>
     </SidenavRoot>
   );
 }
